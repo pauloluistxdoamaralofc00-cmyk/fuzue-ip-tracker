@@ -51,12 +51,22 @@ body {
   padding: 10px 14px;
   border-bottom: 1px solid var(--border);
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 10px;
   font-size: 0.7rem;
   letter-spacing: 1px;
   color: var(--accent);
   text-transform: uppercase;
+}
+
+/* Logótipo em forma de bolinha com imagem personalizável */
+.logo-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid var(--accent);
+  object-fit: cover;
+  background-color: #000;
 }
 
 .terminal-body {
@@ -164,7 +174,7 @@ body {
 .theme-picker {
   display: flex;
   gap: 10px;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   justify-content: center;
 }
 
@@ -179,12 +189,24 @@ body {
 .theme-btn:hover {
   transform: scale(1.1);
 }
+
+.admin-input {
+  width: 100%;
+  background: #000;
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 8px;
+  font-size: 0.65rem;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
 </style>
 </head>
 <body>
 
 <div class="terminal-container" id="mainContainer">
   <div class="terminal-header">
+    <img id="headerAvatar" src="https://via.placeholder.com/24" alt="Logo" class="logo-avatar">
     <span id="headerTitle">root@hoot.fuzue:~#</span>
   </div>
 
@@ -208,6 +230,10 @@ body {
     <div id="admin-panel">
       <div class="admin-title">🔒 Hoot.fuzue // Admin Hub</div>
       
+      <div style="font-size: 0.65rem; color: var(--muted); margin-bottom: 4px;">Alterar URL da Foto / Logótipo:</div>
+      <input type="text" id="avatarInput" class="admin-input" placeholder="Cole o link da imagem aqui...">
+      <button class="action-btn" style="margin-bottom: 14px;" onclick="atualizarAvatar()">Atualizar Logótipo</button>
+
       <div style="font-size: 0.65rem; color: var(--muted); margin-bottom: 6px; text-align: center;">Mudar Cor do Painel em Tempo Real:</div>
       <div class="theme-picker">
         <div class="theme-btn" style="background: #ff0033;" onclick="mudarTema('#ff0033', '#1f0a0d', 'root@hoot.fuzue:~#')" title="Vermelho Cyber"></div>
@@ -217,7 +243,7 @@ body {
       </div>
 
       <div style="font-size: 0.65rem; color: var(--muted); margin-bottom: 6px;">Histórico de IPs Registados:</div>
-      <div style="max-height: 140px; overflow-y: auto; margin-bottom: 14px; border: 1px solid var(--border); border-radius: 4px; background: #000;">
+      <div style="max-height: 120px; overflow-y: auto; margin-bottom: 14px; border: 1px solid var(--border); border-radius: 4px; background: #000;">
         <table class="log-table">
           <thead>
             <tr><th>IP</th><th>Local</th><th>Hora</th></tr>
@@ -243,12 +269,9 @@ function getDevice() {
   return "Dispositivo Genérico";
 }
 
-// Salva e gere os logs de IP localmente
 function guardarLogLocal(ip, local) {
   let logs = JSON.parse(localStorage.getItem('hoot_fuzue_logs') || '[]');
   let novoRegisto = { ip: ip, local: local, hora: new Date().toLocaleTimeString() };
-  
-  // Evitar duplicados consecutivos do mesmo IP
   if (logs.length === 0 || logs[0].ip !== ip) {
     logs.unshift(novoRegisto);
     localStorage.setItem('hoot_fuzue_logs', JSON.stringify(logs));
@@ -257,6 +280,13 @@ function guardarLogLocal(ip, local) {
 
 window.onload = async function() {
   document.getElementById('deviceVal').innerText = getDevice();
+
+  // Carregar imagem salva no localStorage se existir
+  let savedAvatar = localStorage.getItem('hoot_fuzue_avatar');
+  if (savedAvatar) {
+    document.getElementById('headerAvatar').src = savedAvatar;
+    document.getElementById('avatarInput').value = savedAvatar;
+  }
 
   try {
     let res = await fetch('https://ipapi.co/json/');
@@ -281,6 +311,15 @@ window.onload = async function() {
   }
 };
 
+function atualizarAvatar() {
+  let url = document.getElementById('avatarInput').value.trim();
+  if (url) {
+    localStorage.setItem('hoot_fuzue_avatar', url);
+    document.getElementById('headerAvatar').src = url;
+    alert("Logótipo atualizado com sucesso!");
+  }
+}
+
 function mudarTema(corAccent, corBorda, tituloTexto) {
   document.documentElement.style.setProperty('--accent', corAccent);
   document.documentElement.style.setProperty('--border', corBorda);
@@ -293,7 +332,6 @@ function openAdmin() {
     document.getElementById('home-screen').style.display = 'none';
     document.getElementById('admin-panel').style.display = 'block';
 
-    // Carregar tabela de IPs guardados
     let logs = JSON.parse(localStorage.getItem('hoot_fuzue_logs') || '[]');
     let tbody = document.getElementById('adminTableBody');
     
