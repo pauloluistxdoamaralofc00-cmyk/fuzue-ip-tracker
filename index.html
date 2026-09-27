@@ -3,100 +3,171 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Network Diagnostics & IP Inspector</title>
+<title>System Terminal // Control Center</title>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+
 <style>
-  body {
-    background: #0d1117;
-    color: #c9d1d9;
-    font-family: monospace;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-  }
-  .card {
-    background: #161b22;
-    border: 1px solid #30363d;
-    padding: 24px;
-    border-radius: 8px;
-    width: 350px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-  }
-  h2 {
-    color: #58a6ff;
-    font-size: 1.1rem;
-    margin-top: 0;
-    border-bottom: 1px solid #30363d;
-    padding-bottom: 8px;
-  }
-  .row {
-    display: flex;
-    justify-content: space-between;
-    margin: 10px 0;
-    font-size: 0.85rem;
-  }
-  .label { color: #8b949e; }
-  .value { color: #7ee787; font-weight: bold; }
-  .btn {
-    background: #238636;
-    color: white;
-    border: none;
-    padding: 10px;
-    width: 100%;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-    margin-top: 15px;
-  }
-  .btn:hover { background: #2ea043; }
+:root {
+  --bg: #050505;
+  --card: #0a0a0a;
+  --border: #1f0a0d;
+  --border-focus: #ff0033;
+  --red: #ff0033;
+  --text: #cccccc;
+  --muted: #666666;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Courier Prime', monospace;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  background-image: radial-gradient(circle at 50% 50%, rgba(255, 0, 51, 0.03) 0%, transparent 70%);
+}
+
+.terminal-container {
+  width: 100%;
+  max-width: 440px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  box-shadow: 0 0 40px rgba(255, 0, 51, 0.15);
+  overflow: hidden;
+}
+
+.terminal-header {
+  background: #0d0204;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  color: var(--red);
+  text-transform: uppercase;
+}
+
+.terminal-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border);
+}
+.dot:nth-child(1) { background: var(--red); }
+
+.terminal-body {
+  padding: 24px;
+}
+
+.system-alert {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--red);
+  margin-bottom: 8px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.system-desc {
+  font-size: 0.65rem;
+  color: var(--muted);
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.metrics-box {
+  background: #000000;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 14px;
+  margin-bottom: 20px;
+  font-size: 0.68rem;
+}
+
+.metric-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.02);
+}
+
+.metric-row:last-child {
+  border-bottom: none;
+}
+
+.metric-label {
+  color: var(--muted);
+}
+
+.metric-val {
+  color: var(--red);
+  font-weight: 700;
+}
+
+.action-btn {
+  background: transparent;
+  color: var(--red);
+  border: 1px solid var(--border);
+  padding: 12px;
+  width: 100%;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.65rem;
+  letter-spacing: 1.5px;
+  transition: all 0.2s ease;
+}
+
+.action-btn:hover {
+  background: rgba(255, 0, 51, 0.05);
+  border-color: var(--red);
+  box-shadow: 0 0 15px rgba(255, 0, 51, 0.2);
+}
 </style>
 </head>
 <body>
 
-<div class="card">
-  <h2>🌐 Diagnóstico de Rede</h2>
-  <div class="row"><span class="label">O seu IP:</span><span id="ip" class="value">A carregar...</span></div>
-  <div class="row"><span class="label">Localização:</span><span id="location" class="value">A carregar...</span></div>
-  <div class="row"><span class="label">ISP / Rede:</span><span id="isp" class="value">A carregar...</span></div>
-  <div class="row"><span class="label">Latência:</span><span id="ping" class="value">A medir...</span></div>
-  
-  <button class="btn" onclick="testarConexao()">Atualizar Diagnóstico</button>
+<div class="terminal-container">
+  <div class="terminal-header">
+    <span>root@sys_core:~#</span>
+    <div class="terminal-dots">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+  </div>
+
+  <div class="terminal-body">
+    <div class="system-alert">⚠️ System Status Warning</div>
+    <div class="system-desc">Ambiente de teste ativo e isolado. Monitore os parâmetros de desempenho e conectividade do nó abaixo.</div>
+
+    <div class="metrics-box">
+      <div class="metric-row"><span class="metric-label">HOST IP:</span><span class="metric-val">127.0.0.1 (Local)</span></div>
+      <div class="metric-row"><span class="metric-label">STATUS DO NÓ:</span><span class="metric-val">OPERACIONAL</span></div>
+      <div class="metric-row"><span class="metric-label">LATÊNCIA:</span><span class="metric-val">12ms</span></div>
+      <div class="metric-row"><span class="metric-label">SEGURANÇA:</span><span class="metric-val">ENCRYPTED</span></div>
+    </div>
+
+    <button class="action-btn" onclick="alert('Sistema de controlo verificado com sucesso.')">Executar Diagnóstico</button>
+  </div>
 </div>
-
-<script>
-async function testarConexao() {
-  document.getElementById('ip').innerText = "A consultar...";
-  document.getElementById('location').innerText = "A consultar...";
-  document.getElementById('isp').innerText = "A consultar...";
-  document.getElementById('ping').innerText = "A medir...";
-
-  let inicio = performance.now();
-
-  try {
-    // Consulta a API pública de IP (exclusivamente para o próprio utilizador ver os seus dados)
-    let resposta = await fetch('https://ipwho.is/');
-    let dados = await resposta.json();
-    
-    let fim = performance.now();
-    let latencia = Math.round(fim - inicio);
-
-    if (dados.success) {
-      document.getElementById('ip').innerText = dados.ip;
-      document.getElementById('location').innerText = `${dados.city}, ${dados.country}`;
-      document.getElementById('isp').innerText = dados.connection.isp;
-      document.getElementById('ping').innerText = latencia + " ms";
-    } else {
-      document.getElementById('ip').innerText = "Erro ao obter";
-    }
-  } catch (erro) {
-    document.getElementById('ip').innerText = "Falha de rede";
-  }
-}
-
-// Executa ao carregar a página
-window.onload = testarConexao;
-</script>
 
 </body>
 </html>
