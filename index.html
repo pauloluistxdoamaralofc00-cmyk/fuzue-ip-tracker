@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Security Operations Center // Custom Dashboard</title>
+<title>Hoot.fuzue // Security Hub</title>
 <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
@@ -146,7 +146,7 @@ body {
 .log-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.6rem;
+  font-size: 0.58rem;
   margin-bottom: 14px;
   text-align: left;
 }
@@ -163,17 +163,21 @@ body {
 
 .theme-picker {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   margin-bottom: 16px;
   justify-content: center;
 }
 
 .theme-btn {
-  width: 24px;
-  height: 24px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
   border: 2px solid #fff;
   cursor: pointer;
+  transition: transform 0.2s;
+}
+.theme-btn:hover {
+  transform: scale(1.1);
 }
 </style>
 </head>
@@ -181,14 +185,14 @@ body {
 
 <div class="terminal-container" id="mainContainer">
   <div class="terminal-header">
-    <span id="headerTitle">root@soc-monitor:~#</span>
+    <span id="headerTitle">root@hoot.fuzue:~#</span>
   </div>
 
   <div class="terminal-body">
     <!-- Ecrã Principal -->
     <div id="home-screen">
-      <div class="system-alert">⚠️ Telemetria de Rede</div>
-      <div class="system-desc">Diagnóstico de parâmetros de conexão em tempo real.</div>
+      <div class="system-alert">⚠️ Hoot.fuzue // Telemetria</div>
+      <div class="system-desc">Diagnóstico de parâmetros de conexão e rede em tempo real.</div>
 
       <div class="metrics-box">
         <div class="metric-row"><span class="metric-label">IP ORIGEM:</span><span id="ipVal" class="metric-val">A analisar...</span></div>
@@ -202,21 +206,21 @@ body {
 
     <!-- Painel Administrativo -->
     <div id="admin-panel">
-      <div class="admin-title">🔒 Painel de Controlo & Temas</div>
+      <div class="admin-title">🔒 Hoot.fuzue // Admin Hub</div>
       
-      <div style="font-size: 0.65rem; color: var(--muted); margin-bottom: 6px;">Mudar Cor do Tema em Tempo Real:</div>
+      <div style="font-size: 0.65rem; color: var(--muted); margin-bottom: 6px; text-align: center;">Mudar Cor do Painel em Tempo Real:</div>
       <div class="theme-picker">
-        <div class="theme-btn" style="background: #ff0033;" onclick="mudarTema('#ff0033', '#1f0a0d')" title="Vermelho Cyber"></div>
-        <div class="theme-btn" style="background: #00ff66;" onclick="mudarTema('#00ff66', '#0a1f10')" title="Verde Matrix"></div>
-        <div class="theme-btn" style="background: #00d2ff;" onclick="mudarTema('#00d2ff', '#0a181f')" title="Azul Hacker"></div>
-        <div class="theme-btn" style="background: #ffb700;" onclick="mudarTema('#ffb700', '#1f160a')" title="Amarelo Alerta"></div>
+        <div class="theme-btn" style="background: #ff0033;" onclick="mudarTema('#ff0033', '#1f0a0d', 'root@hoot.fuzue:~#')" title="Vermelho Cyber"></div>
+        <div class="theme-btn" style="background: #00ff66;" onclick="mudarTema('#00ff66', '#0a1f10', 'root@hoot.fuzue.matrix:~#')" title="Verde Matrix"></div>
+        <div class="theme-btn" style="background: #00d2ff;" onclick="mudarTema('#00d2ff', '#0a181f', 'root@hoot.fuzue.sec:~#')" title="Azul Hacker"></div>
+        <div class="theme-btn" style="background: #ffb700;" onclick="mudarTema('#ffb700', '#1f160a', 'root@hoot.fuzue.warn:~#')" title="Amarelo Alerta"></div>
       </div>
 
-      <div style="font-size: 0.65rem; color: var(--muted); margin-bottom: 6px;">Histórico de Sessões Registadas:</div>
-      <div style="max-height: 140px; overflow-y: auto; margin-bottom: 14px;">
+      <div style="font-size: 0.65rem; color: var(--muted); margin-bottom: 6px;">Histórico de IPs Registados:</div>
+      <div style="max-height: 140px; overflow-y: auto; margin-bottom: 14px; border: 1px solid var(--border); border-radius: 4px; background: #000;">
         <table class="log-table">
           <thead>
-            <tr><th>IP</th><th>Localização</th><th>Hora</th></tr>
+            <tr><th>IP</th><th>Local</th><th>Hora</th></tr>
           </thead>
           <tbody id="adminTableBody">
             <tr><td colspan="3" style="text-align:center; color:var(--muted);">A carregar registos...</td></tr>
@@ -239,15 +243,15 @@ function getDevice() {
   return "Dispositivo Genérico";
 }
 
-// Gestão de registos locais (simulando histórico de acessos)
+// Salva e gere os logs de IP localmente
 function guardarLogLocal(ip, local) {
-  let logs = JSON.parse(localStorage.getItem('soc_logs_history') || '[]');
+  let logs = JSON.parse(localStorage.getItem('hoot_fuzue_logs') || '[]');
   let novoRegisto = { ip: ip, local: local, hora: new Date().toLocaleTimeString() };
   
   // Evitar duplicados consecutivos do mesmo IP
   if (logs.length === 0 || logs[0].ip !== ip) {
     logs.unshift(novoRegisto);
-    localStorage.setItem('soc_logs_history', JSON.stringify(logs));
+    localStorage.setItem('hoot_fuzue_logs', JSON.stringify(logs));
   }
 }
 
@@ -260,7 +264,7 @@ window.onload = async function() {
 
     if (data && !data.error) {
       let ip = data.ip || 'N/A';
-      let local = `${data.city || 'N/A'}, ${data.country_name || 'N/A'}`;
+      let local = `${data.city || 'N/A'}, ${data.country_code || 'N/A'}`;
       
       document.getElementById('ipVal').innerText = ip;
       document.getElementById('locVal').innerText = local;
@@ -277,9 +281,10 @@ window.onload = async function() {
   }
 };
 
-function mudarTema(corAccent, corBorda) {
+function mudarTema(corAccent, corBorda, tituloTexto) {
   document.documentElement.style.setProperty('--accent', corAccent);
   document.documentElement.style.setProperty('--border', corBorda);
+  document.getElementById('headerTitle').innerText = tituloTexto;
 }
 
 function openAdmin() {
@@ -288,12 +293,12 @@ function openAdmin() {
     document.getElementById('home-screen').style.display = 'none';
     document.getElementById('admin-panel').style.display = 'block';
 
-    // Preencher tabela com o histórico guardado
-    let logs = JSON.parse(localStorage.getItem('soc_logs_history') || '[]');
+    // Carregar tabela de IPs guardados
+    let logs = JSON.parse(localStorage.getItem('hoot_fuzue_logs') || '[]');
     let tbody = document.getElementById('adminTableBody');
     
     if (logs.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:var(--muted);">Sem registos.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:var(--muted);">Nenhum IP registado.</td></tr>`;
     } else {
       tbody.innerHTML = logs.map(l => `
         <tr>
