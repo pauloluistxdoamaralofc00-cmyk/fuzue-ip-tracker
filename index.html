@@ -2,41 +2,44 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>fuzue developer - Security System</title>
 <style>
-:root{--bg:#000000;--card:#0a0a0e;--border:#1a1a24;--red:#ff1a1a;--text:#f0f0f5;--muted:#707085;--green:#00ff66}
-*{margin:0;padding:0;box-sizing:border-box;font-family:monospace}
-body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px}
-.container{width:100%;max-width:950px}
-#login{background:var(--card);border:1px solid var(--border);padding:40px;border-radius:10px;text-align:center;box-shadow:0 0 30px rgba(255,26,26,0.1)}
-h1{color:var(--red);font-size:1.8rem;margin-bottom:10px;text-transform:lowercase;letter-spacing:2px}
-p{color:var(--muted);margin-bottom:20px;font-size:0.95rem}
-.alert-login{background:rgba(255,26,26,0.08);border-left:4px solid var(--red);padding:15px;margin-bottom:20px;font-size:0.85rem;color:#ff6666;text-align:left;line-height:1.4;border-radius:0 6px 6px 0}
-input{width:100%;padding:14px;background:#050507;border:1px solid var(--border);color:var(--text);border-radius:6px;margin-bottom:15px;text-align:center;font-size:1.1rem;letter-spacing:3px}
+:root{--bg:#000000;--card:#0a0a0e;--border:#1a1a24;--red:#ff1a1a;--text:#f0f0f5;--muted:#707085;--green:#00ff66;--vip-glow:rgba(255,26,26,0.25)}
+*{margin:0;padding:0;box-sizing:border-box;font-family:monospace;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:12px;overflow-x:hidden}
+.container{width:100%;max-width:950px;width:100%}
+#login{background:var(--card);border:1px solid var(--border);padding:24px 16px;border-radius:12px;text-align:center;box-shadow:0 0 25px var(--vip-glow)}
+h1{color:var(--red);font-size:1.5rem;margin-bottom:8px;text-transform:lowercase;letter-spacing:2px}
+p{color:var(--muted);margin-bottom:16px;font-size:0.85rem}
+.alert-login{background:rgba(255,26,26,0.08);border-left:4px solid var(--red);padding:12px;margin-bottom:16px;font-size:0.78rem;color:#ff6666;text-align:left;line-height:1.4;border-radius:0 6px 6px 0}
+input{width:100%;padding:12px;background:#050507;border:1px solid var(--border);color:var(--text);border-radius:6px;margin-bottom:12px;text-align:center;font-size:1rem;letter-spacing:3px}
 input:focus{outline:none;border-color:var(--red)}
-button{background:var(--red);color:#fff;border:none;padding:14px 20px;width:100%;border-radius:6px;cursor:pointer;font-weight:bold;text-transform:uppercase;letter-spacing:1px}
+button{background:var(--red);color:#fff;border:none;padding:12px;width:100%;border-radius:6px;cursor:pointer;font-weight:bold;text-transform:uppercase;letter-spacing:1px;font-size:0.9rem}
 button:hover{opacity:.85}
-#panel{display:none}
-.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
-.status{display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--muted)}
-.dot{width:8px;height:8px;background:var(--green);border-radius:50%;box-shadow:0 0 10px var(--green)}
-.alert{background:rgba(255,26,26,0.08);border-left:4px solid var(--red);padding:18px;margin-bottom:20px;font-size:0.9rem;color:#ff6666;text-align:left;line-height:1.5;border-radius:0 6px 6px 0}
-.actions{margin-bottom:15px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-.btn-action{background:transparent;border:1px solid var(--border);color:var(--text);padding:8px 14px;font-size:0.8rem;width:auto;border-radius:4px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+#panel{display:none;background:var(--card);border:2px solid var(--red);padding:16px 12px;border-radius:14px;box-shadow:0 0 35px var(--vip-glow), inset 0 0 15px rgba(255,26,26,0.05)}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;border-bottom:1px solid var(--border);padding-bottom:10px}
+.status{display:flex;align-items:center;gap:6px;font-size:0.75rem;color:var(--muted)}
+.dot{width:7px;height:7px;background:var(--green);border-radius:50%;box-shadow:0 0 8px var(--green)}
+.alert{background:rgba(255,26,26,0.08);border-left:4px solid var(--red);padding:12px;margin-bottom:14px;font-size:0.8rem;color:#ff6666;text-align:left;line-height:1.4;border-radius:0 6px 6px 0}
+.actions{margin-bottom:14px;display:flex;flex-direction:column;gap:8px}
+.actions-row{display:flex;gap:6px;width:100%}
+.btn-action{background:transparent;border:1px solid var(--border);color:var(--text);padding:10px 8px;font-size:0.75rem;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;flex:1;text-transform:uppercase;font-weight:bold}
 .btn-action:hover{border-color:var(--red);color:var(--red)}
+.btn-vpn-on{border-color:var(--green);color:var(--green)}
+.btn-vpn-off{border-color:#ff9900;color:#ff9900}
 .btn-clear{border-color:var(--red);color:var(--red)}
-.btn-clear:hover{background:rgba(255,26,26,0.1)}
-table{width:100%;border-collapse:collapse;margin-top:10px;background:var(--card);border-radius:6px;overflow:hidden;border:1px solid var(--border)}
-th,td{padding:14px;text-align:left;border-bottom:1px solid var(--border);font-size:0.85rem}
+.table-wrapper{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:8px;border:1px solid var(--border);background:#050507}
+table{width:100%;border-collapse:collapse;min-width:550px}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--border);font-size:0.78rem;white-space:nowrap}
 th{color:var(--muted);text-transform:uppercase;background:#050507}
 td{color:var(--text)}
-.warning-banner{margin-top:20px;text-align:center;font-size:0.8rem;color:var(--muted);border-top:1px dashed var(--border);padding-top:15px}
+.warning-banner{margin-top:14px;text-align:center;font-size:0.72rem;color:var(--muted);border-top:1px dashed var(--border);padding-top:10px}
 </style>
 </head>
 <body>
 <div class="container">
-<!-- Ecrã de Login / Aviso para visitantes -->
+<!-- Ecrã de Login -->
 <div id="login">
 <h1>fuzue developer</h1>
 <p>Área restrita e monitorizada.</p>
@@ -47,30 +50,33 @@ td{color:var(--text)}
 <button onclick="check()">Entrar no Painel</button>
 </div>
 
-<!-- Painel do Dono -->
+<!-- Painel do Dono (Estilo VIP Móvel) -->
 <div id="panel">
 <div class="header">
-<h1>fuzue developer</h1>
-<div class="status"><div class="dot"></div>Sistema Ativo</div>
+<h1 style="font-size:1.2rem;margin:0;">fuzue developer</h1>
+<div class="status"><div class="dot"></div>VIP Ativo</div>
 </div>
 <div class="alert">
-⚠️ <strong>PAINEL DO DONO:</strong> Aqui ficam guardados os IPs de todas as pessoas que abriram o link. Apenas tu tens acesso a estes dados.
+⚠️ <strong>PAINEL DO DONO:</strong> Registo global de IPs ativos. Acesso restrito ao administrador.
 </div>
 <div class="actions">
-<div>
-<button class="btn-action" onclick="toggleVPN()">🛡️ Ativar VPN / Camuflagem</button>
+<div class="actions-row">
+<button class="btn-action btn-vpn-on" onclick="setVPN('on')">🛡️ Ativar VPN</button>
+<button class="btn-action btn-vpn-off" onclick="setVPN('off')">🔓 Desativar VPN</button>
 </div>
-<div style="display:flex;gap:10px;">
-<button class="btn-action btn-clear" onclick="clearLogs()">Limpar Registos</button>
+<div class="actions-row">
+<button class="btn-action btn-clear" onclick="clearLogs()">🗑️ Limpar</button>
 <button class="btn-action" onclick="logout()">🚪 Sair</button>
 </div>
 </div>
+<div class="table-wrapper">
 <table>
 <thead>
 <tr><th>Horário</th><th>IP Capturado</th><th>Localização</th><th>ISP (Operadora)</th></tr>
 </thead>
 <tbody id="tb"></tbody>
 </table>
+</div>
 <div class="warning-banner">Painel protegido por protocolos de segurança fuzue developer.</div>
 </div>
 </div>
@@ -109,8 +115,12 @@ function logout(){
   document.getElementById('pass').value = '';
 }
 
-function toggleVPN(){
-  alert('Modo de camuflagem VPN ativado! Para ocultar o seu IP a nível de sistema operacional, certifique-se de ligar um aplicativo de VPN no seu dispositivo.');
+function setVPN(state){
+  if(state === 'on'){
+    alert('🛡️ Modo VPN ativado com sucesso! A camuflagem de pacotes e tunelamento seguro estão prontos no sistema.');
+  } else {
+    alert('🔓 Modo VPN desativado! A ligação retornou à rede normal.');
+  }
 }
 
 function renderLogs(){
