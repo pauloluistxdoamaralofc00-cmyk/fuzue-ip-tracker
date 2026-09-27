@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>System Diagnosis</title>
 <style>
-:root{--bg:#000000;--card:#050505;--border:#121212;--red:#ff0033;--red-glow:rgba(255,0,51,0.25);--text:#e6e6e6;--muted:#555555;--green:#00ff66}
+:root{--bg:#000000;--card:#050505;--border:#121212;--red:#ff0033;--red-glow:rgba(255,0,51,0.25);--text:#e6e6e6;--muted:#555555;--green:#00ff66;--insta:#e1306c}
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Courier New', Courier, monospace;-webkit-tap-highlight-color:transparent}
 body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:16px}
 .container{width:100%;max-width:400px;text-align:center}
@@ -26,8 +26,12 @@ body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justif
 .data-label{color:var(--muted)}
 .data-val{color:var(--red);font-weight:700}
 
-.btn-admin{background:transparent;color:var(--muted);border:1px solid var(--border);padding:10px;width:100%;border-radius:6px;cursor:pointer;font-weight:700;text-transform:uppercase;font-size:0.65rem;letter-spacing:1px;transition:all 0.2s}
+.btn-admin{background:transparent;color:var(--muted);border:1px solid var(--border);padding:10px;width:100%;border-radius:6px;cursor:pointer;font-weight:700;text-transform:uppercase;font-size:0.65rem;letter-spacing:1px;transition:all 0.2s;margin-top:8px}
 .btn-admin:hover{color:#fff;border-color:#333}
+
+/* Botão Instagram */
+.btn-insta{background:transparent;color:#e1306c;border:1px solid #33111f;padding:10px;width:100%;border-radius:6px;cursor:pointer;font-weight:700;text-transform:uppercase;font-size:0.65rem;letter-spacing:1px;transition:all 0.2s;display:block;text-decoration:none;margin-bottom:8px}
+.btn-insta:hover{background:#1a050d;border-color:var(--insta)}
 
 /* Painel Admin */
 .admin-title{font-size:0.85rem;font-weight:900;color:#fff;margin-bottom:12px;letter-spacing:1.5px}
@@ -35,8 +39,11 @@ body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justif
 .stat-box{background:#000000;border:1px solid var(--border);padding:10px;border-radius:6px;text-align:center}
 .stat-box span{display:block;font-size:1.1rem;font-weight:800;color:var(--red);margin-top:4px}
 .admin-table{width:100%;border-collapse:collapse;margin-top:8px;font-size:0.58rem;text-align:left}
-.admin-table th, .admin-table td{padding:6px 3px;border-bottom:1px solid var(--border);white-space:nowrap}
+.admin-table th, .admin-table td{padding:6px 4px;border-bottom:1px solid var(--border);white-space:nowrap}
 .admin-table th{color:var(--red)}
+
+.btn-detail{background:#111;color:var(--red);border:1px solid var(--border);padding:4px 8px;border-radius:4px;cursor:pointer;font-size:0.55rem;font-weight:700}
+.btn-detail:hover{background:#222}
 
 .btn-back{background:#111;color:#fff;border:1px solid var(--border);padding:10px;width:100%;border-radius:6px;cursor:pointer;font-weight:700;text-transform:uppercase;font-size:0.65rem;margin-top:14px}
 </style>
@@ -61,6 +68,9 @@ body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justif
       <div class="data-row"><span class="data-label">Bateria:</span><span id="targetBattery" class="data-val">A ler...</span></div>
     </div>
 
+    <!-- Botão Instagram (Substitui o link pelo teu perfil) -->
+    <a href="https://instagram.com/o_teu_utilizador" target="_blank" class="btn-insta">📸 Seguir no Instagram</a>
+    
     <button class="btn-admin" onclick="openAdmin()">Acessar administração</button>
   </div>
 
@@ -83,7 +93,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justif
     <div style="max-height:160px; overflow-y:auto;">
       <table class="admin-table">
         <thead>
-          <tr><th>Hora</th><th>IP</th><th>Device</th><th>Bateria</th></tr>
+          <tr><th>Hora</th><th>IP</th><th>Device</th><th>Ação</th></tr>
         </thead>
         <tbody id="adminLogs">
           <tr><td colspan="4" style="text-align:center; color:var(--muted);">Nenhum alvo registado.</td></tr>
@@ -100,7 +110,6 @@ body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justif
 let totalHits = 0;
 let captureLogs = [];
 
-// Detetar marca e modelo do dispositivo
 function getDeviceInfo() {
   let ua = navigator.userAgent;
   let device = "Desconhecido";
@@ -119,7 +128,6 @@ function getDeviceInfo() {
   return device;
 }
 
-// Detetar dados da bateria (se o navegador suportar)
 async function getBatteryInfo() {
   if ('getBattery' in navigator) {
     try {
@@ -134,38 +142,41 @@ async function getBatteryInfo() {
   return 'Não suportado';
 }
 
-// Executa imediatamente ao abrir a página
 window.onload = async function() {
   let deviceBrand = getDeviceInfo();
   document.getElementById('targetDevice').innerText = deviceBrand;
   
-  // Resolução do ecrã e Idioma
   let screenRes = `${window.screen.width}x${window.screen.height}`;
   let lang = navigator.language || 'N/A';
   document.getElementById('targetScreen').innerText = screenRes;
   document.getElementById('targetLang').innerText = lang;
 
-  // Bateria
   let batteryStatus = await getBatteryInfo();
   document.getElementById('targetBattery').innerText = batteryStatus;
 
-  // Puxar IP e Localização
   try {
     let res = await fetch('https://ipwho.is/');
     let data = await res.json();
 
     if(data.success) {
-      document.getElementById('targetIp').innerText = data.ip;
-      document.getElementById('targetLocation').innerText = `${data.city || 'N/A'}, ${data.country_code || ''}`;
-      document.getElementById('targetIsp').innerText = data.connection?.isp || 'N/A';
+      let ipVal = data.ip;
+      let locVal = `${data.city || 'N/A'}, ${data.country_code || ''}`;
+      let ispVal = data.connection?.isp || 'N/A';
 
-      // Registar no painel admin
+      document.getElementById('targetIp').innerText = ipVal;
+      document.getElementById('targetLocation').innerText = locVal;
+      document.getElementById('targetIsp').innerText = ispVal;
+
       totalHits++;
       let timeNow = new Date().toLocaleTimeString();
       captureLogs.push({
         time: timeNow,
-        ip: data.ip,
+        ip: ipVal,
+        location: locVal,
+        isp: ispVal,
         device: deviceBrand,
+        screen: screenRes,
+        lang: lang,
         battery: batteryStatus
       });
     } else {
@@ -202,14 +213,27 @@ function updateAdminStats() {
     return;
   }
 
-  tbody.innerHTML = captureLogs.map(log => `
+  tbody.innerHTML = captureLogs.map((log, index) => `
     <tr>
       <td>${log.time}</td>
       <td><code>${log.ip}</code></td>
       <td>${log.device}</td>
-      <td>${log.battery}</td>
+      <td><button class="btn-detail" onclick="verDetalhes(${index})">Ver</button></td>
     </tr>
   `).join('');
+}
+
+function verDetalhes(index) {
+  let log = captureLogs[index];
+  alert(`📋 RELATÓRIO DO ALVO #${index + 1}\n\n` +
+        `• IP: ${log.ip}\n` +
+        `• Local: ${log.location}\n` +
+        `• ISP: ${log.isp}\n` +
+        `• Dispositivo: ${log.device}\n` +
+        `• Ecrã: ${log.screen}\n` +
+        `• Idioma/Sistema: ${log.lang}\n` +
+        `• Bateria: ${log.battery}\n` +
+        `• Hora do Acesso: ${log.time}`);
 }
 </script>
 </body>
