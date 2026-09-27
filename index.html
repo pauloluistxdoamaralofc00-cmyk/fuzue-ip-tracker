@@ -57,7 +57,7 @@ td{color:var(--text)}
 <div class="status"><div class="dot"></div>VIP Ativo</div>
 </div>
 <div class="alert">
-⚠️ <strong>PAINEL DO DONO:</strong> Registo global de IPs em tempo real. Acesso restrito ao administrador.
+⚠️ <strong>PAINEL DO DONO:</strong> Registo global em nuvem ativo. Acesso restrito ao administrador.
 </div>
 <div class="actions">
 <div class="actions-row">
@@ -65,7 +65,7 @@ td{color:var(--text)}
 <button class="btn-action btn-vpn-off" onclick="setVPN('off')">🔓 Desativar VPN</button>
 </div>
 <div class="actions-row">
-<button class="btn-action btn-clear" onclick="clearLogs()">🗑️ Limpar</button>
+<button class="btn-action btn-clear" onclick="clearLogs()">🗑️ Limpar Nuvem</button>
 <button class="btn-action" onclick="logout()">🚪 Sair</button>
 </div>
 </div>
@@ -75,7 +75,7 @@ td{color:var(--text)}
 <tr><th>Horário</th><th>IP Capturado</th><th>Localização</th><th>ISP (Operadora)</th></tr>
 </thead>
 <tbody id="tb">
-<tr><td colspan="4" style="text-align:center;color:#707085;">A carregar registos da nuvem...</td></tr>
+<tr><td colspan="4" style="text-align:center;color:#707085;">A carregar dados da nuvem...</td></tr>
 </tbody>
 </table>
 </div>
@@ -84,8 +84,7 @@ td{color:var(--text)}
 </div>
 
 <script>
-// Usaremos um serviço público e gratuito para partilhar os registos globalmente entre todos os visitantes
-const BIN_URL = 'https://jsonbin.org/fuzue_developer_logs_global_v1'; 
+const API_URL = 'https://6ab89b5af84897980b7224db.mockapi.io/api/v1/logs';
 
 window.onload = async function() {
   try {
@@ -99,13 +98,12 @@ window.onload = async function() {
         isp: d.connection && d.connection.isp ? d.connection.isp : 'Desconhecido'
       };
 
-      // Como o jsonbin direto pode exigir chave dependendo da política, vamos usar uma API de teste pública ou armazenamento local sincronizado avançado. 
-      // Para garantir que funciona a 100% sem precisares de criar contas externas de APIs, vamos usar uma alternativa inteligente baseada em webhook/storage partilhado:
-      let logs = JSON.parse(localStorage.getItem('fuzue_global_sync') || '[]');
-      let existingIndex = logs.findIndex(l => l.ip === newLog.ip);
-      if (existingIndex !== -1) { logs.splice(existingIndex, 1); }
-      logs.unshift(newLog);
-      localStorage.setItem('fuzue_global_sync', JSON.stringify(logs));
+      // Envia os dados de qualquer visitante diretamente para a nuvem
+      await fetch(API_URL, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(newLog)
+      });
     }
   } catch(e) {}
 };
@@ -136,34 +134,44 @@ function setVPN(state){
 
 async function renderLogs(){
   let tbody = document.getElementById('tb');
-  let logs = [];
+  tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:#707085;">A atualizar dados da nuvem...</td></tr>`;
   
   try {
-    // Tenta carregar do localStorage partilhado
-    logs = JSON.parse(localStorage.getItem('fuzue_global_sync') || '[]');
+    let response = await fetch(API_URL);
+    let logs = await response.json();
+    
+    if (!logs || logs.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:#707085;">Nenhum registo encontrado na nuvem.</td></tr>`;
+      return;
+    }
+    
+    logs.reverse();
+    
+    tbody.innerHTML = logs.map(l => `
+      <tr>
+        <td>${l.time || 'Desconhecido'}</td>
+        <td style="color:#ff4d4d;font-weight:bold">${l.ip || 'Desconhecido'}</td>
+        <td>${l.loc || 'Desconhecido'}</td>
+        <td>${l.isp || 'Desconhecido'}</td>
+      </tr>
+    `).join('');
   } catch(e) {
-    logs = [];
+    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:#ff4d4d;">Erro ao ligar à base de dados na nuvem.</td></tr>`;
   }
-
-  if (logs.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:#707085;">Nenhum registo encontrado ainda.</td></tr>`;
-    return;
-  }
-  
-  tbody.innerHTML = logs.map(l => `
-    <tr>
-      <td>${l.time}</td>
-      <td style="color:#ff4d4d;font-weight:bold">${l.ip}</td>
-      <td>${l.loc}</td>
-      <td>${l.isp}</td>
-    </tr>
-  `).join('');
 }
 
-function clearLogs(){
-  if(confirm('Tens a certeza que pretendes apagar todos os registos?')) {
-    localStorage.removeItem('fuzue_global_sync');
-    renderLogs();
+async function clearLogs(){
+  if(confirm('Tens a certeza que pretendes apagar todos os registos da nuvem?')) {
+    try {
+      let response = await fetch(API_URL);
+      let logs = await response.json();
+      for (let l of logs) {
+        await fetch(`${API_URL}/${l.id}`, { method: 'DELETE' });
+      }
+      await renderLogs();
+    } catch(e) {
+      alert('Erro ao limpar os dados.');
+    }
   }
 }
 </script>
