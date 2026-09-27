@@ -2,8 +2,8 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>System Terminal // Control Center</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Security Operations Center // Terminal</title>
 <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
@@ -13,6 +13,7 @@
   --border: #1f0a0d;
   --border-focus: #ff0033;
   --red: #ff0033;
+  --green: #00ff66;
   --text: #cccccc;
   --muted: #666666;
 }
@@ -133,6 +134,7 @@ body {
   font-size: 0.65rem;
   letter-spacing: 1.5px;
   transition: all 0.2s ease;
+  margin-top: 8px;
 }
 
 .action-btn:hover {
@@ -140,13 +142,44 @@ body {
   border-color: var(--red);
   box-shadow: 0 0 15px rgba(255, 0, 51, 0.2);
 }
+
+/* Área Administrativa */
+#admin-panel {
+  display: none;
+}
+
+.admin-title {
+  color: var(--green);
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin-bottom: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.log-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.6rem;
+  margin-bottom: 14px;
+  text-align: left;
+}
+
+.log-table th, .log-table td {
+  padding: 6px;
+  border-bottom: 1px solid var(--border);
+}
+
+.log-table th {
+  color: var(--green);
+}
 </style>
 </head>
 <body>
 
 <div class="terminal-container">
   <div class="terminal-header">
-    <span>root@sys_core:~#</span>
+    <span>root@soc-monitor:~#</span>
     <div class="terminal-dots">
       <div class="dot"></div>
       <div class="dot"></div>
@@ -155,19 +188,104 @@ body {
   </div>
 
   <div class="terminal-body">
-    <div class="system-alert">⚠️ System Status Warning</div>
-    <div class="system-desc">Ambiente de teste ativo e isolado. Monitore os parâmetros de desempenho e conectividade do nó abaixo.</div>
+    <!-- Ecrã Principal de Diagnóstico -->
+    <div id="home-screen">
+      <div class="system-alert">⚠️ Telemetria de Rede</div>
+      <div class="system-desc">Monitorização de parâmetros de conexão e estado do dispositivo em tempo real.</div>
 
-    <div class="metrics-box">
-      <div class="metric-row"><span class="metric-label">HOST IP:</span><span class="metric-val">127.0.0.1 (Local)</span></div>
-      <div class="metric-row"><span class="metric-label">STATUS DO NÓ:</span><span class="metric-val">OPERACIONAL</span></div>
-      <div class="metric-row"><span class="metric-label">LATÊNCIA:</span><span class="metric-val">12ms</span></div>
-      <div class="metric-row"><span class="metric-label">SEGURANÇA:</span><span class="metric-val">ENCRYPTED</span></div>
+      <div class="metrics-box">
+        <div class="metric-row"><span class="metric-label">IP ORIGEM:</span><span id="ipVal" class="metric-val">A analisar...</span></div>
+        <div class="metric-row"><span class="metric-label">LOCAL / REGIÃO:</span><span id="locVal" class="metric-val">A localizar...</span></div>
+        <div class="metric-row"><span class="metric-label">PROVEDOR (ISP):</span><span id="ispVal" class="metric-val">A identificar...</span></div>
+        <div class="metric-row"><span class="metric-label">DISPOSITIVO:</span><span id="deviceVal" class="metric-val">A detetar...</span></div>
+        <div class="metric-row"><span class="metric-label">BATERIA:</span><span id="batteryVal" class="metric-val">A ler...</span></div>
+      </div>
+
+      <button class="action-btn" onclick="openAdmin()">Aceder Painel Admin</button>
     </div>
 
-    <button class="action-btn" onclick="alert('Sistema de controlo verificado com sucesso.')">Executar Diagnóstico</button>
+    <!-- Painel Administrativo Protegido -->
+    <div id="admin-panel">
+      <div class="admin-title">🔒 Terminal Administrativo</div>
+      <div class="system-desc">Registo de sessões ativas registadas no nó.</div>
+
+      <div style="max-height: 150px; overflow-y: auto;">
+        <table class="log-table">
+          <thead>
+            <tr><th>Hora</th><th>IP</th><th>Estado</th></tr>
+          </thead>
+          <tbody id="adminTableBody">
+            <tr><td>14:50:12</td><td><code>192.168.1.10</code></td><td style="color:var(--green)">Ativo</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <button class="action-btn" style="color: #fff; border-color: var(--muted);" onclick="closeAdmin()">Voltar</button>
+    </div>
   </div>
 </div>
 
+<script>
+// Identificação básica do dispositivo via User-Agent
+function getDevice() {
+  let ua = navigator.userAgent;
+  if (/android/i.test(ua)) return "Android Device";
+  if (/iphone|ipad/i.test(ua)) return "Apple iOS";
+  if (/windows/i.test(ua)) return "Windows PC";
+  if (/macintosh/i.test(ua)) return "macOS";
+  return "Dispositivo Genérico";
+}
+
+// Leitura da bateria via API nativa do browser
+async function getBattery() {
+  if ('getBattery' in navigator) {
+    try {
+      let b = await navigator.getBattery();
+      let level = Math.round(b.level * 100) + '%';
+      let status = b.charging ? 'A carregar' : 'A descarregar';
+      return `${level} (${status})`;
+    } catch(e) {
+      return 'Indisponível';
+    }
+  }
+  return 'Não suportado';
+}
+
+window.onload = async function() {
+  document.getElementById('deviceVal').innerText = getDevice();
+  document.getElementById('batteryVal').innerText = await getBattery();
+
+  try {
+    let res = await fetch('https://ipwho.is/');
+    let data = await res.json();
+    if (data.success) {
+      document.getElementById('ipVal').innerText = data.ip;
+      document.getElementById('locVal').innerText = `${data.city || 'N/A'}, ${data.country_code || 'N/A'}`;
+      document.getElementById('ispVal').innerText = data.connection?.isp || 'N/A';
+    } else {
+      document.getElementById('ipVal').innerText = "Protegido";
+      document.getElementById('locVal').innerText = "Oculto";
+    }
+  } catch(e) {
+    document.getElementById('ipVal').innerText = "Erro de rede";
+  }
+};
+
+// Autenticação simples para o painel admin
+function openAdmin() {
+  let pass = prompt("Introduza a palavra-passe de administração:");
+  if (pass === "17102007") {
+    document.getElementById('home-screen').style.display = 'none';
+    document.getElementById('admin-panel').style.display = 'block';
+  } else if (pass !== null) {
+    alert("Palavra-passe incorreta.");
+  }
+}
+
+function closeAdmin() {
+  document.getElementById('admin-panel').style.display = 'none';
+  document.getElementById('home-screen').style.display = 'block';
+}
+</script>
 </body>
 </html>
