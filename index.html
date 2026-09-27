@@ -215,7 +215,7 @@ body {
             <tr><th>Hora</th><th>IP</th><th>Estado</th></tr>
           </thead>
           <tbody id="adminTableBody">
-            <tr><td>14:50:12</td><td><code>192.168.1.10</code></td><td style="color:var(--green)">Ativo</td></tr>
+            <tr><td>--:--</td><td><code>Local</code></td><td style="color:var(--green)">Ativo</td></tr>
           </tbody>
         </table>
       </div>
@@ -226,7 +226,6 @@ body {
 </div>
 
 <script>
-// Identificação básica do dispositivo via User-Agent
 function getDevice() {
   let ua = navigator.userAgent;
   if (/android/i.test(ua)) return "Android Device";
@@ -236,7 +235,6 @@ function getDevice() {
   return "Dispositivo Genérico";
 }
 
-// Leitura da bateria via API nativa do browser
 async function getBattery() {
   if ('getBattery' in navigator) {
     try {
@@ -256,22 +254,26 @@ window.onload = async function() {
   document.getElementById('batteryVal').innerText = await getBattery();
 
   try {
-    let res = await fetch('https://ipwho.is/');
+    // Utilizando ipapi.co que fornece dados detalhados de geolocalização de forma fiável
+    let res = await fetch('https://ipapi.co/json/');
     let data = await res.json();
-    if (data.success) {
-      document.getElementById('ipVal').innerText = data.ip;
-      document.getElementById('locVal').innerText = `${data.city || 'N/A'}, ${data.country_code || 'N/A'}`;
-      document.getElementById('ispVal').innerText = data.connection?.isp || 'N/A';
+
+    if (data && !data.error) {
+      document.getElementById('ipVal').innerText = data.ip || 'N/A';
+      document.getElementById('locVal').innerText = `${data.city || 'N/A'}, ${data.region || 'N/A'} (${data.country_name || 'N/A'})`;
+      document.getElementById('ispVal').innerText = data.org || data.asn || 'N/A';
     } else {
-      document.getElementById('ipVal').innerText = "Protegido";
-      document.getElementById('locVal').innerText = "Oculto";
+      document.getElementById('ipVal').innerText = "Indisponível";
+      document.getElementById('locVal').innerText = "Restrito / VPN";
+      document.getElementById('ispVal').innerText = "Desconhecido";
     }
   } catch(e) {
-    document.getElementById('ipVal').innerText = "Erro de rede";
+    document.getElementById('ipVal').innerText = "Erro de Ligação";
+    document.getElementById('locVal').innerText = "Erro de Rede";
+    document.getElementById('ispVal').innerText = "Erro de Rede";
   }
 };
 
-// Autenticação simples para o painel admin
 function openAdmin() {
   let pass = prompt("Introduza a palavra-passe de administração:");
   if (pass === "17102007") {
