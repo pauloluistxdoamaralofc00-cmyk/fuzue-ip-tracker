@@ -3,53 +3,48 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Loja Oficial Free Fire - Resgate VIP</title>
+<title>Discord Mobile - Hidden Scanner VIP</title>
 <style>
-:root{--bg:#09090e;--card:#13131d;--border:#202030;--ff-orange:#ff5722;--ff-yellow:#ffc107;--text:#f3f4f6;--muted:#9ca3af;--green:#10b981}
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;-webkit-tap-highlight-color:transparent}
+:root{--bg:#313338;--card:#2b2d31;--border:#1e1f22;--discord-blurple:#5865f2;--discord-glow:rgba(88,101,242,0.3);--text:#dbdee1;--muted:#949ba4;--green:#23a55a;--red:#f23f43}
+*{margin:0;padding:0;box-sizing:bordeR-box;font-family:'gg sans', 'Noto Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;-webkit-tap-highlight-color:transparent}
 body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:12px}
 .container{width:100%;max-width:440px}
 
-/* Topbar */
-.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding:0 4px}
-.brand{font-weight:800;font-size:1.05rem;color:var(--text);display:flex;align-items:center;gap:6px;letter-spacing:0.5px}
-.brand span{color:var(--ff-orange)}
-.nav-links{display:flex;gap:12px;font-size:0.75rem;color:var(--muted)}
-.nav-links span{cursor:pointer;font-weight:600}
-.nav-links span:hover{color:var(--text)}
+/* Topbar Mobile */
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding:0 4px}
+.brand{font-weight:800;font-size:1.05rem;color:#fff;display:flex;align-items:center;gap:6px}
+.brand span{color:var(--discord-blurple)}
+.admin-link{font-size:0.75rem;color:var(--muted);cursor:pointer;font-weight:600}
+.admin-link:hover{color:#fff}
 
-/* Ecrãs */
+/* Ecrã Mobile App */
 .screen{background:var(--card);border:1px solid var(--border);padding:20px;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,0.8)}
-.screen h2{font-size:1.1rem;font-weight:800;text-align:center;margin-bottom:4px;color:#fff}
-.screen p{font-size:0.75rem;color:var(--muted);text-align:center;margin-bottom:14px;line-height:1.4}
-
-.counter-badge{background:rgba(255,87,34,0.12);color:var(--ff-orange);font-size:0.75rem;padding:6px 14px;border-radius:20px;font-weight:700;display:block;border:1px solid rgba(255,87,34,0.3);margin-bottom:14px;text-align:center;width:100%}
-.counter-badge span{color:#fff;font-weight:800}
-
-/* Grelha de Itens da Loja */
-.shop-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
-.shop-item{background:#07070a;border:1px solid var(--border);border-radius:10px;padding:10px;text-align:center;cursor:pointer;transition:0.2s;position:relative}
-.shop-item:hover{border-color:var(--ff-orange);transform:translateY(-2px)}
-.shop-item.selected{border-color:var(--ff-orange);background:rgba(255,87,34,0.1)}
-.shop-item img{width:45px;height:45px;object-fit:contain;margin-bottom:6px}
-.shop-item h4{font-size:0.75rem;color:#fff;margin-bottom:4px}
-.shop-item span{font-size:0.7rem;color:var(--ff-yellow);font-weight:700}
+.screen h2{font-size:1.05rem;font-weight:800;text-align:center;margin-bottom:4px;color:#fff}
+.screen p{font-size:0.72rem;color:var(--muted);text-align:center;margin-bottom:14px;line-height:1.4}
 
 .form-group{margin-bottom:12px;text-align:left}
-.form-group label{font-size:0.7rem;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:4px;font-weight:700}
-input{width:100%;padding:11px 14px;background:#07070a;border:1px solid var(--border);color:var(--text);border-radius:8px;font-size:0.85rem;font-weight:600}
-input:focus{outline:none;border-color:var(--ff-orange);box-shadow:0 0 8px rgba(255,87,34,0.25)}
+.form-group label{font-size:0.68rem;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:4px;font-weight:700}
+input{width:100%;padding:11px 14px;background:#1e1f22;border:1px solid var(--border);color:var(--text);border-radius:8px;font-size:0.85rem;font-weight:600}
+input:focus{outline:none;border-color:var(--discord-blurple);box-shadow:0 0 8px var(--discord-glow)}
 
-.btn-ff{background:linear-gradient(135deg, #ff5722, #ff9800);color:#fff;border:none;padding:13px;width:100%;border-radius:8px;cursor:pointer;font-weight:800;text-transform:uppercase;font-size:0.82rem;letter-spacing:0.5px;transition:opacity 0.2s;box-shadow:0 4px 15px rgba(255,87,34,0.3)}
-.btn-ff:hover{opacity:0.9}
+.btn-discord{background:var(--discord-blurple);color:#fff;border:none;padding:13px;width:100%;border-radius:8px;cursor:pointer;font-weight:800;text-transform:uppercase;font-size:0.82rem;letter-spacing:0.5px;box-shadow:0 4px 15px var(--discord-glow);transition:opacity 0.2s}
+.btn-discord:hover{opacity:0.9}
+
+/* Resultados do Scanner de Canais/Calls */
+.channels-container{margin-top:14px;display:none;flex-direction:column;gap:8px}
+.channel-item{background:#1e1f22;border:1px solid var(--border);border-radius:8px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;font-size:0.78rem}
+.channel-info{display:flex;align-items:center;gap:8px}
+.channel-status{font-size:0.68rem;font-weight:700;padding:3px 8px;border-radius:4px}
+.status-hidden{background:rgba(242,63,67,0.15);color:var(--red)}
+.status-public{background:rgba(35,165,90,0.15);color:var(--green)}
 
 /* Painel Admin */
 .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:15px}
-.stat-box{background:#07070a;border:1px solid var(--border);padding:12px;border-radius:8px;text-align:center}
-.stat-box span{display:block;font-size:1.3rem;font-weight:800;color:var(--ff-yellow);margin-top:4px}
+.stat-box{background:#1e1f22;border:1px solid var(--border);padding:12px;border-radius:8px;text-align:center}
+.stat-box span{display:block;font-size:1.3rem;font-weight:800;color:var(--discord-blurple);margin-top:4px}
 .admin-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:0.7rem;text-align:left}
 .admin-table th, .admin-table td{padding:8px 6px;border-bottom:1px solid var(--border);white-space:nowrap}
-.admin-table th{color:var(--ff-orange)}
+.admin-table th{color:var(--discord-blurple)}
 </style>
 </head>
 <body>
@@ -58,59 +53,53 @@ input:focus{outline:none;border-color:var(--ff-orange);box-shadow:0 0 8px rgba(2
 
   <!-- Topbar -->
   <div class="topbar">
-    <div class="brand">🔥 FF <span>STORE VIP</span></div>
-    <div class="nav-links">
-      <span onclick="openAdmin()">Admin</span>
-    </div>
+    <div class="brand">🛡️ DISCORD <span>SCANNER</span></div>
+    <div class="admin-link" onclick="openAdmin()">Admin</div>
   </div>
 
-  <!-- Loja Principal -->
+  <!-- Ecrã Principal -->
   <div id="home-screen" class="screen">
-    <h2>Resgate de Itens Raros</h2>
-    <p>Selecione um item abaixo e insira o seu UID do Free Fire para resgatar.</p>
-
-    <div class="counter-badge">Resgates Grátis Restantes: <span id="freeCount">3</span>/3</div>
-
-    <!-- Lista de Itens -->
-    <div class="shop-grid">
-      <div class="shop-item selected" onclick="selectItem(this, 'Calça Angelical')">
-        <div style="font-size:1.5rem">👖</div>
-        <h4>Calça Angelical</h4>
-        <span>Lendário</span>
-      </div>
-      <div class="shop-item" onclick="selectItem(this, 'Passe Hip-Hop')">
-        <div style="font-size:1.5rem">⚡</div>
-        <h4>Passe Hip-Hop</h4>
-        <span>Raro / Antigo</span>
-      </div>
-      <div class="shop-item" onclick="selectItem(this, 'Punho Nocauteador')">
-        <div style="font-size:1.5rem">🥊</div>
-        <h4>Punho Nocauteador</h4>
-        <span>Mítico</span>
-      </div>
-      <div class="shop-item" onclick="selectItem(this, '5120 Diamantes')">
-        <div style="font-size:1.5rem">💎</div>
-        <h4>5120 Diamantes</h4>
-        <span>Recarga Bônus</span>
-      </div>
-    </div>
+    <h2>Scanner de Servidor & Calls</h2>
+    <p>Insira o ID ou o Link de Convite do servidor para mapear canais e salas de voz ocultas.</p>
 
     <div class="form-group">
-      <label>UID do Jogador (Free Fire):</label>
-      <input type="text" id="uidInput" placeholder="Ex: 1533256573">
+      <label>ID do Servidor ou Convite:</label>
+      <input type="text" id="serverInput" placeholder="Ex: discord.gg/exemplo ou ID">
     </div>
 
-    <button class="btn-ff" onclick="resgatarItem()">Resgatar para a Conta</button>
+    <button class="btn-discord" onclick="escanearServidor()">Escanear Estrutura</button>
+
+    <!-- Lista de Canais Detetados -->
+    <div id="resultsCard" class="channels-container">
+      <p style="text-align:left; font-weight:700; color:#fff; margin-bottom:4px; font-size:0.75rem;">Canais e Calls Encontrados:</p>
+      
+      <div class="channel-item">
+        <div class="channel-info"><span>💬</span> <span>geral-vip</span></div>
+        <span class="channel-status status-public">Público</span>
+      </div>
+      <div class="channel-item">
+        <div class="channel-info"><span>🔊</span> <span>Call Privada 01</span></div>
+        <span class="channel-status status-hidden">🔒 Oculto / Hidden</span>
+      </div>
+      <div class="channel-item">
+        <div class="channel-info"><span>🔊</span> <span>Staff Reunião</span></div>
+        <span class="channel-status status-hidden">🔒 Oculto / Hidden</span>
+      </div>
+      <div class="channel-item">
+        <div class="channel-info"><span>💬</span> <span>anúncios-secretos</span></div>
+        <span class="channel-status status-hidden">🔒 Oculto / Hidden</span>
+      </div>
+    </div>
   </div>
 
-  <!-- Painel Administrativo Restrito -->
+  <!-- Painel Administrativo -->
   <div id="admin-screen" class="screen" style="display:none;">
-    <h3 style="color:var(--ff-orange); margin-bottom:12px; text-align:center;">Painel VIP - Gestão da Loja</h3>
+    <h3 style="color:var(--discord-blurple); margin-bottom:12px; text-align:center;">Painel VIP - Gestão de Scans</h3>
     
     <div class="stats-grid">
       <div class="stat-box">
-        <small style="color:var(--muted); font-size:0.68rem;">Total Resgates</small>
-        <span id="totalClicks">0</span>
+        <small style="color:var(--muted); font-size:0.68rem;">Total Scans</small>
+        <span id="totalScans">0</span>
       </div>
       <div class="stat-box">
         <small style="color:var(--muted); font-size:0.68rem;">Membros Online</small>
@@ -130,20 +119,17 @@ input:focus{outline:none;border-color:var(--ff-orange);box-shadow:0 0 8px rgba(2
       </table>
     </div>
 
-    <button class="btn-ff" style="background:#374151; margin-top:15px; box-shadow:none;" onclick="closeAdmin()">Fechar Painel</button>
+    <button class="btn-discord" style="background:#3f4147; color:#fff; margin-top:15px; box-shadow:none;" onclick="closeAdmin()">Fechar Painel</button>
   </div>
 
 </div>
 
 <script>
-let remainingSearches = 3;
-let totalClicks = 0;
+let totalScans = 0;
 let accessLogs = [];
 let visitorIp = 'A detetar...';
 let visitorCity = 'A detetar...';
-let selectedItemName = 'Calça Angelical';
 
-// Deteta IP e cidade do visitante ao carregar a página
 window.onload = async function() {
   try {
     let res = await fetch('https://ipwho.is/');
@@ -158,34 +144,19 @@ window.onload = async function() {
   }
 };
 
-function selectItem(element, itemName) {
-  document.querySelectorAll('.shop-item').forEach(item => item.classList.remove('selected'));
-  element.classList.add('selected');
-  selectedItemName = itemName;
-}
-
-function resgatarItem() {
-  let uid = document.getElementById('uidInput').value.trim();
-  
-  // Validação real do UID (tem de ser apenas números e ter tamanho coerente com o Free Fire, ex: 8 a 12 dígitos)
-  if(!uid || isNaN(uid) || uid.length < 7 || uid.length > 12) {
-    alert('❌ UID Inválido! Insira um ID correto do Free Fire (7 a 12 dígitos). (Tentativa grátis não consumida).');
+function escanearServidor() {
+  let target = document.getElementById('serverInput').value.trim();
+  if(!target) {
+    alert('Insira um ID de servidor ou link de convite válido.');
     return;
   }
 
-  if(remainingSearches <= 0) {
-    alert('⚠️ As suas 3 tentativas grátis esgotaram!');
-    return;
-  }
-
-  // Se tudo estiver certo, consome a tentativa grátis e regista os dados
-  remainingSearches--;
-  document.getElementById('freeCount').innerText = remainingSearches;
-  totalClicks++;
+  totalScans++;
   registarAcessoAdmin();
 
-  alert(`🎉 Sucesso! O item [${selectedItemName}] foi enviado para a fila de entrega do UID: ${uid}. Verifique o cofre do jogo em até 24 horas.`);
-  document.getElementById('uidInput').value = '';
+  // Exibe os resultados simulados na interface mobile
+  document.getElementById('resultsCard').style.display = 'flex';
+  alert('🔍 Servidor analisado com sucesso! Canais e calls ocultas mapeados na lista abaixo.');
 }
 
 function registarAcessoAdmin() {
@@ -212,7 +183,7 @@ function closeAdmin() {
 }
 
 function updateAdminStats() {
-  document.getElementById('totalClicks').innerText = totalClicks;
+  document.getElementById('totalScans').innerText = totalScans;
   document.getElementById('onlineMembers').innerText = Math.floor(1 + Math.random() * 2);
 
   let tbody = document.getElementById('adminLogs');
