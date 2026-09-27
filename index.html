@@ -3,44 +3,41 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>IP Lookup - VIP Panel</title>
+<title>IP System</title>
 <style>
-:root{--bg:#090a0f;--card:#121520;--border:#1f293d;--cyan:#00f3ff;--cyan-glow:rgba(0,243,255,0.25);--text:#f3f4f6;--muted:#8c9bae;--green:#10b981;--red:#ef4444}
+:root{--bg:#000000;--card:#0a0a0a;--border:#1f1f1f;--cyan:#00f3ff;--cyan-glow:rgba(0,243,255,0.15);--text:#ffffff;--muted:#666666;--red:#ff3333}
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Courier New', Courier, monospace;-webkit-tap-highlight-color:transparent}
-body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:12px}
-.container{width:100%;max-width:440px}
-
-/* Topbar */
-.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding:0 4px}
-.brand{font-weight:800;font-size:1.05rem;color:#fff;display:flex;align-items:center;gap:6px;letter-spacing:1px}
-.brand span{color:var(--cyan)}
-.admin-link{font-size:0.75rem;color:var(--muted);cursor:pointer;font-weight:600}
-.admin-link:hover{color:#fff}
+body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:16px}
+.container{width:100%;max-width:400px;text-align:center}
 
 /* Ecrãs */
-.screen{background:var(--card);border:1px solid var(--border);padding:20px;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,0.8)}
-.screen h2{font-size:1.05rem;font-weight:800;text-align:center;margin-bottom:4px;color:#fff;letter-spacing:0.5px}
-.screen p{font-size:0.72rem;color:var(--muted);text-align:center;margin-bottom:14px;line-height:1.4}
+.screen{background:var(--card);border:1px solid var(--border);padding:24px 20px;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,0.9)}
 
-.form-group{margin-bottom:12px;text-align:left}
-.form-group label{font-size:0.68rem;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:4px;font-weight:700}
-input{width:100%;padding:11px 14px;background:#06080c;border:1px solid var(--border);color:var(--cyan);border-radius:8px;font-size:0.85rem;font-weight:600}
+/* Alerta Central */
+.alert-box{font-size:0.95rem;font-weight:700;color:var(--red);margin-bottom:18px;letter-spacing:0.5px;text-transform:uppercase}
+
+.form-group{margin-bottom:14px;text-align:left}
+.form-group label{font-size:0.65rem;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:6px;font-weight:700}
+input{width:100%;padding:12px 14px;background:#000000;border:1px solid var(--border);color:var(--cyan);border-radius:8px;font-size:0.85rem;font-weight:600}
 input:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 8px var(--cyan-glow)}
 
-.btn-cyber{background:linear-gradient(135deg, #00f3ff, #0066ff);color:#000;border:none;padding:13px;width:100%;border-radius:8px;cursor:pointer;font-weight:800;text-transform:uppercase;font-size:0.82rem;letter-spacing:1px;box-shadow:0 4px 15px var(--cyan-glow);transition:opacity 0.2s}
-.btn-cyber:hover{opacity:0.9}
+.btn-cyber{background:#ffffff;color:#000000;border:none;padding:12px;width:100%;border-radius:8px;cursor:pointer;font-weight:800;text-transform:uppercase;font-size:0.8rem;letter-spacing:1px;transition:opacity 0.2s;margin-bottom:10px}
+.btn-cyber:hover{opacity:0.85}
+
+.btn-admin-link{background:transparent;color:var(--muted);border:1px solid var(--border);padding:10px;width:100%;border-radius:8px;cursor:pointer;font-weight:700;text-transform:uppercase;font-size:0.7rem;letter-spacing:1px;transition:all 0.2s}
+.btn-admin-link:hover{color:#fff;border-color:var(--muted)}
 
 /* Resultados da Puxada */
-.result-box{display:none;margin-top:14px;background:#06080c;border:1px solid var(--border);border-radius:8px;padding:12px;text-align:left;font-size:0.75rem}
-.result-item{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
+.result-box{display:none;margin-top:14px;background:#000000;border:1px solid var(--border);border-radius:8px;padding:12px;text-align:left;font-size:0.72rem}
+.result-item{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.03)}
 .result-item:last-child{border-bottom:none}
 .result-label{color:var(--muted)}
 .result-value{color:var(--cyan);font-weight:700}
 
 /* Painel Admin */
 .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:15px}
-.stat-box{background:#06080c;border:1px solid var(--border);padding:12px;border-radius:8px;text-align:center}
-.stat-box span{display:block;font-size:1.3rem;font-weight:800;color:var(--cyan);margin-top:4px}
+.stat-box{background:#000000;border:1px solid var(--border);padding:12px;border-radius:8px;text-align:center}
+.stat-box span{display:block;font-size:1.2rem;font-weight:800;color:var(--cyan);margin-top:4px}
 .admin-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:0.68rem;text-align:left}
 .admin-table th, .admin-table td{padding:8px 6px;border-bottom:1px solid var(--border);white-space:nowrap}
 .admin-table th{color:var(--cyan)}
@@ -50,62 +47,55 @@ input:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 8px var(--cyan-
 
 <div class="container">
 
-  <!-- Topbar -->
-  <div class="topbar">
-    <div class="brand">⚡ IP <span>LOOKUP VIP</span></div>
-    <div class="admin-link" onclick="openAdmin()">Admin</div>
-  </div>
-
   <!-- Ecrã Principal -->
   <div id="home-screen" class="screen">
-    <h2>Sistema de Rastreio & IP</h2>
-    <p>Insira um endereço IP ou deixe vazio para puxar os seus dados atuais.</p>
+    <div class="alert-box">Você acabou de vazar seu IP.</div>
 
     <div class="form-group">
       <label>Endereço IP Alvo:</label>
-      <input type="text" id="ipInput" placeholder="Ex: 8.8.8.8 (ou vazio para o teu)">
+      <input type="text" id="ipInput" placeholder="Deixe vazio para o seu IP atual">
     </div>
 
     <button class="btn-cyber" onclick="puxarIp()">Puxar Dados</button>
+    <button class="btn-admin-link" onclick="openAdmin()">Acessar administração</button>
 
     <!-- Caixa de Resultados -->
     <div id="resultBox" class="result-box">
       <div class="result-item"><span class="result-label">IP:</span><span id="resIp" class="result-value">-</span></div>
       <div class="result-item"><span class="result-label">País:</span><span id="resCountry" class="result-value">-</span></div>
-      <div class="result-item"><span class="result-label">Região/Cidade:</span><span id="resCity" class="result-value">-</span></div>
-      <div class="result-item"><span class="result-label">Provedor (ISP):</span><span id="resIsp" class="result-value">-</span></div>
-      <div class="result-item"><span class="result-label">Coordenadas:</span><span id="resCoords" class="result-value">-</span></div>
+      <div class="result-item"><span class="result-label">Cidade:</span><span id="resCity" class="result-value">-</span></div>
+      <div class="result-item"><span class="result-label">Provedor:</span><span id="resIsp" class="result-value">-</span></div>
     </div>
   </div>
 
   <!-- Painel Administrativo -->
   <div id="admin-screen" class="screen" style="display:none;">
-    <h3 style="color:var(--cyan); margin-bottom:12px; text-align:center; letter-spacing:0.5px;">Painel VIP - Registos</h3>
+    <h3 style="color:#fff; margin-bottom:14px; text-align:center; font-size:0.9rem; letter-spacing:1px;">ADMINISTRAÇÃO</h3>
     
     <div class="stats-grid">
       <div class="stat-box">
-        <small style="color:var(--muted); font-size:0.68rem;">Total Consultas</small>
+        <small style="color:var(--muted); font-size:0.65rem;">Consultas</small>
         <span id="totalQueries">0</span>
       </div>
       <div class="stat-box">
-        <small style="color:var(--muted); font-size:0.68rem;">Alvos Rastreados</small>
-        <span id="totalTargets" style="color:var(--green)">0</span>
+        <small style="color:var(--muted); font-size:0.65rem;">Alvos</small>
+        <span id="totalTargets" style="color:#fff">0</span>
       </div>
     </div>
 
-    <p style="font-size:0.72rem; color:var(--muted); margin-bottom:6px;">Histórico de Alvos Consultados:</p>
-    <div style="max-height:200px; overflow-y:auto;">
+    <p style="font-size:0.7rem; color:var(--muted); margin-bottom:6px; text-align:left;">Histórico de Alvos:</p>
+    <div style="max-height:180px; overflow-y:auto;">
       <table class="admin-table">
         <thead>
           <tr><th>Horário</th><th>IP Alvo</th><th>Cidade</th></tr>
         </thead>
         <tbody id="adminLogs">
-          <tr><td colspan="3" style="text-align:center; color:var(--muted);">Nenhum alvo consultado ainda.</td></tr>
+          <tr><td colspan="3" style="text-align:center; color:var(--muted);">Nenhum registo.</td></tr>
         </tbody>
       </table>
     </div>
 
-    <button class="btn-cyber" style="background:#1f293d; color:#fff; margin-top:15px; box-shadow:none;" onclick="closeAdmin()">Fechar Painel</button>
+    <button class="btn-cyber" style="background:#1f1f1f; color:#fff; margin-top:15px;" onclick="closeAdmin()">Voltar</button>
   </div>
 
 </div>
@@ -124,20 +114,17 @@ async function puxarIp() {
     let data = await res.json();
 
     if(!data.success) {
-      alert(`❌ Erro ao consultar IP: ${data.message || 'IP inválido'}`);
+      alert(`❌ Erro: ${data.message || 'IP inválido'}`);
       return;
     }
 
-    // Preenche os resultados na interface
     document.getElementById('resIp').innerText = data.ip;
     document.getElementById('resCountry').innerText = `${data.country} (${data.country_code})`;
     document.getElementById('resCity').innerText = `${data.city || 'N/A'}, ${data.region || ''}`;
     document.getElementById('resIsp').innerText = data.connection?.isp || data.asn?.name || 'N/A';
-    document.getElementById('resCoords').innerText = `${data.latitude}, ${data.longitude}`;
     
     document.getElementById('resultBox').style.display = 'block';
 
-    // Atualiza estatísticas do admin
     totalQueries++;
     totalTargets++;
     let timeNow = new Date().toLocaleTimeString();
@@ -149,7 +136,7 @@ async function puxarIp() {
     });
 
   } catch(e) {
-    alert('❌ Falha na conexão com o serviço de IP.');
+    alert('❌ Falha na conexão.');
   }
 }
 
@@ -175,7 +162,7 @@ function updateAdminStats() {
 
   let tbody = document.getElementById('adminLogs');
   if(queryLogs.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:var(--muted);">Nenhum alvo consultado ainda.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:var(--muted);">Nenhum registo.</td></tr>`;
     return;
   }
 
