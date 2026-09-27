@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Painel VIP - Utilidades & OSINT</title>
+<title>Loja Oficial Free Fire - Resgate VIP</title>
 <style>
-:root{--bg:#08080d;--card:#101018;--border:#1f1f2e;--purple:#a855f7;--purple-glow:rgba(168,85,247,0.25);--text:#f3f4f6;--muted:#9ca3af;--green:#10b981;--red:#ef4444}
+:root{--bg:#09090e;--card:#13131d;--border:#202030;--ff-orange:#ff5722;--ff-yellow:#ffc107;--text:#f3f4f6;--muted:#9ca3af;--green:#10b981}
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;-webkit-tap-highlight-color:transparent}
 body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:12px}
 .container{width:100%;max-width:440px}
@@ -13,46 +13,43 @@ body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justif
 /* Topbar */
 .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding:0 4px}
 .brand{font-weight:800;font-size:1.05rem;color:var(--text);display:flex;align-items:center;gap:6px;letter-spacing:0.5px}
-.brand span{color:var(--purple)}
+.brand span{color:var(--ff-orange)}
 .nav-links{display:flex;gap:12px;font-size:0.75rem;color:var(--muted)}
 .nav-links span{cursor:pointer;font-weight:600}
 .nav-links span:hover{color:var(--text)}
 
-/* Menu de Alternância de Abas (3 Ferramentas) */
-.tab-menu{display:flex;gap:6px;margin-bottom:15px}
-.tab-btn{flex:1;background:#050508;border:1px solid var(--border);color:var(--muted);padding:8px 4px;border-radius:8px;font-size:0.68rem;font-weight:700;cursor:pointer;text-align:center;transition:0.2s}
-.tab-btn.active{background:rgba(168,85,247,0.15);color:var(--purple);border-color:var(--purple)}
-
-/* Ecrãs gerais */
-.screen{background:var(--card);border:1px solid var(--border);padding:24px;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,0.8)}
-.header-icon{width:46px;height:46px;background:rgba(168,85,247,0.1);color:var(--purple);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:1.2rem;border:1px solid rgba(168,85,247,0.25)}
+/* Ecrãs */
+.screen{background:var(--card);border:1px solid var(--border);padding:20px;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,0.8)}
 .screen h2{font-size:1.1rem;font-weight:800;text-align:center;margin-bottom:4px;color:#fff}
 .screen p{font-size:0.75rem;color:var(--muted);text-align:center;margin-bottom:14px;line-height:1.4}
 
-.counter-badge{background:rgba(168,85,247,0.12);color:var(--purple);font-size:0.75rem;padding:6px 14px;border-radius:20px;font-weight:700;display:inline-block;border:1px solid rgba(168,85,247,0.3);margin-bottom:14px;text-align:center;width:100%}
+.counter-badge{background:rgba(255,87,34,0.12);color:var(--ff-orange);font-size:0.75rem;padding:6px 14px;border-radius:20px;font-weight:700;display:block;border:1px solid rgba(255,87,34,0.3);margin-bottom:14px;text-align:center;width:100%}
 .counter-badge span{color:#fff;font-weight:800}
+
+/* Grelha de Itens da Loja */
+.shop-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.shop-item{background:#07070a;border:1px solid var(--border);border-radius:10px;padding:10px;text-align:center;cursor:pointer;transition:0.2s;position:relative}
+.shop-item:hover{border-color:var(--ff-orange);transform:translateY(-2px)}
+.shop-item.selected{border-color:var(--ff-orange);background:rgba(255,87,34,0.1)}
+.shop-item img{width:45px;height:45px;object-fit:contain;margin-bottom:6px}
+.shop-item h4{font-size:0.75rem;color:#fff;margin-bottom:4px}
+.shop-item span{font-size:0.7rem;color:var(--ff-yellow);font-weight:700}
 
 .form-group{margin-bottom:12px;text-align:left}
 .form-group label{font-size:0.7rem;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:4px;font-weight:700}
-input{width:100%;padding:11px 14px;background:#050508;border:1px solid var(--border);color:var(--text);border-radius:8px;font-size:0.85rem;font-weight:600}
-input:focus{outline:none;border-color:var(--purple);box-shadow:0 0 8px var(--purple-glow)}
+input{width:100%;padding:11px 14px;background:#07070a;border:1px solid var(--border);color:var(--text);border-radius:8px;font-size:0.85rem;font-weight:600}
+input:focus{outline:none;border-color:var(--ff-orange);box-shadow:0 0 8px rgba(255,87,34,0.25)}
 
-.btn-purple{background:var(--purple);color:#fff;border:none;padding:13px;width:100%;border-radius:8px;cursor:pointer;font-weight:800;text-transform:uppercase;font-size:0.82rem;letter-spacing:0.5px;transition:opacity 0.2s;box-shadow:0 4px 15px rgba(168,85,247,0.25)}
-.btn-purple:hover{opacity:0.9}
-
-/* Resultados */
-.result-card{background:#050508;border:1px solid var(--border);border-radius:10px;padding:12px;margin-top:14px;display:none;flex-direction:column;gap:8px;text-align:left}
-.result-row{font-size:0.75rem;display:flex;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.03);padding-bottom:5px}
-.result-row span:first-child{color:var(--muted);font-weight:600}
-.result-row span:last-child{color:var(--purple);font-weight:700;font-family:monospace}
+.btn-ff{background:linear-gradient(135deg, #ff5722, #ff9800);color:#fff;border:none;padding:13px;width:100%;border-radius:8px;cursor:pointer;font-weight:800;text-transform:uppercase;font-size:0.82rem;letter-spacing:0.5px;transition:opacity 0.2s;box-shadow:0 4px 15px rgba(255,87,34,0.3)}
+.btn-ff:hover{opacity:0.9}
 
 /* Painel Admin */
 .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:15px}
-.stat-box{background:#050508;border:1px solid var(--border);padding:12px;border-radius:8px;text-align:center}
-.stat-box span{display:block;font-size:1.3rem;font-weight:800;color:var(--purple);margin-top:4px}
+.stat-box{background:#07070a;border:1px solid var(--border);padding:12px;border-radius:8px;text-align:center}
+.stat-box span{display:block;font-size:1.3rem;font-weight:800;color:var(--ff-yellow);margin-top:4px}
 .admin-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:0.7rem;text-align:left}
 .admin-table th, .admin-table td{padding:8px 6px;border-bottom:1px solid var(--border);white-space:nowrap}
-.admin-table th{color:var(--purple)}
+.admin-table th{color:var(--ff-orange)}
 </style>
 </head>
 <body>
@@ -61,89 +58,58 @@ input:focus{outline:none;border-color:var(--purple);box-shadow:0 0 8px var(--pur
 
   <!-- Topbar -->
   <div class="topbar">
-    <div class="brand">⚡ VIP <span>OSINT</span></div>
+    <div class="brand">🔥 FF <span>STORE VIP</span></div>
     <div class="nav-links">
       <span onclick="openAdmin()">Admin</span>
     </div>
   </div>
 
-  <!-- Ecrã Principal de Ferramentas -->
+  <!-- Loja Principal -->
   <div id="home-screen" class="screen">
-    
-    <!-- Menu alternador de ferramentas -->
-    <div class="tab-menu">
-      <div id="tabDcBtn" class="tab-btn active" onclick="switchTab('discord')">Discord ID</div>
-      <div id="tabEmailBtn" class="tab-btn" onclick="switchTab('email')">Check E-mail</div>
-      <div id="tabNickBtn" class="tab-btn" onclick="switchTab('nick')">Gerador Nicks</div>
-    </div>
+    <h2>Resgate de Itens Raros</h2>
+    <p>Selecione um item abaixo e insira o seu UID do Free Fire para resgatar.</p>
 
-    <div class="counter-badge">Consultas Grátis Restantes: <span id="freeCount">3</span>/3</div>
+    <div class="counter-badge">Resgates Grátis Restantes: <span id="freeCount">3</span>/3</div>
 
-    <!-- 1. Seção Discord ID -->
-    <div id="sectionDiscord">
-      <div class="header-icon">🎮</div>
-      <h2>Consulta Discord ID</h2>
-      <p>Extraia metadados e data de criação de contas do Discord.</p>
-      <div class="form-group">
-        <label>ID do Discord:</label>
-        <input type="text" id="discordInput" placeholder="Ex: 1536233497914515566">
+    <!-- Lista de Itens -->
+    <div class="shop-grid">
+      <div class="shop-item selected" onclick="selectItem(this, 'Calça Angelical')">
+        <div style="font-size:1.5rem">👖</div>
+        <h4>Calça Angelical</h4>
+        <span>Lendário</span>
       </div>
-      <button class="btn-purple" onclick="consultarDiscord()">Analisar Perfil</button>
-
-      <div id="resultDcCard" class="result-card">
-        <div class="result-row"><span>ID Analisado:</span> <span id="dcId">-</span></div>
-        <div class="result-row"><span>Data de Criação:</span> <span id="dcCreated">-</span></div>
-        <div class="result-row"><span>Timestamp:</span> <span id="dcTimestamp">-</span></div>
-        <div class="result-row"><span>Estado:</span> <span style="color:var(--green)">Conta Válida</span></div>
+      <div class="shop-item" onclick="selectItem(this, 'Passe Hip-Hop')">
+        <div style="font-size:1.5rem">⚡</div>
+        <h4>Passe Hip-Hop</h4>
+        <span>Raro / Antigo</span>
       </div>
-    </div>
-
-    <!-- 2. Seção Verificação de E-mail -->
-    <div id="sectionEmail" style="display:none;">
-      <div class="header-icon">✉️</div>
-      <h2>Análise de E-mail</h2>
-      <p>Verifique se um e-mail é seguro, corporativo ou temporário.</p>
-      <div class="form-group">
-        <label>Endereço de E-mail:</label>
-        <input type="text" id="emailInput" placeholder="Ex: exemplo@gmail.com">
+      <div class="shop-item" onclick="selectItem(this, 'Punho Nocauteador')">
+        <div style="font-size:1.5rem">🥊</div>
+        <h4>Punho Nocauteador</h4>
+        <span>Mítico</span>
       </div>
-      <button class="btn-purple" onclick="consultarEmail()">Verificar E-mail</button>
-
-      <div id="resultEmailCard" class="result-card">
-        <div class="result-row"><span>E-mail:</span> <span id="resEmailAddress">-</span></div>
-        <div class="result-row"><span>Domínio:</span> <span id="resEmailDomain">-</span></div>
-        <div class="result-row"><span>Tipo:</span> <span id="resEmailType">-</span></div>
-        <div class="result-row"><span>Segurança:</span> <span style="color:var(--green)">Sem Alertas Críticos</span></div>
+      <div class="shop-item" onclick="selectItem(this, '5120 Diamantes')">
+        <div style="font-size:1.5rem">💎</div>
+        <h4>5120 Diamantes</h4>
+        <span>Recarga Bônus</span>
       </div>
     </div>
 
-    <!-- 3. Seção Gerador de Nicks -->
-    <div id="sectionNick" style="display:none;">
-      <div class="header-icon">✨</div>
-      <h2>Gerador de Nicks VIP</h2>
-      <p>Transforme o seu nome em fontes raras e estilizadas.</p>
-      <div class="form-group">
-        <label>Nome ou Palavra:</label>
-        <input type="text" id="nickInput" placeholder="Ex: PlayerVIP">
-      </div>
-      <button class="btn-purple" onclick="gerarNick()">Gerar Estilos</button>
-
-      <div id="resultNickCard" class="result-card">
-        <div class="result-row"><span>Estilo 1:</span> <span id="nick1">-</span></div>
-        <div class="result-row"><span>Estilo 2:</span> <span id="nick2">-</span></div>
-        <div class="result-row"><span>Estilo 3:</span> <span id="nick3">-</span></div>
-      </div>
+    <div class="form-group">
+      <label>UID do Jogador (Free Fire):</label>
+      <input type="text" id="uidInput" placeholder="Ex: 1533256573">
     </div>
 
+    <button class="btn-ff" onclick="resgatarItem()">Resgatar para a Conta</button>
   </div>
 
   <!-- Painel Administrativo Restrito -->
   <div id="admin-screen" class="screen" style="display:none;">
-    <h3 style="color:var(--purple); margin-bottom:12px; text-align:center;">Painel VIP - Gestão</h3>
+    <h3 style="color:var(--ff-orange); margin-bottom:12px; text-align:center;">Painel VIP - Gestão da Loja</h3>
     
     <div class="stats-grid">
       <div class="stat-box">
-        <small style="color:var(--muted); font-size:0.68rem;">Total Consultas</small>
+        <small style="color:var(--muted); font-size:0.68rem;">Total Resgates</small>
         <span id="totalClicks">0</span>
       </div>
       <div class="stat-box">
@@ -164,7 +130,7 @@ input:focus{outline:none;border-color:var(--purple);box-shadow:0 0 8px var(--pur
       </table>
     </div>
 
-    <button class="btn-purple" style="background:#374151; color:#fff; margin-top:15px; box-shadow:none;" onclick="closeAdmin()">Fechar Painel</button>
+    <button class="btn-ff" style="background:#374151; margin-top:15px; box-shadow:none;" onclick="closeAdmin()">Fechar Painel</button>
   </div>
 
 </div>
@@ -175,7 +141,9 @@ let totalClicks = 0;
 let accessLogs = [];
 let visitorIp = 'A detetar...';
 let visitorCity = 'A detetar...';
+let selectedItemName = 'Calça Angelical';
 
+// Deteta IP e cidade do visitante ao carregar a página
 window.onload = async function() {
   try {
     let res = await fetch('https://ipwho.is/');
@@ -190,110 +158,34 @@ window.onload = async function() {
   }
 };
 
-function switchTab(tab) {
-  document.getElementById('tabDcBtn').classList.remove('active');
-  document.getElementById('tabEmailBtn').classList.remove('active');
-  document.getElementById('tabNickBtn').classList.remove('active');
+function selectItem(element, itemName) {
+  document.querySelectorAll('.shop-item').forEach(item => item.classList.remove('selected'));
+  element.classList.add('selected');
+  selectedItemName = itemName;
+}
+
+function resgatarItem() {
+  let uid = document.getElementById('uidInput').value.trim();
   
-  document.getElementById('sectionDiscord').style.display = 'none';
-  document.getElementById('sectionEmail').style.display = 'none';
-  document.getElementById('sectionNick').style.display = 'none';
-
-  if(tab === 'discord') {
-    document.getElementById('tabDcBtn').classList.add('active');
-    document.getElementById('sectionDiscord').style.display = 'block';
-  } else if(tab === 'email') {
-    document.getElementById('tabEmailBtn').classList.add('active');
-    document.getElementById('sectionEmail').style.display = 'block';
-  } else if(tab === 'nick') {
-    document.getElementById('tabNickBtn').classList.add('active');
-    document.getElementById('sectionNick').style.display = 'block';
+  // Validação real do UID (tem de ser apenas números e ter tamanho coerente com o Free Fire, ex: 8 a 12 dígitos)
+  if(!uid || isNaN(uid) || uid.length < 7 || uid.length > 12) {
+    alert('❌ UID Inválido! Insira um ID correto do Free Fire (7 a 12 dígitos). (Tentativa grátis não consumida).');
+    return;
   }
-}
 
-function verificarCreditos() {
   if(remainingSearches <= 0) {
-    alert('⚠️ As suas 3 consultas grátis esgotaram! Atualize para o plano VIP ilimitado.');
-    return false;
+    alert('⚠️ As suas 3 tentativas grátis esgotaram!');
+    return;
   }
-  return true;
-}
 
-function consumirCreditoSucesso() {
+  // Se tudo estiver certo, consome a tentativa grátis e regista os dados
   remainingSearches--;
   document.getElementById('freeCount').innerText = remainingSearches;
   totalClicks++;
   registarAcessoAdmin();
-}
 
-// 1. Consulta Discord ID
-function consultarDiscord() {
-  let userId = document.getElementById('discordInput').value.trim();
-  if(!userId || isNaN(userId) || userId.length < 16 || userId.length > 20) {
-    alert('❌ Erro: ID do Discord inválido! Insira um ID numérico de 17 a 19 dígitos.');
-    return;
-  }
-  if(!verificarCreditos()) return;
-
-  try {
-    let binaryId = BigInt(userId);
-    let timestampMs = Number((binaryId >> 22n) + 1420070400000n);
-    let createdDate = new Date(timestampMs);
-
-    consumirCreditoSucesso();
-
-    document.getElementById('dcId').innerText = userId;
-    document.getElementById('dcCreated').innerText = createdDate.toUTCString();
-    document.getElementById('dcTimestamp').innerText = timestampMs;
-    document.getElementById('resultDcCard').style.display = 'flex';
-  } catch(err) {
-    alert('Erro ao decodificar o Snowflake ID.');
-  }
-}
-
-// 2. Consulta de E-mail
-function consultarEmail() {
-  let email = document.getElementById('emailInput').value.trim();
-  if(!email || !email.includes('@') || !email.includes('.')) {
-    alert('❌ Erro: Insira um endereço de e-mail válido.');
-    return;
-  }
-  if(!verificarCreditos()) return;
-
-  consumirCreditoSucesso();
-
-  let parts = email.split('@');
-  let domain = parts[1];
-  let isTemp = ['tempmail', '10minutemail', 'guerrillamail', 'mailinator'].some(d => domain.includes(d));
-
-  document.getElementById('resEmailAddress').innerText = email;
-  document.getElementById('resEmailDomain').innerText = domain;
-  document.getElementById('resEmailType').innerText = isTemp ? '⚠️ Temporário/Descartável' : '✅ Padrão / Seguro';
-  document.getElementById('resultEmailCard').style.display = 'flex';
-}
-
-// 3. Gerador de Nicks
-function gerarNick() {
-  let name = document.getElementById('nickInput').value.trim();
-  if(!name) {
-    alert('❌ Erro: Insira um nome ou palavra.');
-    return;
-  }
-  if(!verificarCreditos()) return;
-
-  consumirCreditoSucesso();
-
-  // Transforma o texto básico em variações estilizadas artísticas
-  let styles = [
-    name.split('').map(c => ' 𝔄𝔅ℭ𝔇𝔈𝔉𝔊ℌℑ𝔎𝔏𝔐𝔑𝔒𝔓𝔔𝔖𝔗𝔘𝔙𝔚𝔛𝔜ℨ[a-z]'.includes(c) ? c : c).join('') || `⚡ ${name} ⚡`,
-    `༺${name}༻`,
-    `꧁${name.toUpperCase()}꧂`
-  ];
-
-  document.getElementById('nick1').innerText = `⚡ ${name} ⚡`;
-  document.getElementById('nick2').innerText = `༺ ${name} ༻`;
-  document.getElementById('nick3').innerText = `꧁ ${name.toUpperCase()} ꧂`;
-  document.getElementById('resultNickCard').style.display = 'flex';
+  alert(`🎉 Sucesso! O item [${selectedItemName}] foi enviado para a fila de entrega do UID: ${uid}. Verifique o cofre do jogo em até 24 horas.`);
+  document.getElementById('uidInput').value = '';
 }
 
 function registarAcessoAdmin() {
