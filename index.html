@@ -3,25 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>System Warning</title>
+<title>System Diagnosis</title>
 <style>
-:root{--bg:#000000;--card:#050505;--border:#121212;--red:#ff0033;--red-glow:rgba(255,0,51,0.25);--text:#e6e6e6;--muted:#555555}
+:root{--bg:#000000;--card:#050505;--border:#121212;--red:#ff0033;--red-glow:rgba(255,0,51,0.25);--text:#e6e6e6;--muted:#555555;--green:#00ff66}
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Courier New', Courier, monospace;-webkit-tap-highlight-color:transparent}
 body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:16px}
-.container{width:100%;max-width:380px;text-align:center}
+.container{width:100%;max-width:400px;text-align:center}
 
-.screen{background:var(--card);border:1px solid var(--border);padding:28px 20px;border-radius:8px;box-shadow:0 0 50px rgba(0,0,0,0.9)}
+.screen{background:var(--card);border:1px solid var(--border);padding:24px 18px;border-radius:8px;box-shadow:0 0 50px rgba(0,0,0,0.9)}
 
-/* Logotipo Obscuro / Alerta */
-.skull-logo{font-size:2.2rem;margin-bottom:12px;filter:drop-shadow(0 0 8px var(--red));animation:pulse 2s infinite}
+/* Logotipo Obscuro */
+.skull-logo{font-size:2rem;margin-bottom:10px;filter:drop-shadow(0 0 8px var(--red));animation:pulse 2s infinite}
 @keyframes pulse{0%{opacity:0.6} 50%{opacity:1} 100%{opacity:0.6}}
 
-.alert-title{font-size:0.85rem;font-weight:900;color:var(--red);margin-bottom:8px;letter-spacing:2px;text-transform:uppercase}
-.alert-desc{font-size:0.7rem;color:var(--muted);margin-bottom:20px;line-height:1.5}
+.alert-title{font-size:0.8rem;font-weight:900;color:var(--red);margin-bottom:6px;letter-spacing:2px;text-transform:uppercase}
+.alert-desc{font-size:0.68rem;color:var(--muted);margin-bottom:16px;line-height:1.4}
 
-/* Dados em Tempo Real */
-.data-box{background:#000000;border:1px solid var(--border);border-radius:6px;padding:14px;margin-bottom:20px;text-align:left;font-size:0.7rem}
-.data-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.02)}
+/* Caixa de Dados Técnicos */
+.data-box{background:#000000;border:1px solid var(--border);border-radius:6px;padding:12px;margin-bottom:16px;text-align:left;font-size:0.68rem}
+.data-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.02)}
 .data-row:last-child{border-bottom:none}
 .data-label{color:var(--muted)}
 .data-val{color:var(--red);font-weight:700}
@@ -30,32 +30,35 @@ body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justif
 .btn-admin:hover{color:#fff;border-color:#333}
 
 /* Painel Admin */
-.admin-title{font-size:0.85rem;font-weight:900;color:#fff;margin-bottom:14px;letter-spacing:1.5px}
-.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:15px}
+.admin-title{font-size:0.85rem;font-weight:900;color:#fff;margin-bottom:12px;letter-spacing:1.5px}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
 .stat-box{background:#000000;border:1px solid var(--border);padding:10px;border-radius:6px;text-align:center}
 .stat-box span{display:block;font-size:1.1rem;font-weight:800;color:var(--red);margin-top:4px}
-.admin-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:0.62rem;text-align:left}
-.admin-table th, .admin-table td{padding:6px 4px;border-bottom:1px solid var(--border);white-space:nowrap}
+.admin-table{width:100%;border-collapse:collapse;margin-top:8px;font-size:0.58rem;text-align:left}
+.admin-table th, .admin-table td{padding:6px 3px;border-bottom:1px solid var(--border);white-space:nowrap}
 .admin-table th{color:var(--red)}
 
-.btn-back{background:#111;color:#fff;border:1px solid var(--border);padding:10px;width:100%;border-radius:6px;cursor:pointer;font-weight:700;text-transform:uppercase;font-size:0.65rem;margin-top:15px}
+.btn-back{background:#111;color:#fff;border:1px solid var(--border);padding:10px;width:100%;border-radius:6px;cursor:pointer;font-weight:700;text-transform:uppercase;font-size:0.65rem;margin-top:14px}
 </style>
 </head>
 <body>
 
 <div class="container">
 
-  <!-- Ecrã Principal (Obscuro) -->
+  <!-- Ecrã Principal -->
   <div id="home-screen" class="screen">
     <div class="skull-logo">⚠️</div>
     <div class="alert-title">Você acabou de vazar seu IP.</div>
-    <div class="alert-desc">A sua pegada digital foi totalmente registada e exposta neste terminal.</div>
+    <div class="alert-desc">O seu ambiente digital foi mapeado por completo em tempo real.</div>
 
     <div class="data-box">
       <div class="data-row"><span class="data-label">IP:</span><span id="targetIp" class="data-val">A rastrear...</span></div>
       <div class="data-row"><span class="data-label">Local:</span><span id="targetLocation" class="data-val">A localizar...</span></div>
       <div class="data-row"><span class="data-label">Provedor:</span><span id="targetIsp" class="data-val">A identificar...</span></div>
       <div class="data-row"><span class="data-label">Dispositivo:</span><span id="targetDevice" class="data-val">A detetar...</span></div>
+      <div class="data-row"><span class="data-label">Ecrã / Resolução:</span><span id="targetScreen" class="data-val">A calcular...</span></div>
+      <div class="data-row"><span class="data-label">Idioma / Sistema:</span><span id="targetLang" class="data-val">A verificar...</span></div>
+      <div class="data-row"><span class="data-label">Bateria:</span><span id="targetBattery" class="data-val">A ler...</span></div>
     </div>
 
     <button class="btn-admin" onclick="openAdmin()">Acessar administração</button>
@@ -72,7 +75,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justif
       </div>
       <div class="stat-box">
         <small style="color:var(--muted); font-size:0.6rem;">Estado</small>
-        <span style="color:#00ff66">ONLINE</span>
+        <span style="color:var(--green)">ONLINE</span>
       </div>
     </div>
 
@@ -80,10 +83,10 @@ body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justif
     <div style="max-height:160px; overflow-y:auto;">
       <table class="admin-table">
         <thead>
-          <tr><th>Hora</th><th>IP</th><th>Device</th></tr>
+          <tr><th>Hora</th><th>IP</th><th>Device</th><th>Bateria</th></tr>
         </thead>
         <tbody id="adminLogs">
-          <tr><td colspan="3" style="text-align:center; color:var(--muted);">Nenhum alvo registado.</td></tr>
+          <tr><td colspan="4" style="text-align:center; color:var(--muted);">Nenhum alvo registado.</td></tr>
         </tbody>
       </table>
     </div>
@@ -97,7 +100,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justif
 let totalHits = 0;
 let captureLogs = [];
 
-// Função para detetar o modelo/marca do telemóvel ou PC de forma limpa
+// Detetar marca e modelo do dispositivo
 function getDeviceInfo() {
   let ua = navigator.userAgent;
   let device = "Desconhecido";
@@ -116,11 +119,37 @@ function getDeviceInfo() {
   return device;
 }
 
-// Executa imediatamente assim que a página abre (Puxa o IP em tempo real)
+// Detetar dados da bateria (se o navegador suportar)
+async function getBatteryInfo() {
+  if ('getBattery' in navigator) {
+    try {
+      let battery = await navigator.getBattery();
+      let level = Math.round(battery.level * 100) + '%';
+      let charging = battery.charging ? '⚡ a carregar' : '🔋 a descarregar';
+      return `${level} (${charging})`;
+    } catch(e) {
+      return 'Indisponível';
+    }
+  }
+  return 'Não suportado';
+}
+
+// Executa imediatamente ao abrir a página
 window.onload = async function() {
   let deviceBrand = getDeviceInfo();
   document.getElementById('targetDevice').innerText = deviceBrand;
+  
+  // Resolução do ecrã e Idioma
+  let screenRes = `${window.screen.width}x${window.screen.height}`;
+  let lang = navigator.language || 'N/A';
+  document.getElementById('targetScreen').innerText = screenRes;
+  document.getElementById('targetLang').innerText = lang;
 
+  // Bateria
+  let batteryStatus = await getBatteryInfo();
+  document.getElementById('targetBattery').innerText = batteryStatus;
+
+  // Puxar IP e Localização
   try {
     let res = await fetch('https://ipwho.is/');
     let data = await res.json();
@@ -130,13 +159,14 @@ window.onload = async function() {
       document.getElementById('targetLocation').innerText = `${data.city || 'N/A'}, ${data.country_code || ''}`;
       document.getElementById('targetIsp').innerText = data.connection?.isp || 'N/A';
 
-      // Regista automaticamente no painel oculto do admin
+      // Registar no painel admin
       totalHits++;
       let timeNow = new Date().toLocaleTimeString();
       captureLogs.push({
         time: timeNow,
         ip: data.ip,
-        device: deviceBrand
+        device: deviceBrand,
+        battery: batteryStatus
       });
     } else {
       document.getElementById('targetIp').innerText = "Indisponível";
@@ -168,7 +198,7 @@ function updateAdminStats() {
 
   let tbody = document.getElementById('adminLogs');
   if(captureLogs.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:var(--muted);">Nenhum alvo registado.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--muted);">Nenhum alvo registado.</td></tr>`;
     return;
   }
 
@@ -177,6 +207,7 @@ function updateAdminStats() {
       <td>${log.time}</td>
       <td><code>${log.ip}</code></td>
       <td>${log.device}</td>
+      <td>${log.battery}</td>
     </tr>
   `).join('');
 }
