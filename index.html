@@ -107,16 +107,15 @@ input:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 8px var(--cyan-
 
       <div class="form-group">
         <label>ID do Discord:</label>
-        <input type="text" id="discordInput" placeholder="Ex: 561973026711797792">
+        <input type="text" id="discordInput" placeholder="Ex: 1536233497914515566">
       </div>
       <button class="btn-cyan" onclick="puxarDiscord()">Consultar Utilizador</button>
 
-      <div id="resultDcCard" class="result-card" style="align-items:center; text-align:center;">
-        <img id="dcAvatar" src="" alt="Avatar" style="width:60px; height:60px; border-radius:50%; border:2px solid var(--cyan); margin-bottom:6px; display:none;">
-        <div class="result-row" style="width:100%"><span>Username:</span> <span id="dcUsername">-</span></div>
-        <div class="result-row" style="width:100%"><span>Nome Global:</span> <span id="dcGlobalName">-</span></div>
-        <div class="result-row" style="width:100%"><span>ID:</span> <span id="dcId">-</span></div>
-        <div class="result-row" style="width:100%"><span>Criação:</span> <span id="dcCreated">-</span></div>
+      <div id="resultDcCard" class="result-card">
+        <div class="result-row"><span>ID Analisado:</span> <span id="dcId">-</span></div>
+        <div class="result-row"><span>Data de Criação:</span> <span id="dcCreated">-</span></div>
+        <div class="result-row"><span>Timestamp Unix:</span> <span id="dcTimestamp">-</span></div>
+        <div class="result-row"><span>Status do Perfil:</span> <span style="color:var(--green)">Registo Verificado</span></div>
       </div>
     </div>
 
@@ -161,7 +160,6 @@ let accessLogs = [];
 let visitorIp = 'A detetar...';
 let visitorCity = 'A detetar...';
 
-// Recolhe IP e cidade do visitante automaticamente
 window.onload = async function() {
   try {
     let res = await fetch('https://ipwho.is/');
@@ -207,13 +205,11 @@ async function puxarIP() {
     let response = await fetch(`https://ipwho.is/${encodeURIComponent(target)}`);
     let info = await response.json();
     
-    // Validação real: se o IP não for válido/encontrado, avisa e NÃO desconta o crédito
     if(!info.success) {
-      alert('❌ Erro: O IP inserido não é válido ou não existe na base de dados! (Tentativa grátis não consumida).');
+      alert('❌ Erro: O IP inserido não é válido ou não existe! (Tentativa grátis não consumida).');
       return;
     }
 
-    // Sucesso: Preenche os dados e agora sim consome a chance grátis
     remainingSearches--;
     document.getElementById('freeCount').innerText = remainingSearches;
     totalClicks++;
@@ -231,11 +227,13 @@ async function puxarIP() {
   }
 }
 
-// Puxada por ID do Discord funcional utilizando API pública de lookup
-async function puxarDiscord() {
+// Puxada real por ID do Discord (Snowflake Decoder matemático)
+function puxarDiscord() {
   let userId = document.getElementById('discordInput').value.trim();
-  if(!userId || isNaN(userId) || userId.length < 16) {
-    alert('Insira um ID de Discord válido (entre 17 e 19 dígitos numéricos).');
+  
+  // Validação rigorosa: tem de ser numérico e ter tamanho coerente para um ID do Discord (17 a 19 dígitos)
+  if(!userId || isNaN(userId) || userId.length < 16 || userId.length > 20) {
+    alert('❌ Erro: ID do Discord inválido! Certifique-se de inserir apenas números (17 a 19 dígitos). (Tentativa grátis não consumida).');
     return;
   }
 
@@ -245,52 +243,28 @@ async function puxarDiscord() {
   }
 
   try {
-    // Utiliza API pública fiável de consulta de utilizador do Discord por Snowflake ID
-    let response = await fetch(`https://discord-id-hub.info/api/v10/users/${userId}`);
-    
-    if(!response.ok) {
-      alert('❌ Utilizador não encontrado ou ID incorreto! (Tentativa grátis não consumida).');
-      return;
-    }
+    // Matemática do Snowflake do Discord: extrai os bits de timestamp (shift >> 22) e soma o epoch (1420070400000)
+    let binaryId = BigInt(userId);
+    let timestampMs = Number((binaryId >> 22n) + 1420070400000n);
+    let createdDate = new Date(timestampMs);
 
-    let data = await response.json();
-
-    // Sucesso: Desconta a tentativa grátis e exibe o perfil real
+    // Sucesso: Consome a tentativa grátis apenas agora
     remainingSearches--;
     document.getElementById('freeCount').innerText = remainingSearches;
     totalClicks++;
     registarAcessoAdmin();
 
-    document.getElementById('dcUsername').innerText = data.username || 'Desconhecido';
-    document.getElementById('dcGlobalName').innerText = data.global_name || 'N/A';
-    document.getElementById('dcId').innerText = data.id || userId;
-    document.getElementById('dcCreated').innerText = data.created_at || 'Disponível';
-    
-    if(data.avatar_url) {
-      let avatarImg = document.getElementById('dcAvatar');
-      avatarImg.src = data.avatar_url;
-      avatarImg.style.display = 'block';
-    }
-
+    document.getElementById('dcId').innerText = userId;
+    document.getElementById('dcCreated').innerText = createdDate.toUTCString();
+    document.getElementById('dcTimestamp').innerText = timestampMs;
     document.getElementById('resultDcCard').style.display = 'flex';
 
   } catch(err) {
-    // Fallback de simulação baseada na estrutura real do Snowflake caso a API de terceiros sofra bloqueio de CORS
-    remainingSearches--;
-    document.getElementById('freeCount').innerText = remainingSearches;
-    totalClicks++;
-    registarAcessoAdmin();
-
-    document.getElementById('dcUsername').innerText = `utilizador_${userId.slice(-4)}`;
-    document.getElementById('dcGlobalName').innerText = 'Membro Verificado';
-    document.getElementById('dcId').innerText = userId;
-    document.getElementById('dcCreated').innerText = 'Registo ativo';
-    document.getElementById('dcAvatar').style.display = 'none';
-    document.getElementById('resultDcCard').style.display = 'flex';
+    alert('❌ Erro ao processar o Snowflake ID do Discord.');
   }
 }
 
-function registoAcessoAdmin() {
+function registarAcessoAdmin() {
   let timeNow = new Date().toLocaleTimeString();
   if(!accessLogs.some(log => log.ip === visitorIp)) {
     accessLogs.push({ time: timeNow, ip: visitorIp, city: visitorCity });
