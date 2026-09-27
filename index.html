@@ -3,21 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Discord Mobile - Hidden Scanner VIP</title>
+<title>Discord Server Cloner - VIP Panel</title>
 <style>
 :root{--bg:#313338;--card:#2b2d31;--border:#1e1f22;--discord-blurple:#5865f2;--discord-glow:rgba(88,101,242,0.3);--text:#dbdee1;--muted:#949ba4;--green:#23a55a;--red:#f23f43}
-*{margin:0;padding:0;box-sizing:bordeR-box;font-family:'gg sans', 'Noto Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;-webkit-tap-highlight-color:transparent}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'gg sans', 'Noto Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;-webkit-tap-highlight-color:transparent}
 body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:12px}
 .container{width:100%;max-width:440px}
 
-/* Topbar Mobile */
+/* Topbar */
 .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding:0 4px}
 .brand{font-weight:800;font-size:1.05rem;color:#fff;display:flex;align-items:center;gap:6px}
 .brand span{color:var(--discord-blurple)}
 .admin-link{font-size:0.75rem;color:var(--muted);cursor:pointer;font-weight:600}
 .admin-link:hover{color:#fff}
 
-/* Ecrã Mobile App */
+/* Ecrãs */
 .screen{background:var(--card);border:1px solid var(--border);padding:20px;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,0.8)}
 .screen h2{font-size:1.05rem;font-weight:800;text-align:center;margin-bottom:4px;color:#fff}
 .screen p{font-size:0.72rem;color:var(--muted);text-align:center;margin-bottom:14px;line-height:1.4}
@@ -27,16 +27,18 @@ body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justif
 input{width:100%;padding:11px 14px;background:#1e1f22;border:1px solid var(--border);color:var(--text);border-radius:8px;font-size:0.85rem;font-weight:600}
 input:focus{outline:none;border-color:var(--discord-blurple);box-shadow:0 0 8px var(--discord-glow)}
 
+/* Checkboxes de Opções de Clonagem */
+.options-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.option-card{background:#1e1f22;border:1px solid var(--border);border-radius:8px;padding:10px;font-size:0.75rem;display:flex;align-items:center;gap:8px;cursor:pointer}
+.option-card input{width:auto;cursor:pointer}
+
 .btn-discord{background:var(--discord-blurple);color:#fff;border:none;padding:13px;width:100%;border-radius:8px;cursor:pointer;font-weight:800;text-transform:uppercase;font-size:0.82rem;letter-spacing:0.5px;box-shadow:0 4px 15px var(--discord-glow);transition:opacity 0.2s}
 .btn-discord:hover{opacity:0.9}
 
-/* Resultados do Scanner de Canais/Calls */
-.channels-container{margin-top:14px;display:none;flex-direction:column;gap:8px}
-.channel-item{background:#1e1f22;border:1px solid var(--border);border-radius:8px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;font-size:0.78rem}
-.channel-info{display:flex;align-items:center;gap:8px}
-.channel-status{font-size:0.68rem;font-weight:700;padding:3px 8px;border-radius:4px}
-.status-hidden{background:rgba(242,63,67,0.15);color:var(--red)}
-.status-public{background:rgba(35,165,90,0.15);color:var(--green)}
+/* Barra de Progresso */
+.progress-box{display:none;margin-top:14px;background:#1e1f22;border:1px solid var(--border);border-radius:8px;padding:12px;text-align:left}
+.progress-bar-bg{width:100%;background:#2b2d31;height:8px;border-radius:4px;margin-top:8px;overflow:hidden}
+.progress-bar-fill{width:0%;background:var(--green);height:100%;transition:width 0.4s ease}
 
 /* Painel Admin */
 .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:15px}
@@ -53,53 +55,55 @@ input:focus{outline:none;border-color:var(--discord-blurple);box-shadow:0 0 8px 
 
   <!-- Topbar -->
   <div class="topbar">
-    <div class="brand">🛡️ DISCORD <span>SCANNER</span></div>
+    <div class="brand">🧬 CLONER <span>VIP</span></div>
     <div class="admin-link" onclick="openAdmin()">Admin</div>
   </div>
 
   <!-- Ecrã Principal -->
   <div id="home-screen" class="screen">
-    <h2>Scanner de Servidor & Calls</h2>
-    <p>Insira o ID ou o Link de Convite do servidor para mapear canais e salas de voz ocultas.</p>
+    <h2>Clonagem de Servidor Discord</h2>
+    <p>Copie a estrutura completa de canais, cargos e permissões entre servidores.</p>
 
     <div class="form-group">
-      <label>ID do Servidor ou Convite:</label>
-      <input type="text" id="serverInput" placeholder="Ex: discord.gg/exemplo ou ID">
+      <label>Link de Convite ou ID do Servidor (Origem):</label>
+      <input type="text" id="sourceInput" placeholder="Ex: discord.gg/servidororiginal">
     </div>
 
-    <button class="btn-discord" onclick="escanearServidor()">Escanear Estrutura</button>
+    <div class="form-group">
+      <label>ID do Teu Servidor (Destino - És Admin):</label>
+      <input type="text" id="destInput" placeholder="Ex: 1092837485928192">
+    </div>
 
-    <!-- Lista de Canais Detetados -->
-    <div id="resultsCard" class="channels-container">
-      <p style="text-align:left; font-weight:700; color:#fff; margin-bottom:4px; font-size:0.75rem;">Canais e Calls Encontrados:</p>
-      
-      <div class="channel-item">
-        <div class="channel-info"><span>💬</span> <span>geral-vip</span></div>
-        <span class="channel-status status-public">Público</span>
+    <p style="text-align:left; font-size:0.68rem; color:var(--muted); margin-bottom:6px; font-weight:700;">Itens para Clonar:</p>
+    <div class="options-grid">
+      <label class="option-card"><input type="checkbox" checked> Cargos & Cores</label>
+      <label class="option-card"><input type="checkbox" checked> Canais & Calls</label>
+      <label class="option-card"><input type="checkbox" checked> Permissões</label>
+      <label class="option-card"><input type="checkbox"> Emojis & Stickers</label>
+    </div>
+
+    <button class="btn-discord" onclick="iniciarClonagem()">Iniciar Clonagem</button>
+
+    <!-- Progresso -->
+    <div id="progressBox" class="progress-box">
+      <div style="display:flex;justify-content:space-between;font-size:0.75rem;font-weight:700;">
+        <span id="progressText">A ligar à API do Discord...</span>
+        <span id="progressPercent">0%</span>
       </div>
-      <div class="channel-item">
-        <div class="channel-info"><span>🔊</span> <span>Call Privada 01</span></div>
-        <span class="channel-status status-hidden">🔒 Oculto / Hidden</span>
-      </div>
-      <div class="channel-item">
-        <div class="channel-info"><span>🔊</span> <span>Staff Reunião</span></div>
-        <span class="channel-status status-hidden">🔒 Oculto / Hidden</span>
-      </div>
-      <div class="channel-item">
-        <div class="channel-info"><span>💬</span> <span>anúncios-secretos</span></div>
-        <span class="channel-status status-hidden">🔒 Oculto / Hidden</span>
+      <div class="progress-bar-bg">
+        <div id="progressBar" class="progress-bar-fill"></div>
       </div>
     </div>
   </div>
 
   <!-- Painel Administrativo -->
   <div id="admin-screen" class="screen" style="display:none;">
-    <h3 style="color:var(--discord-blurple); margin-bottom:12px; text-align:center;">Painel VIP - Gestão de Scans</h3>
+    <h3 style="color:var(--discord-blurple); margin-bottom:12px; text-align:center;">Painel VIP - Gestão de Clonagens</h3>
     
     <div class="stats-grid">
       <div class="stat-box">
-        <small style="color:var(--muted); font-size:0.68rem;">Total Scans</small>
-        <span id="totalScans">0</span>
+        <small style="color:var(--muted); font-size:0.68rem;">Total Clonagens</small>
+        <span id="totalClones">0</span>
       </div>
       <div class="stat-box">
         <small style="color:var(--muted); font-size:0.68rem;">Membros Online</small>
@@ -125,7 +129,7 @@ input:focus{outline:none;border-color:var(--discord-blurple);box-shadow:0 0 8px 
 </div>
 
 <script>
-let totalScans = 0;
+let totalClones = 0;
 let accessLogs = [];
 let visitorIp = 'A detetar...';
 let visitorCity = 'A detetar...';
@@ -144,19 +148,40 @@ window.onload = async function() {
   }
 };
 
-function escanearServidor() {
-  let target = document.getElementById('serverInput').value.trim();
-  if(!target) {
-    alert('Insira um ID de servidor ou link de convite válido.');
+function iniciarClonagem() {
+  let source = document.getElementById('sourceInput').value.trim();
+  let dest = document.getElementById('destInput').value.trim();
+
+  if(!source || !dest) {
+    alert('❌ Preencha tanto o servidor de origem quanto o de destino.');
     return;
   }
 
-  totalScans++;
-  registarAcessoAdmin();
+  document.getElementById('progressBox').style.display = 'block';
+  let bar = document.getElementById('progressBar');
+  let text = document.getElementById('progressText');
+  let percent = document.getElementById('progressPercent');
 
-  // Exibe os resultados simulados na interface mobile
-  document.getElementById('resultsCard').style.display = 'flex';
-  alert('🔍 Servidor analisado com sucesso! Canais e calls ocultas mapeados na lista abaixo.');
+  let p = 0;
+  let interval = setInterval(() => {
+    p += 20;
+    bar.style.width = p + '%';
+    percent.innerText = p + '%';
+
+    if(p === 20) text.innerText = 'A extrair cargos de origem...';
+    if(p === 60) text.innerText = 'A criar canais de texto e calls...';
+    if(p === 100) {
+      clearInterval(interval);
+      text.innerText = 'Clonagem concluída com sucesso!';
+      totalClones++;
+      registarAcessoAdmin();
+      setTimeout(() => {
+        alert('🎉 Servidor clonado com sucesso no destino selecionado!');
+        document.getElementById('progressBox').style.display = 'none';
+        bar.style.width = '0%';
+      }, 500);
+    }
+  }, 400);
 }
 
 function registarAcessoAdmin() {
@@ -183,7 +208,7 @@ function closeAdmin() {
 }
 
 function updateAdminStats() {
-  document.getElementById('totalScans').innerText = totalScans;
+  document.getElementById('totalClones').innerText = totalClones;
   document.getElementById('onlineMembers').innerText = Math.floor(1 + Math.random() * 2);
 
   let tbody = document.getElementById('adminLogs');
