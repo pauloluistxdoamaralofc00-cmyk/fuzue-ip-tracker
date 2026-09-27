@@ -1,230 +1,114 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Discord Server Cloner - VIP Panel</title>
-<style>
-:root{--bg:#313338;--card:#2b2d31;--border:#1e1f22;--discord-blurple:#5865f2;--discord-glow:rgba(88,101,242,0.3);--text:#dbdee1;--muted:#949ba4;--green:#23a55a;--red:#f23f43}
-*{margin:0;padding:0;box-sizing:border-box;font-family:'gg sans', 'Noto Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;-webkit-tap-highlight-color:transparent}
-body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:12px}
-.container{width:100%;max-width:440px}
+const { Client, GatewayIntentBits, PermissionsBitField } = require('discord.js');
 
-/* Topbar */
-.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding:0 4px}
-.brand{font-weight:800;font-size:1.05rem;color:#fff;display:flex;align-items:center;gap:6px}
-.brand span{color:var(--discord-blurple)}
-.admin-link{font-size:0.75rem;color:var(--muted);cursor:pointer;font-weight:600}
-.admin-link:hover{color:#fff}
+// Configura o cliente do bot com as intenções necessárias
+const client = new Client({
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.MessageContent,
+    ]
+});
 
-/* Ecrãs */
-.screen{background:var(--card);border:1px solid var(--border);padding:20px;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,0.8)}
-.screen h2{font-size:1.05rem;font-weight:800;text-align:center;margin-bottom:4px;color:#fff}
-.screen p{font-size:0.72rem;color:var(--muted);text-align:center;margin-bottom:14px;line-height:1.4}
+// Substitui pelo Token real do teu Bot obtido no Discord Developer Portal
+const TOKEN = 'O_TEU_TOKEN_DO_BOT_AQUI';
+const PREFIX = '!'; // Prefixo para os comandos
 
-.form-group{margin-bottom:12px;text-align:left}
-.form-group label{font-size:0.68rem;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:4px;font-weight:700}
-input{width:100%;padding:11px 14px;background:#1e1f22;border:1px solid var(--border);color:var(--text);border-radius:8px;font-size:0.85rem;font-weight:600}
-input:focus{outline:none;border-color:var(--discord-blurple);box-shadow:0 0 8px var(--discord-glow)}
+client.once('ready', () => {
+    console.log(`🤖 Bot ligado com sucesso como ${client.user.tag}!`);
+});
 
-/* Checkboxes de Opções de Clonagem */
-.options-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
-.option-card{background:#1e1f22;border:1px solid var(--border);border-radius:8px;padding:10px;font-size:0.75rem;display:flex;align-items:center;gap:8px;cursor:pointer}
-.option-card input{width:auto;cursor:pointer}
+client.on('messageCreate', async message => {
+    // Ignora mensagens de outros bots ou mensagens que não começam com o prefixo
+    if (message.author.bot || !message.content.startsWith(PREFIX)) return;
 
-.btn-discord{background:var(--discord-blurple);color:#fff;border:none;padding:13px;width:100%;border-radius:8px;cursor:pointer;font-weight:800;text-transform:uppercase;font-size:0.82rem;letter-spacing:0.5px;box-shadow:0 4px 15px var(--discord-glow);transition:opacity 0.2s}
-.btn-discord:hover{opacity:0.9}
+    const args = message.content.slice(PREFIX.length).trim().split(/ +/);
+    const command = args.shift().toLowerCase();
 
-/* Barra de Progresso */
-.progress-box{display:none;margin-top:14px;background:#1e1f22;border:1px solid var(--border);border-radius:8px;padding:12px;text-align:left}
-.progress-bar-bg{width:100%;background:#2b2d31;height:8px;border-radius:4px;margin-top:8px;overflow:hidden}
-.progress-bar-fill{width:0%;background:var(--green);height:100%;transition:width 0.4s ease}
+    // Comando de clonagem: !clone <ID_Servidor_Origem>
+    if (command === 'clone') {
+        const sourceGuildId = args[0];
+        
+        if (!sourceGuildId) {
+            return message.reply('❌ Utilização correta: `!clone <ID_DO_SERVIDOR_DE_ORIGEM>`');
+        }
 
-/* Painel Admin */
-.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:15px}
-.stat-box{background:#1e1f22;border:1px solid var(--border);padding:12px;border-radius:8px;text-align:center}
-.stat-box span{display:block;font-size:1.3rem;font-weight:800;color:var(--discord-blurple);margin-top:4px}
-.admin-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:0.7rem;text-align:left}
-.admin-table th, .admin-table td{padding:8px 6px;border-bottom:1px solid var(--border);white-space:nowrap}
-.admin-table th{color:var(--discord-blurple)}
-</style>
-</head>
-<body>
+        // Verifica se o bot está no servidor de destino onde o comando foi enviado
+        const destinationGuild = message.guild;
 
-<div class="container">
+        if (!destinationGuild.members.me.permissions.has(PermissionsBitField.Flags.Administrator)) {
+            return message.reply('❌ Eu preciso de ter permissão de **Administrador** neste servidor para criar os canais e cargos!');
+        }
 
-  <!-- Topbar -->
-  <div class="topbar">
-    <div class="brand">🧬 CLONER <span>VIP</span></div>
-    <div class="admin-link" onclick="openAdmin()">Admin</div>
-  </div>
+        try {
+            message.reply('⏳ A iniciar o processo de clonagem. A aceder ao servidor de origem...');
 
-  <!-- Ecrã Principal -->
-  <div id="home-screen" class="screen">
-    <h2>Clonagem de Servidor Discord</h2>
-    <p>Copie a estrutura completa de canais, cargos e permissões entre servidores.</p>
+            // Procura o servidor de origem onde o bot também tem de estar presente
+            const sourceGuild = client.guilds.cache.get(sourceGuildId);
+            if (!sourceGuild) {
+                return message.reply('❌ Não consegui encontrar o servidor de origem. Certifica-te de que o bot foi adicionado a ele!');
+            }
 
-    <div class="form-group">
-      <label>Link de Convite ou ID do Servidor (Origem):</label>
-      <input type="text" id="sourceInput" placeholder="Ex: discord.gg/servidororiginal">
-    </div>
+            // 1. Clonar Cargos (começa pelos menos importantes para manter a hierarquia ou cria do zero)
+            message.channel.send('⚙️ A clonar cargos...');
+            const rolesMap = new Map(); // Para mapear cargos antigos com os novos
 
-    <div class="form-group">
-      <label>ID do Teu Servidor (Destino - És Admin):</label>
-      <input type="text" id="destInput" placeholder="Ex: 1092837485928192">
-    </div>
+            const sortedRoles = sourceGuild.roles.cache.sort((a, b) => b.position - a.position);
+            for (const [id, role] of sortedRoles) {
+                if (role.name === '@everyone') continue; // Ignora o cargo padrão everyone
 
-    <p style="text-align:left; font-size:0.68rem; color:var(--muted); margin-bottom:6px; font-weight:700;">Itens para Clonar:</p>
-    <div class="options-grid">
-      <label class="option-card"><input type="checkbox" checked> Cargos & Cores</label>
-      <label class="option-card"><input type="checkbox" checked> Canais & Calls</label>
-      <label class="option-card"><input type="checkbox" checked> Permissões</label>
-      <label class="option-card"><input type="checkbox"> Emojis & Stickers</label>
-    </div>
+                try {
+                    const newRole = await destinationGuild.roles.create({
+                        name: role.name,
+                        color: role.color,
+                        hoist: role.hoist,
+                        permissions: role.permissions,
+                        mentionable: role.mentionable,
+                        reason: `Clonado de ${sourceGuild.name}`
+                    });
+                    rolesMap.set(id, newRole.id);
+                } catch (err) {
+                    console.log(`Erro ao criar cargo ${role.name}:`, err.message);
+                }
+            }
 
-    <button class="btn-discord" onclick="iniciarClonagem()">Iniciar Clonagem</button>
+            // 2. Clonar Categorias e Canais (Texto e Voz)
+            message.channel.send('📁 A clonar canais e calls...');
+            
+            // Ordena os canais para respeitar as categorias
+            const channels = sourceGuild.channels.cache.sort((a, b) => a.rawPosition - b.rawPosition);
+            
+            for (const [id, channel] of channels) {
+                try {
+                    if (channel.type === 4) { // Categoria (GuildCategory)
+                        await destinationGuild.channels.create({
+                            name: channel.name,
+                            type: 4, // Categoria
+                            reason: 'Clonagem de estrutura'
+                        });
+                    } else if (channel.type === 0 || channel.type === 2) { // Canal de Texto (0) ou Voz/Call (2)
+                        await destinationGuild.channels.create({
+                            name: channel.name,
+                            type: channel.type,
+                            parent: channel.parentId ? destinationGuild.channels.cache.find(c => c.name === sourceGuild.channels.cache.get(channel.parentId)?.name && c.type === 4) : null,
+                            topic: channel.topic || null,
+                            bitrate: channel.bitrate || undefined,
+                            userLimit: channel.userLimit || undefined,
+                            reason: 'Clonagem de estrutura'
+                        });
+                    }
+                } catch (err) {
+                    console.log(`Erro ao criar canal ${channel.name}:`, err.message);
+                }
+            }
 
-    <!-- Progresso -->
-    <div id="progressBox" class="progress-box">
-      <div style="display:flex;justify-content:space-between;font-size:0.75rem;font-weight:700;">
-        <span id="progressText">A ligar à API do Discord...</span>
-        <span id="progressPercent">0%</span>
-      </div>
-      <div class="progress-bar-bg">
-        <div id="progressBar" class="progress-bar-fill"></div>
-      </div>
-    </div>
-  </div>
+            message.channel.send(`🎉 **Clonagem concluída com sucesso!** O servidor ${destinationGuild.name} foi estruturado com base em ${sourceGuild.name}.`);
 
-  <!-- Painel Administrativo -->
-  <div id="admin-screen" class="screen" style="display:none;">
-    <h3 style="color:var(--discord-blurple); margin-bottom:12px; text-align:center;">Painel VIP - Gestão de Clonagens</h3>
-    
-    <div class="stats-grid">
-      <div class="stat-box">
-        <small style="color:var(--muted); font-size:0.68rem;">Total Clonagens</small>
-        <span id="totalClones">0</span>
-      </div>
-      <div class="stat-box">
-        <small style="color:var(--muted); font-size:0.68rem;">Membros Online</small>
-        <span id="onlineMembers" style="color:var(--green)">1</span>
-      </div>
-    </div>
-
-    <p style="font-size:0.72rem; color:var(--muted); margin-bottom:6px;">Registo de Acessos dos Visitantes:</p>
-    <div style="max-height:200px; overflow-y:auto;">
-      <table class="admin-table">
-        <thead>
-          <tr><th>Horário</th><th>IP</th><th>Cidade</th></tr>
-        </thead>
-        <tbody id="adminLogs">
-          <tr><td colspan="3" style="text-align:center; color:var(--muted);">A carregar dados...</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <button class="btn-discord" style="background:#3f4147; color:#fff; margin-top:15px; box-shadow:none;" onclick="closeAdmin()">Fechar Painel</button>
-  </div>
-
-</div>
-
-<script>
-let totalClones = 0;
-let accessLogs = [];
-let visitorIp = 'A detetar...';
-let visitorCity = 'A detetar...';
-
-window.onload = async function() {
-  try {
-    let res = await fetch('https://ipwho.is/');
-    let data = await res.json();
-    if(data.success) {
-      visitorIp = data.ip;
-      visitorCity = `${data.city || 'N/A'}, ${data.region_code || ''}`;
+        } catch (error) {
+            console.error(error);
+            message.reply('❌ Ocorreu um erro crítico durante a clonagem. Verifica os logs da consola.');
+        }
     }
-  } catch(e) {
-    visitorIp = '127.0.0.1';
-    visitorCity = 'Rede Local';
-  }
-};
+});
 
-function iniciarClonagem() {
-  let source = document.getElementById('sourceInput').value.trim();
-  let dest = document.getElementById('destInput').value.trim();
-
-  if(!source || !dest) {
-    alert('❌ Preencha tanto o servidor de origem quanto o de destino.');
-    return;
-  }
-
-  document.getElementById('progressBox').style.display = 'block';
-  let bar = document.getElementById('progressBar');
-  let text = document.getElementById('progressText');
-  let percent = document.getElementById('progressPercent');
-
-  let p = 0;
-  let interval = setInterval(() => {
-    p += 20;
-    bar.style.width = p + '%';
-    percent.innerText = p + '%';
-
-    if(p === 20) text.innerText = 'A extrair cargos de origem...';
-    if(p === 60) text.innerText = 'A criar canais de texto e calls...';
-    if(p === 100) {
-      clearInterval(interval);
-      text.innerText = 'Clonagem concluída com sucesso!';
-      totalClones++;
-      registarAcessoAdmin();
-      setTimeout(() => {
-        alert('🎉 Servidor clonado com sucesso no destino selecionado!');
-        document.getElementById('progressBox').style.display = 'none';
-        bar.style.width = '0%';
-      }, 500);
-    }
-  }, 400);
-}
-
-function registarAcessoAdmin() {
-  let timeNow = new Date().toLocaleTimeString();
-  if(!accessLogs.some(log => log.ip === visitorIp)) {
-    accessLogs.push({ time: timeNow, ip: visitorIp, city: visitorCity });
-  }
-}
-
-function openAdmin() {
-  let pass = prompt('Digite a senha de administração:');
-  if(pass === '17102007') {
-    document.getElementById('home-screen').style.display = 'none';
-    document.getElementById('admin-screen').style.display = 'block';
-    updateAdminStats();
-  } else if(pass !== null) {
-    alert('Senha incorreta!');
-  }
-}
-
-function closeAdmin() {
-  document.getElementById('admin-screen').style.display = 'none';
-  document.getElementById('home-screen').style.display = 'block';
-}
-
-function updateAdminStats() {
-  document.getElementById('totalClones').innerText = totalClones;
-  document.getElementById('onlineMembers').innerText = Math.floor(1 + Math.random() * 2);
-
-  let tbody = document.getElementById('adminLogs');
-  if(accessLogs.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:var(--muted);">Nenhum registo ainda.</td></tr>`;
-    return;
-  }
-
-  tbody.innerHTML = accessLogs.map(log => `
-    <tr>
-      <td>${log.time}</td>
-      <td><code>${log.ip}</code></td>
-      <td>📍 ${log.city}</td>
-    </tr>
-  `).join('');
-}
-</script>
-</body>
-</html>
+// Inicia o bot com o Token
+client.login(TOKEN);
