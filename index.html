@@ -3,73 +3,112 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>fuzue developer - Painel</title>
+<title>fuzue developer - Security System</title>
 <style>
-:root{--bg:#0a0a0c;--card:#121216;--border:#22222d;--red:#ff3333;--text:#e0e0e6;--muted:#888899;--green:#00ff66}
+:root{--bg:#000000;--card:#0a0a0e;--border:#1a1a24;--red:#ff1a1a;--text:#f0f0f5;--muted:#707085;--green:#00ff66}
 *{margin:0;padding:0;box-sizing:border-box;font-family:monospace}
 body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px}
-.container{width:100%;max-width:900px}
-#login{background:var(--card);border:1px solid var(--border);padding:40px;border-radius:8px;text-align:center}
-h1{color:var(--red);font-size:1.5rem;margin-bottom:10px;text-transform:lowercase}
-p{color:var(--muted);margin-bottom:20px}
-input{width:100%;padding:12px;background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:4px;margin-bottom:15px;text-align:center;font-size:1rem}
-button{background:var(--red);color:#fff;border:none;padding:12px 20px;width:100%;border-radius:4px;cursor:pointer;font-weight:bold;text-transform:uppercase}
-button:hover{opacity:.9}
+.container{width:100%;max-width:950px}
+#login{background:var(--card);border:1px solid var(--border);padding:40px;border-radius:10px;text-align:center;box-shadow:0 0 30px rgba(255,26,26,0.1)}
+h1{color:var(--red);font-size:1.8rem;margin-bottom:10px;text-transform:lowercase;letter-spacing:2px}
+p{color:var(--muted);margin-bottom:20px;font-size:0.95rem}
+.alert-login{background:rgba(255,26,26,0.08);border-left:4px solid var(--red);padding:15px;margin-bottom:20px;font-size:0.85rem;color:#ff6666;text-align:left;line-height:1.4;border-radius:0 6px 6px 0}
+input{width:100%;padding:14px;background:#050507;border:1px solid var(--border);color:var(--text);border-radius:6px;margin-bottom:15px;text-align:center;font-size:1.1rem;letter-spacing:3px}
+input:focus{outline:none;border-color:var(--red)}
+button{background:var(--red);color:#fff;border:none;padding:14px 20px;width:100%;border-radius:6px;cursor:pointer;font-weight:bold;text-transform:uppercase;letter-spacing:1px}
+button:hover{opacity:.85}
 #panel{display:none}
 .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
 .status{display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--muted)}
-.dot{width:8px;height:8px;background:var(--green);border-radius:50%;box-shadow:0 0 8px var(--green)}
-.alert{background:rgba(255,51,51,.1);border-left:4px solid var(--red);padding:15px;margin-bottom:20px;font-size:.85rem;color:var(--red);text-align:left}
-table{width:100%;border-collapse:collapse;margin-top:10px}
-th,td{padding:12px;text-align:left;border-bottom:1px solid var(--border);font-size:.85rem}
-th{color:var(--muted);text-transform:uppercase}
+.dot{width:8px;height:8px;background:var(--green);border-radius:50%;box-shadow:0 0 10px var(--green)}
+.alert{background:rgba(255,26,26,0.08);border-left:4px solid var(--red);padding:18px;margin-bottom:20px;font-size:0.9rem;color:#ff6666;text-align:left;line-height:1.5;border-radius:0 6px 6px 0}
+.actions{margin-bottom:15px;display:flex;justify-content:flex-end}
+.btn-clear{background:transparent;border:1px solid var(--red);color:var(--red);padding:6px 12px;font-size:0.75rem;width:auto;border-radius:4px;cursor:pointer}
+.btn-clear:hover{background:rgba(255,26,26,0.1)}
+table{width:100%;border-collapse:collapse;margin-top:10px;background:var(--card);border-radius:6px;overflow:hidden;border:1px solid var(--border)}
+th,td{padding:14px;text-align:left;border-bottom:1px solid var(--border);font-size:0.85rem}
+th{color:var(--muted);text-transform:uppercase;background:#050507}
 td{color:var(--text)}
+.warning-banner{margin-top:20px;text-align:center;font-size:0.8rem;color:var(--muted);border-top:1px dashed var(--border);padding-top:15px}
 </style>
 </head>
 <body>
 <div class="container">
 <div id="login">
 <h1>fuzue developer</h1>
-<p>Insira a senha de acesso</p>
+<p>Área restrita e monitorizada.</p>
+<div class="alert-login">
+⚠️ <strong>Atenção:</strong> O seu endereço IP, localização e operadora foram capturados com sucesso. Apenas o proprietário autorizado possui permissão para visualizar os registos de rede.
+</div>
 <input type="password" id="pass" placeholder="••••••••">
-<button onclick="check()">Entrar</button>
+<button onclick="check()">Entrar no Painel</button>
 </div>
 <div id="panel">
 <div class="header">
 <h1>fuzue developer</h1>
-<div class="status"><div class="dot"></div>Ativo</div>
+<div class="status"><div class="dot"></div>Sistema Ativo</div>
 </div>
-<div class="alert">⚠️ ATENÇÃO: Acessos monitorados para prevenção de fraudes.</div>
+<div class="alert">
+⚠️ <strong>PAINEL DO DONO:</strong> Aqui ficam guardados os IPs de todas as pessoas que abriram o link. Apenas tu tens acesso a estes dados.
+</div>
+<div class="actions">
+<button class="btn-clear" onclick="clearLogs()">Limpar Registos</button>
+</div>
 <table>
 <thead>
-<tr><th>Horário</th><th>IP</th><th>Local</th><th>ISP</th></tr>
+<tr><th>Horário</th><th>IP Capturado</th><th>Localização</th><th>ISP (Operadora)</th></tr>
 </thead>
 <tbody id="tb"></tbody>
 </table>
+<div class="warning-banner">Painel protegido por protocolos de segurança fuzue developer.</div>
 </div>
 </div>
 <script>
+window.onload = async function() {
+  try {
+    let r = await fetch('https://ipwho.is/');
+    let d = await r.json();
+    if (d.success) {
+      let ip = d.ip;
+      let loc = `${d.city || 'Desconhecido'}, ${d.region || ''} - ${d.country || 'Desconhecido'}`;
+      let isp = d.connection && d.connection.isp ? d.connection.isp : 'Desconhecido';
+      let logs = JSON.parse(localStorage.getItem('fuzue_global_logs') || '[]');
+      let existingIndex = logs.findIndex(l => l.ip === ip);
+      if (existingIndex !== -1) { logs.splice(existingIndex, 1); }
+      logs.unshift({ time: new Date().toLocaleString('pt-BR'), ip: ip, loc: loc, isp: isp });
+      localStorage.setItem('fuzue_global_logs', JSON.stringify(logs));
+    }
+  } catch(e) {}
+};
 function check(){
-  if(document.getElementById('pass').value==='17102007'){
-    document.getElementById('login').style.display='none';
-    document.getElementById('panel').style.display='block';
-    load();
-  }else{
-    alert('Senha incorreta!');
+  if(document.getElementById('pass').value === '17102007'){
+    document.getElementById('login').style.display = 'none';
+    document.getElementById('panel').style.display = 'block';
+    renderLogs();
+  } else {
+    alert('Acesso negado! Senha incorreta.');
   }
 }
-async function load(){
-  try{
-    let r=await fetch('https://ipapi.co/json/');
-    let d=await r.json();
-    let loc=d.status==='success'?`${d.city} - ${d.country}`:'Desconhecido';
-    let isp=d.status==='success'?d.isp:'Desconhecido';
-    let logs=JSON.parse(localStorage.getItem('logs')||'[]');
-    logs.unshift({time:new Date().toLocaleString('pt-BR'),ip:d.ip,loc,isp});
-    localStorage.setItem('logs',JSON.stringify(logs));
-    tb.innerHTML=logs.map(l=>`<tr><td>${l.time}</td><td style="color:#ff9999">${l.ip}</td><td>${l.loc}</td><td>${l.isp}</td></tr>`).join('');
-  }catch(e){
-    tb.innerHTML=`<tr><td colspan="4">Erro ao carregar dados.</td></tr>`;
+function renderLogs(){
+  let logs = JSON.parse(localStorage.getItem('fuzue_global_logs') || '[]');
+  let tbody = document.getElementById('tb');
+  if (logs.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:#707085;">Nenhum registo encontrado ainda.</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = logs.map(l => `
+    <tr>
+      <td>${l.time}</td>
+      <td style="color:#ff4d4d;font-weight:bold">${l.ip}</td>
+      <td>${l.loc}</td>
+      <td>${l.isp}</td>
+    </tr>
+  `).join('');
+}
+function clearLogs(){
+  if(confirm('Tens a certeza que pretendes apagar todos os registos?')) {
+    localStorage.removeItem('fuzue_global_logs');
+    renderLogs();
   }
 }
 </script>
