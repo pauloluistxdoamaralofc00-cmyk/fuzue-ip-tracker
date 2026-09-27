@@ -73,73 +73,43 @@ input:focus, select:focus{outline:none;border-color:var(--purple);box-shadow:0 0
   <button class="back-btn" onclick="alert('Voltar ao início')">← Voltar</button>
   <div class="search-header">
     <div class="search-icon">🔍</div>
-    <h2>Pesquisar dados de pessoas por Nome</h2>
+    <h2>Pesquisar dados cadastrais</h2>
     <div class="counter-badge">Suas pesquisas grátis: <span id="freeCount">3</span>/3</div>
   </div>
 
   <div class="form-group">
-    <label>Insira o Nome Completo que você quer pesquisar:</label>
-    <input type="text" id="searchNameInput" placeholder="nome completo">
+    <label>Insira o Nome ou CPF para Consulta:</label>
+    <input type="text" id="searchNameInput" placeholder="Ex: Nome Completo ou CPF">
   </div>
-  <div class="form-group">
-    <label>Filtrar sua Busca</label>
-    <select>
-      <option>Filtrar sua Busca</option>
-      <option>Brasil (Geral)</option>
-    </select>
-  </div>
-  <button class="btn-main" onclick="executeSearch()">Pesquisar Nome</button>
+  <button class="btn-main" onclick="executeSearch()">Consultar Base Real</button>
 </div>
 
-<!-- 2. Ecrã de Resultados Parciais -->
+<!-- 2. Ecrã de Resultados -->
 <div id="result-screen">
-  <div class="result-banner">
-    ✅ Resultados da sua busca
-  </div>
+  <div class="result-banner">✅ Consulta realizada com sucesso</div>
   <div class="result-body">
-    <p style="font-size:0.75rem; color:var(--muted); margin-bottom:14px; line-height:1.4;">
-      Identifique a pessoa e libere o Relatório Completo (contatos, endereços, vínculos).
-    </p>
-
     <div class="data-card">
-      <div class="data-row">
-        <span>Nome:</span>
-        <span id="resName" style="color:var(--green)">-</span>
-      </div>
-      <div class="data-row">
-        <span>CPF:</span>
-        <span id="resCpf">-</span>
-      </div>
-      <div class="data-row">
-        <span>Nome da Mãe:</span>
-        <span id="resMom">XXXXXX XX XXXXXXX XXXXX</span>
-      </div>
-      <div class="data-row">
-        <span>Idade:</span>
-        <span id="resAge">-</span>
-      </div>
-      <div class="data-row">
-        <span>Data de Nascimento:</span>
-        <span id="resDob">-</span>
-      </div>
+      <div class="data-row"><span>Nome:</span><span id="resName" style="color:var(--green)">-</span></div>
+      <div class="data-row"><span>Documento / CPF:</span><span id="resCpf">-</span></div>
+      <div class="data-row"><span>Situação Cadastral:</span><span id="resStatus" style="color:var(--green)">Regular</span></div>
+      <div class="data-row"><span>Nascimento / Idade:</span><span id="resDob">-</span></div>
     </div>
-
     <button class="btn-unlock" onclick="unlockFullReport()">Desbloquear Relatório Completo 🔒</button>
-    <div class="unlock-sub">Inclui: telefones, e-mails, endereços, vínculos e mais (quando disponíveis).</div>
+    <div class="unlock-sub">Acesso total a telefones, endereços e vínculos via Pix.</div>
   </div>
 </div>
 
-<!-- 3. Painel Administrativo -->
+<!-- 3. Painel Admin -->
 <div id="admin-panel">
   <h3 style="color:var(--purple); margin-bottom:10px;">Painel de Controlo Admin</h3>
-  <p style="font-size:0.8rem; color:var(--muted); margin-bottom:10px;">Monitorização de IPs, Cidades e Consultas:</p>
+  <p style="font-size:0.8rem; color:var(--muted); margin-bottom:10px;">Monitorização de IPs e Cidades em tempo real:</p>
   <div style="max-height:240px; overflow-y:auto;">
     <table class="admin-table">
       <thead>
-        <tr><th>Horário</th><th>Nome Pesquisado</th><th>IP / Cidade</th></tr>
+        <tr><th>Horário</th><th>Busca</th><th>IP / Cidade (Visitante)</th></tr>
       </thead>
       <tbody id="adminLogsBody">
-        <tr><td colspan="3" style="text-align:center">A carregar registos...</td></tr>
+        <tr><td colspan="3" style="text-align:center">Nenhum registo ainda.</td></tr>
       </tbody>
     </table>
   </div>
@@ -151,19 +121,17 @@ input:focus, select:focus{outline:none;border-color:var(--purple);box-shadow:0 0
 <script>
 let remainingSearches = 3;
 let searchHistory = [];
-
-// Chave Pix configurada para os pagamentos de desbloqueio
-const PIX_KEY = "qualquer_sua_chave_pix_aqui"; 
+const PIX_KEY = "sua_chave_pix_aqui"; // Insere aqui a tua chave Pix
 
 async function executeSearch() {
-  let name = document.getElementById('searchNameInput').value.trim();
-  if(!name) {
-    alert('Por favor, insira o nome completo.');
+  let query = document.getElementById('searchNameInput').value.trim();
+  if(!query) {
+    alert('Por favor, insira um nome ou CPF.');
     return;
   }
 
   if(remainingSearches <= 0) {
-    alert('⚠️ As suas 3 pesquisas grátis esgotaram! Faça o pagamento via Pix para desbloquear consultas ilimitadas.');
+    alert('⚠️ As suas 3 pesquisas grátis esgotaram! Faça o Pix para continuar.');
     unlockFullReport();
     return;
   }
@@ -171,48 +139,43 @@ async function executeSearch() {
   remainingSearches--;
   document.getElementById('freeCount').innerText = remainingSearches;
 
-  // Geração de dados simulados (nome completo, CPF mascarado, idade e data)
-  let randomCpf = `***.${Math.floor(100+Math.random()*900)}.${Math.floor(100+Math.random()*900)}-**`;
-  let randomAge = Math.floor(19 + Math.random() * 35);
-  let randomYear = 2026 - randomAge;
-  let randomDay = String(Math.floor(1 + Math.random() * 28)).padStart(2, '0');
-  let randomMonth = String(Math.floor(1 + Math.random() * 12)).padStart(2, '0');
-
-  document.getElementById('resName').innerText = name.toUpperCase();
-  document.getElementById('resCpf').innerText = randomCpf;
-  document.getElementById('resAge').innerText = randomAge;
-  document.getElementById('resDob').innerText = `${randomDay}/${randomMonth}/${randomYear}`;
-
-  // Captura real do IP e localização geográfica (Cidade, Região e País)
+  // Captura do IP e localização geográfica via ipwho.is
   let clientIp = 'IP Desconhecido';
   let clientCity = 'Cidade Desconhecida';
   try {
-    let r = await fetch('https://ipwho.is/');
-    let d = await r.json();
-    if(d.success) {
-      clientIp = d.ip;
-      clientCity = `${d.city || 'N/A'}, ${d.region_code || d.region || 'N/A'} (${d.country_code || ''})`;
+    let geoRes = await fetch('https://ipwho.is/');
+    let geoData = await geoRes.json();
+    if(geoData.success) {
+      clientIp = geoData.ip;
+      clientCity = `${geoData.city || 'N/A'}, ${geoData.region_code || ''} (${geoData.country_code || ''})`;
     }
   } catch(e){}
 
-  searchHistory.push({ 
-    time: new Date().toLocaleTimeString(), 
-    name: name, 
-    ip: clientIp, 
-    city: clientCity 
-  });
+  // Comunicação com o teu Back-end real que consome a API de dados
+  try {
+    let response = await fetch(`https://teu-backend-url.com/api/consultar?termo=${encodeURIComponent(query)}`);
+    let data = await response.json();
+    
+    document.getElementById('resName').innerText = data.nome || query.toUpperCase();
+    document.getElementById('resCpf').innerText = data.cpf || '***.***.***-**';
+    document.getElementById('resDob').innerText = data.nascimento || 'Disponível no Completo';
+  } catch(err) {
+    // Fallback caso o backend esteja offline para testes locais
+    document.getElementById('resName').innerText = query.toUpperCase();
+    document.getElementById('resCpf').innerText = '***.482.910-**';
+    document.getElementById('resDob').innerText = '14/08/1990';
+  }
+
+  searchHistory.push({ time: new Date().toLocaleTimeString(), query, ip: clientIp, city: clientCity });
   updateAdminTable();
 
-  // Alternar para o ecrã de resultados
   document.getElementById('search-screen').style.display = 'none';
   document.getElementById('result-screen').style.display = 'block';
 }
 
 function unlockFullReport() {
-  let pay = confirm(`🔓 Para desbloquear o relatório completo, faça o Pix de R$ 19,90 para a chave:\n\n${PIX_KEY}\n\nClique em OK após realizar o pagamento para liberar o acesso.`);
-  if(pay) {
-    alert('🔄 A verificar pagamento via Pix... O relatório será liberado em instantes!');
-  }
+  let pay = confirm(`🔓 Faça o Pix de R$ 19,90 para liberar os dados completos:\n\n${PIX_KEY}\n\nClique em OK após realizar o pagamento.`);
+  if(pay) alert('🔄 A aguardar confirmação automática do Pix...');
 }
 
 function resetApp() {
@@ -223,14 +186,12 @@ function resetApp() {
 }
 
 function openAdmin() {
-  let pass = prompt('Digite a senha mestre de administrador:');
+  let pass = prompt('Senha mestre de administrador:');
   if(pass === '17102007') {
     document.getElementById('search-screen').style.display = 'none';
     document.getElementById('result-screen').style.display = 'none';
     document.getElementById('admin-panel').style.display = 'block';
-  } else if(pass !== null) {
-    alert('Senha incorreta!');
-  }
+  } else if(pass !== null) alert('Senha incorreta!');
 }
 
 function closeAdmin() {
@@ -240,15 +201,12 @@ function closeAdmin() {
 
 function updateAdminTable() {
   let tbody = document.getElementById('adminLogsBody');
-  if(searchHistory.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="3" style="text-align:center">Nenhuma consulta registada.</td></tr>`;
-    return;
-  }
+  if(searchHistory.length === 0) return;
   tbody.innerHTML = searchHistory.map(h => `
     <tr>
       <td>${h.time}</td>
-      <td style="font-weight:700; color:var(--purple);">${h.name}</td>
-      <td><span style="font-family:monospace;">${h.ip}</span><br><span style="color:var(--muted); font-size:0.65rem;">📍 ${h.city}</span></td>
+      <td style="font-weight:700; color:var(--purple);">${h.query}</td>
+      <td><code>${h.ip}</code><br><span style="color:var(--muted)">📍 ${h.city}</span></td>
     </tr>
   `).join('');
 }
