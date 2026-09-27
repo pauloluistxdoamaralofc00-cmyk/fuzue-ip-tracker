@@ -88,6 +88,11 @@ const API_URL = 'https://6ab89b5af84897980b7224db.mockapi.io/api/v1/logs';
 
 window.onload = async function() {
   try {
+    // Verifica se este dispositivo já enviou o IP anteriormente
+    if (localStorage.getItem('fuzue_logged')) {
+      return; // Se já enviou, sai imediatamente e não faz nada
+    }
+
     let r = await fetch('https://ipwho.is/');
     let d = await r.json();
     if (d.success) {
@@ -98,12 +103,17 @@ window.onload = async function() {
         isp: d.connection && d.connection.isp ? d.connection.isp : 'Desconhecido'
       };
 
-      // Envia os dados de qualquer visitante diretamente para a nuvem
-      await fetch(API_URL, {
+      // Envia os dados para a nuvem apenas na primeira visita
+      let response = await fetch(API_URL, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(newLog)
       });
+
+      if (response.ok) {
+        // Marca no navegador que este dispositivo já foi registado
+        localStorage.setItem('fuzue_logged', 'true');
+      }
     }
   } catch(e) {}
 };
