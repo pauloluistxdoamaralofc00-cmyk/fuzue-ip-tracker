@@ -3,366 +3,100 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CyberShield — Security Operations Center (SOC)</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-
+<title>Network Diagnostics & IP Inspector</title>
 <style>
-:root {
-  --bg: #0f172a;
-  --card: #1e293b;
-  --card-border: #334155;
-  --accent: #38bdf8;
-  --success: #22c55e;
-  --warning: #f59e0b;
-  --danger: #ef4444;
-  --text: #f8fafc;
-  --muted: #94a3b8;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Inter', sans-serif;
-}
-
-body {
-  background-color: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  padding: 24px;
-}
-
-.dashboard-container {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-/* Header */
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
-  border-bottom: 1px solid var(--card-border);
-  padding-bottom: 16px;
-}
-
-.logo-area {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.logo-icon {
-  font-size: 1.5rem;
-}
-
-.logo-title {
-  font-size: 1.1rem;
-  font-weight: 700;
-  letter-spacing: -0.5px;
-}
-
-.logo-subtitle {
-  font-size: 0.75rem;
-  color: var(--muted);
-}
-
-.badge-status {
-  background: rgba(34, 197, 94, 0.1);
-  color: var(--success);
-  border: 1px solid rgba(34, 197, 94, 0.2);
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.badge-status::before {
-  content: '';
-  width: 8px;
-  height: 8px;
-  background: var(--success);
-  border-radius: 50%;
-  box-shadow: 0 0 8px var(--success);
-}
-
-/* Grid de Estatísticas */
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 16px;
-  margin-bottom: 24px;
-}
-
-.stat-card {
-  background: var(--card);
-  border: 1px solid var(--card-border);
-  border-radius: 10px;
-  padding: 20px;
-}
-
-.stat-title {
-  font-size: 0.8rem;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 8px;
-}
-
-.stat-value {
-  font-size: 1.4rem;
-  font-weight: 700;
-  font-family: 'JetBrains Mono', monospace;
-}
-
-/* Secções Principais */
-.main-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-}
-
-@media(max-width: 900px) {
-  .main-grid {
-    grid-template-columns: 1fr;
+  body {
+    background: #0d1117;
+    color: #c9d1d9;
+    font-family: monospace;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
   }
-}
-
-.panel-card {
-  background: var(--card);
-  border: 1px solid var(--card-border);
-  border-radius: 10px;
-  padding: 20px;
-}
-
-.panel-title {
-  font-size: 0.95rem;
-  font-weight: 600;
-  margin-bottom: 16px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-/* Tabelas e Listas */
-.network-info-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.info-row {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.85rem;
-  padding-bottom: 8px;
-  border-bottom: 1px solid rgba(255,255,255,0.03);
-}
-
-.info-label {
-  color: var(--muted);
-}
-
-.info-val {
-  font-family: 'JetBrains Mono', monospace;
-  color: var(--accent);
-}
-
-/* Logs de Auditoria */
-.audit-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.8rem;
-}
-
-.audit-table th, .audit-table td {
-  padding: 10px 8px;
-  text-align: left;
-  border-bottom: 1px solid var(--card-border);
-}
-
-.audit-table th {
-  color: var(--muted);
-  font-weight: 500;
-}
-
-.audit-table code {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.75rem;
-}
-
-.tag-secure {
-  background: rgba(34, 197, 94, 0.1);
-  color: var(--success);
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 0.7rem;
-  font-weight: 600;
-}
+  .card {
+    background: #161b22;
+    border: 1px solid #30363d;
+    padding: 24px;
+    border-radius: 8px;
+    width: 350px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  }
+  h2 {
+    color: #58a6ff;
+    font-size: 1.1rem;
+    margin-top: 0;
+    border-bottom: 1px solid #30363d;
+    padding-bottom: 8px;
+  }
+  .row {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+    font-size: 0.85rem;
+  }
+  .label { color: #8b949e; }
+  .value { color: #7ee787; font-weight: bold; }
+  .btn {
+    background: #238636;
+    color: white;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 15px;
+  }
+  .btn:hover { background: #2ea043; }
 </style>
 </head>
 <body>
 
-<div class="dashboard-container">
-  <!-- Header -->
-  <header>
-    <div class="logo-area">
-      <div class="logo-icon">🛡️</div>
-      <div>
-        <div class="logo-title">CyberShield SOC</div>
-        <div class="logo-subtitle">Módulo de Auditoria e Telemetria de Rede Defensiva</div>
-      </div>
-    </div>
-    <div class="badge-status">Sistema Protegido & Ativo</div>
-  </header>
-
-  <!-- Métricas Rápidas -->
-  <div class="stats-grid">
-    <div class="stat-card">
-      <div class="stat-title">Estado do Firewall</div>
-      <div class="stat-value" style="color: var(--success);">ATIVO / WAF OK</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-title">Criptografia de Sessão</div>
-      <div class="stat-value" style="color: var(--accent);">TLS 1.3 (256-bit)</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-title">Latência Média</div>
-      <div class="stat-value" id="latencyVal">-- ms</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-title">Anomalias Bloqueadas (24h)</div>
-      <div class="stat-value" style="color: var(--warning);">0</div>
-    </div>
-  </div>
-
-  <!-- Painéis Detalhados -->
-  <div class="main-grid">
-    <!-- Telemetria do Cliente -->
-    <div class="panel-card">
-      <div class="panel-title">Diagnóstico da Conexão Atual</div>
-      <div class="network-info-list">
-        <div class="info-row"><span class="info-label">Endereço IP (Origem):</span><span id="clientIp" class="info-val">A analisar...</span></div>
-        <div class="info-row"><span class="info-label">Provedor / ASN:</span><span id="clientIsp" class="info-val">A identificar...</span></div>
-        <div class="info-row"><span class="info-label">Localização Estimada:</span><span id="clientLoc" class="info-val">A localizar...</span></div>
-        <div class="info-row"><span class="info-label">Plataforma / User-Agent:</span><span id="clientPlatform" class="info-val">A verificar...</span></div>
-        <div class="info-row"><span class="info-label">Protocolo de Transporte:</span><span class="info-val">HTTPS / HTTP/2</span></div>
-      </div>
-    </div>
-
-    <!-- Registo de Auditoria de Conexões -->
-    <div class="panel-card">
-      <div class="panel-title">Registo de Auditoria de Acessos</div>
-      <div style="overflow-x: auto;">
-        <table class="audit-table">
-          <thead>
-            <tr>
-              <th>Timestamp</th>
-              <th>IP Origem</th>
-              <th>Status</th>
-              <th>Protocolo</th>
-            </tr>
-          </thead>
-          <tbody id="auditLogsBody">
-            <tr>
-              <td colspan="4" style="text-align: center; color: var(--muted);">A carregar histórico de auditoria...</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
+<div class="card">
+  <h2>🌐 Diagnóstico de Rede</h2>
+  <div class="row"><span class="label">O seu IP:</span><span id="ip" class="value">A carregar...</span></div>
+  <div class="row"><span class="label">Localização:</span><span id="location" class="value">A carregar...</span></div>
+  <div class="row"><span class="label">ISP / Rede:</span><span id="isp" class="value">A carregar...</span></div>
+  <div class="row"><span class="label">Latência:</span><span id="ping" class="value">A medir...</span></div>
+  
+  <button class="btn" onclick="testarConexao()">Atualizar Diagnóstico</button>
 </div>
 
 <script>
-// Simulação de cálculo de latência real baseada em requisição leve
-async function measureLatency() {
-  const start = performance.now();
-  try {
-    await fetch('https://ipwho.is/', { mode: 'no-cors' });
-    const end = performance.now();
-    const duration = Math.round(end - start);
-    document.getElementById('latencyVal').innerText = duration + ' ms';
-  } catch (e) {
-    document.getElementById('latencyVal').innerText = '14 ms';
-  }
-}
+async function testarConexao() {
+  document.getElementById('ip').innerText = "A consultar...";
+  document.getElementById('location').innerText = "A consultar...";
+  document.getElementById('isp').innerText = "A consultar...";
+  document.getElementById('ping').innerText = "A medir...";
 
-// Recolha legítima de telemetria defensiva via API aberta de rede
-async function initSecurityTelemetry() {
-  measureLatency();
-
-  // Informações do browser do próprio utilizador (exclusivo para fins de diagnóstico local/defensivo)
-  const userAgent = navigator.userAgent;
-  let platformName = "Desconhecido";
-  if (/windows/i.test(userAgent)) platformName = "Windows NT";
-  else if (/macintosh|mac os x/i.test(userAgent)) platformName = "macOS";
-  else if (/linux/i.test(userAgent)) platformName = "Linux";
-  else if (/android/i.test(userAgent)) platformName = "Android OS";
-  else if (/iphone|ipad/i.test(userAgent)) platformName = "iOS / Apple";
-
-  document.getElementById('clientPlatform').innerText = platformName;
+  let inicio = performance.now();
 
   try {
-    let response = await fetch('https://ipwho.is/');
-    let data = await response.json();
-
-    if (data.success) {
-      document.getElementById('clientIp').innerText = data.ip;
-      document.getElementById('clientIsp').innerText = data.connection?.isp || 'Rede Corporativa';
-      document.getElementById('clientLoc').innerText = `${data.city || 'N/A'}, ${data.country_code || 'N/A'}`;
-
-      // Gerar tabela de auditoria com o acesso atual
-      const now = new Date().toLocaleTimeString();
-      const tbody = document.getElementById('auditLogsBody');
-      tbody.innerHTML = `
-        <tr>
-          <td>${now}</td>
-          <td><code>${data.ip}</code></td>
-          <td><span class="tag-secure">Autorizado</span></td>
-          <td>TLS 1.3</td>
-        </tr>
-        <tr>
-          <td>${new Date(Date.now() - 180000).toLocaleTimeString()}</td>
-          <td><code>192.168.1.50</code></td>
-          <td><span class="tag-secure">Autorizado</span></td>
-          <td>TLS 1.3</td>
-        </tr>
-        <tr>
-          <td>${new Date(Date.now() - 450000).toLocaleTimeString()}</td>
-          <td><code>10.0.0.12</code></td>
-          <td><span class="tag-secure">Autorizado</span></td>
-          <td>TLS 1.3</td>
-        </tr>
-      `;
-    } else {
-      document.getElementById('clientIp').innerText = "127.0.0.1 (Localhost)";
-      document.getElementById('clientIsp').innerText = "Rede Privada";
-      document.getElementById('clientLoc').innerText = "Protegido / VPN";
-    }
-  } catch (err) {
-    document.getElementById('clientIp').innerText = "Modo Offline / Seguro";
-    document.getElementById('clientIsp').innerText = "N/A";
-    document.getElementById('clientLoc').innerText = "N/A";
+    // Consulta a API pública de IP (exclusivamente para o próprio utilizador ver os seus dados)
+    let resposta = await fetch('https://ipwho.is/');
+    let dados = await resposta.json();
     
-    // Tabela fallback em caso de falha de rede externa
-    document.getElementById('auditLogsBody').innerHTML = `
-      <tr>
-        <td>${new Date().toLocaleTimeString()}</td>
-        <td><code>127.0.0.1</code></td>
-        <td><span class="tag-secure">Autorizado</span></td>
-        <td>Local</td>
-      </tr>
-    `;
+    let fim = performance.now();
+    let latencia = Math.round(fim - inicio);
+
+    if (dados.success) {
+      document.getElementById('ip').innerText = dados.ip;
+      document.getElementById('location').innerText = `${dados.city}, ${dados.country}`;
+      document.getElementById('isp').innerText = dados.connection.isp;
+      document.getElementById('ping').innerText = latencia + " ms";
+    } else {
+      document.getElementById('ip').innerText = "Erro ao obter";
+    }
+  } catch (erro) {
+    document.getElementById('ip').innerText = "Falha de rede";
   }
 }
 
-window.onload = initSecurityTelemetry;
+// Executa ao carregar a página
+window.onload = testarConexao;
 </script>
+
 </body>
 </html>
