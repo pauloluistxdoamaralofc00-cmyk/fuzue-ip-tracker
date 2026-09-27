@@ -3,103 +3,99 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>BuscaPrime - Painel e Monitorização</title>
+<title>FreeFire Panel - Consulta & Monitorização</title>
 <style>
-:root{--bg:#09090e;--card:#12121a;--border:#20202d;--purple:#7c3aed;--purple-glow:rgba(124,58,237,0.25);--text:#f3f4f6;--muted:#9ca3af;--green:#10b981;--red:#ef4444}
+:root{--bg:#0b0b10;--card:#14141f;--border:#262638;--ff-orange:#ff5722;--ff-yellow:#ffc107;--text:#f3f4f6;--muted:#9ca3af;--green:#10b981}
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;-webkit-tap-highlight-color:transparent}
 body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:12px}
 .container{width:100%;max-width:440px}
 
 /* Topbar */
 .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding:0 4px}
-.brand{font-weight:700;font-size:1.05rem;color:var(--text);display:flex;align-items:center;gap:6px}
-.brand span{color:var(--purple)}
-.nav-links{display:flex;gap:12px;font-size:0.72rem;color:var(--muted)}
-.nav-links span{cursor:pointer}
+.brand{font-weight:800;font-size:1.05rem;color:var(--text);display:flex;align-items:center;gap:6px;letter-spacing:0.5px}
+.brand span{color:var(--ff-orange)}
+.nav-links{display:flex;gap:12px;font-size:0.75rem;color:var(--muted)}
+.nav-links span{cursor:pointer;font-weight:600}
 .nav-links span:hover{color:var(--text)}
 
-/* Ecrã de Pesquisa / Entrada */
-.screen{background:var(--card);border:1px solid var(--border);padding:24px;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,0.6)}
-.search-header{text-align:center;margin-bottom:20px}
-.search-icon{width:46px;height:46px;background:rgba(124,58,237,0.2);color:var(--purple);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:1.2rem}
-.search-header h2{font-size:1.15rem;font-weight:700;margin-bottom:10px;line-height:1.3}
-
-.counter-badge{background:rgba(124,58,237,0.18);color:#c4b5fd;font-size:0.75rem;padding:6px 14px;border-radius:20px;font-weight:600;display:inline-block;border:1px solid rgba(124,58,237,0.3);margin-bottom:15px}
-.counter-badge span{color:#fff;font-weight:700}
+/* Ecrãs */
+.screen{background:var(--card);border:1px solid var(--border);padding:24px;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,0.8)}
+.header-icon{width:50px;height:50px;background:rgba(255,87,34,0.15);color:var(--ff-orange);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:1.4rem;border:1px solid rgba(255,87,34,0.3)}
+.screen h2{font-size:1.15rem;font-weight:800;text-align:center;margin-bottom:6px;color:#fff}
+.screen p{font-size:0.78rem;color:var(--muted);text-align:center;margin-bottom:20px;line-height:1.4}
 
 .form-group{margin-bottom:14px;text-align:left}
-.form-group label{font-size:0.72rem;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:6px;font-weight:600}
-input{width:100%;padding:12px 14px;background:#050507;border:1px solid var(--border);color:var(--text);border-radius:8px;font-size:0.88rem;font-weight:600}
-input:focus{outline:none;border-color:var(--purple);box-shadow:0 0 8px var(--purple-glow)}
+.form-group label{font-size:0.72rem;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:6px;font-weight:700}
+input{width:100%;padding:12px 14px;background:#07070a;border:1px solid var(--border);color:var(--text);border-radius:8px;font-size:0.88rem;font-weight:600}
+input:focus{outline:none;border-color:var(--ff-orange);box-shadow:0 0 8px rgba(255,87,34,0.25)}
 
-.btn-main{background:var(--green);color:#000;border:none;padding:14px;width:100%;border-radius:8px;cursor:pointer;font-weight:800;text-transform:uppercase;font-size:0.85rem;letter-spacing:0.5px;transition:opacity 0.2s}
-.btn-main:hover{opacity:0.9}
+.btn-ff{background:linear-gradient(135deg, #ff5722, #ff9800);color:#fff;border:none;padding:14px;width:100%;border-radius:8px;cursor:pointer;font-weight:800;text-transform:uppercase;font-size:0.85rem;letter-spacing:0.5px;transition:opacity 0.2s;box-shadow:0 4px 15px rgba(255,87,34,0.3)}
+.btn-ff:hover{opacity:0.9}
 
 /* Painel Admin */
 .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:15px}
-.stat-box{background:#050507;border:1px solid var(--border);padding:12px;border-radius:8px;text-align:center}
-.stat-box span{display:block;font-size:1.2rem;font-weight:800;color:var(--purple);margin-top:4px}
+.stat-box{background:#07070a;border:1px solid var(--border);padding:12px;border-radius:8px;text-align:center}
+.stat-box span{display:block;font-size:1.3rem;font-weight:800;color:var(--ff-yellow);margin-top:4px}
 .admin-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:0.7rem;text-align:left}
 .admin-table th, .admin-table td{padding:8px 6px;border-bottom:1px solid var(--border);white-space:nowrap}
-.admin-table th{color:var(--purple)}
+.admin-table th{color:var(--ff-orange)}
 </style>
 </head>
 <body>
 
 <div class="container">
 
-<!-- Topbar -->
-<div class="topbar">
-  <div class="brand">👤 Busca<span>Prime</span></div>
-  <div class="nav-links">
-    <span onclick="openAdmin()">Admin</span>
-  </div>
-</div>
-
-<!-- 1. Ecrã de Início / Consulta -->
-<div id="home-screen" class="screen">
-  <div class="search-header">
-    <div class="search-icon">🔍</div>
-    <h2>Consulta de Dados por Nome</h2>
-    <div class="counter-badge">Pesquisas Disponíveis: <span id="freeCount">3</span>/3</div>
-  </div>
-
-  <div class="form-group">
-    <label>Nome Completo:</label>
-    <input type="text" id="searchNameInput" placeholder="Digite o nome completo">
-  </div>
-  <button class="btn-main" onclick="executeSearch()">Pesquisar Registo</button>
-</div>
-
-<!-- 2. Ecrã do Painel Administrativo -->
-<div id="admin-screen" class="screen" style="display:none;">
-  <h3 style="color:var(--purple); margin-bottom:12px; text-align:center;">Painel de Controlo Admin</h3>
-  
-  <div class="stats-grid">
-    <div class="stat-box">
-      <small style="color:var(--muted); font-size:0.68rem;">Total Cliques</small>
-      <span id="totalClicks">0</span>
-    </div>
-    <div class="stat-box">
-      <small style="color:var(--muted); font-size:0.68rem;">Membros Online</small>
-      <span id="onlineMembers" style="color:var(--green)">1</span>
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="brand">🔥 FF <span>PANEL</span></div>
+    <div class="nav-links">
+      <span onclick="openAdmin()">Admin</span>
     </div>
   </div>
 
-  <p style="font-size:0.75rem; color:var(--muted); margin-bottom:8px;">Registo de Visitantes (IP e Localização):</p>
-  <div style="max-height:220px; overflow-y:auto;">
-    <table class="admin-table">
-      <thead>
-        <tr><th>Horário</th><th>IP</th><th>Cidade</th></tr>
-      </thead>
-      <tbody id="adminLogsBody">
-        <tr><td colspan="3" style="text-align:center; color:var(--muted);">A carregar...</td></tr>
-      </tbody>
-    </table>
+  <!-- 1. Ecrã Principal do Jogador -->
+  <div id="home-screen" class="screen">
+    <div class="header-icon">🎯</div>
+    <h2>Consulta UID Free Fire</h2>
+    <p>Insira o UID ou Nome do jogador para verificar o estatuto da conta na base de dados.</p>
+
+    <div class="form-group">
+      <label>UID ou Nick do Jogador:</label>
+      <input type="text" id="ffInput" placeholder="Ex: 1533256573 ou Nick">
+    </div>
+    
+    <button class="btn-ff" onclick="consultarFF()">Pesquisar Jogador</button>
   </div>
 
-  <button class="btn-main" style="background:#374151; color:#fff; margin-top:15px;" onclick="closeAdmin()">Fechar Admin</button>
-</div>
+  <!-- 2. Ecrã Administrativo Restrito -->
+  <div id="admin-screen" class="screen" style="display:none;">
+    <h3 style="color:var(--ff-orange); margin-bottom:12px; text-align:center;">Painel de Controlo VIP</h3>
+    
+    <div class="stats-grid">
+      <div class="stat-box">
+        <small style="color:var(--muted); font-size:0.68rem;">Total Cliques</small>
+        <span id="totalClicks">0</span>
+      </div>
+      <div class="stat-box">
+        <small style="color:var(--muted); font-size:0.68rem;">Membros Online</small>
+        <span id="onlineMembers" style="color:var(--green)">1</span>
+      </div>
+    </div>
+
+    <p style="font-size:0.72rem; color:var(--muted); margin-bottom:6px;">Registo de Acessos (IP e Cidade):</p>
+    <div style="max-height:200px; overflow-y:auto;">
+      <table class="admin-table">
+        <thead>
+          <tr><th>Horário</th><th>IP</th><th>Cidade</th></tr>
+        </thead>
+        <tbody id="adminLogs">
+          <tr><td colspan="3" style="text-align:center; color:var(--muted);">A carregar dados...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <button class="btn-ff" style="background:#374151; margin-top:15px; box-shadow:none;" onclick="closeAdmin()">Fechar Painel</button>
+  </div>
 
 </div>
 
@@ -109,7 +105,7 @@ let accessLogs = [];
 let clientIp = 'A detetar...';
 let clientCity = 'A detetar...';
 
-// Recolhe automaticamente o IP e a Cidade via ipwho.is ao carregar a página
+// Recolhe automaticamente o IP e a Cidade do visitante ao abrir a página
 window.onload = async function() {
   try {
     let res = await fetch('https://ipwho.is/');
@@ -124,23 +120,23 @@ window.onload = async function() {
   }
 };
 
-function executeSearch() {
-  let name = document.getElementById('searchNameInput').value.trim();
-  if(!name) {
-    alert('Por favor, insira um nome.');
+function consultarFF() {
+  let val = document.getElementById('ffInput').value.trim();
+  if(!val) {
+    alert('Por favor, insira um UID ou Nick válido!');
     return;
   }
 
   totalClicks++;
   let timeNow = new Date().toLocaleTimeString();
 
-  // Regista se ainda não estiver na lista desta sessão
+  // Regista o IP na tabela do admin se ainda não estiver registado nesta sessão
   if(!accessLogs.some(log => log.ip === clientIp)) {
     accessLogs.push({ time: timeNow, ip: clientIp, city: clientCity });
   }
 
-  alert(`Pesquisa efetuada para: ${name.toUpperCase()}`);
-  document.getElementById('searchNameInput').value = '';
+  alert(`A processar consulta para o ID/Nick: ${val.toUpperCase()}`);
+  document.getElementById('ffInput').value = '';
 }
 
 function openAdmin() {
@@ -148,7 +144,7 @@ function openAdmin() {
   if(pass === '17102007') {
     document.getElementById('home-screen').style.display = 'none';
     document.getElementById('admin-screen').style.display = 'block';
-    updateAdminDisplay();
+    updateAdminStats();
   } else if(pass !== null) {
     alert('Senha incorreta!');
   }
@@ -159,11 +155,11 @@ function closeAdmin() {
   document.getElementById('home-screen').style.display = 'block';
 }
 
-function updateAdminDisplay() {
+function updateAdminStats() {
   document.getElementById('totalClicks').innerText = totalClicks;
-  document.getElementById('onlineMembers').innerText = Math.floor(1 + Math.random() * 2);
+  document.getElementById('onlineMembers').innerText = Math.floor(1 + Math.random() * 3);
 
-  let tbody = document.getElementById('adminLogsBody');
+  let tbody = document.getElementById('adminLogs');
   if(accessLogs.length === 0) {
     tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:var(--muted);">Nenhum registo ainda.</td></tr>`;
     return;
