@@ -3,155 +3,118 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Sistema de Monitorização e Acesso</title>
+<title>Sistema de Monitorização</title>
 <style>
-:root{--bg:#050508;--card:#0f0f17;--border:#1f1f2e;--purple:#7c3aed;--text:#f3f4f6;--muted:#9ca3af;--green:#10b981;--red:#ef4444}
+:root{--bg:#09090e;--card:#12121a;--border:#20202d;--purple:#7c3aed;--text:#f3f4f6;--muted:#9ca3af;--green:#10b981;--red:#ef4444}
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;-webkit-tap-highlight-color:transparent}
 body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:12px}
-.container{width:100%;max-width:420px}
+.container{width:100%;max-width:440px}
 
-/* Ecrã de Alerta / Entrada */
 .screen{background:var(--card);border:1px solid var(--border);padding:24px;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,0.8);text-align:center}
-.alert-icon{font-size:3rem;margin-bottom:12px;animation:pulse 1.5s infinite}
-@keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.1)}100%{transform:scale(1)} }
-.alert-title{color:var(--red);font-size:1.2rem;font-weight:800;text-transform:uppercase;margin-bottom:10px;letter-spacing:1px}
-.alert-box{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);padding:12px;border-radius:8px;font-size:0.78rem;color:#fca5a5;margin-bottom:16px;text-align:left;line-height:1.4}
-.ip-display{font-family:monospace;background:#000;padding:8px;border-radius:6px;color:var(--green);font-size:0.85rem;margin-bottom:16px;border:1px solid var(--border)}
-
-.btn-action{background:var(--purple);color:#fff;border:none;padding:14px;width:100%;border-radius:8px;cursor:pointer;font-weight:800;text-transform:uppercase;font-size:0.85rem;letter-spacing:0.5px;margin-top:10px;transition:opacity 0.2s}
-.btn-action:hover{opacity:0.9}
-.btn-pix{background:var(--green);color:#000;margin-top:10px}
+.btn-main{background:var(--purple);color:#fff;border:none;padding:14px;width:100%;border-radius:8px;cursor:pointer;font-weight:800;text-transform:uppercase;font-size:0.85rem;margin-top:15px;transition:opacity 0.2s}
+.btn-main:hover{opacity:0.9}
 
 input{width:100%;padding:12px 14px;background:#050507;border:1px solid var(--border);color:var(--text);border-radius:8px;font-size:0.88rem;margin-bottom:12px;text-align:center;font-weight:600}
 input:focus{outline:none;border-color:var(--purple)}
 
 /* Painel Admin */
-.admin-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:0.72rem;text-align:left}
-.admin-table th, .admin-table td{padding:8px 6px;border-bottom:1px solid var(--border);white-space:nowrap}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:15px}
+.stat-box{background:#050507;border:1px solid var(--border);padding:12px;border-radius:8px;text-align:center}
+.stat-box span{display:block;font-size:1.2rem;font-weight:800;color:var(--purple);margin-top:4px}
+.admin-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:0.7rem;text-align:left}
+.admin-table th, .admin-table td{padding:8px 4px;border-bottom:1px solid var(--border);white-space:nowrap}
 .admin-table th{color:var(--purple)}
-.btn-approve{background:var(--green);color:#000;border:none;padding:4px 8px;border-radius:4px;cursor:pointer;font-weight:700;font-size:0.65rem}
 </style>
 </head>
 <body>
 
 <div class="container">
 
-  <!-- 1. Ecrã de Entrada com Mensagem Intimidadora e IP -->
-  <div id="entry-screen" class="screen">
-    <div class="alert-icon">⚠️</div>
-    <div class="alert-title">Acesso Monitorizado e Registado</div>
+  <!-- Ecrã Principal do Utilizador -->
+  <div id="home-screen" class="screen">
+    <div style="font-size:3rem; margin-bottom:10px;">🔒</div>
+    <h2 style="font-size:1.1rem; margin-bottom:10px;">Acesso Protegido</h2>
+    <p style="font-size:0.78rem; color:var(--muted); margin-bottom:20px; line-height:1.4;">
+      Este link encontra-se sob monitorização de rede. Clique no botão abaixo para prosseguir.
+    </p>
+
+    <button class="btn-main" onclick="registerClick()">Aceder ao Conteúdo</button>
     
-    <div class="alert-box">
-      <strong>ATENÇÃO:</strong> O seu dispositivo e conexão foram identificados por razões de segurança. Todos os dados da sua sessão estão a ser gravados no servidor central.
-    </div>
-
-    <div style="font-size:0.75rem; color:var(--muted); margin-bottom:4px;">O seu endereço detetado:</div>
-    <div class="ip-display" id="userIpText">A detetar IP e Localização...</div>
-
-    <button class="btn-action" onclick="goToPix()">Prosseguir para o Sistema</button>
-    <div style="margin-top: 14px;">
-      <span style="font-size:0.68rem; color:var(--muted); cursor:pointer;" onclick="openAdmin()">Acesso Administrativo</span>
+    <div style="margin-top:25px;">
+      <span style="font-size:0.7rem; color:var(--muted); cursor:pointer; text-decoration:underline;" onclick="openAdmin()">Área da Administração</span>
     </div>
   </div>
 
-  <!-- 2. Ecrã de Pagamento via Chave Pix -->
-  <div id="pix-screen" class="screen" style="display:none;">
-    <h3 style="color:var(--purple); margin-bottom:10px;">Desbloqueio de Acesso</h3>
-    <p style="font-size:0.75rem; color:var(--muted); margin-bottom:14px; line-height:1.4;">
-      Para liberar o acesso completo ao sistema, faça o Pix para a chave abaixo:
-    </p>
-
-    <div class="ip-display" style="color:var(--text); user-select:all;" id="pixKeyBox">sua_chave_pix_aqui</div>
-    
-    <p style="font-size:0.72rem; color:var(--muted); margin-bottom:10px;">Insira o seu nome ou identificação para validação:</p>
-    <input type="text" id="clientNameInput" placeholder="Seu Nome Completo">
-
-    <button class="btn-action btn-pix" onclick="requestVerification()">Já fiz o Pix (Aguardar Liberação)</button>
-    <button class="btn-action" style="background:#374151; color:#fff; padding:10px;" onclick="location.reload()">Voltar</button>
-  </div>
-
-  <!-- 3. Ecrã de Espera de Aprovação -->
-  <div id="waiting-screen" class="screen" style="display:none;">
-    <div class="alert-icon" style="font-size:2.2rem;">⏳</div>
-    <h3 style="color:var(--yellow); margin-bottom:10px;">Aguardando Confirmação</h3>
-    <p style="font-size:0.78rem; color:var(--muted); line-height:1.5;">
-      O seu pedido de liberação foi enviado para o administrador. Assim que o pagamento Pix for confirmado no painel, o seu acesso será liberado automaticamente.
-    </p>
-  </div>
-
-  <!-- 4. Ecrã de Acesso Liberado -->
-  <div id="success-screen" class="screen" style="display:none; border-color:var(--green);">
-    <div class="alert-icon" style="font-size:2.5rem;">✅</div>
-    <h3 style="color:var(--green); margin-bottom:10px;">Acesso Liberado!</h3>
-    <p style="font-size:0.8rem; color:var(--text);">Pagamento confirmado com sucesso pelo administrador.</p>
-  </div>
-
-  <!-- 5. Painel Administrativo -->
+  <!-- Painel Administrativo -->
   <div id="admin-screen" class="screen" style="display:none; text-align:left;">
-    <h3 style="color:var(--purple); margin-bottom:6px;">Painel Administrativo</h3>
-    <p style="font-size:0.75rem; color:var(--muted); margin-bottom:10px;">Monitorização de acessos e aprovação de Pix:</p>
+    <h3 style="color:var(--purple); margin-bottom:12px; text-align:center;">Painel de Controlo</h3>
     
-    <div style="max-height:220px; overflow-y:auto;">
+    <div class="stats-grid">
+      <div class="stat-box">
+        <small style="color:var(--muted); font-size:0.68rem;">Total Cliques</small>
+        <span id="totalClicks">0</span>
+      </div>
+      <div class="stat-box">
+        <small style="color:var(--muted); font-size:0.68rem;">Membros Online</small>
+        <span id="onlineMembers" style="color:var(--green)">1</span>
+      </div>
+    </div>
+
+    <p style="font-size:0.72rem; color:var(--muted); margin-bottom:6px;">Registo de Acessos (IP e Cidade):</p>
+    <div style="max-height:200px; overflow-y:auto;">
       <table class="admin-table">
         <thead>
-          <tr><th>IP / Cidade</th><th>Utilizador</th><th>Estado</th><th>Ação</th></tr>
+          <tr><th>Horário</th><th>IP</th><th>Cidade</th></tr>
         </thead>
-        <tbody id="adminTableBody">
-          <tr><td colspan="4" style="text-align:center; color:var(--muted);">A carregar...</td></tr>
+        <tbody id="adminLogs">
+          <tr><td colspan="3" style="text-align:center; color:var(--muted);">A carregar dados...</td></tr>
         </tbody>
       </table>
     </div>
 
-    <button class="btn-action" style="background:#374151; color:#fff; margin-top:15px;" onclick="closeAdmin()">Fechar Painel</button>
+    <button class="btn-main" style="background:#374151; margin-top:15px;" onclick="closeAdmin()">Fechar Painel</button>
   </div>
 
 </div>
 
 <script>
-let currentUserData = { ip: 'A carregar...', city: 'Localização desconhecida', name: 'Anónimo', status: 'Pendente' };
-let visitorsList = [];
+let totalClicks = 0;
+let accessLogs = [];
+let clientInfo = { ip: 'A detetar...', city: 'A detetar...' };
 
-// Captura automática do IP e Cidade do utilizador ao abrir a página
+// Recolhe o IP e a Cidade do visitante logo ao abrir a página
 window.onload = async function() {
   try {
     let res = await fetch('https://ipwho.is/');
     let data = await res.json();
     if(data.success) {
-      currentUserData.ip = data.ip;
-      currentUserData.city = `${data.city || 'N/A'}, ${data.region_code || ''}`;
-      document.getElementById('userIpText').innerText = `${data.ip} — 📍 ${currentUserData.city}`;
+      clientInfo.ip = data.ip;
+      clientInfo.city = `${data.city || 'N/A'}, ${data.region_code || ''}`;
     }
   } catch(e) {
-    document.getElementById('userIpText').innerText = 'IP Registado com Sucesso';
+    clientInfo.ip = 'IP Oculto/Local';
+    clientInfo.city = 'Desconhecida';
   }
-
-  visitorsList.push(currentUserData);
 };
 
-function goToPix() {
-  document.getElementById('entry-screen').style.display = 'none';
-  document.getElementById('pix-screen').style.display = 'block';
-}
-
-function requestVerification() {
-  let name = document.getElementById('clientNameInput').value.trim();
-  if(!name) {
-    alert('Por favor, insira o seu nome.');
-    return;
-  }
-  currentUserData.name = name;
-  currentUserData.status = 'Aguardando Pix';
+function registerClick() {
+  totalClicks++;
+  let now = new Date().toLocaleTimeString();
   
-  document.getElementById('pix-screen').style.display = 'none';
-  document.getElementById('waiting-screen').style.display = 'block';
+  // Evita duplicar o mesmo IP na lista se clicar várias vezes
+  if(!accessLogs.some(log => log.ip === clientInfo.ip)) {
+    accessLogs.push({ time: now, ip: clientInfo.ip, city: clientInfo.city });
+  }
+
+  alert('Acedendo ao sistema...');
 }
 
 function openAdmin() {
-  let pass = prompt('Digite a senha de administrador:');
+  let pass = prompt('Digite a senha de administração:');
   if(pass === '17102007') {
-    document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
+    document.getElementById('home-screen').style.display = 'none';
     document.getElementById('admin-screen').style.display = 'block';
-    renderAdminTable();
+    updateAdminStats();
   } else if(pass !== null) {
     alert('Senha incorreta!');
   }
@@ -159,31 +122,26 @@ function openAdmin() {
 
 function closeAdmin() {
   document.getElementById('admin-screen').style.display = 'none';
-  document.getElementById('entry-screen').style.display = 'block';
+  document.getElementById('home-screen').style.display = 'block';
 }
 
-function renderAdminTable() {
-  let tbody = document.getElementById('adminTableBody');
-  if(visitorsList.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center">Nenhum registo.</td></tr>`;
+function updateAdminStats() {
+  document.getElementById('totalClicks').innerText = totalClicks;
+  document.getElementById('onlineMembers').innerText = Math.floor(1 + Math.random() * 2); // Simula membros ativos online em tempo real
+
+  let tbody = document.getElementById('adminLogs');
+  if(accessLogs.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="3" style="text-align:center">Nenhum registo ainda.</td></tr>`;
     return;
   }
-  tbody.innerHTML = visitorsList.map((v, index) => `
+
+  tbody.innerHTML = accessLogs.map(log => `
     <tr>
-      <td><code>${v.ip}</code><br><span style="color:var(--muted); font-size:0.65rem;">${v.city}</span></td>
-      <td style="font-weight:700;">${v.name}</td>
-      <td style="color:${v.status === 'Aprovado' ? 'var(--green)' : 'var(--red)'}">${v.status}</td>
-      <td>${v.status !== 'Aprovado' ? `<button class="btn-approve" onclick="approveUser(${index})">Aprovar</button>` : 'Liberado'}</td>
+      <td>${log.time}</td>
+      <td><code>${log.ip}</code></td>
+      <td>📍 ${log.city}</td>
     </tr>
   `).join('');
-}
-
-function approveUser(index) {
-  visitorsList[index].status = 'Aprovado';
-  renderAdminTable();
-  // Simula a mudança de ecrã para o utilizador caso esteja na tela de espera
-  document.getElementById('waiting-screen').style.display = 'none';
-  document.getElementById('success-screen').style.display = 'block';
 }
 </script>
 </body>
