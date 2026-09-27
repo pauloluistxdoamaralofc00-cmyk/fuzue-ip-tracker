@@ -2,8 +2,8 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Security Operations Center // Terminal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Security Operations Center // Custom Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
@@ -11,8 +11,7 @@
   --bg: #050505;
   --card: #0a0a0a;
   --border: #1f0a0d;
-  --border-focus: #ff0033;
-  --red: #ff0033;
+  --accent: #ff0033;
   --green: #00ff66;
   --text: #cccccc;
   --muted: #666666;
@@ -33,7 +32,7 @@ body {
   justify-content: center;
   align-items: center;
   padding: 16px;
-  background-image: radial-gradient(circle at 50% 50%, rgba(255, 0, 51, 0.03) 0%, transparent 70%);
+  transition: background 0.3s ease;
 }
 
 .terminal-container {
@@ -42,8 +41,9 @@ body {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 6px;
-  box-shadow: 0 0 40px rgba(255, 0, 51, 0.15);
+  box-shadow: 0 0 40px rgba(0,0,0,0.8);
   overflow: hidden;
+  transition: all 0.3s ease;
 }
 
 .terminal-header {
@@ -55,22 +55,9 @@ body {
   align-items: center;
   font-size: 0.7rem;
   letter-spacing: 1px;
-  color: var(--red);
+  color: var(--accent);
   text-transform: uppercase;
 }
-
-.terminal-dots {
-  display: flex;
-  gap: 6px;
-}
-
-.dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--border);
-}
-.dot:nth-child(1) { background: var(--red); }
 
 .terminal-body {
   padding: 24px;
@@ -79,7 +66,7 @@ body {
 .system-alert {
   font-size: 0.75rem;
   font-weight: 700;
-  color: var(--red);
+  color: var(--accent);
   margin-bottom: 8px;
   letter-spacing: 1.5px;
   text-transform: uppercase;
@@ -117,13 +104,13 @@ body {
 }
 
 .metric-val {
-  color: var(--red);
+  color: var(--accent);
   font-weight: 700;
 }
 
 .action-btn {
   background: transparent;
-  color: var(--red);
+  color: var(--accent);
   border: 1px solid var(--border);
   padding: 12px;
   width: 100%;
@@ -138,12 +125,11 @@ body {
 }
 
 .action-btn:hover {
-  background: rgba(255, 0, 51, 0.05);
-  border-color: var(--red);
-  box-shadow: 0 0 15px rgba(255, 0, 51, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--accent);
 }
 
-/* Área Administrativa */
+/* Painel Administrativo */
 #admin-panel {
   display: none;
 }
@@ -168,54 +154,72 @@ body {
 .log-table th, .log-table td {
   padding: 6px;
   border-bottom: 1px solid var(--border);
+  white-space: nowrap;
 }
 
 .log-table th {
   color: var(--green);
 }
+
+.theme-picker {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  justify-content: center;
+}
+
+.theme-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  cursor: pointer;
+}
 </style>
 </head>
 <body>
 
-<div class="terminal-container">
+<div class="terminal-container" id="mainContainer">
   <div class="terminal-header">
-    <span>root@soc-monitor:~#</span>
-    <div class="terminal-dots">
-      <div class="dot"></div>
-      <div class="dot"></div>
-      <div class="dot"></div>
-    </div>
+    <span id="headerTitle">root@soc-monitor:~#</span>
   </div>
 
   <div class="terminal-body">
-    <!-- Ecrã Principal de Diagnóstico -->
+    <!-- Ecrã Principal -->
     <div id="home-screen">
       <div class="system-alert">⚠️ Telemetria de Rede</div>
-      <div class="system-desc">Monitorização de parâmetros de conexão e estado do dispositivo em tempo real.</div>
+      <div class="system-desc">Diagnóstico de parâmetros de conexão em tempo real.</div>
 
       <div class="metrics-box">
         <div class="metric-row"><span class="metric-label">IP ORIGEM:</span><span id="ipVal" class="metric-val">A analisar...</span></div>
         <div class="metric-row"><span class="metric-label">LOCAL / REGIÃO:</span><span id="locVal" class="metric-val">A localizar...</span></div>
         <div class="metric-row"><span class="metric-label">PROVEDOR (ISP):</span><span id="ispVal" class="metric-val">A identificar...</span></div>
         <div class="metric-row"><span class="metric-label">DISPOSITIVO:</span><span id="deviceVal" class="metric-val">A detetar...</span></div>
-        <div class="metric-row"><span class="metric-label">BATERIA:</span><span id="batteryVal" class="metric-val">A ler...</span></div>
       </div>
 
       <button class="action-btn" onclick="openAdmin()">Aceder Painel Admin</button>
     </div>
 
-    <!-- Painel Administrativo Protegido -->
+    <!-- Painel Administrativo -->
     <div id="admin-panel">
-      <div class="admin-title">🔒 Terminal Administrativo</div>
-      <div class="system-desc">Registo de sessões ativas registadas no nó.</div>
+      <div class="admin-title">🔒 Painel de Controlo & Temas</div>
+      
+      <div style="font-size: 0.65rem; color: var(--muted); margin-bottom: 6px;">Mudar Cor do Tema em Tempo Real:</div>
+      <div class="theme-picker">
+        <div class="theme-btn" style="background: #ff0033;" onclick="mudarTema('#ff0033', '#1f0a0d')" title="Vermelho Cyber"></div>
+        <div class="theme-btn" style="background: #00ff66;" onclick="mudarTema('#00ff66', '#0a1f10')" title="Verde Matrix"></div>
+        <div class="theme-btn" style="background: #00d2ff;" onclick="mudarTema('#00d2ff', '#0a181f')" title="Azul Hacker"></div>
+        <div class="theme-btn" style="background: #ffb700;" onclick="mudarTema('#ffb700', '#1f160a')" title="Amarelo Alerta"></div>
+      </div>
 
-      <div style="max-height: 150px; overflow-y: auto;">
+      <div style="font-size: 0.65rem; color: var(--muted); margin-bottom: 6px;">Histórico de Sessões Registadas:</div>
+      <div style="max-height: 140px; overflow-y: auto; margin-bottom: 14px;">
         <table class="log-table">
           <thead>
-            <tr><th>Hora</th><th>IP</th><th>Estado</th></tr>
+            <tr><th>IP</th><th>Localização</th><th>Hora</th></tr>
           </thead>
           <tbody id="adminTableBody">
-            <tr><td>--:--</td><td><code>Local</code></td><td style="color:var(--green)">Ativo</td></tr>
+            <tr><td colspan="3" style="text-align:center; color:var(--muted);">A carregar registos...</td></tr>
           </tbody>
         </table>
       </div>
@@ -235,50 +239,70 @@ function getDevice() {
   return "Dispositivo Genérico";
 }
 
-async function getBattery() {
-  if ('getBattery' in navigator) {
-    try {
-      let b = await navigator.getBattery();
-      let level = Math.round(b.level * 100) + '%';
-      let status = b.charging ? 'A carregar' : 'A descarregar';
-      return `${level} (${status})`;
-    } catch(e) {
-      return 'Indisponível';
-    }
+// Gestão de registos locais (simulando histórico de acessos)
+function guardarLogLocal(ip, local) {
+  let logs = JSON.parse(localStorage.getItem('soc_logs_history') || '[]');
+  let novoRegisto = { ip: ip, local: local, hora: new Date().toLocaleTimeString() };
+  
+  // Evitar duplicados consecutivos do mesmo IP
+  if (logs.length === 0 || logs[0].ip !== ip) {
+    logs.unshift(novoRegisto);
+    localStorage.setItem('soc_logs_history', JSON.stringify(logs));
   }
-  return 'Não suportado';
 }
 
 window.onload = async function() {
   document.getElementById('deviceVal').innerText = getDevice();
-  document.getElementById('batteryVal').innerText = await getBattery();
 
   try {
-    // Utilizando ipapi.co que fornece dados detalhados de geolocalização de forma fiável
     let res = await fetch('https://ipapi.co/json/');
     let data = await res.json();
 
     if (data && !data.error) {
-      document.getElementById('ipVal').innerText = data.ip || 'N/A';
-      document.getElementById('locVal').innerText = `${data.city || 'N/A'}, ${data.region || 'N/A'} (${data.country_name || 'N/A'})`;
-      document.getElementById('ispVal').innerText = data.org || data.asn || 'N/A';
+      let ip = data.ip || 'N/A';
+      let local = `${data.city || 'N/A'}, ${data.country_name || 'N/A'}`;
+      
+      document.getElementById('ipVal').innerText = ip;
+      document.getElementById('locVal').innerText = local;
+      document.getElementById('ispVal').innerText = data.org || 'N/A';
+
+      guardarLogLocal(ip, local);
     } else {
       document.getElementById('ipVal').innerText = "Indisponível";
-      document.getElementById('locVal').innerText = "Restrito / VPN";
-      document.getElementById('ispVal').innerText = "Desconhecido";
+      document.getElementById('locVal').innerText = "Restrito";
     }
   } catch(e) {
     document.getElementById('ipVal').innerText = "Erro de Ligação";
-    document.getElementById('locVal').innerText = "Erro de Rede";
-    document.getElementById('ispVal').innerText = "Erro de Rede";
+    document.getElementById('locVal').innerText = "Erro";
   }
 };
+
+function mudarTema(corAccent, corBorda) {
+  document.documentElement.style.setProperty('--accent', corAccent);
+  document.documentElement.style.setProperty('--border', corBorda);
+}
 
 function openAdmin() {
   let pass = prompt("Introduza a palavra-passe de administração:");
   if (pass === "17102007") {
     document.getElementById('home-screen').style.display = 'none';
     document.getElementById('admin-panel').style.display = 'block';
+
+    // Preencher tabela com o histórico guardado
+    let logs = JSON.parse(localStorage.getItem('soc_logs_history') || '[]');
+    let tbody = document.getElementById('adminTableBody');
+    
+    if (logs.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:var(--muted);">Sem registos.</td></tr>`;
+    } else {
+      tbody.innerHTML = logs.map(l => `
+        <tr>
+          <td><code>${l.ip}</code></td>
+          <td>${l.local}</td>
+          <td>${l.hora}</td>
+        </tr>
+      `).join('');
+    }
   } else if (pass !== null) {
     alert("Palavra-passe incorreta.");
   }
