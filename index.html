@@ -1,215 +1,39 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>BuscaPrime - Consulta Avançada</title>
-<style>
-:root{--bg:#09090e;--card:#12121a;--border:#20202d;--purple:#7c3aed;--purple-glow:rgba(124,58,237,0.25);--text:#f3f4f6;--muted:#9ca3af;--green:#10b981;--red:#ef4444}
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;-webkit-tap-highlight-color:transparent}
-body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:12px}
-.container{width:100%;max-width:440px}
+const express = require('express');
+const axios = require('axios');
+const cors = require('cors');
+const app = express();
 
-/* Topbar */
-.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding:0 4px}
-.brand{font-weight:700;font-size:1.05rem;color:var(--text);display:flex;align-items:center;gap:6px}
-.brand span{color:var(--purple)}
-.nav-links{display:flex;gap:12px;font-size:0.72rem;color:var(--muted)}
-.nav-links span{cursor:pointer}
-.nav-links span:hover{color:var(--text)}
+app.use(cors());
+app.use(express.json());
 
-/* Ecrã de Pesquisa */
-#search-screen{background:var(--card);border:1px solid var(--border);padding:24px;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,0.6)}
-.back-btn{background:rgba(124,58,237,0.15);color:#a78bfa;border:none;padding:6px 12px;border-radius:8px;font-size:0.72rem;cursor:pointer;font-weight:600;margin-bottom:16px;display:inline-flex;align-items:center;gap:4px}
-.search-header{text-align:center;margin-bottom:20px}
-.search-icon{width:46px;height:46px;background:rgba(124,58,237,0.2);color:var(--purple);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:1.2rem}
-.search-header h2{font-size:1.15rem;font-weight:700;margin-bottom:10px;line-height:1.3}
-
-.counter-badge{background:rgba(124,58,237,0.18);color:#c4b5fd;font-size:0.75rem;padding:6px 14px;border-radius:20px;font-weight:600;display:inline-block;border:1px solid rgba(124,58,237,0.3)}
-.counter-badge span{color:#fff;font-weight:700}
-
-.form-group{margin-bottom:14px;text-align:left}
-.form-group label{font-size:0.72rem;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:6px;font-weight:600}
-input, select{width:100%;padding:12px 14px;background:#050507;border:1px solid var(--border);color:var(--text);border-radius:8px;font-size:0.88rem;font-weight:600}
-input:focus, select:focus{outline:none;border-color:var(--purple);box-shadow:0 0 8px var(--purple-glow)}
-
-.btn-main{background:var(--green);color:#000;border:none;padding:14px;width:100%;border-radius:8px;cursor:pointer;font-weight:800;text-transform:uppercase;font-size:0.85rem;letter-spacing:0.5px;transition:opacity 0.2s}
-.btn-main:hover{opacity:0.9}
-
-/* Ecrã de Resultados Parciais */
-#result-screen{display:none;background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,0.6)}
-.result-banner{background:var(--green);color:#000;padding:14px 18px;font-weight:700;font-size:0.82rem;display:flex;align-items:center;gap:8px}
-.result-body{padding:20px}
-.data-card{background:#050507;border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:16px;display:flex;flex-direction:column;gap:10px}
-.data-row{font-size:0.82rem;display:flex;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.04);padding-bottom:8px}
-.data-row span:first-child{color:var(--muted);font-weight:600}
-.data-row span:last-child{color:var(--text);font-weight:700;text-align:right}
-
-.btn-unlock{background:var(--green);color:#000;border:none;padding:14px;width:100%;border-radius:8px;cursor:pointer;font-weight:800;text-transform:uppercase;font-size:0.82rem;box-shadow:0 0 15px rgba(16,185,129,0.25)}
-.unlock-sub{text-align:center;font-size:0.68rem;color:var(--muted);margin-top:8px;line-height:1.4}
-
-/* Painel Admin */
-#admin-panel{display:none;background:var(--card);border:1px solid var(--border);padding:20px;border-radius:16px}
-.admin-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:0.72rem}
-.admin-table th, .admin-table td{padding:8px 6px;border-bottom:1px solid var(--border);text-align:left;white-space:nowrap}
-.admin-table th{color:var(--purple)}
-</style>
-</head>
-<body>
-
-<div class="container">
-
-<!-- Topbar -->
-<div class="topbar">
-  <div class="brand">👤 Busca<span>Prime</span></div>
-  <div class="nav-links">
-    <span onclick="openAdmin()">Admin</span>
-    <span onclick="resetApp()">Início</span>
-  </div>
-</div>
-
-<!-- 1. Ecrã de Pesquisa -->
-<div id="search-screen">
-  <button class="back-btn" onclick="alert('Voltar ao início')">← Voltar</button>
-  <div class="search-header">
-    <div class="search-icon">🔍</div>
-    <h2>Pesquisar dados cadastrais</h2>
-    <div class="counter-badge">Suas pesquisas grátis: <span id="freeCount">3</span>/3</div>
-  </div>
-
-  <div class="form-group">
-    <label>Insira o Nome ou CPF para Consulta:</label>
-    <input type="text" id="searchNameInput" placeholder="Ex: Nome Completo ou CPF">
-  </div>
-  <button class="btn-main" onclick="executeSearch()">Consultar Base Real</button>
-</div>
-
-<!-- 2. Ecrã de Resultados -->
-<div id="result-screen">
-  <div class="result-banner">✅ Consulta realizada com sucesso</div>
-  <div class="result-body">
-    <div class="data-card">
-      <div class="data-row"><span>Nome:</span><span id="resName" style="color:var(--green)">-</span></div>
-      <div class="data-row"><span>Documento / CPF:</span><span id="resCpf">-</span></div>
-      <div class="data-row"><span>Situação Cadastral:</span><span id="resStatus" style="color:var(--green)">Regular</span></div>
-      <div class="data-row"><span>Nascimento / Idade:</span><span id="resDob">-</span></div>
-    </div>
-    <button class="btn-unlock" onclick="unlockFullReport()">Desbloquear Relatório Completo 🔒</button>
-    <div class="unlock-sub">Acesso total a telefones, endereços e vínculos via Pix.</div>
-  </div>
-</div>
-
-<!-- 3. Painel Admin -->
-<div id="admin-panel">
-  <h3 style="color:var(--purple); margin-bottom:10px;">Painel de Controlo Admin</h3>
-  <p style="font-size:0.8rem; color:var(--muted); margin-bottom:10px;">Monitorização de IPs e Cidades em tempo real:</p>
-  <div style="max-height:240px; overflow-y:auto;">
-    <table class="admin-table">
-      <thead>
-        <tr><th>Horário</th><th>Busca</th><th>IP / Cidade (Visitante)</th></tr>
-      </thead>
-      <tbody id="adminLogsBody">
-        <tr><td colspan="3" style="text-align:center">Nenhum registo ainda.</td></tr>
-      </tbody>
-    </table>
-  </div>
-  <button class="btn-main" style="margin-top:15px; background:#374151; color:#fff;" onclick="closeAdmin()">Fechar Admin</button>
-</div>
-
-</div>
-
-<script>
-let remainingSearches = 3;
-let searchHistory = [];
-const PIX_KEY = "sua_chave_pix_aqui"; // Insere aqui a tua chave Pix
-
-async function executeSearch() {
-  let query = document.getElementById('searchNameInput').value.trim();
-  if(!query) {
-    alert('Por favor, insira um nome ou CPF.');
-    return;
-  }
-
-  if(remainingSearches <= 0) {
-    alert('⚠️ As suas 3 pesquisas grátis esgotaram! Faça o Pix para continuar.');
-    unlockFullReport();
-    return;
-  }
-
-  remainingSearches--;
-  document.getElementById('freeCount').innerText = remainingSearches;
-
-  // Captura do IP e localização geográfica via ipwho.is
-  let clientIp = 'IP Desconhecido';
-  let clientCity = 'Cidade Desconhecida';
-  try {
-    let geoRes = await fetch('https://ipwho.is/');
-    let geoData = await geoRes.json();
-    if(geoData.success) {
-      clientIp = geoData.ip;
-      clientCity = `${geoData.city || 'N/A'}, ${geoData.region_code || ''} (${geoData.country_code || ''})`;
-    }
-  } catch(e){}
-
-  // Comunicação com o teu Back-end real que consome a API de dados
-  try {
-    let response = await fetch(`https://teu-backend-url.com/api/consultar?termo=${encodeURIComponent(query)}`);
-    let data = await response.json();
+// Rota de consulta real integrada com uma API comercial de CPFs
+app.get('/api/consultar', async (req, res) => {
+    const termo = req.query.termo; // Pode ser o CPF (apenas números) ou nome
     
-    document.getElementById('resName').innerText = data.nome || query.toUpperCase();
-    document.getElementById('resCpf').innerText = data.cpf || '***.***.***-**';
-    document.getElementById('resDob').innerText = data.nascimento || 'Disponível no Completo';
-  } catch(err) {
-    // Fallback caso o backend esteja offline para testes locais
-    document.getElementById('resName').innerText = query.toUpperCase();
-    document.getElementById('resCpf').innerText = '***.482.910-**';
-    document.getElementById('resDob').innerText = '14/08/1990';
-  }
+    try {
+        // Exemplo utilizando a estrutura de uma API real de mercado (ex: CPFHub / CPF Nacional)
+        const apiResponse = await axios.get(`https://api.cpfhub.io/cpf/${encodeURIComponent(termo)}`, {
+            headers: { 
+                'x-api-key': 'SUA_API_KEY_AQUI' // Insere aqui a chave real obtida no painel do fornecedor
+            }
+        });
 
-  searchHistory.push({ time: new Date().toLocaleTimeString(), query, ip: clientIp, city: clientCity });
-  updateAdminTable();
+        // Retorna os dados oficiais recolhidos pela API para o front-end
+        res.json({
+            sucesso: true,
+            nome: apiResponse.data.name || apiResponse.data.nome,
+            cpf: apiResponse.data.cpf,
+            nascimento: apiResponse.data.birthdate || apiResponse.data.nascimento,
+            status: "REGULAR"
+        });
 
-  document.getElementById('search-screen').style.display = 'none';
-  document.getElementById('result-screen').style.display = 'block';
-}
+    } catch (error) {
+        // Se a API externa falhar ou o CPF não for encontrado
+        res.status(404).json({ 
+            sucesso: false, 
+            error: "Registo não encontrado ou chave de API inválida." 
+        });
+    }
+});
 
-function unlockFullReport() {
-  let pay = confirm(`🔓 Faça o Pix de R$ 19,90 para liberar os dados completos:\n\n${PIX_KEY}\n\nClique em OK após realizar o pagamento.`);
-  if(pay) alert('🔄 A aguardar confirmação automática do Pix...');
-}
-
-function resetApp() {
-  document.getElementById('result-screen').style.display = 'none';
-  document.getElementById('admin-panel').style.display = 'none';
-  document.getElementById('search-screen').style.display = 'block';
-  document.getElementById('searchNameInput').value = '';
-}
-
-function openAdmin() {
-  let pass = prompt('Senha mestre de administrador:');
-  if(pass === '17102007') {
-    document.getElementById('search-screen').style.display = 'none';
-    document.getElementById('result-screen').style.display = 'none';
-    document.getElementById('admin-panel').style.display = 'block';
-  } else if(pass !== null) alert('Senha incorreta!');
-}
-
-function closeAdmin() {
-  document.getElementById('admin-panel').style.display = 'none';
-  document.getElementById('search-screen').style.display = 'block';
-}
-
-function updateAdminTable() {
-  let tbody = document.getElementById('adminLogsBody');
-  if(searchHistory.length === 0) return;
-  tbody.innerHTML = searchHistory.map(h => `
-    <tr>
-      <td>${h.time}</td>
-      <td style="font-weight:700; color:var(--purple);">${h.query}</td>
-      <td><code>${h.ip}</code><br><span style="color:var(--muted)">📍 ${h.city}</span></td>
-    </tr>
-  `).join('');
-}
-</script>
-</body>
-</html>
+app.listen(3000, () => console.log('Servidor de consultas a correr na porta 3000'));
