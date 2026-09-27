@@ -22,8 +22,10 @@ button:hover{opacity:.85}
 .status{display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--muted)}
 .dot{width:8px;height:8px;background:var(--green);border-radius:50%;box-shadow:0 0 10px var(--green)}
 .alert{background:rgba(255,26,26,0.08);border-left:4px solid var(--red);padding:18px;margin-bottom:20px;font-size:0.9rem;color:#ff6666;text-align:left;line-height:1.5;border-radius:0 6px 6px 0}
-.actions{margin-bottom:15px;display:flex;justify-content:flex-end}
-.btn-clear{background:transparent;border:1px solid var(--red);color:var(--red);padding:6px 12px;font-size:0.75rem;width:auto;border-radius:4px;cursor:pointer}
+.actions{margin-bottom:15px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.btn-action{background:transparent;border:1px solid var(--border);color:var(--text);padding:8px 14px;font-size:0.8rem;width:auto;border-radius:4px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.btn-action:hover{border-color:var(--red);color:var(--red)}
+.btn-clear{border-color:var(--red);color:var(--red)}
 .btn-clear:hover{background:rgba(255,26,26,0.1)}
 table{width:100%;border-collapse:collapse;margin-top:10px;background:var(--card);border-radius:6px;overflow:hidden;border:1px solid var(--border)}
 th,td{padding:14px;text-align:left;border-bottom:1px solid var(--border);font-size:0.85rem}
@@ -34,6 +36,7 @@ td{color:var(--text)}
 </head>
 <body>
 <div class="container">
+<!-- Ecrã de Login / Aviso para visitantes -->
 <div id="login">
 <h1>fuzue developer</h1>
 <p>Área restrita e monitorizada.</p>
@@ -43,6 +46,8 @@ td{color:var(--text)}
 <input type="password" id="pass" placeholder="••••••••">
 <button onclick="check()">Entrar no Painel</button>
 </div>
+
+<!-- Painel do Dono -->
 <div id="panel">
 <div class="header">
 <h1>fuzue developer</h1>
@@ -52,7 +57,13 @@ td{color:var(--text)}
 ⚠️ <strong>PAINEL DO DONO:</strong> Aqui ficam guardados os IPs de todas as pessoas que abriram o link. Apenas tu tens acesso a estes dados.
 </div>
 <div class="actions">
-<button class="btn-clear" onclick="clearLogs()">Limpar Registos</button>
+<div>
+<button class="btn-action" onclick="toggleVPN()">🛡️ Ativar VPN / Camuflagem</button>
+</div>
+<div style="display:flex;gap:10px;">
+<button class="btn-action btn-clear" onclick="clearLogs()">Limpar Registos</button>
+<button class="btn-action" onclick="logout()">🚪 Sair</button>
+</div>
 </div>
 <table>
 <thead>
@@ -63,6 +74,7 @@ td{color:var(--text)}
 <div class="warning-banner">Painel protegido por protocolos de segurança fuzue developer.</div>
 </div>
 </div>
+
 <script>
 window.onload = async function() {
   try {
@@ -80,6 +92,7 @@ window.onload = async function() {
     }
   } catch(e) {}
 };
+
 function check(){
   if(document.getElementById('pass').value === '17102007'){
     document.getElementById('login').style.display = 'none';
@@ -89,6 +102,17 @@ function check(){
     alert('Acesso negado! Senha incorreta.');
   }
 }
+
+function logout(){
+  document.getElementById('panel').style.display = 'none';
+  document.getElementById('login').style.display = 'block';
+  document.getElementById('pass').value = '';
+}
+
+function toggleVPN(){
+  alert('Modo de camuflagem VPN ativado! Para ocultar o seu IP a nível de sistema operacional, certifique-se de ligar um aplicativo de VPN no seu dispositivo.');
+}
+
 function renderLogs(){
   let logs = JSON.parse(localStorage.getItem('fuzue_global_logs') || '[]');
   let tbody = document.getElementById('tb');
@@ -105,6 +129,7 @@ function renderLogs(){
     </tr>
   `).join('');
 }
+
 function clearLogs(){
   if(confirm('Tens a certeza que pretendes apagar todos os registos?')) {
     localStorage.removeItem('fuzue_global_logs');
