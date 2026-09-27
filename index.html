@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>FreeFire Panel - Consulta & Monitorização</title>
+<title>IP Tracker VIP - Painel de Puxada</title>
 <style>
-:root{--bg:#0b0b10;--card:#14141f;--border:#262638;--ff-orange:#ff5722;--ff-yellow:#ffc107;--text:#f3f4f6;--muted:#9ca3af;--green:#10b981}
+:root{--bg:#08080d;--card:#101018;--border:#1f1f2e;--cyan:#00f0ff;--cyan-glow:rgba(0,240,255,0.25);--text:#f3f4f6;--muted:#9ca3af;--green:#10b981;--red:#ef4444}
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;-webkit-tap-highlight-color:transparent}
 body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:12px}
 .container{width:100%;max-width:440px}
@@ -13,32 +13,41 @@ body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justif
 /* Topbar */
 .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding:0 4px}
 .brand{font-weight:800;font-size:1.05rem;color:var(--text);display:flex;align-items:center;gap:6px;letter-spacing:0.5px}
-.brand span{color:var(--ff-orange)}
+.brand span{color:var(--cyan)}
 .nav-links{display:flex;gap:12px;font-size:0.75rem;color:var(--muted)}
 .nav-links span{cursor:pointer;font-weight:600}
 .nav-links span:hover{color:var(--text)}
 
-/* Ecrãs */
+/* Ecrãs gerais */
 .screen{background:var(--card);border:1px solid var(--border);padding:24px;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,0.8)}
-.header-icon{width:50px;height:50px;background:rgba(255,87,34,0.15);color:var(--ff-orange);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:1.4rem;border:1px solid rgba(255,87,34,0.3)}
+.header-icon{width:50px;height:50px;background:rgba(0,240,255,0.1);color:var(--cyan);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:1.3rem;border:1px solid rgba(0,240,255,0.25)}
 .screen h2{font-size:1.15rem;font-weight:800;text-align:center;margin-bottom:6px;color:#fff}
-.screen p{font-size:0.78rem;color:var(--muted);text-align:center;margin-bottom:20px;line-height:1.4}
+.screen p{font-size:0.78rem;color:var(--muted);text-align:center;margin-bottom:18px;line-height:1.4}
+
+.counter-badge{background:rgba(0,240,255,0.12);color:var(--cyan);font-size:0.75rem;padding:6px 14px;border-radius:20px;font-weight:700;display:inline-block;border:1px solid rgba(0,240,255,0.3);margin-bottom:16px;text-align:center;width:100%}
+.counter-badge span{color:#fff;font-weight:800}
 
 .form-group{margin-bottom:14px;text-align:left}
 .form-group label{font-size:0.72rem;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:6px;font-weight:700}
-input{width:100%;padding:12px 14px;background:#07070a;border:1px solid var(--border);color:var(--text);border-radius:8px;font-size:0.88rem;font-weight:600}
-input:focus{outline:none;border-color:var(--ff-orange);box-shadow:0 0 8px rgba(255,87,34,0.25)}
+input{width:100%;padding:12px 14px;background:#050508;border:1px solid var(--border);color:var(--text);border-radius:8px;font-size:0.88rem;font-weight:600}
+input:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 8px var(--cyan-glow)}
 
-.btn-ff{background:linear-gradient(135deg, #ff5722, #ff9800);color:#fff;border:none;padding:14px;width:100%;border-radius:8px;cursor:pointer;font-weight:800;text-transform:uppercase;font-size:0.85rem;letter-spacing:0.5px;transition:opacity 0.2s;box-shadow:0 4px 15px rgba(255,87,34,0.3)}
-.btn-ff:hover{opacity:0.9}
+.btn-cyan{background:var(--cyan);color:#000;border:none;padding:14px;width:100%;border-radius:8px;cursor:pointer;font-weight:800;text-transform:uppercase;font-size:0.85rem;letter-spacing:0.5px;transition:opacity 0.2s;box-shadow:0 4px 15px rgba(0,240,255,0.25)}
+.btn-cyan:hover{opacity:0.9}
+
+/* Resultados do IP */
+.result-card{background:#050508;border:1px solid var(--border);border-radius:10px;padding:14px;margin-top:16px;display:none;flex-direction:column;gap:8px;text-align:left}
+.result-row{font-size:0.78rem;display:flex;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.03);padding-bottom:6px}
+.result-row span:first-child{color:var(--muted);font-weight:600}
+.result-row span:last-child{color:var(--cyan);font-weight:700;font-family:monospace}
 
 /* Painel Admin */
 .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:15px}
-.stat-box{background:#07070a;border:1px solid var(--border);padding:12px;border-radius:8px;text-align:center}
-.stat-box span{display:block;font-size:1.3rem;font-weight:800;color:var(--ff-yellow);margin-top:4px}
+.stat-box{background:#050508;border:1px solid var(--border);padding:12px;border-radius:8px;text-align:center}
+.stat-box span{display:block;font-size:1.3rem;font-weight:800;color:var(--cyan);margin-top:4px}
 .admin-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:0.7rem;text-align:left}
 .admin-table th, .admin-table td{padding:8px 6px;border-bottom:1px solid var(--border);white-space:nowrap}
-.admin-table th{color:var(--ff-orange)}
+.admin-table th{color:var(--cyan)}
 </style>
 </head>
 <body>
@@ -47,33 +56,44 @@ input:focus{outline:none;border-color:var(--ff-orange);box-shadow:0 0 8px rgba(2
 
   <!-- Topbar -->
   <div class="topbar">
-    <div class="brand">🔥 FF <span>PANEL</span></div>
+    <div class="brand">🌐 IP <span>TRACKER</span></div>
     <div class="nav-links">
       <span onclick="openAdmin()">Admin</span>
     </div>
   </div>
 
-  <!-- 1. Ecrã Principal do Jogador -->
+  <!-- 1. Ecrã Principal de Puxada de IP -->
   <div id="home-screen" class="screen">
-    <div class="header-icon">🎯</div>
-    <h2>Consulta UID Free Fire</h2>
-    <p>Insira o UID ou Nome do jogador para verificar o estatuto da conta na base de dados.</p>
+    <div class="header-icon">📡</div>
+    <h2>Puxada de IP Avançada</h2>
+    <p>Insira um endereço IP ou domínio para rastreamento de geolocalização e rede em tempo real.</p>
+
+    <div class="counter-badge">Puxadas Grátis Restantes: <span id="freeCount">3</span>/3</div>
 
     <div class="form-group">
-      <label>UID ou Nick do Jogador:</label>
-      <input type="text" id="ffInput" placeholder="Ex: 1533256573 ou Nick">
+      <label>Endereço IP / Domínio:</label>
+      <input type="text" id="ipInput" placeholder="Ex: 8.8.8.8 ou site.com">
     </div>
     
-    <button class="btn-ff" onclick="consultarFF()">Pesquisar Jogador</button>
+    <button class="btn-cyan" onclick="puxarIP()">Puxar Dados do IP</button>
+
+    <!-- Cartão com os Resultados Detalhados da Puxada -->
+    <div id="resultCard" class="result-card">
+      <div class="result-row"><span>IP Alvo:</span> <span id="resIp">-</span></div>
+      <div class="result-row"><span>País:</span> <span id="resCountry">-</span></div>
+      <div class="result-row"><span>Região/Estado:</span> <span id="resRegion">-</span></div>
+      <div class="result-row"><span>Cidade:</span> <span id="resCity">-</span></div>
+      <div class="result-row"><span>Provedor (ISP):</span> <span id="resIsp">-</span></div>
+    </div>
   </div>
 
-  <!-- 2. Ecrã Administrativo Restrito -->
+  <!-- 2. Painel Administrativo Restrito -->
   <div id="admin-screen" class="screen" style="display:none;">
-    <h3 style="color:var(--ff-orange); margin-bottom:12px; text-align:center;">Painel de Controlo VIP</h3>
+    <h3 style="color:var(--cyan); margin-bottom:12px; text-align:center;">Painel VIP - Gestão</h3>
     
     <div class="stats-grid">
       <div class="stat-box">
-        <small style="color:var(--muted); font-size:0.68rem;">Total Cliques</small>
+        <small style="color:var(--muted); font-size:0.68rem;">Total Cliques / Puxadas</small>
         <span id="totalClicks">0</span>
       </div>
       <div class="stat-box">
@@ -82,7 +102,7 @@ input:focus{outline:none;border-color:var(--ff-orange);box-shadow:0 0 8px rgba(2
       </div>
     </div>
 
-    <p style="font-size:0.72rem; color:var(--muted); margin-bottom:6px;">Registo de Acessos (IP e Cidade):</p>
+    <p style="font-size:0.72rem; color:var(--muted); margin-bottom:6px;">Registo de Acessos dos Visitantes:</p>
     <div style="max-height:200px; overflow-y:auto;">
       <table class="admin-table">
         <thead>
@@ -94,49 +114,77 @@ input:focus{outline:none;border-color:var(--ff-orange);box-shadow:0 0 8px rgba(2
       </table>
     </div>
 
-    <button class="btn-ff" style="background:#374151; margin-top:15px; box-shadow:none;" onclick="closeAdmin()">Fechar Painel</button>
+    <button class="btn-cyan" style="background:#374151; color:#fff; margin-top:15px; box-shadow:none;" onclick="closeAdmin()">Fechar Painel</button>
   </div>
 
 </div>
 
 <script>
+let remainingSearches = 3;
 let totalClicks = 0;
 let accessLogs = [];
-let clientIp = 'A detetar...';
-let clientCity = 'A detetar...';
+let visitorIp = 'A detetar...';
+let visitorCity = 'A detetar...';
 
-// Recolhe automaticamente o IP e a Cidade do visitante ao abrir a página
+// Recolhe automaticamente o IP e a Cidade de quem acessa a página ao abrir
 window.onload = async function() {
   try {
     let res = await fetch('https://ipwho.is/');
     let data = await res.json();
     if(data.success) {
-      clientIp = data.ip;
-      clientCity = `${data.city || 'N/A'}, ${data.region_code || ''}`;
+      visitorIp = data.ip;
+      visitorCity = `${data.city || 'N/A'}, ${data.region_code || ''}`;
     }
   } catch(e) {
-    clientIp = '127.0.0.1';
-    clientCity = 'Rede Local';
+    visitorIp = '127.0.0.1';
+    visitorCity = 'Rede Local';
   }
 };
 
-function consultarFF() {
-  let val = document.getElementById('ffInput').value.trim();
-  if(!val) {
-    alert('Por favor, insira um UID ou Nick válido!');
+async function puxarIP() {
+  let target = document.getElementById('ipInput').value.trim();
+  if(!target) {
+    alert('Por favor, insira um IP ou domínio válido!');
     return;
   }
 
+  if(remainingSearches <= 0) {
+    alert('⚠️ As suas 3 puxadas grátis esgotaram! Atualize o seu plano para continuar.');
+    return;
+  }
+
+  remainingSearches--;
+  document.getElementById('freeCount').innerText = remainingSearches;
   totalClicks++;
   let timeNow = new Date().toLocaleTimeString();
 
-  // Regista o IP na tabela do admin se ainda não estiver registado nesta sessão
-  if(!accessLogs.some(log => log.ip === clientIp)) {
-    accessLogs.push({ time: timeNow, ip: clientIp, city: clientCity });
+  // Regista o visitante real na tabela do admin
+  if(!accessLogs.some(log => log.ip === visitorIp)) {
+    accessLogs.push({ time: timeNow, ip: visitorIp, city: visitorCity });
   }
 
-  alert(`A processar consulta para o ID/Nick: ${val.toUpperCase()}`);
-  document.getElementById('ffInput').value = '';
+  // Faz a consulta real do IP inserido
+  try {
+    let response = await fetch(`https://ipwho.is/${encodeURIComponent(target)}`);
+    let info = await response.json();
+    
+    if(info.success) {
+      document.getElementById('resIp').innerText = info.ip;
+      document.getElementById('resCountry').innerText = info.country || 'N/A';
+      document.getElementById('resRegion').innerText = info.region || 'N/A';
+      document.getElementById('resCity').innerText = info.city || 'N/A';
+      document.getElementById('resIsp').innerText = info.connection?.isp || info.asn?.owner || 'N/A';
+    } else {
+      alert('Erro ao puxar dados: IP inválido ou não encontrado.');
+      document.getElementById('resultCard').style.display = 'none';
+      return;
+    }
+  } catch(err) {
+    alert('Erro de conexão ao consultar a base de dados de IP.');
+    return;
+  }
+
+  document.getElementById('resultCard').style.display = 'flex';
 }
 
 function openAdmin() {
@@ -157,7 +205,7 @@ function closeAdmin() {
 
 function updateAdminStats() {
   document.getElementById('totalClicks').innerText = totalClicks;
-  document.getElementById('onlineMembers').innerText = Math.floor(1 + Math.random() * 3);
+  document.getElementById('onlineMembers').innerText = Math.floor(1 + Math.random() * 2);
 
   let tbody = document.getElementById('adminLogs');
   if(accessLogs.length === 0) {
