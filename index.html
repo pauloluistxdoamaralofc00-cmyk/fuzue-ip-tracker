@@ -1,148 +1,28 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Sistema de Monitorização</title>
-<style>
-:root{--bg:#09090e;--card:#12121a;--border:#20202d;--purple:#7c3aed;--text:#f3f4f6;--muted:#9ca3af;--green:#10b981;--red:#ef4444}
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;-webkit-tap-highlight-color:transparent}
-body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:12px}
-.container{width:100%;max-width:440px}
+const express = require('express');
+const { createProxyMiddleware } = require('http-proxy-middleware');
+const cors = require('cors');
 
-.screen{background:var(--card);border:1px solid var(--border);padding:24px;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,0.8);text-align:center}
-.btn-main{background:var(--purple);color:#fff;border:none;padding:14px;width:100%;border-radius:8px;cursor:pointer;font-weight:800;text-transform:uppercase;font-size:0.85rem;margin-top:15px;transition:opacity 0.2s}
-.btn-main:hover{opacity:0.9}
+const app = express();
+const PORTA = 3000;
 
-input{width:100%;padding:12px 14px;background:#050507;border:1px solid var(--border);color:var(--text);border-radius:8px;font-size:0.88rem;margin-bottom:12px;text-align:center;font-weight:600}
-input:focus{outline:none;border-color:var(--purple)}
+app.use(cors());
 
-/* Painel Admin */
-.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:15px}
-.stat-box{background:#050507;border:1px solid var(--border);padding:12px;border-radius:8px;text-align:center}
-.stat-box span{display:block;font-size:1.2rem;font-weight:800;color:var(--purple);margin-top:4px}
-.admin-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:0.7rem;text-align:left}
-.admin-table th, .admin-table td{padding:8px 4px;border-bottom:1px solid var(--border);white-space:nowrap}
-.admin-table th{color:var(--purple)}
-</style>
-</head>
-<body>
+// Registo de middleware para monitorizar e capturar informações de quem passa pelo proxy
+app.use((req, res, next) => {
+    const ipCliente = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+    console.log(`[PROXY] Pedido intercetado de IP: ${ipCliente} | Caminho: ${req.url}`);
+    next();
+});
 
-<div class="container">
+// Configuração do Proxy para redirecionar o tráfego para um destino seguro (ex: uma API ou outro servidor)
+app.use('/api', createProxyMiddleware({
+    target: 'https://api.exemplo.com', // Substitui pelo site ou API de destino real
+    changeOrigin: true,
+    pathRewrite: {
+        '^/api': '', // Remove o prefixo /api ao reencaminhar
+    },
+}));
 
-  <!-- Ecrã Principal do Utilizador -->
-  <div id="home-screen" class="screen">
-    <div style="font-size:3rem; margin-bottom:10px;">🔒</div>
-    <h2 style="font-size:1.1rem; margin-bottom:10px;">Acesso Protegido</h2>
-    <p style="font-size:0.78rem; color:var(--muted); margin-bottom:20px; line-height:1.4;">
-      Este link encontra-se sob monitorização de rede. Clique no botão abaixo para prosseguir.
-    </p>
-
-    <button class="btn-main" onclick="registerClick()">Aceder ao Conteúdo</button>
-    
-    <div style="margin-top:25px;">
-      <span style="font-size:0.7rem; color:var(--muted); cursor:pointer; text-decoration:underline;" onclick="openAdmin()">Área da Administração</span>
-    </div>
-  </div>
-
-  <!-- Painel Administrativo -->
-  <div id="admin-screen" class="screen" style="display:none; text-align:left;">
-    <h3 style="color:var(--purple); margin-bottom:12px; text-align:center;">Painel de Controlo</h3>
-    
-    <div class="stats-grid">
-      <div class="stat-box">
-        <small style="color:var(--muted); font-size:0.68rem;">Total Cliques</small>
-        <span id="totalClicks">0</span>
-      </div>
-      <div class="stat-box">
-        <small style="color:var(--muted); font-size:0.68rem;">Membros Online</small>
-        <span id="onlineMembers" style="color:var(--green)">1</span>
-      </div>
-    </div>
-
-    <p style="font-size:0.72rem; color:var(--muted); margin-bottom:6px;">Registo de Acessos (IP e Cidade):</p>
-    <div style="max-height:200px; overflow-y:auto;">
-      <table class="admin-table">
-        <thead>
-          <tr><th>Horário</th><th>IP</th><th>Cidade</th></tr>
-        </thead>
-        <tbody id="adminLogs">
-          <tr><td colspan="3" style="text-align:center; color:var(--muted);">A carregar dados...</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <button class="btn-main" style="background:#374151; margin-top:15px;" onclick="closeAdmin()">Fechar Painel</button>
-  </div>
-
-</div>
-
-<script>
-let totalClicks = 0;
-let accessLogs = [];
-let clientInfo = { ip: 'A detetar...', city: 'A detetar...' };
-
-// Recolhe o IP e a Cidade do visitante logo ao abrir a página
-window.onload = async function() {
-  try {
-    let res = await fetch('https://ipwho.is/');
-    let data = await res.json();
-    if(data.success) {
-      clientInfo.ip = data.ip;
-      clientInfo.city = `${data.city || 'N/A'}, ${data.region_code || ''}`;
-    }
-  } catch(e) {
-    clientInfo.ip = 'IP Oculto/Local';
-    clientInfo.city = 'Desconhecida';
-  }
-};
-
-function registerClick() {
-  totalClicks++;
-  let now = new Date().toLocaleTimeString();
-  
-  // Evita duplicar o mesmo IP na lista se clicar várias vezes
-  if(!accessLogs.some(log => log.ip === clientInfo.ip)) {
-    accessLogs.push({ time: now, ip: clientInfo.ip, city: clientInfo.city });
-  }
-
-  alert('Acedendo ao sistema...');
-}
-
-function openAdmin() {
-  let pass = prompt('Digite a senha de administração:');
-  if(pass === '17102007') {
-    document.getElementById('home-screen').style.display = 'none';
-    document.getElementById('admin-screen').style.display = 'block';
-    updateAdminStats();
-  } else if(pass !== null) {
-    alert('Senha incorreta!');
-  }
-}
-
-function closeAdmin() {
-  document.getElementById('admin-screen').style.display = 'none';
-  document.getElementById('home-screen').style.display = 'block';
-}
-
-function updateAdminStats() {
-  document.getElementById('totalClicks').innerText = totalClicks;
-  document.getElementById('onlineMembers').innerText = Math.floor(1 + Math.random() * 2); // Simula membros ativos online em tempo real
-
-  let tbody = document.getElementById('adminLogs');
-  if(accessLogs.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="3" style="text-align:center">Nenhum registo ainda.</td></tr>`;
-    return;
-  }
-
-  tbody.innerHTML = accessLogs.map(log => `
-    <tr>
-      <td>${log.time}</td>
-      <td><code>${log.ip}</code></td>
-      <td>📍 ${log.city}</td>
-    </tr>
-  `).join('');
-}
-</script>
-</body>
-</html>
+app.listen(PORTA, () => {
+    console.log(`Servidor Proxy a funcionar na porta ${PORTA}`);
+});
