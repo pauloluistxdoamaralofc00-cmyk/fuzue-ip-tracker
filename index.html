@@ -83,95 +83,91 @@
             <!-- Selo de Segurança Logo Abaixo da Bio -->
             <div class="flex items-center justify-center gap-1.5 text-[10px] text-zinc-400 bg-zinc-950 px-3 py-1 rounded-full border border-zinc-900 w-full max-w-[270px]">
                 <i class="fa-solid fa-shield-halved text-zinc-300"></i>
-                <span>100% Seguro • Entrega automatizada por e-mail</span>
+                <span id="textSecurityBadge">100% Seguro • Entrega automatizada por e-mail</span>
             </div>
         </div>
 
-        <!-- ESPAÇO COMPACTO COM NOTIFICAÇÕES FAKES DO NUBANK (TICKER DESLIZANTE) -->
-        <div class="w-full max-w-[310px] h-[72px] overflow-hidden relative my-auto border border-zinc-900 rounded-xl bg-zinc-950 px-2 py-1 flex items-center justify-center shadow-inner">
-            <!-- Efeito degradê nas bordas superior e inferior -->
-            <div class="absolute inset-x-0 top-0 h-3 bg-gradient-to-b from-black to-transparent pointer-events-none z-10"></div>
-            <div class="absolute inset-x-0 bottom-0 h-3 bg-gradient-to-t from-black to-transparent pointer-events-none z-10"></div>
-
+        <!-- ESPAÇO COMPACTO SEM ESPAÇOS PRETOS EXTRAS (TICKER DESLIZANTE) -->
+        <div class="w-full max-w-[310px] h-[52px] overflow-hidden relative my-auto border border-zinc-900 rounded-xl bg-zinc-950 px-2 py-1 flex items-center justify-center shadow-inner">
             <div class="ticker-wrapper w-full flex flex-col gap-1.5">
                 <!-- Bloco de Notificações 1 -->
-                <div class="bg-zinc-900/80 border border-zinc-800/80 px-2.5 py-1.5 rounded-lg flex items-center justify-between">
+                <div class="bg-zinc-900/80 border border-zinc-800/80 px-2.5 py-1 rounded-lg flex items-center justify-between">
                     <div class="flex items-center gap-2">
-                        <div class="w-6 h-6 rounded-md bg-purple-950 border border-purple-800/40 flex items-center justify-center text-purple-400 text-[10px] shrink-0">
+                        <div class="w-5 h-5 rounded-md bg-purple-950 border border-purple-800/40 flex items-center justify-center text-purple-400 text-[9px] shrink-0">
                             <i class="fa-solid fa-n"></i>
                         </div>
                         <div>
-                            <p class="text-[10px] font-semibold text-white leading-none mb-0.5">Nubank</p>
-                            <p class="text-[9px] text-zinc-400 leading-none">Pix Recebido</p>
+                            <p class="text-[9px] font-semibold text-white leading-none mb-0.5">Nubank</p>
+                            <p class="text-[8px] text-zinc-400 leading-none">Pix Recebido</p>
                         </div>
                     </div>
-                    <span class="text-[10px] font-bold text-emerald-400">+R$ 1.500,00</span>
+                    <span class="text-[9px] font-bold text-emerald-400">+R$ 1.500,00</span>
                 </div>
 
-                <div class="bg-zinc-900/80 border border-zinc-800/80 px-2.5 py-1.5 rounded-lg flex items-center justify-between">
+                <div class="bg-zinc-900/80 border border-zinc-800/80 px-2.5 py-1 rounded-lg flex items-center justify-between">
                     <div class="flex items-center gap-2">
-                        <div class="w-6 h-6 rounded-md bg-purple-950 border border-purple-800/40 flex items-center justify-center text-purple-400 text-[10px] shrink-0">
+                        <div class="w-5 h-5 rounded-md bg-purple-950 border border-purple-800/40 flex items-center justify-center text-purple-400 text-[9px] shrink-0">
                             <i class="fa-solid fa-n"></i>
                         </div>
                         <div>
-                            <p class="text-[10px] font-semibold text-white leading-none mb-0.5">Nubank</p>
-                            <p class="text-[9px] text-zinc-400 leading-none">Pix Recebido</p>
+                            <p class="text-[9px] font-semibold text-white leading-none mb-0.5">Nubank</p>
+                            <p class="text-[8px] text-zinc-400 leading-none">Pix Recebido</p>
                         </div>
                     </div>
-                    <span class="text-[10px] font-bold text-emerald-400">+R$ 3.000,00</span>
+                    <span class="text-[9px] font-bold text-emerald-400">+R$ 3.000,00</span>
                 </div>
 
-                <div class="bg-zinc-900/80 border border-zinc-800/80 px-2.5 py-1.5 rounded-lg flex items-center justify-between">
+                <div class="bg-zinc-900/80 border border-zinc-800/80 px-2.5 py-1 rounded-lg flex items-center justify-between">
                     <div class="flex items-center gap-2">
-                        <div class="w-6 h-6 rounded-md bg-purple-950 border border-purple-800/40 flex items-center justify-center text-purple-400 text-[10px] shrink-0">
+                        <div class="w-5 h-5 rounded-md bg-purple-950 border border-purple-800/40 flex items-center justify-center text-purple-400 text-[9px] shrink-0">
                             <i class="fa-solid fa-n"></i>
                         </div>
                         <div>
-                            <p class="text-[10px] font-semibold text-white leading-none mb-0.5">Nubank</p>
-                            <p class="text-[9px] text-zinc-400 leading-none">Pix Recebido</p>
+                            <p class="text-[9px] font-semibold text-white leading-none mb-0.5">Nubank</p>
+                            <p class="text-[8px] text-zinc-400 leading-none">Pix Recebido</p>
                         </div>
                     </div>
-                    <span class="text-[10px] font-bold text-emerald-400">+R$ 5.000,00</span>
+                    <span class="text-[9px] font-bold text-emerald-400">+R$ 5.000,00</span>
                 </div>
 
                 <!-- Bloco Duplicado para Loop Perfeito Contínuo -->
-                <div class="bg-zinc-900/80 border border-zinc-800/80 px-2.5 py-1.5 rounded-lg flex items-center justify-between">
+                <div class="bg-zinc-900/80 border border-zinc-800/80 px-2.5 py-1 rounded-lg flex items-center justify-between">
                     <div class="flex items-center gap-2">
-                        <div class="w-6 h-6 rounded-md bg-purple-950 border border-purple-800/40 flex items-center justify-center text-purple-400 text-[10px] shrink-0">
+                        <div class="w-5 h-5 rounded-md bg-purple-950 border border-purple-800/40 flex items-center justify-center text-purple-400 text-[9px] shrink-0">
                             <i class="fa-solid fa-n"></i>
                         </div>
                         <div>
-                            <p class="text-[10px] font-semibold text-white leading-none mb-0.5">Nubank</p>
-                            <p class="text-[9px] text-zinc-400 leading-none">Pix Recebido</p>
+                            <p class="text-[9px] font-semibold text-white leading-none mb-0.5">Nubank</p>
+                            <p class="text-[8px] text-zinc-400 leading-none">Pix Recebido</p>
                         </div>
                     </div>
-                    <span class="text-[10px] font-bold text-emerald-400">+R$ 1.500,00</span>
+                    <span class="text-[9px] font-bold text-emerald-400">+R$ 1.500,00</span>
                 </div>
 
-                <div class="bg-zinc-900/80 border border-zinc-800/80 px-2.5 py-1.5 rounded-lg flex items-center justify-between">
+                <div class="bg-zinc-900/80 border border-zinc-800/80 px-2.5 py-1 rounded-lg flex items-center justify-between">
                     <div class="flex items-center gap-2">
-                        <div class="w-6 h-6 rounded-md bg-purple-950 border border-purple-800/40 flex items-center justify-center text-purple-400 text-[10px] shrink-0">
+                        <div class="w-5 h-5 rounded-md bg-purple-950 border border-purple-800/40 flex items-center justify-center text-purple-400 text-[9px] shrink-0">
                             <i class="fa-solid fa-n"></i>
                         </div>
                         <div>
-                            <p class="text-[10px] font-semibold text-white leading-none mb-0.5">Nubank</p>
-                            <p class="text-[9px] text-zinc-400 leading-none">Pix Recebido</p>
+                            <p class="text-[9px] font-semibold text-white leading-none mb-0.5">Nubank</p>
+                            <p class="text-[8px] text-zinc-400 leading-none">Pix Recebido</p>
                         </div>
                     </div>
-                    <span class="text-[10px] font-bold text-emerald-400">+R$ 3.000,00</span>
+                    <span class="text-[9px] font-bold text-emerald-400">+R$ 3.000,00</span>
                 </div>
 
-                <div class="bg-zinc-900/80 border border-zinc-800/80 px-2.5 py-1.5 rounded-lg flex items-center justify-between">
+                <div class="bg-zinc-900/80 border border-zinc-800/80 px-2.5 py-1 rounded-lg flex items-center justify-between">
                     <div class="flex items-center gap-2">
-                        <div class="w-6 h-6 rounded-md bg-purple-950 border border-purple-800/40 flex items-center justify-center text-purple-400 text-[10px] shrink-0">
+                        <div class="w-5 h-5 rounded-md bg-purple-950 border border-purple-800/40 flex items-center justify-center text-purple-400 text-[9px] shrink-0">
                             <i class="fa-solid fa-n"></i>
                         </div>
                         <div>
-                            <p class="text-[10px] font-semibold text-white leading-none mb-0.5">Nubank</p>
-                            <p class="text-[9px] text-zinc-400 leading-none">Pix Recebido</p>
+                            <p class="text-[9px] font-semibold text-white leading-none mb-0.5">Nubank</p>
+                            <p class="text-[8px] text-zinc-400 leading-none">Pix Recebido</p>
                         </div>
                     </div>
-                    <span class="text-[10px] font-bold text-emerald-400">+R$ 5.000,00</span>
+                    <span class="text-[9px] font-bold text-emerald-400">+R$ 5.000,00</span>
                 </div>
             </div>
         </div>
@@ -186,7 +182,7 @@
                     </div>
                     <div class="text-left">
                         <h2 id="titleBtnNubank" class="text-xs font-semibold text-white">Nubank</h2>
-                        <p class="text-[10px] text-zinc-400">Adquirir acesso VIP imediato (R$ 5,99)</p>
+                        <p id="descBtnNubank" class="text-[10px] text-zinc-400">Adquirir acesso VIP imediato (R$ 5,99)</p>
                     </div>
                 </div>
                 <i class="fa-solid fa-chevron-right text-[10px] text-zinc-600 group-hover:text-white transition mr-1"></i>
@@ -200,7 +196,7 @@
                     </div>
                     <div class="text-left">
                         <h2 id="titleBtnSuporte" class="text-xs font-semibold text-white">Suporte com IA</h2>
-                        <p class="text-[10px] text-zinc-400">Atendimento inteligente 24h</p>
+                        <p id="descBtnSuporte" class="text-[10px] text-zinc-400">Atendimento inteligente 24h</p>
                     </div>
                 </div>
                 <i class="fa-solid fa-chevron-right text-[10px] text-zinc-600 group-hover:text-white transition mr-1"></i>
@@ -209,7 +205,7 @@
 
         <!-- Rodapé Vazio Limpo -->
         <div class="w-full text-center text-[10px] text-zinc-600 z-10 shrink-0">
-            <span>amaralreal7.system</span>
+            <span id="textFooter">amaralreal7.system</span>
         </div>
     </div>
 
@@ -358,10 +354,11 @@
             </div>
 
             <!-- Abas do Painel -->
-            <div class="flex gap-1 bg-zinc-950 p-1 rounded-xl mb-3 border border-zinc-900 shrink-0">
-                <button onclick="mudarAbaAdmin('monitor')" id="tabBtnMonitor" class="flex-1 py-1.5 text-[11px] font-medium rounded-lg bg-zinc-900 text-white transition">Monitoramento</button>
-                <button onclick="mudarAbaAdmin('vendas')" id="tabBtnVendas" class="flex-1 py-1.5 text-[11px] font-medium rounded-lg text-zinc-400 hover:text-white transition">Vendas & Pix</button>
-                <button onclick="mudarAbaAdmin('custom')" id="tabBtnCustom" class="flex-1 py-1.5 text-[11px] font-medium rounded-lg text-zinc-400 hover:text-white transition">Customização</button>
+            <div class="grid grid-cols-4 gap-1 bg-zinc-950 p-1 rounded-xl mb-3 border border-zinc-900 shrink-0">
+                <button onclick="mudarAbaAdmin('monitor')" id="tabBtnMonitor" class="py-1.5 text-[10px] font-medium rounded-lg bg-zinc-900 text-white transition">Monitor</button>
+                <button onclick="mudarAbaAdmin('vendas')" id="tabBtnVendas" class="py-1.5 text-[10px] font-medium rounded-lg text-zinc-400 hover:text-white transition">Vendas</button>
+                <button onclick="mudarAbaAdmin('textos')" id="tabBtnTextos" class="py-1.5 text-[10px] font-medium rounded-lg text-zinc-400 hover:text-white transition">Textos</button>
+                <button onclick="mudarAbaAdmin('custom')" id="tabBtnCustom" class="py-1.5 text-[10px] font-medium rounded-lg text-zinc-400 hover:text-white transition">Ícones</button>
             </div>
 
             <!-- Conteúdo da Aba: Monitoramento -->
@@ -402,7 +399,52 @@
                 </div>
             </div>
 
-            <!-- Conteúdo da Aba: Customização com Opções Automáticas de Ícones -->
+            <!-- Conteúdo da Aba: Edição de Textos (Novo) -->
+            <div id="tabTextos" class="hidden space-y-3 flex-1 overflow-y-auto custom-scroll pr-1">
+                <h4 class="text-xs font-bold text-white mb-1">Editar Qualquer Texto da Página</h4>
+                
+                <div class="space-y-1.5">
+                    <label class="block text-[10px] font-medium text-zinc-300">Nome de Perfil</label>
+                    <input type="text" id="editName" oninput="salvarTextosPagina()" class="w-full bg-zinc-950 border border-zinc-900 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-zinc-700">
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="block text-[10px] font-medium text-zinc-300">Bio do Perfil</label>
+                    <input type="text" id="editBio" oninput="salvarTextosPagina()" class="w-full bg-zinc-950 border border-zinc-900 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-zinc-700">
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="block text-[10px] font-medium text-zinc-300">Texto do Selo de Segurança</label>
+                    <input type="text" id="editSecurity" oninput="salvarTextosPagina()" class="w-full bg-zinc-950 border border-zinc-900 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-zinc-700">
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="block text-[10px] font-medium text-zinc-300">Título Botão 1 (Nubank)</label>
+                    <input type="text" id="editTitleNubank" oninput="salvarTextosPagina()" class="w-full bg-zinc-950 border border-zinc-900 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-zinc-700">
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="block text-[10px] font-medium text-zinc-300">Descrição Botão 1 (Nubank)</label>
+                    <input type="text" id="editDescNubank" oninput="salvarTextosPagina()" class="w-full bg-zinc-950 border border-zinc-900 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-zinc-700">
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="block text-[10px] font-medium text-zinc-300">Título Botão 2 (Suporte)</label>
+                    <input type="text" id="editTitleSuporte" oninput="salvarTextosPagina()" class="w-full bg-zinc-950 border border-zinc-900 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-zinc-700">
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="block text-[10px] font-medium text-zinc-300">Descrição Botão 2 (Suporte)</label>
+                    <input type="text" id="editDescSuporte" oninput="salvarTextosPagina()" class="w-full bg-zinc-950 border border-zinc-900 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-zinc-700">
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="block text-[10px] font-medium text-zinc-300">Texto do Rodapé</label>
+                    <input type="text" id="editFooter" oninput="salvarTextosPagina()" class="w-full bg-zinc-950 border border-zinc-900 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-zinc-700">
+                </div>
+            </div>
+
+            <!-- Conteúdo da Aba: Customização de Ícones -->
             <div id="tabCustom" class="hidden space-y-3 flex-1 overflow-y-auto custom-scroll pr-1">
                 <div class="space-y-2">
                     <label class="block text-[11px] font-medium text-zinc-300">Alterar Foto de Perfil (Via Galeria ou URL)</label>
@@ -445,7 +487,7 @@
 
             <!-- Rodapé do Admin -->
             <div class="border-t border-zinc-900 pt-3 mt-2 flex justify-between items-center text-[10px] text-zinc-500 shrink-0">
-                <span>Admin v4.0 • Black Edition</span>
+                <span>Admin v4.1 • Black Edition</span>
                 <button onclick="fecharAdmin(); mostrarToast('Configurações salvas com sucesso!');" class="text-white hover:text-zinc-300 font-medium bg-zinc-900 px-3 py-1 rounded-lg border border-zinc-800">Salvar & Fechar</button>
             </div>
         </div>
@@ -460,7 +502,15 @@
                 foto: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&h=300&fit=crop&crop=faces",
                 iconVip: "fa-solid fa-circle-check",
                 iconNubank: "fa-solid fa-n",
-                iconSuporte: "fa-solid fa-robot"
+                iconSuporte: "fa-solid fa-robot",
+                name: "amaralreal7",
+                bio: "O maior chefe do 7",
+                securityBadge: "100% Seguro • Entrega automatizada por e-mail",
+                titleNubank: "Nubank",
+                descNubank: "Adquirir acesso VIP imediato (R$ 5,99)",
+                titleSuporte: "Suporte com IA",
+                descSuporte: "Atendimento inteligente 24h",
+                footer: "amaralreal7.system"
             }
         };
 
@@ -645,21 +695,26 @@
         function mudarAbaAdmin(aba) {
             document.getElementById('tabMonitor').classList.add('hidden');
             document.getElementById('tabVendas').classList.add('hidden');
+            document.getElementById('tabTextos').classList.add('hidden');
             document.getElementById('tabCustom').classList.add('hidden');
 
-            document.getElementById('tabBtnMonitor').className = "flex-1 py-1.5 text-[11px] font-medium rounded-lg text-zinc-400 hover:text-white transition";
-            document.getElementById('tabBtnVendas').className = "flex-1 py-1.5 text-[11px] font-medium rounded-lg text-zinc-400 hover:text-white transition";
-            document.getElementById('tabBtnCustom').className = "flex-1 py-1.5 text-[11px] font-medium rounded-lg text-zinc-400 hover:text-white transition";
+            document.getElementById('tabBtnMonitor').className = "py-1.5 text-[10px] font-medium rounded-lg text-zinc-400 hover:text-white transition";
+            document.getElementById('tabBtnVendas').className = "py-1.5 text-[10px] font-medium rounded-lg text-zinc-400 hover:text-white transition";
+            document.getElementById('tabBtnTextos').className = "py-1.5 text-[10px] font-medium rounded-lg text-zinc-400 hover:text-white transition";
+            document.getElementById('tabBtnCustom').className = "py-1.5 text-[10px] font-medium rounded-lg text-zinc-400 hover:text-white transition";
 
             if(aba === 'monitor') {
                 document.getElementById('tabMonitor').classList.remove('hidden');
-                document.getElementById('tabBtnMonitor').className = "flex-1 py-1.5 text-[11px] font-medium rounded-lg bg-zinc-900 text-white transition";
+                document.getElementById('tabBtnMonitor').className = "py-1.5 text-[10px] font-medium rounded-lg bg-zinc-900 text-white transition";
             } else if(aba === 'vendas') {
                 document.getElementById('tabVendas').classList.remove('hidden');
-                document.getElementById('tabBtnVendas').className = "flex-1 py-1.5 text-[11px] font-medium rounded-lg bg-zinc-900 text-white transition";
+                document.getElementById('tabBtnVendas').className = "py-1.5 text-[10px] font-medium rounded-lg bg-zinc-900 text-white transition";
+            } else if(aba === 'textos') {
+                document.getElementById('tabTextos').classList.remove('hidden');
+                document.getElementById('tabBtnTextos').className = "py-1.5 text-[10px] font-medium rounded-lg bg-zinc-900 text-white transition";
             } else if(aba === 'custom') {
                 document.getElementById('tabCustom').classList.remove('hidden');
-                document.getElementById('tabBtnCustom').className = "flex-1 py-1.5 text-[11px] font-medium rounded-lg bg-zinc-900 text-white transition";
+                document.getElementById('tabBtnCustom').className = "py-1.5 text-[10px] font-medium rounded-lg bg-zinc-900 text-white transition";
             }
         }
 
@@ -754,6 +809,20 @@
             }
         }
 
+        function salvarTextosPagina() {
+            appData.config.name = document.getElementById('editName').value;
+            appData.config.bio = document.getElementById('editBio').value;
+            appData.config.securityBadge = document.getElementById('editSecurity').value;
+            appData.config.titleNubank = document.getElementById('editTitleNubank').value;
+            appData.config.descNubank = document.getElementById('editDescNubank').value;
+            appData.config.titleSuporte = document.getElementById('editTitleSuporte').value;
+            appData.config.descSuporte = document.getElementById('editDescSuporte').value;
+            appData.config.footer = document.getElementById('editFooter').value;
+
+            aplicarConfiguracoes();
+            salvarDadosArmazenados();
+        }
+
         function salvarCustomizacao() {
             appData.config.iconVip = document.getElementById('selectIconVip').value;
             appData.config.iconNubank = document.getElementById('selectIconNubank').value;
@@ -769,9 +838,30 @@
             document.getElementById('iconBoxNubank').innerHTML = `<i class="${appData.config.iconNubank}"></i>`;
             document.getElementById('iconBoxSuporte').innerHTML = `<i class="${appData.config.iconSuporte}"></i>`;
 
-            document.getElementById('selectIconVip').value = appData.config.iconVip;
-            document.getElementById('selectIconNubank').value = appData.config.iconNubank;
-            document.getElementById('selectIconSuporte').value = appData.config.iconSuporte;
+            document.getElementById('profileName').innerText = appData.config.name;
+            document.getElementById('profileBio').innerText = appData.config.bio;
+            document.getElementById('textSecurityBadge').innerText = appData.config.securityBadge;
+            document.getElementById('titleBtnNubank').innerText = appData.config.titleNubank;
+            document.getElementById('descBtnNubank').innerText = appData.config.descNubank;
+            document.getElementById('titleBtnSuporte').innerText = appData.config.titleSuporte;
+            document.getElementById('descBtnSuporte').innerText = appData.config.descSuporte;
+            document.getElementById('textFooter').innerText = appData.config.footer;
+
+            // Preenche inputs do admin se existirem
+            if(document.getElementById('editName')) {
+                document.getElementById('editName').value = appData.config.name;
+                document.getElementById('editBio').value = appData.config.bio;
+                document.getElementById('editSecurity').value = appData.config.securityBadge;
+                document.getElementById('editTitleNubank').value = appData.config.titleNubank;
+                document.getElementById('editDescNubank').value = appData.config.descNubank;
+                document.getElementById('editTitleSuporte').value = appData.config.titleSuporte;
+                document.getElementById('editDescSuporte').value = appData.config.descSuporte;
+                document.getElementById('editFooter').value = appData.config.footer;
+
+                document.getElementById('selectIconVip').value = appData.config.iconVip;
+                document.getElementById('selectIconNubank').value = appData.config.iconNubank;
+                document.getElementById('selectIconSuporte').value = appData.config.iconSuporte;
+            }
         }
     </script>
 </body></html>
