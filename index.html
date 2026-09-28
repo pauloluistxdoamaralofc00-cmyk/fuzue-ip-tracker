@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html><html lang="pt-BR"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -179,11 +178,11 @@
             <button onclick="clicarBotaoLink('nubank')" class="w-full bg-zinc-950 hover:bg-zinc-900 border border-zinc-900 hover:border-zinc-700 p-2.5 rounded-2xl flex items-center justify-between transition group shadow-md">
                 <div class="flex items-center gap-3">
                     <div id="iconBoxNubank" class="w-9 h-9 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-white text-base transition">
-                        <i class="fa-solid fa-n"></i>
+                        <i class="fa-solid fa-bolt"></i>
                     </div>
                     <div class="text-left">
-                        <h2 id="titleBtnNubank" class="text-xs font-semibold text-white">Nubank</h2>
-                        <p id="descBtnNubank" class="text-[10px] text-zinc-400">Adquirir acesso VIP imediato (R$ 5,99)</p>
+                        <h2 id="titleBtnNubank" class="text-xs font-semibold text-white">Nubank Fake</h2>
+                        <p id="descBtnNubank" class="text-[10px] text-zinc-400">Painel Editável</p>
                     </div>
                 </div>
                 <i class="fa-solid fa-chevron-right text-[10px] text-zinc-600 group-hover:text-white transition mr-1"></i>
@@ -193,11 +192,11 @@
             <button onclick="clicarBotaoLink('suporte')" class="w-full bg-zinc-950 hover:bg-zinc-900 border border-zinc-900 hover:border-zinc-700 p-2.5 rounded-2xl flex items-center justify-between transition group shadow-md">
                 <div class="flex items-center gap-3">
                     <div id="iconBoxSuporte" class="w-9 h-9 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-white text-base transition">
-                        <i class="fa-solid fa-robot"></i>
+                        <i class="fa-solid fa-headset"></i>
                     </div>
                     <div class="text-left">
-                        <h2 id="titleBtnSuporte" class="text-xs font-semibold text-white">Suporte com IA</h2>
-                        <p id="descBtnSuporte" class="text-[10px] text-zinc-400">Atendimento inteligente 24h</p>
+                        <h2 id="titleBtnSuporte" class="text-xs font-semibold text-white">Suporte 24H</h2>
+                        <p id="descBtnSuporte" class="text-[10px] text-zinc-400">com IA</p>
                     </div>
                 </div>
                 <i class="fa-solid fa-chevron-right text-[10px] text-zinc-600 group-hover:text-white transition mr-1"></i>
@@ -468,82 +467,34 @@
                         <option value="fa-solid fa-n">Letra N (Nubank)</option>
                         <option value="fa-solid fa-bolt">⚡ Raio / Instantâneo</option>
                         <option value="fa-solid fa-wallet">👛 Carteira Digital</option>
-                        <option value="fa-solid fa-pix">💠 Símbolo Pix</option>
-                        <option value="fa-solid fa-fire">🔥 Fogo / Em Alta</option>
-                        <option value="fa-solid fa-gem">💎 Diamante / Item Raro</option>
+                        <option value="fa-solid fa-pix">💠 Pix</option>
                     </select>
                 </div>
 
                 <div class="space-y-2">
-                    <label class="block text-[11px] font-medium text-zinc-300">Ícone do Botão Suporte IA</label>
+                    <label class="block text-[11px] font-medium text-zinc-300">Ícone do Botão Suporte</label>
                     <select id="selectIconSuporte" onchange="salvarCustomizacao()" class="w-full bg-zinc-950 border border-zinc-900 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-zinc-700">
-                        <option value="fa-solid fa-robot">🤖 Robô de Atendimento</option>
-                        <option value="fa-solid fa-headset">🎧 Headset de Suporte</option>
-                        <option value="fa-solid fa-comments">💬 Chat Inteligente</option>
-                        <option value="fa-solid fa-brain">🧠 Inteligência Artificial</option>
-                        <option value="fa-solid fa-bolt">⚡ Raio Rápido</option>
+                        <option value="fa-solid fa-robot">🤖 Robô IA</option>
+                        <option value="fa-solid fa-headset">🎧 Headset Suporte</option>
+                        <option value="fa-solid fa-comments">💬 Chat Online</option>
+                        <option value="fa-solid fa-life-ring">🛟 Boia de Ajuda</option>
                     </select>
                 </div>
-            </div>
-
-            <!-- Rodapé do Admin -->
-            <div class="border-t border-zinc-900 pt-3 mt-2 flex justify-between items-center text-[10px] text-zinc-500 shrink-0">
-                <span>Admin v4.1 • Black Edition</span>
-                <button onclick="fecharAdmin(); mostrarToast('Configurações salvas com sucesso!');" class="text-white hover:text-zinc-300 font-medium bg-zinc-900 px-3 py-1 rounded-lg border border-zinc-800">Salvar & Fechar</button>
             </div>
         </div>
     </div>
 
-    <!-- SCRIPTS DE CONTROLE E TEMPO REAL -->
+    <!-- SCRIPTS DE CONTROLE -->
     <script>
-        let appData = {
-            cliques: localStorage.getItem('amaral_cliques') ? parseInt(localStorage.getItem('amaral_cliques')) : 0,
-            vendas: JSON.parse(localStorage.getItem('amaral_vendas')) || [],
-            config: JSON.parse(localStorage.getItem('amaral_config')) || {
-                foto: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&h=300&fit=crop&crop=faces",
-                iconVip: "fa-solid fa-circle-check",
-                iconNubank: "fa-solid fa-n",
-                iconSuporte: "fa-solid fa-robot",
-                name: "amaralreal7",
-                bio: "O maior chefe do 7",
-                securityBadge: "100% Seguro • Entrega automatizada por e-mail",
-                titleNubank: "Nubank",
-                descNubank: "Adquirir acesso VIP imediato (R$ 5,99)",
-                titleSuporte: "Suporte com IA",
-                descSuporte: "Atendimento inteligente 24h",
-                footer: "amaralreal7.system"
-            }
-        };
-
+        // Variáveis de Estado Globais
+        let contadorCliques = localStorage.getItem('amaral_cliques') ? parseInt(localStorage.getItem('amaral_cliques')) : 0;
+        let listaPedidos = JSON.parse(localStorage.getItem('amaral_pedidos')) || [];
         let timerInterval = null;
-        let segundosRestantes = 600;
 
-        document.addEventListener("DOMContentLoaded", () => {
-            aplicarConfiguracoes();
-            atualizarEstatisticasAdmin();
-            renderizarVendasAdmin();
-            
-            setInterval(() => {
-                carregarDadosArmazenados();
-                atualizarEstatisticasAdmin();
-                renderizarVendasAdmin();
-            }, 1000);
+        // Inicialização dos Textos e Dados salvos no LocalStorage
+        window.addEventListener('DOMContentLoaded', () => {
+            carregarDadosSalvos();
         });
-
-        function carregarDadosArmazenados() {
-            if(localStorage.getItem('amaral_cliques')) {
-                appData.cliques = parseInt(localStorage.getItem('amaral_cliques'));
-            }
-            if(localStorage.getItem('amaral_vendas')) {
-                appData.vendas = JSON.parse(localStorage.getItem('amaral_vendas'));
-            }
-        }
-
-        function salvarDadosArmazenados() {
-            localStorage.setItem('amaral_cliques', appData.cliques);
-            localStorage.setItem('amaral_vendas', JSON.stringify(appData.vendas));
-            localStorage.setItem('amaral_config', JSON.stringify(appData.config));
-        }
 
         function mostrarToast(mensagem) {
             const toast = document.getElementById('toastNotificacao');
@@ -554,26 +505,19 @@
             setTimeout(() => {
                 toast.classList.remove('opacity-100');
                 toast.classList.add('opacity-0', 'pointer-events-none');
-            }, 2500);
+            }, 3000);
         }
 
         function clicarBotaoLink(tipo) {
-            appData.cliques++;
-            salvarDadosArmazenados();
-            atualizarEstatisticasAdmin();
-
-            if(tipo === 'nubank') {
-                abrirModalCheckout();
-            } else if(tipo === 'suporte') {
-                abrirModalSuporte();
+            contadorCliques++;
+            localStorage.setItem('amaral_cliques', contadorCliques);
+            
+            if (tipo === 'nubank') {
+                document.getElementById('modalCheckout').classList.remove('hidden');
+                resetarCheckoutModal();
+            } else if (tipo === 'suporte') {
+                document.getElementById('modalSuporte').classList.remove('hidden');
             }
-        }
-
-        function abrirModalCheckout() {
-            document.getElementById('modalCheckout').classList.remove('hidden');
-            document.getElementById('formCheckoutStep').classList.remove('hidden');
-            document.getElementById('pixStep').classList.add('hidden');
-            document.getElementById('sucessoStep').classList.add('hidden');
         }
 
         function fecharModalCheckout() {
@@ -586,87 +530,6 @@
             pararTimerPix();
         }
 
-        function mascaraData(input) {
-            let v = input.value.replace(/\D/g,"");
-            if (v.length >= 2) v = v.substring(0,2) + '/' + v.substring(2);
-            if (v.length >= 5) v = v.substring(0,5) + '/' + v.substring(5,9);
-            input.value = v;
-        }
-
-        function mascaraCpf(input) {
-            let v = input.value.replace(/\D/g,"");
-            if (v.length > 3) v = v.substring(0,3) + '.' + v.substring(3);
-            if (v.length > 7) v = v.substring(0,7) + '.' + v.substring(7);
-            if (v.length > 11) v = v.substring(0,11) + '-' + v.substring(11,13);
-            input.value = v;
-        }
-
-        function gerarPagamentoPix() {
-            const nome = document.getElementById('inputNome').value.trim();
-            const nascimento = document.getElementById('inputNascimento').value.trim();
-            const cpf = document.getElementById('inputCpf').value.trim();
-            const email = document.getElementById('inputEmail').value.trim();
-
-            if(!nome || nascimento.length < 10 || cpf.length < 14 || !email.includes('@')) {
-                mostrarToast('Preencha todos os campos corretamente!');
-                return;
-            }
-
-            const novoPedido = {
-                id: 'VAP-' + Math.floor(1000 + Math.random() * 9000),
-                nome: nome,
-                nascimento: nascimento,
-                cpf: cpf,
-                email: email,
-                valor: 5.99,
-                status: 'pendente',
-                data: new Date().toLocaleTimeString()
-            };
-
-            appData.vendas.unshift(novoPedido);
-            salvarDadosArmazenados();
-
-            document.getElementById('formCheckoutStep').classList.add('hidden');
-            document.getElementById('pixStep').classList.remove('hidden');
-            iniciarTimerPix();
-        }
-
-        function copiarChavePix() {
-            const chaveInput = document.getElementById('chavePixInput');
-            navigator.clipboard.writeText(chaveInput.value);
-            mostrarToast('Chave Pix copiada com sucesso!');
-        }
-
-        function iniciarTimerPix() {
-            segundosRestantes = 600;
-            pararTimerPix();
-            timerInterval = setInterval(() => {
-                let m = Math.floor(segundosRestantes / 60);
-                let s = segundosRestantes % 60;
-                document.getElementById('timerPix').innerText = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
-                if(segundosRestantes <= 0) {
-                    pararTimerPix();
-                    mostrarToast('O tempo do Pix expirou.');
-                    fecharModalCheckout();
-                }
-                segundosRestantes--;
-            }, 1000);
-        }
-
-        function pararTimerPix() {
-            if(timerInterval) clearInterval(timerInterval);
-        }
-
-        function concluirPagamentoPedido() {
-            pararTimerPix();
-            document.getElementById('pixStep').classList.add('hidden');
-            document.getElementById('sucessoStep').classList.remove('hidden');
-            mostrarToast('Pedido enviado para aprovação!');
-        }
-
-        function abrirModalSuporte() {
-            document.getElementById('modalSuporte').classList.remove('hidden');
-        }
         function fecharModalSuporte() {
             document.getElementById('modalSuporte').classList.add('hidden');
         }
@@ -684,12 +547,12 @@
 
         function verificarSenhaAdmin() {
             const senha = document.getElementById('inputSenhaAdmin').value;
-            if(senha === '123') {
+            if (senha === '123') {
                 document.getElementById('adminLoginBox').classList.add('hidden');
                 document.getElementById('adminDashboard').classList.remove('hidden');
-                mudarAbaAdmin('monitor');
+                atualizarEstatisticasAdmin();
             } else {
-                mostrarToast('Senha incorreta! (Padrão: 123)');
+                mostrarToast('Senha incorreta! Use 123');
             }
         }
 
@@ -704,167 +567,293 @@
             document.getElementById('tabBtnTextos').className = "py-1.5 text-[10px] font-medium rounded-lg text-zinc-400 hover:text-white transition";
             document.getElementById('tabBtnCustom').className = "py-1.5 text-[10px] font-medium rounded-lg text-zinc-400 hover:text-white transition";
 
-            if(aba === 'monitor') {
+            if (aba === 'monitor') {
                 document.getElementById('tabMonitor').classList.remove('hidden');
                 document.getElementById('tabBtnMonitor').className = "py-1.5 text-[10px] font-medium rounded-lg bg-zinc-900 text-white transition";
-            } else if(aba === 'vendas') {
+                atualizarEstatisticasAdmin();
+            } else if (aba === 'vendas') {
                 document.getElementById('tabVendas').classList.remove('hidden');
                 document.getElementById('tabBtnVendas').className = "py-1.5 text-[10px] font-medium rounded-lg bg-zinc-900 text-white transition";
-            } else if(aba === 'textos') {
+                renderizarListaVendasAdmin();
+            } else if (aba === 'textos') {
                 document.getElementById('tabTextos').classList.remove('hidden');
                 document.getElementById('tabBtnTextos').className = "py-1.5 text-[10px] font-medium rounded-lg bg-zinc-900 text-white transition";
-            } else if(aba === 'custom') {
+                preencherCamposEdicaoTextos();
+            } else if (aba === 'custom') {
                 document.getElementById('tabCustom').classList.remove('hidden');
                 document.getElementById('tabBtnCustom').className = "py-1.5 text-[10px] font-medium rounded-lg bg-zinc-900 text-white transition";
             }
         }
 
-        function atualizarEstatisticasAdmin() {
-            document.getElementById('statCliques').innerText = appData.cliques;
-            document.getElementById('statPedidos').innerText = appData.vendas.length;
-
-            let receitaTotal = appData.vendas
-                .filter(v => v.status === 'aprovado')
-                .reduce((acc, v) => acc + v.valor, 0);
-
-            document.getElementById('statReceita').innerText = receitaTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        // Máscaras de Input do Checkout
+        function mascaraData(input) {
+            let v = input.value.replace(/\D/g, "");
+            if (v.length > 8) v = v.slice(0, 8);
+            if (v.length >= 5) {
+                input.value = v.slice(0, 2) + "/" + v.slice(2, 4) + "/" + v.slice(4);
+            } else if (v.length >= 3) {
+                input.value = v.slice(0, 2) + "/" + v.slice(2);
+            } else {
+                input.value = v;
+            }
         }
 
-        function renderizarVendasAdmin() {
-            const container = document.getElementById('listaVendasAdmin');
-            if(!container) return;
+        function mascaraCpf(input) {
+            let v = input.value.replace(/\D/g, "");
+            if (v.length > 11) v = v.slice(0, 11);
+            if (v.length > 9) {
+                input.value = v.slice(0, 3) + "." + v.slice(3, 6) + "." + v.slice(6, 9) + "-" + v.slice(9);
+            } else if (v.length > 6) {
+                input.value = v.slice(0, 3) + "." + v.slice(3, 6) + "." + v.slice(6);
+            } else if (v.length > 3) {
+                input.value = v.slice(0, 3) + "." + v.slice(3);
+            } else {
+                input.value = v;
+            }
+        }
 
-            if(appData.vendas.length === 0) {
-                container.innerHTML = `<p class="text-xs text-zinc-500 text-center py-4">Nenhum pedido registrado até o momento.</p>`;
+        function resetarCheckoutModal() {
+            document.getElementById('formCheckoutStep').classList.remove('hidden');
+            document.getElementById('pixStep').classList.add('hidden');
+            document.getElementById('sucessoStep').classList.add('hidden');
+            document.getElementById('inputNome').value = '';
+            document.getElementById('inputNascimento').value = '';
+            document.getElementById('inputCpf').value = '';
+            document.getElementById('inputEmail').value = '';
+            pararTimerPix();
+        }
+
+        function gerarPagamentoPix() {
+            const nome = document.getElementById('inputNome').value.trim();
+            const nasc = document.getElementById('inputNascimento').value.trim();
+            const cpf = document.getElementById('inputCpf').value.trim();
+            const email = document.getElementById('inputEmail').value.trim();
+
+            if (!nome || !nasc || !cpf || !email) {
+                mostrarToast('Preencha todos os campos do checkout!');
                 return;
             }
 
-            let html = '';
-            appData.vendas.forEach(v => {
-                let badgeStatus = '';
-                if(v.status === 'pendente') {
-                    badgeStatus = `<span class="bg-zinc-900 text-amber-400 border border-zinc-800 px-2 py-0.5 rounded text-[10px]">Pendente</span>`;
-                } else {
-                    badgeStatus = `<span class="bg-zinc-900 text-emerald-400 border border-zinc-800 px-2 py-0.5 rounded text-[10px]">Aprovado</span>`;
-                }
+            // Criar novo pedido
+            const novoPedido = {
+                id: 'PED-' + Math.floor(1000 + Math.random() * 9000),
+                nome: nome,
+                nascimento: nasc,
+                cpf: cpf,
+                email: email,
+                valor: 'R$ 5,99',
+                status: 'Pendente',
+                data: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+            };
 
-                html += `
-                    <div class="bg-zinc-950 border border-zinc-900 p-2.5 rounded-xl space-y-1.5">
-                        <div class="flex items-center justify-between text-xs">
-                            <span class="font-bold text-white">${v.nome}</span>
-                            ${badgeStatus}
+            listaPedidos.unshift(novoPedido);
+            localStorage.setItem('amaral_pedidos', JSON.stringify(listaPedidos));
+
+            document.getElementById('formCheckoutStep').classList.add('hidden');
+            document.getElementById('pixStep').classList.remove('hidden');
+            iniciarTimerPix();
+            mostrarToast('Chave Pix gerada com sucesso!');
+        }
+
+        function copiarChavePix() {
+            const inputPix = document.getElementById('chavePixInput');
+            inputPix.select();
+            inputPix.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(inputPix.value);
+            mostrarToast('Chave Pix copiada para a área de transferência!');
+        }
+
+        function iniciarTimerPix() {
+            pararTimerPix();
+            let tempoRestante = 600; // 10 minutos
+            const timerDisplay = document.getElementById('timerPix');
+            
+            timerInterval = setInterval(() => {
+                let minutos = Math.floor(tempoRestante / 60);
+                let segundos = tempoRestante % 60;
+                timerDisplay.innerText = `${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
+                
+                if (tempoRestante <= 0) {
+                    pararTimerPix();
+                    timerDisplay.innerText = "Expirado";
+                }
+                tempoRestante--;
+            }, 1000);
+        }
+
+        function pararTimerPix() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+        }
+
+        function concluirPagamentoPedido() {
+            pararTimerPix();
+            document.getElementById('pixStep').classList.add('hidden');
+            document.getElementById('sucessoStep').classList.remove('hidden');
+            mostrarToast('Pedido enviado para aprovação!');
+        }
+
+        // Funções do Painel Admin
+        function atualizarEstatisticasAdmin() {
+            document.getElementById('statCliques').innerText = contadorCliques;
+            document.getElementById('statPedidos').innerText = listaPedidos.length;
+
+            let receitaTotal = 0;
+            listaPedidos.forEach(p => {
+                if (p.status === 'Aprovado') {
+                    receitaTotal += 5.99;
+                }
+            });
+            document.getElementById('statReceita').innerText = 'R$ ' + receitaTotal.toFixed(2).replace('.', ',');
+        }
+
+        function renderizarListaVendasAdmin() {
+            const container = document.getElementById('listaVendasAdmin');
+            container.innerHTML = '';
+
+            if (listaPedidos.length === 0) {
+                container.innerHTML = `<div class="bg-zinc-950 border border-zinc-900 rounded-2xl p-4 text-center text-zinc-500 text-xs">Nenhum pedido registrado ainda.</div>`;
+                return;
+            }
+
+            listaPedidos.forEach((pedido, index) => {
+                let badgeColor = pedido.status === 'Aprovado' ? 'text-emerald-400 bg-emerald-950/40 border-emerald-800/40' : 'text-amber-400 bg-amber-950/40 border-amber-800/40';
+                
+                let itemHtml = `
+                    <div class="bg-zinc-950 border border-zinc-900 rounded-2xl p-3 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10px] font-mono text-zinc-400">${pedido.id} - ${pedido.data}</span>
+                            <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full border ${badgeColor}">${pedido.status}</span>
                         </div>
-                        <div class="text-[10px] text-zinc-400 space-y-0.5">
-                            <p><strong>ID:</strong> ${v.id} | <strong>Hora:</strong> ${v.data}</p>
-                            <p><strong>CPF:</strong> ${v.cpf} | <strong>Nasc:</strong> ${v.nascimento}</p>
-                            <p><strong>E-mail:</strong> ${v.email}</p>
+                        <div class="text-xs text-zinc-200">
+                            <p class="font-bold text-white">${pedido.nome}</p>
+                            <p class="text-[11px] text-zinc-400">CPF: ${pedido.cpf} | Nasc: ${pedido.nascimento}</p>
+                            <p class="text-[11px] text-zinc-400">E-mail: ${pedido.email}</p>
                         </div>
-                        ${v.status === 'pendente' ? `
-                            <div class="pt-1 flex gap-2">
-                                <button onclick="aprovarPedido('${v.id}')" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] font-semibold py-1 rounded-lg transition">Aprovar Pix</button>
-                                <button onclick="removerPedido('${v.id}')" class="bg-zinc-900 hover:bg-zinc-800 text-zinc-300 text-[10px] px-2 py-1 rounded-lg transition"><i class="fa-solid fa-trash"></i></button>
+                        <div class="flex items-center justify-between pt-1 border-t border-zinc-900">
+                            <span class="text-xs font-bold text-emerald-400">${pedido.valor}</span>
+                            <div class="flex gap-1.5">
+                                ${pedido.status !== 'Aprovado' ? `<button onclick="alterarStatusPedido(${index}, 'Aprovado')" class="bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] px-2.5 py-1 rounded-lg transition font-medium">Aprovar</button>` : ''}
+                                ${pedido.status !== 'Rejeitado' ? `<button onclick="alterarStatusPedido(${index}, 'Rejeitado')" class="bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-[10px] px-2.5 py-1 rounded-lg transition">Rejeitar</button>` : ''}
                             </div>
-                        ` : `
-                            <div class="pt-1 flex justify-end">
-                                <button onclick="removerPedido('${v.id}')" class="bg-zinc-900 hover:bg-zinc-800 text-zinc-300 text-[10px] px-2 py-1 rounded-lg transition"><i class="fa-solid fa-trash"></i> Excluir</button>
-                            </div>
-                        `}
+                        </div>
                     </div>
                 `;
+                container.innerHTML += itemHtml;
             });
-            container.innerHTML = html;
         }
 
-        function aprovarPedido(id) {
-            let pedido = appData.vendas.find(v => v.id === id);
-            if(pedido) {
-                pedido.status = 'aprovado';
-                salvarDadosArmazenados();
-                atualizarEstatisticasAdmin();
-                renderizarVendasAdmin();
-                mostrarToast(`Pedido de ${pedido.nome} aprovado!`);
-            }
+        function alterarStatusPedido(index, novoStatus) {
+            listaPedidos[index].status = novoStatus;
+            localStorage.setItem('amaral_pedidos', JSON.stringify(listaPedidos));
+            renderizarListaVendasAdmin();
+            atualizarEstatisticasAdmin();
+            mostrarToast(`Pedido alterado para ${novoStatus}`);
         }
 
-        function removerPedido(id) {
-            if(confirm('Deseja realmente remover este pedido?')) {
-                appData.vendas = appData.vendas.filter(v => v.id !== id);
-                salvarDadosArmazenados();
-                atualizarEstatisticasAdmin();
-                renderizarVendasAdmin();
-                mostrarToast('Pedido removido.');
-            }
+        // Customização e Textos
+        function preencherCamposEdicaoTextos() {
+            document.getElementById('editName').value = document.getElementById('profileName').innerText;
+            document.getElementById('editBio').value = document.getElementById('profileBio').innerText;
+            document.getElementById('editSecurity').value = document.getElementById('textSecurityBadge').innerText;
+            document.getElementById('editTitleNubank').value = document.getElementById('titleBtnNubank').innerText;
+            document.getElementById('editDescNubank').value = document.getElementById('descBtnNubank').innerText;
+            document.getElementById('editTitleSuporte').value = document.getElementById('titleBtnSuporte').innerText;
+            document.getElementById('editDescSuporte').value = document.getElementById('descBtnSuporte').innerText;
+            document.getElementById('editFooter').value = document.getElementById('textFooter').innerText;
+        }
+
+        function salvarTextosPagina() {
+            const name = document.getElementById('editName').value;
+            const bio = document.getElementById('editBio').value;
+            const security = document.getElementById('editSecurity').value;
+            const titleNubank = document.getElementById('editTitleNubank').value;
+            const descNubank = document.getElementById('editDescNubank').value;
+            const titleSuporte = document.getElementById('editTitleSuporte').value;
+            const descSuporte = document.getElementById('editDescSuporte').value;
+            const footer = document.getElementById('editFooter').value;
+
+            if(name) document.getElementById('profileName').innerText = name;
+            if(bio) document.getElementById('profileBio').innerText = bio;
+            if(security) document.getElementById('textSecurityBadge').innerText = security;
+            if(titleNubank) document.getElementById('titleBtnNubank').innerText = titleNubank;
+            if(descNubank) document.getElementById('descBtnNubank').innerText = descNubank;
+            if(titleSuporte) document.getElementById('titleBtnSuporte').innerText = titleSuporte;
+            if(descSuporte) document.getElementById('descBtnSuporte').innerText = descSuporte;
+            if(footer) document.getElementById('textFooter').innerText = footer;
+
+            localStorage.setItem('amaral_textos', JSON.stringify({
+                name, bio, security, titleNubank, descNubank, titleSuporte, descSuporte, footer
+            }));
         }
 
         function carregarFotoGaleria(event) {
             const file = event.target.files[0];
-            if(file) {
+            if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    appData.config.foto = e.target.result;
-                    document.getElementById('profileImg').src = appData.config.foto;
-                    salvarCustomizacao();
-                    mostrarToast('Foto de perfil alterada!');
+                    const base64Image = e.target.result;
+                    document.getElementById('profileImg').src = base64Image;
+                    localStorage.setItem('amaral_foto', base64Image);
+                    mostrarToast('Foto de perfil alterada com sucesso!');
                 }
                 reader.readAsDataURL(file);
             }
         }
 
-        function salvarTextosPagina() {
-            appData.config.name = document.getElementById('editName').value;
-            appData.config.bio = document.getElementById('editBio').value;
-            appData.config.securityBadge = document.getElementById('editSecurity').value;
-            appData.config.titleNubank = document.getElementById('editTitleNubank').value;
-            appData.config.descNubank = document.getElementById('editDescNubank').value;
-            appData.config.titleSuporte = document.getElementById('editTitleSuporte').value;
-            appData.config.descSuporte = document.getElementById('editDescSuporte').value;
-            appData.config.footer = document.getElementById('editFooter').value;
-
-            aplicarConfiguracoes();
-            salvarDadosArmazenados();
-        }
-
         function salvarCustomizacao() {
-            appData.config.iconVip = document.getElementById('selectIconVip').value;
-            appData.config.iconNubank = document.getElementById('selectIconNubank').value;
-            appData.config.iconSuporte = document.getElementById('selectIconSuporte').value;
+            const iconVip = document.getElementById('selectIconVip').value;
+            const iconNubank = document.getElementById('selectIconNubank').value;
+            const iconSuporte = document.getElementById('selectIconSuporte').value;
 
-            aplicarConfiguracoes();
-            salvarDadosArmazenados();
+            document.getElementById('vipBadgeContainer').innerHTML = `<i class="${iconVip}"></i>`;
+            document.getElementById('iconBoxNubank').innerHTML = `<i class="${iconNubank}"></i>`;
+            document.getElementById('iconBoxSuporte').innerHTML = `<i class="${iconSuporte}"></i>`;
+
+            localStorage.setItem('amaral_icones', JSON.stringify({
+                iconVip, iconNubank, iconSuporte
+            }));
+            mostrarToast('Ícones atualizados!');
         }
 
-        function aplicarConfiguracoes() {
-            document.getElementById('profileImg').src = appData.config.foto;
-            document.getElementById('vipBadgeContainer').innerHTML = `<i class="${appData.config.iconVip}"></i>`;
-            document.getElementById('iconBoxNubank').innerHTML = `<i class="${appData.config.iconNubank}"></i>`;
-            document.getElementById('iconBoxSuporte').innerHTML = `<i class="${appData.config.iconSuporte}"></i>`;
+        function carregarDadosSalvos() {
+            // Textos
+            const textosSalvos = JSON.parse(localStorage.getItem('amaral_textos'));
+            if (textosSalvos) {
+                if(textosSalvos.name) document.getElementById('profileName').innerText = textosSalvos.name;
+                if(textosSalvos.bio) document.getElementById('profileBio').innerText = textosSalvos.bio;
+                if(textosSalvos.security) document.getElementById('textSecurityBadge').innerText = textosSalvos.security;
+                if(textosSalvos.titleNubank) document.getElementById('titleBtnNubank').innerText = textosSalvos.titleNubank;
+                if(textosSalvos.descNubank) document.getElementById('descBtnNubank').innerText = textosSalvos.descNubank;
+                if(textosSalvos.titleSuporte) document.getElementById('titleBtnSuporte').innerText = textosSalvos.titleSuporte;
+                if(textosSalvos.descSuporte) document.getElementById('descBtnSuporte').innerText = textosSalvos.descSuporte;
+                if(textosSalvos.footer) document.getElementById('textFooter').innerText = textosSalvos.footer;
+            }
 
-            document.getElementById('profileName').innerText = appData.config.name;
-            document.getElementById('profileBio').innerText = appData.config.bio;
-            document.getElementById('textSecurityBadge').innerText = appData.config.securityBadge;
-            document.getElementById('titleBtnNubank').innerText = appData.config.titleNubank;
-            document.getElementById('descBtnNubank').innerText = appData.config.descNubank;
-            document.getElementById('titleBtnSuporte').innerText = appData.config.titleSuporte;
-            document.getElementById('descBtnSuporte').innerText = appData.config.descSuporte;
-            document.getElementById('textFooter').innerText = appData.config.footer;
+            // Foto
+            const fotoSalva = localStorage.getItem('amaral_foto');
+            if (fotoSalva) {
+                document.getElementById('profileImg').src = fotoSalva;
+            }
 
-            // Preenche inputs do admin se existirem
-            if(document.getElementById('editName')) {
-                document.getElementById('editName').value = appData.config.name;
-                document.getElementById('editBio').value = appData.config.bio;
-                document.getElementById('editSecurity').value = appData.config.securityBadge;
-                document.getElementById('editTitleNubank').value = appData.config.titleNubank;
-                document.getElementById('editDescNubank').value = appData.config.descNubank;
-                document.getElementById('editTitleSuporte').value = appData.config.titleSuporte;
-                document.getElementById('editDescSuporte').value = appData.config.descSuporte;
-                document.getElementById('editFooter').value = appData.config.footer;
-
-                document.getElementById('selectIconVip').value = appData.config.iconVip;
-                document.getElementById('selectIconNubank').value = appData.config.iconNubank;
-                document.getElementById('selectIconSuporte').value = appData.config.iconSuporte;
+            // Ícones
+            const iconesSalvos = JSON.parse(localStorage.getItem('amaral_icones'));
+            if (iconesSalvos) {
+                if(iconesSalvos.iconVip) {
+                    document.getElementById('vipBadgeContainer').innerHTML = `<i class="${iconesSalvos.iconVip}"></i>`;
+                    document.getElementById('selectIconVip').value = iconesSalvos.iconVip;
+                }
+                if(iconesSalvos.iconNubank) {
+                    document.getElementById('iconBoxNubank').innerHTML = `<i class="${iconesSalvos.iconNubank}"></i>`;
+                    document.getElementById('selectIconNubank').value = iconesSalvos.iconNubank;
+                }
+                if(iconesSalvos.iconSuporte) {
+                    document.getElementById('iconBoxSuporte').innerHTML = `<i class="${iconesSalvos.iconSuporte}"></i>`;
+                    document.getElementById('selectIconSuporte').value = iconesSalvos.iconSuporte;
+                }
             }
         }
     </script>
 </body></html>
-
-```
