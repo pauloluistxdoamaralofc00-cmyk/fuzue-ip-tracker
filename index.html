@@ -46,7 +46,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            touch-action: none; /* Bloqueia completamente qualquer gesto ou zoom indesejado */
             user-select: none;
         }
         .custom-scroll::-webkit-scrollbar {
@@ -303,21 +302,21 @@
         </div>
     </div>
 
-    <!-- PAINEL DE ADMINISTRAÇÃO (PERFEITAMENTE CENTRALIZADO E CRAVADINHO) -->
+    <!-- PAINEL DE ADMINISTRAÇÃO -->
     <div id="modalAdmin" class="fixed inset-0 bg-black/95 backdrop-blur-md z-50 hidden flex items-center justify-center p-3">
-        <!-- Tela de Login Admin (Senha Ocultada) -->
+        <!-- Tela de Login Admin (Restrito ao Owner) -->
         <div id="adminLoginBox" class="w-[360px] h-[340px] max-w-[92vw] max-h-[92vh] bg-black border border-zinc-900 rounded-2xl p-4 shadow-2xl text-center relative flex flex-col justify-center items-center shrink-0">
             <button onclick="fecharAdmin()" class="absolute top-3 right-3 text-zinc-400 hover:text-white w-6 h-6 rounded-full bg-zinc-950 border border-zinc-900 flex items-center justify-center text-xs cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
             <div class="w-9 h-9 bg-zinc-950 border border-zinc-900 rounded-xl flex items-center justify-center text-white text-xs mx-auto mb-2">
                 <i class="fa-solid fa-lock"></i>
             </div>
-            <h3 class="text-xs font-bold text-white mb-0.5">Painel Admin</h3>
-            <p class="text-[9px] text-zinc-400 mb-2.5">Digite a senha (123)</p>
-            <input type="password" id="inputSenhaAdmin" placeholder="••••" class="w-full max-w-[220px] bg-zinc-950 border border-zinc-900 rounded-lg px-2.5 py-1.5 text-xs text-white text-center tracking-widest mb-2.5 focus:outline-none focus:border-zinc-700">
+            <h3 class="text-xs font-bold text-white mb-0.5">Área Restrita</h3>
+            <p class="text-[9px] text-amber-400/90 mb-2.5 font-medium">Acesso exclusivo do proprietário (Owner)</p>
+            <input type="password" id="inputSenhaAdmin" placeholder="Senha de acesso" class="w-full max-w-[220px] bg-zinc-950 border border-zinc-900 rounded-lg px-2.5 py-1.5 text-xs text-white text-center tracking-widest mb-2.5 focus:outline-none focus:border-zinc-700">
             <button onclick="verificarSenhaAdmin()" class="w-full max-w-[220px] bg-zinc-100 hover:bg-white text-black font-semibold py-1.5 rounded-lg text-xs transition cursor-pointer">Entrar</button>
         </div>
 
-        <!-- Dashboard Admin (Mesmas dimensões cravadinhas do painel principal) -->
+        <!-- Dashboard Admin -->
         <div id="adminDashboard" class="hidden w-[360px] h-[620px] max-w-[92vw] max-h-[92vh] bg-black border border-zinc-900 rounded-2xl p-4 shadow-2xl relative flex flex-col justify-between shrink-0 overflow-hidden">
             <div class="flex items-center justify-between border-b border-zinc-900 pb-2 mb-2 shrink-0">
                 <div class="flex items-center gap-1.5">
@@ -430,7 +429,6 @@
             pedidos: []
         };
 
-        // Garante leitura correta do contador salvo separadamente ou no objeto
         if(localStorage.getItem('amaralReal_cliques') !== null) {
             dadosSite.cliques = parseInt(localStorage.getItem('amaralReal_cliques')) || 0;
         }
@@ -585,7 +583,7 @@
                 carregarDadosNaTela();
                 atualizarEstatisticasAdmin();
                 renderizarListaVendas();
-            } else { alert('Senha incorreta! Use 123'); }
+            } else { alert('Senha incorreta!'); }
         }
 
         function mudarAbaAdmin(aba) {
