@@ -15,17 +15,6 @@
             animation: pulse-white 1.5s infinite ease-in-out;
         }
 
-        @keyframes scrollTicker {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-50%); }
-        }
-        .ticker-wrapper {
-            animation: scrollTicker 10s linear infinite;
-        }
-        .ticker-wrapper:hover {
-            animation-play-state: paused;
-        }
-
         @keyframes bwBorder {
             0% { border-color: rgba(255, 255, 255, 0.1); box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.99), 0 0 20px rgba(255, 255, 255, 0.03); }
             50% { border-color: rgba(255, 255, 255, 0.35); box-shadow: 0 10px 45px -10px rgba(0, 0, 0, 0.99), 0 0 25px rgba(255, 255, 255, 0.08); }
@@ -107,34 +96,19 @@
             </div>
         </div>
 
-        <!-- Ticker Notificações -->
-        <div class="w-full h-[72px] overflow-hidden relative border border-neutral-900 rounded-2xl bg-black px-3.5 py-2 flex items-center justify-center shrink-0">
-            <div class="ticker-wrapper w-full flex flex-col gap-2">
-                <div class="bg-black border border-neutral-900 px-3.5 py-2.5 rounded-xl flex items-center justify-between">
-                    <div class="flex items-center gap-2.5">
-                        <div class="w-7 h-7 rounded-lg bg-neutral-950 border border-neutral-800 flex items-center justify-center text-white text-xs shrink-0">
-                            <i class="fa-solid fa-n"></i>
-                        </div>
-                        <div>
-                            <p class="text-xs font-bold text-white leading-tight">Nubank Extrato</p>
-                            <p class="text-[10px] font-medium text-zinc-500 leading-none">Pix Recebido</p>
-                        </div>
+        <!-- Ticker Notificações (Uma por vez) -->
+        <div class="w-full h-[62px] overflow-hidden relative border border-neutral-900 rounded-2xl bg-black px-3.5 py-2 flex items-center justify-center shrink-0">
+            <div id="pixTickerItem" class="w-full bg-black border border-neutral-900 px-3.5 py-2 rounded-xl flex items-center justify-between transition-all duration-300 opacity-100 transform translate-y-0">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-7 h-7 rounded-lg bg-neutral-950 border border-neutral-800 flex items-center justify-center text-white text-xs shrink-0">
+                        <i class="fa-solid fa-n"></i>
                     </div>
-                    <span class="text-xs font-extrabold text-white">+R$ 1.500,00</span>
-                </div>
-
-                <div class="bg-black border border-neutral-900 px-3.5 py-2.5 rounded-xl flex items-center justify-between">
-                    <div class="flex items-center gap-2.5">
-                        <div class="w-7 h-7 rounded-lg bg-neutral-950 border border-neutral-800 flex items-center justify-center text-white text-xs shrink-0">
-                            <i class="fa-solid fa-n"></i>
-                        </div>
-                        <div>
-                            <p class="text-xs font-bold text-white leading-tight">Nubank Extrato</p>
-                            <p class="text-[10px] font-medium text-zinc-500 leading-none">Pix Recebido</p>
-                        </div>
+                    <div>
+                        <p class="text-xs font-bold text-white leading-tight">Nubank Extrato</p>
+                        <p class="text-[10px] font-medium text-zinc-500 leading-none">Pix Recebido</p>
                     </div>
-                    <span class="text-xs font-extrabold text-white">+R$ 3.000,00</span>
                 </div>
+                <span id="pixTickerValor" class="text-xs font-extrabold text-white">+R$ 1.500,00</span>
             </div>
         </div>
 
@@ -331,10 +305,61 @@
             } catch(e) {}
         }
 
+        // Lista de notificações que vão passar uma por uma
+        const listaNotificacoesPix = [
+            { banco: "Nubank Extrato", tipo: "Pix Recebido", valor: "+R$ 1.500,00" },
+            { banco: "Nubank Extrato", tipo: "Pix Recebido", valor: "+R$ 3.000,00" },
+            { banco: "Nubank Extrato", tipo: "Pix Recebido", valor: "+R$ 750,00" },
+            { banco: "Nubank Extrato", tipo: "Pix Recebido", valor: "+R$ 5.200,00" },
+            { banco: "Nubank Extrato", tipo: "Pix Recebido", valor: "+R$ 1.250,00" }
+        ];
+
+        let indiceNotificacaoAtual = 0;
+
         window.addEventListener('DOMContentLoaded', () => {
             carregarDadosNaTela();
             atualizarEstatisticasAdmin();
+            iniciarTickerPix();
         });
+
+        function iniciarTickerPix() {
+            const itemElement = document.getElementById('pixTickerItem');
+            if (!itemElement) return;
+
+            setInterval(() => {
+                // Efeito de transição de saída
+                itemElement.classList.add('opacity-0', '-translate-y-2');
+                
+                setTimeout(() => {
+                    indiceNotificacaoAtual = (indiceNotificacaoAtual + 1) % listaNotificacoesPix.length;
+                    const notif = listaNotificacoesPix[indiceNotificacaoAtual];
+                    
+                    // Atualiza o conteúdo da notificação
+                    itemElement.innerHTML = `
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-7 h-7 rounded-lg bg-neutral-950 border border-neutral-800 flex items-center justify-center text-white text-xs shrink-0">
+                                <i class="fa-solid fa-n"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs font-bold text-white leading-tight">${notif.banco}</p>
+                                <p class="text-[10px] font-medium text-zinc-500 leading-none">${notif.tipo}</p>
+                            </div>
+                        </div>
+                        <span class="text-xs font-extrabold text-white">${notif.valor}</span>
+                    `;
+
+                    // Prepara a entrada do próximo item
+                    itemElement.classList.remove('-translate-y-2');
+                    itemElement.classList.add('translate-y-2');
+                    
+                    setTimeout(() => {
+                        itemElement.classList.remove('opacity-0', 'translate-y-2');
+                        itemElement.classList.add('opacity-100', 'translate-y-0');
+                    }, 50);
+
+                }, 300);
+            }, 3500); // Altera a cada 3.5 segundos
+        }
 
         function salvarEstado() {
             localStorage.setItem('amaralReal_dados', JSON.stringify(dadosSite));
