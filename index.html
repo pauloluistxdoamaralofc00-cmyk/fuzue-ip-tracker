@@ -7,7 +7,7 @@
     <style>
         *, *::before, *::after {
             box-sizing: border-box;
-            touch-action: none; /* Bloqueia qualquer gesto nativo indesejado na tela inteira */
+            touch-action: manipulation; /* Impede o duplo clique de dar zoom, mantendo a responsividade */
         }
         @keyframes pulse-gold {
             0%, 100% { opacity: 1; }
@@ -49,6 +49,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            touch-action: none; /* Bloqueia gestos globais no fundo */
         }
         .custom-scroll::-webkit-scrollbar {
             width: 3px;
@@ -57,7 +58,7 @@
             background: rgba(255, 215, 0, 0.2);
             border-radius: 3px;
         }
-        /* Permite scroll vertical apenas onde é estritamente necessário (modais/listas) */
+        /* Permite scroll vertical apenas onde é necessário */
         .allow-scroll {
             touch-action: pan-y;
             overflow-y: auto;
