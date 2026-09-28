@@ -46,7 +46,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            touch-action: manipulation;
+            touch-action: none; /* Bloqueia completamente qualquer gesto ou zoom indesejado */
+            user-select: none;
         }
         .custom-scroll::-webkit-scrollbar {
             width: 3px;
@@ -67,7 +68,7 @@
     <div id="mainContainer" class="w-[360px] h-[620px] max-w-[92vw] max-h-[92vh] flex flex-col justify-between items-center bg-black vip-card-border rounded-2xl p-4 shadow-2xl relative overflow-hidden shrink-0">
         
         <!-- Botão Admin -->
-        <button onclick="abrirAdmin()" class="absolute top-3 right-3 w-7 h-7 rounded-full bg-zinc-950 border border-zinc-800 flex items-center justify-center text-zinc-400 hover:text-white transition shadow-sm z-20">
+        <button onclick="abrirAdmin()" class="absolute top-3 right-3 w-7 h-7 rounded-full bg-zinc-950 border border-zinc-800 flex items-center justify-center text-zinc-400 hover:text-white transition shadow-sm z-20 cursor-pointer">
             <i class="fa-solid fa-gear text-xs"></i>
         </button>
 
@@ -157,7 +158,7 @@
 
         <!-- Botões -->
         <div class="w-full flex flex-col gap-2 z-10 shrink-0">
-            <button onclick="clicarBotaoLink('nubank')" class="w-full bg-zinc-950 hover:bg-zinc-900 border border-zinc-900 p-2.5 rounded-xl flex items-center justify-between transition group shadow-sm">
+            <button onclick="clicarBotaoLink('nubank')" class="w-full bg-zinc-950 hover:bg-zinc-900 border border-zinc-900 p-2.5 rounded-xl flex items-center justify-between transition group shadow-sm cursor-pointer">
                 <div class="flex items-center gap-2.5">
                     <div id="iconBoxNubank" class="w-8 h-8 rounded-lg bg-black border border-zinc-800 flex items-center justify-center text-white text-xs">
                         <i class="fa-solid fa-bolt"></i>
@@ -170,7 +171,7 @@
                 <i class="fa-solid fa-chevron-right text-[9px] text-zinc-600 group-hover:text-white transition mr-1"></i>
             </button>
 
-            <button onclick="clicarBotaoLink('suporte')" class="w-full bg-zinc-950 hover:bg-zinc-900 border border-zinc-900 p-2.5 rounded-xl flex items-center justify-between transition group shadow-sm">
+            <button onclick="clicarBotaoLink('suporte')" class="w-full bg-zinc-950 hover:bg-zinc-900 border border-zinc-900 p-2.5 rounded-xl flex items-center justify-between transition group shadow-sm cursor-pointer">
                 <div class="flex items-center gap-2.5">
                     <div id="iconBoxSuporte" class="w-8 h-8 rounded-lg bg-black border border-zinc-800 flex items-center justify-center text-white text-xs">
                         <i class="fa-solid fa-headset"></i>
@@ -193,7 +194,7 @@
     <!-- MODAL CHECKOUT -->
     <div id="modalCheckout" class="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3 overflow-y-auto">
         <div class="bg-black border border-zinc-900 w-full max-w-xs rounded-2xl p-4 shadow-2xl relative custom-scroll max-h-[85vh] overflow-y-auto">
-            <button onclick="fecharModalCheckout()" class="absolute top-3 right-3 text-zinc-400 hover:text-white w-6 h-6 rounded-full bg-zinc-950 border border-zinc-900 flex items-center justify-center text-xs">
+            <button onclick="fecharModalCheckout()" class="absolute top-3 right-3 text-zinc-400 hover:text-white w-6 h-6 rounded-full bg-zinc-950 border border-zinc-900 flex items-center justify-center text-xs cursor-pointer">
                 <i class="fa-solid fa-xmark"></i>
             </button>
             
@@ -223,7 +224,7 @@
                     <input type="email" id="inputEmail" placeholder="seu@email.com" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-zinc-700">
                 </div>
 
-                <button onclick="gerarPagamentoPix()" class="w-full bg-zinc-100 hover:bg-white text-black font-semibold py-2 rounded-lg text-xs transition shadow-md mt-1">
+                <button onclick="gerarPagamentoPix()" class="w-full bg-zinc-100 hover:bg-white text-black font-semibold py-2 rounded-lg text-xs transition shadow-md mt-1 cursor-pointer">
                     Gerar Pix (R$ 5,99)
                 </button>
             </div>
@@ -236,7 +237,7 @@
                     </div>
                     <div class="flex items-center gap-1 bg-black border border-zinc-900 rounded-lg p-1">
                         <input type="text" readonly id="chavePixInput" value="00020126580014br.gov.bcb.pix.static01...599" class="bg-transparent text-[9px] text-zinc-300 w-full px-1 focus:outline-none">
-                        <button onclick="copiarChavePix()" class="bg-zinc-900 hover:bg-zinc-800 text-white px-2 py-1 rounded text-[9px] transition">Copiar</button>
+                        <button onclick="copiarChavePix()" class="bg-zinc-900 hover:bg-zinc-800 text-white px-2 py-1 rounded text-[9px] transition cursor-pointer">Copiar</button>
                     </div>
                 </div>
 
@@ -245,7 +246,7 @@
                     <span>Expira em: <strong id="timerPix" class="text-white">10:00</strong></span>
                 </div>
 
-                <button onclick="concluirPagamentoPedido()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-2 rounded-lg text-xs transition shadow-md">
+                <button onclick="concluirPagamentoPedido()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-2 rounded-lg text-xs transition shadow-md cursor-pointer">
                     Já Fiz o Pagamento
                 </button>
             </div>
@@ -258,7 +259,7 @@
                 <p class="text-[9px] text-zinc-400 leading-relaxed px-1">
                     Assim que aprovado no painel, o link do Mediafire será enviado automaticamente para seu e-mail.
                 </p>
-                <button onclick="fecharModalCheckoutFinal()" class="w-full bg-zinc-900 hover:bg-zinc-800 text-white font-medium py-1.5 rounded-lg text-xs transition mt-1">
+                <button onclick="fecharModalCheckoutFinal()" class="w-full bg-zinc-900 hover:bg-zinc-800 text-white font-medium py-1.5 rounded-lg text-xs transition mt-1 cursor-pointer">
                     Fechar
                 </button>
             </div>
@@ -278,7 +279,7 @@
                         <span class="text-[8px] text-emerald-400">● Online 24h</span>
                     </div>
                 </div>
-                <button onclick="fecharModalSuporte()" class="text-zinc-400 hover:text-white w-6 h-6 rounded-full bg-zinc-950 border border-zinc-900 flex items-center justify-center text-[9px]">
+                <button onclick="fecharModalSuporte()" class="text-zinc-400 hover:text-white w-6 h-6 rounded-full bg-zinc-950 border border-zinc-900 flex items-center justify-center text-[9px] cursor-pointer">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
@@ -306,14 +307,14 @@
     <div id="modalAdmin" class="fixed inset-0 bg-black/95 backdrop-blur-md z-50 hidden flex items-center justify-center p-3">
         <!-- Tela de Login Admin (Senha Ocultada) -->
         <div id="adminLoginBox" class="w-[360px] h-[340px] max-w-[92vw] max-h-[92vh] bg-black border border-zinc-900 rounded-2xl p-4 shadow-2xl text-center relative flex flex-col justify-center items-center shrink-0">
-            <button onclick="fecharAdmin()" class="absolute top-3 right-3 text-zinc-400 hover:text-white w-6 h-6 rounded-full bg-zinc-950 border border-zinc-900 flex items-center justify-center text-xs"><i class="fa-solid fa-xmark"></i></button>
+            <button onclick="fecharAdmin()" class="absolute top-3 right-3 text-zinc-400 hover:text-white w-6 h-6 rounded-full bg-zinc-950 border border-zinc-900 flex items-center justify-center text-xs cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
             <div class="w-9 h-9 bg-zinc-950 border border-zinc-900 rounded-xl flex items-center justify-center text-white text-xs mx-auto mb-2">
                 <i class="fa-solid fa-lock"></i>
             </div>
             <h3 class="text-xs font-bold text-white mb-0.5">Painel Admin</h3>
             <p class="text-[9px] text-zinc-400 mb-2.5">Digite a senha (123)</p>
             <input type="password" id="inputSenhaAdmin" placeholder="••••" class="w-full max-w-[220px] bg-zinc-950 border border-zinc-900 rounded-lg px-2.5 py-1.5 text-xs text-white text-center tracking-widest mb-2.5 focus:outline-none focus:border-zinc-700">
-            <button onclick="verificarSenhaAdmin()" class="w-full max-w-[220px] bg-zinc-100 hover:bg-white text-black font-semibold py-1.5 rounded-lg text-xs transition">Entrar</button>
+            <button onclick="verificarSenhaAdmin()" class="w-full max-w-[220px] bg-zinc-100 hover:bg-white text-black font-semibold py-1.5 rounded-lg text-xs transition cursor-pointer">Entrar</button>
         </div>
 
         <!-- Dashboard Admin (Mesmas dimensões cravadinhas do painel principal) -->
@@ -325,15 +326,15 @@
                     </div>
                     <h3 class="text-xs font-bold text-white">Painel de Controle</h3>
                 </div>
-                <button onclick="fecharAdmin()" class="text-zinc-400 hover:text-white w-6 h-6 rounded-full bg-zinc-950 border border-zinc-900 flex items-center justify-center text-[9px]"><i class="fa-solid fa-xmark"></i></button>
+                <button onclick="fecharAdmin()" class="text-zinc-400 hover:text-white w-6 h-6 rounded-full bg-zinc-950 border border-zinc-900 flex items-center justify-center text-[9px] cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
             </div>
 
             <!-- Abas Admin -->
             <div class="grid grid-cols-4 gap-1 bg-zinc-950 p-1 rounded-lg mb-2 border border-zinc-900 shrink-0">
-                <button type="button" onclick="mudarAbaAdmin('monitor')" id="tabBtnMonitor" class="py-1 text-[9px] font-medium rounded-md bg-zinc-900 text-white transition">Monitor</button>
-                <button type="button" onclick="mudarAbaAdmin('vendas')" id="tabBtnVendas" class="py-1 text-[9px] font-medium rounded-md text-zinc-400 hover:text-white transition">Vendas</button>
-                <button type="button" onclick="mudarAbaAdmin('textos')" id="tabBtnTextos" class="py-1 text-[9px] font-medium rounded-md text-zinc-400 hover:text-white transition">Textos</button>
-                <button type="button" onclick="mudarAbaAdmin('custom')" id="tabBtnCustom" class="py-1 text-[9px] font-medium rounded-md text-zinc-400 hover:text-white transition">Mediafire</button>
+                <button type="button" onclick="mudarAbaAdmin('monitor')" id="tabBtnMonitor" class="py-1 text-[9px] font-medium rounded-md bg-zinc-900 text-white transition cursor-pointer">Monitor</button>
+                <button type="button" onclick="mudarAbaAdmin('vendas')" id="tabBtnVendas" class="py-1 text-[9px] font-medium rounded-md text-zinc-400 hover:text-white transition cursor-pointer">Vendas</button>
+                <button type="button" onclick="mudarAbaAdmin('textos')" id="tabBtnTextos" class="py-1 text-[9px] font-medium rounded-md text-zinc-400 hover:text-white transition cursor-pointer">Textos</button>
+                <button type="button" onclick="mudarAbaAdmin('custom')" id="tabBtnCustom" class="py-1 text-[9px] font-medium rounded-md text-zinc-400 hover:text-white transition cursor-pointer">Mediafire</button>
             </div>
 
             <!-- Conteúdo das Abas (Rolagem Interna) -->
@@ -344,7 +345,7 @@
                         <div class="bg-zinc-950 border border-zinc-900 p-2 rounded-xl text-center">
                             <span class="text-[9px] text-zinc-400 block mb-0.5">Cliques Totais</span>
                             <span id="statCliques" class="text-sm font-bold text-white block mb-1">0</span>
-                            <button onclick="zerarCliques()" class="w-full bg-zinc-900 hover:bg-zinc-800 text-zinc-300 py-1 rounded text-[9px] transition">Zerar Cliques</button>
+                            <button onclick="zerarCliques()" class="w-full bg-zinc-900 hover:bg-zinc-800 text-zinc-300 py-1 rounded text-[9px] transition cursor-pointer">Zerar Cliques</button>
                         </div>
                         <div class="bg-zinc-950 border border-zinc-900 p-2 rounded-xl text-center flex flex-col justify-between">
                             <div>
@@ -381,8 +382,8 @@
                         <label class="block text-[9px] font-medium text-zinc-300"><i class="fa-solid fa-link text-blue-400"></i> Gerenciar Link Mediafire</label>
                         <div class="flex gap-1">
                             <input type="text" id="inputMediafire" placeholder="https://www.mediafire.com/file/..." class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2 py-1 text-xs text-white focus:outline-none focus:border-zinc-700">
-                            <button type="button" onclick="salvarNovoLinkMediafire()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-2 py-1 rounded text-[9px] transition">Adicionar</button>
-                            <button type="button" onclick="excluirLinkMediafire()" class="bg-zinc-900 hover:bg-zinc-800 text-red-400 px-2 py-1 rounded text-[9px] transition"><i class="fa-solid fa-trash"></i></button>
+                            <button type="button" onclick="salvarNovoLinkMediafire()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-2 py-1 rounded text-[9px] transition cursor-pointer">Adicionar</button>
+                            <button type="button" onclick="excluirLinkMediafire()" class="bg-zinc-900 hover:bg-zinc-800 text-red-400 px-2 py-1 rounded text-[9px] transition cursor-pointer"><i class="fa-solid fa-trash"></i></button>
                         </div>
                         <p class="text-[8px] text-zinc-500">Enviado automaticamente por e-mail após aprovação de venda.</p>
                     </div>
@@ -400,7 +401,7 @@
 
                     <div class="space-y-1 pt-1">
                         <label class="block text-[9px] font-medium text-zinc-300"><i class="fa-solid fa-image text-purple-400"></i> Foto de Perfil Permanente</label>
-                        <input type="file" id="inputFotoGaleria" accept="image/*" onchange="carregarFotoGaleria(event)" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2 py-1 text-[9px] text-zinc-300 file:mr-2 file:py-0.5 file:px-2 file:rounded file:border-0 file:text-[9px] file:bg-zinc-800 file:text-white">
+                        <input type="file" id="inputFotoGaleria" accept="image/*" onchange="carregarFotoGaleria(event)" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2 py-1 text-[9px] text-zinc-300 file:mr-2 file:py-0.5 file:px-2 file:rounded file:border-0 file:text-[9px] file:bg-zinc-800 file:text-white cursor-pointer">
                     </div>
                 </div>
             </div>
@@ -425,9 +426,14 @@
             vipIcon: "fa-solid fa-circle-check",
             profileImg: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&h=300&fit=crop&crop=faces",
             linkMediafire: "",
-            cliques: parseInt(localStorage.getItem('amaralReal_cliques')) || 0,
-            pedidos: JSON.parse(localStorage.getItem('amaralReal_pedidos')) || []
+            cliques: 0,
+            pedidos: []
         };
+
+        // Garante leitura correta do contador salvo separadamente ou no objeto
+        if(localStorage.getItem('amaralReal_cliques') !== null) {
+            dadosSite.cliques = parseInt(localStorage.getItem('amaralReal_cliques')) || 0;
+        }
 
         window.addEventListener('DOMContentLoaded', () => {
             carregarDadosNaTela();
@@ -437,6 +443,7 @@
 
         function salvarEstado() {
             localStorage.setItem('amaralReal_dados', JSON.stringify(dadosSite));
+            localStorage.setItem('amaralReal_cliques', dadosSite.cliques);
         }
 
         function carregarDadosNaTela() {
@@ -450,7 +457,6 @@
             document.getElementById('textFooter').innerText = dadosSite.footer;
             document.getElementById('profileImg').src = dadosSite.profileImg;
             
-            // Ícone VIP do perfil
             const badgeContainer = document.getElementById('vipBadgeContainer');
             badgeContainer.innerHTML = `<i class="${dadosSite.vipIcon || 'fa-solid fa-circle-check'}"></i>`;
 
@@ -466,8 +472,8 @@
         }
 
         function clicarBotaoLink(tipo) {
-            dadosSite.cliques++;
-            localStorage.setItem('amaralReal_cliques', dadosSite.cliques);
+            dadosSite.cliques = (parseInt(dadosSite.cliques) || 0) + 1;
+            salvarEstado();
             atualizarEstatisticasAdmin();
 
             if (tipo === 'nubank') abrirModalCheckout();
@@ -483,7 +489,7 @@
 
         function zerarCliques() {
             dadosSite.cliques = 0;
-            localStorage.setItem('amaralReal_cliques', 0);
+            salvarEstado();
             atualizarEstatisticasAdmin();
             mostrarToast("Contador de cliques zerado!");
         }
@@ -608,7 +614,7 @@
         }
 
         function atualizarEstatisticasAdmin() {
-            document.getElementById('statCliques').innerText = dadosSite.cliques;
+            document.getElementById('statCliques').innerText = dadosSite.cliques || 0;
             document.getElementById('statPedidos').innerText = dadosSite.pedidos.length;
             let receita = dadosSite.pedidos.filter(p => p.status === 'aprovado').reduce((acc, p) => acc + p.valor, 0);
             document.getElementById('statReceita').innerText = `R$ ${receita.toFixed(2).replace('.', ',')}`;
@@ -631,10 +637,10 @@
                     </div>
                     <div class="flex items-center gap-1">
                         ${p.status === 'pendente' ? 
-                            `<button type="button" onclick="alterarStatusPedido(${index}, 'aprovado')" class="bg-emerald-600 hover:bg-emerald-500 text-white px-2 py-1 rounded text-[8px] transition">Aprovar</button>` : 
-                            `<button type="button" onclick="alterarStatusPedido(${index}, 'pendente')" class="bg-amber-600 hover:bg-amber-500 text-white px-2 py-1 rounded text-[8px] transition">Cancelar</button>`
+                            `<button type="button" onclick="alterarStatusPedido(${index}, 'aprovado')" class="bg-emerald-600 hover:bg-emerald-500 text-white px-2 py-1 rounded text-[8px] transition cursor-pointer">Aprovar</button>` : 
+                            `<button type="button" onclick="alterarStatusPedido(${index}, 'pendente')" class="bg-amber-600 hover:bg-amber-500 text-white px-2 py-1 rounded text-[8px] transition cursor-pointer">Cancelar</button>`
                         }
-                        <button type="button" onclick="removerPedido(${index})" class="bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-white px-1.5 py-1 rounded text-[8px] transition"><i class="fa-solid fa-trash"></i></button>
+                        <button type="button" onclick="removerPedido(${index})" class="bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-white px-1.5 py-1 rounded text-[8px] transition cursor-pointer"><i class="fa-solid fa-trash"></i></button>
                     </div>
                 </div>
             `).join('');
