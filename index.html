@@ -2,32 +2,11 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>amaralreal7 - Bio Link</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Bloqueio absoluto de zoom e seleções indesejadas em toda a página */
-        *, *::before, *::after {
-            box-sizing: border-box;
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            user-select: none;
-            touch-action: none;
-        }
-
-        /* Libera interações essenciais apenas onde o usuário precisa mexer */
-        input, textarea, select, .allow-touch {
-            -webkit-user-select: text;
-            user-select: text;
-            touch-action: pan-y !important;
-        }
-
-        .custom-scroll {
-            touch-action: pan-y !important;
-            -webkit-overflow-scrolling: touch;
-        }
-
         @keyframes pulse-gold {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.4; }
@@ -58,19 +37,21 @@
 
         html, body {
             width: 100%;
-            height: 100%;
+            min-height: 100%;
             margin: 0;
             padding: 0;
-            overflow: hidden;
-            position: fixed;
             background-color: #000000;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             color: #ffffff;
             -webkit-font-smoothing: antialiased;
-            overscroll-behavior: none;
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow-x: hidden;
+        }
+
+        body {
+            padding: 16px 0;
         }
 
         .custom-scroll::-webkit-scrollbar {
@@ -90,8 +71,8 @@
         <span id="toastTexto" class="font-medium">Ação realizada com sucesso!</span>
     </div>
 
-    <!-- Container Principal Centralizado perfeitamente ao meio -->
-    <div id="mainContainer" class="w-[90%] max-w-[400px] max-h-[92vh] bg-black vip-card-border rounded-2xl p-5 shadow-2xl relative flex flex-col gap-4 overflow-y-auto custom-scroll allow-touch">
+    <!-- Container Principal -->
+    <div id="mainContainer" class="w-[90%] max-w-[400px] bg-black vip-card-border rounded-2xl p-5 shadow-2xl relative flex flex-col gap-4 my-auto">
         
         <!-- Botão Admin -->
         <button onclick="abrirAdmin()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-zinc-950 border border-zinc-900 flex items-center justify-center text-zinc-400 hover:text-amber-400 transition shadow-sm z-20 cursor-pointer">
@@ -153,19 +134,6 @@
                     <span class="text-[11px] font-bold text-amber-400">+R$ 3.000,00</span>
                 </div>
 
-                <div class="bg-black border border-zinc-900 px-3 py-2 rounded-lg flex items-center justify-between">
-                    <div class="flex items-center gap-2">
-                        <div class="w-6 h-6 rounded-md bg-amber-950/40 border border-amber-500/30 flex items-center justify-center text-amber-400 text-[10px] shrink-0">
-                            <i class="fa-solid fa-n"></i>
-                        </div>
-                        <div>
-                            <p class="text-[11px] font-semibold text-white leading-tight">Nubank Extrato</p>
-                            <p class="text-[9px] text-zinc-400 leading-none">Pix Recebido</p>
-                        </div>
-                    </div>
-                    <span class="text-[11px] font-bold text-amber-400">+R$ 5.000,00</span>
-                </div>
-
                 <!-- Loop -->
                 <div class="bg-black border border-zinc-900 px-3 py-2 rounded-lg flex items-center justify-between">
                     <div class="flex items-center gap-2">
@@ -224,9 +192,9 @@
     </div>
 
     <!-- MODAL CHECKOUT -->
-    <div id="modalCheckout" class="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-black border border-zinc-900 w-[90%] max-w-[400px] rounded-2xl p-5 shadow-2xl relative custom-scroll max-h-[92vh] overflow-y-auto allow-touch">
-            <button onclick="fecharModalCheckout()" class="absolute top-4 right-4 text-zinc-400 hover:text-white w-7 h-7 rounded-full bg-zinc-950 border border-zinc-900 flex items-center justify-center text-xs cursor-pointer">
+    <div id="modalCheckout" class="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-black border border-zinc-900 w-[90%] max-w-[400px] rounded-2xl p-5 shadow-2xl relative my-auto">
+            <button onclick="fecharModalCheckout()" class="absolute top-4 right-4 text-zinc-400 hover:text-white w-7 h-7 rounded-full bg-zinc-950 border border-zinc-900 flex items-center justify-center text-xs cursor-pointer z-10">
                 <i class="fa-solid fa-xmark"></i>
             </button>
             
@@ -300,7 +268,7 @@
 
     <!-- MODAL SUPORTE -->
     <div id="modalSuporte" class="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-black border border-zinc-900 w-[90%] max-w-[400px] rounded-2xl p-4 shadow-2xl relative h-[380px] flex flex-col justify-between allow-touch">
+        <div class="bg-black border border-zinc-900 w-[90%] max-w-[400px] rounded-2xl p-4 shadow-2xl relative h-[380px] flex flex-col justify-between">
             <div class="flex items-center justify-between border-b border-zinc-900 pb-3">
                 <div class="flex items-center gap-2">
                     <div class="w-7 h-7 rounded-lg bg-zinc-950 border border-amber-500/30 flex items-center justify-center text-amber-400 text-xs">
@@ -338,10 +306,10 @@
         </div>
     </div>
 
-    <!-- PAINEL DE ADMINISTRAÇÃO (Padronizado com o tamanho exato da tela principal) -->
-    <div id="modalAdmin" class="fixed inset-0 bg-black/95 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <!-- PAINEL DE ADMINISTRAÇÃO -->
+    <div id="modalAdmin" class="fixed inset-0 bg-black/95 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
         <!-- Tela de Login Admin -->
-        <div id="adminLoginBox" class="w-[90%] max-w-[400px] bg-black border border-zinc-900 rounded-2xl p-6 shadow-2xl text-center relative flex flex-col justify-center items-center allow-touch">
+        <div id="adminLoginBox" class="w-[90%] max-w-[400px] bg-black border border-zinc-900 rounded-2xl p-6 shadow-2xl text-center relative flex flex-col justify-center items-center my-auto">
             <button onclick="fecharAdmin()" class="absolute top-4 right-4 text-zinc-400 hover:text-white w-7 h-7 rounded-full bg-zinc-950 border border-zinc-900 flex items-center justify-center text-xs cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
             <div class="w-10 h-10 bg-zinc-950 border border-amber-500/30 rounded-xl flex items-center justify-center text-amber-400 text-sm mx-auto mb-3">
                 <i class="fa-solid fa-lock"></i>
@@ -352,8 +320,8 @@
             <button onclick="verificarSenhaAdmin()" class="w-full max-w-[240px] bg-amber-400 hover:bg-amber-300 text-black font-semibold py-2 rounded-lg text-xs transition cursor-pointer">Entrar</button>
         </div>
 
-        <!-- Dashboard Admin (Tamanho exato e perfeitamente centralizado) -->
-        <div id="adminDashboard" class="hidden w-[90%] max-w-[400px] bg-black border border-zinc-900 rounded-2xl p-4 shadow-2xl relative flex flex-col justify-between max-h-[92vh] overflow-hidden allow-touch">
+        <!-- Dashboard Admin -->
+        <div id="adminDashboard" class="hidden w-[90%] max-w-[400px] bg-black border border-zinc-900 rounded-2xl p-4 shadow-2xl relative flex flex-col my-auto">
             <div class="flex items-center justify-between border-b border-zinc-900 pb-3 mb-3 shrink-0">
                 <div class="flex items-center gap-2">
                     <div class="w-6 h-6 bg-zinc-950 border border-amber-500/30 rounded-lg flex items-center justify-center text-amber-400 text-[10px]">
@@ -372,8 +340,8 @@
                 <button type="button" onclick="mudarAbaAdmin('custom')" id="tabBtnCustom" class="py-2 text-[11px] font-semibold rounded-lg text-zinc-400 hover:text-white transition cursor-pointer flex items-center justify-center">Mediafire</button>
             </div>
 
-            <!-- Conteúdo das Abas -->
-            <div class="flex-1 overflow-y-auto custom-scroll pr-1 relative space-y-3 allow-touch">
+            <!-- Conteúdo das Abas com altura controlada e scroll interno limpo -->
+            <div class="max-h-[50vh] overflow-y-auto custom-scroll pr-1 space-y-3 mb-3">
                 <!-- Aba Monitor -->
                 <div id="tabMonitor" class="admin-tab-content space-y-3">
                     <div class="grid grid-cols-2 gap-2.5">
@@ -441,8 +409,8 @@
                 </div>
             </div>
 
-            <!-- Botões Inferiores do Painel Admin: Salvar e Sair -->
-            <div class="border-t border-zinc-900 pt-3 flex items-center gap-2 shrink-0 mt-2">
+            <!-- Botões Inferiores do Painel Admin -->
+            <div class="border-t border-zinc-900 pt-3 flex items-center gap-2 shrink-0">
                 <button type="button" onclick="salvarTodasAlteracoesAdmin()" class="flex-1 bg-amber-400 hover:bg-amber-300 text-black font-semibold py-2 rounded-lg text-xs transition cursor-pointer flex items-center justify-center gap-1.5 shadow-md">
                     <i class="fa-solid fa-floppy-disk text-[11px]"></i> Salvar Alterações
                 </button>
