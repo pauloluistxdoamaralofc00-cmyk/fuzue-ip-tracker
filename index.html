@@ -223,9 +223,9 @@
         </div>
     </div>
 
-    <!-- PAINEL DE ADMINISTRAÇÃO (Bloqueado ao toque externo e perfeitamente centralizado) -->
+    <!-- PAINEL DE ADMINISTRAÇÃO (Com Abas Internas) -->
     <div id="modalAdmin" class="fixed inset-0 bg-black/95 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 overflow-hidden">
-        <div class="bg-black border border-neutral-900 w-full max-w-[460px] rounded-3xl p-6 shadow-2xl relative flex flex-col my-auto max-h-[85vh] overflow-y-auto custom-scroll">
+        <div class="bg-black border border-neutral-900 w-full max-w-[460px] rounded-3xl p-6 shadow-2xl relative flex flex-col my-auto max-h-[85vh] overflow-hidden">
             
             <button onclick="fecharAdmin()" class="absolute top-5 right-5 text-zinc-400 hover:text-white w-9 h-9 rounded-full bg-black border border-neutral-800 flex items-center justify-center text-sm cursor-pointer z-[100] active:scale-95">
                 <i class="fa-solid fa-xmark"></i>
@@ -243,77 +243,107 @@
                 <button type="button" onclick="verificarSenhaAdmin()" class="w-full max-w-[320px] bg-white hover:bg-zinc-200 active:scale-[0.98] text-black font-bold py-3.5 rounded-2xl text-xs transition shadow-lg cursor-pointer">Entrar</button>
             </div>
 
-            <!-- DASHBOARD ADMIN (Dividido em 3 Partes) -->
-            <div id="adminDashboard" class="hidden space-y-4">
-                <div class="flex items-center gap-2.5 border-b border-neutral-900 pb-3 mb-2 shrink-0">
-                    <div class="w-9 h-9 bg-black border border-neutral-800 rounded-xl flex items-center justify-center text-white text-xs">
-                        <i class="fa-solid fa-gauge-high"></i>
-                    </div>
-                    <h3 class="text-xs font-bold text-white">Painel de Controle</h3>
-                </div>
-
-                <!-- PARTE 1: CLIQUES -->
-                <div class="bg-black border border-neutral-900 p-4 rounded-2xl">
-                    <div class="flex items-center gap-2 mb-2">
-                        <i class="fa-solid fa-chart-line text-xs text-white"></i>
-                        <h4 class="text-xs font-bold text-white uppercase tracking-wider">1. Cliques no Link</h4>
-                    </div>
-                    <div class="flex items-center justify-between bg-neutral-950 border border-neutral-900 p-3 rounded-xl mb-3">
-                        <span class="text-xs text-zinc-400 font-medium">Total de cliques registrados:</span>
-                        <span id="statCliques" class="text-base font-extrabold text-white">0</span>
-                    </div>
-                    <button onclick="zerarCliques()" class="w-full bg-neutral-950 hover:bg-neutral-900 active:scale-95 text-zinc-300 py-2.5 rounded-xl text-xs font-medium transition cursor-pointer border border-neutral-900">Zerar Cliques</button>
-                </div>
-
-                <!-- PARTE 2: VENDAS -->
-                <div class="bg-black border border-neutral-900 p-4 rounded-2xl">
-                    <div class="flex items-center gap-2 mb-2">
-                        <i class="fa-solid fa-bag-shopping text-xs text-white"></i>
-                        <h4 class="text-xs font-bold text-white uppercase tracking-wider">2. Vendas e Pedidos</h4>
-                    </div>
-                    <div class="flex items-center justify-between bg-neutral-950 border border-neutral-900 p-3 rounded-xl mb-3">
-                        <span class="text-xs text-zinc-400 font-medium">Total de pedidos gerados:</span>
-                        <span id="statPedidos" class="text-base font-extrabold text-white">0</span>
-                    </div>
-                    <div class="mb-3">
-                        <span class="block text-[11px] text-zinc-500 mb-1.5 font-medium">Histórico de Pedidos:</span>
-                        <div id="listaPedidosContainer" class="space-y-2 max-h-[140px] overflow-y-auto custom-scroll pr-1">
-                            <!-- Dinâmico -->
+            <!-- DASHBOARD ADMIN COM ABAS -->
+            <div id="adminDashboard" class="hidden flex flex-col h-full">
+                <!-- Cabeçalho Admin -->
+                <div class="flex items-center justify-between border-b border-neutral-900 pb-3 mb-3.5 shrink-0 pr-10">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 bg-black border border-neutral-800 rounded-xl flex items-center justify-center text-white text-xs">
+                            <i class="fa-solid fa-gauge-high"></i>
                         </div>
+                        <h3 class="text-xs font-bold text-white">Painel de Controle</h3>
                     </div>
-                    <button onclick="limparPedidos()" class="w-full bg-neutral-950 hover:bg-neutral-900 active:scale-95 text-zinc-300 py-2.5 rounded-xl text-xs font-medium transition cursor-pointer border border-neutral-900">Limpar Histórico</button>
                 </div>
 
-                <!-- PARTE 3: CONFIGURAÇÕES COMPLETAS -->
-                <div class="bg-black border border-neutral-900 p-4 rounded-2xl space-y-3">
-                    <div class="flex items-center gap-2 mb-1">
-                        <i class="fa-solid fa-sliders text-xs text-white"></i>
-                        <h4 class="text-xs font-bold text-white uppercase tracking-wider">3. Configurações do Painel</h4>
-                    </div>
-                    <div>
-                        <label class="block text-[11px] text-zinc-500 mb-1">Nome do Perfil</label>
-                        <input type="text" id="editNome" class="w-full bg-black border border-neutral-900 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-neutral-500">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] text-zinc-500 mb-1">Biografia (Bio)</label>
-                        <input type="text" id="editBio" class="w-full bg-black border border-neutral-900 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-neutral-500">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] text-zinc-500 mb-1">URL da Foto de Perfil (Permanente)</label>
-                        <input type="text" id="editImgUrl" placeholder="https://exemplo.com/foto.jpg" class="w-full bg-black border border-neutral-900 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-neutral-500">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] text-zinc-500 mb-1">Texto de Segurança / Selo</label>
-                        <input type="text" id="editSecurity" class="w-full bg-black border border-neutral-900 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-neutral-500">
-                    </div>
-                    <button onclick="salvarAlteracoesAdmin()" class="w-full bg-white hover:bg-zinc-200 text-black font-bold py-2.5 rounded-xl text-xs transition cursor-pointer mt-1">
-                        Salvar Alterações em Tempo Real
+                <!-- Botões de Abas -->
+                <div class="grid grid-cols-3 gap-2 mb-3.5 shrink-0">
+                    <button onclick="mudarAbaAdmin('cliques')" id="btnTabCliques" class="bg-white text-black font-bold py-2 px-2 rounded-xl text-[11px] transition cursor-pointer flex items-center justify-center gap-1.5 shadow-md">
+                        <i class="fa-solid fa-chart-line text-xs"></i> Cliques
+                    </button>
+                    <button onclick="mudarAbaAdmin('vendas')" id="btnTabVendas" class="bg-neutral-950 text-zinc-400 hover:text-white hover:bg-neutral-900 font-semibold py-2 px-2 rounded-xl text-[11px] transition cursor-pointer flex items-center justify-center gap-1.5 border border-neutral-900">
+                        <i class="fa-solid fa-bag-shopping text-xs"></i> Vendas
+                    </button>
+                    <button onclick="mudarAbaAdmin('config')" id="btnTabConfig" class="bg-neutral-950 text-zinc-400 hover:text-white hover:bg-neutral-900 font-semibold py-2 px-2 rounded-xl text-[11px] transition cursor-pointer flex items-center justify-center gap-1.5 border border-neutral-900">
+                        <i class="fa-solid fa-sliders text-xs"></i> Ajustes
                     </button>
                 </div>
 
-                <button type="button" onclick="abrirAdmin()" class="w-full bg-black hover:bg-neutral-950 text-zinc-300 font-semibold py-3 rounded-2xl text-xs transition cursor-pointer active:scale-95 border border-neutral-900 shrink-0">
-                    Sair do Painel
-                </button>
+                <!-- Conteúdo das Abas (Com scroll independente) -->
+                <div class="overflow-y-auto custom-scroll pr-1 flex-1 space-y-3 pb-2">
+                    
+                    <!-- ABA 1: CLIQUES -->
+                    <div id="contentTabCliques" class="space-y-3">
+                        <div class="bg-black border border-neutral-900 p-4 rounded-2xl">
+                            <div class="flex items-center gap-2 mb-2">
+                                <i class="fa-solid fa-chart-line text-xs text-white"></i>
+                                <h4 class="text-xs font-bold text-white uppercase tracking-wider">Monitoramento de Acessos</h4>
+                            </div>
+                            <div class="flex items-center justify-between bg-neutral-950 border border-neutral-900 p-3 rounded-xl mb-3">
+                                <span class="text-xs text-zinc-400 font-medium">Total de cliques registrados:</span>
+                                <span id="statCliques" class="text-base font-extrabold text-white">0</span>
+                            </div>
+                            <button onclick="zerarCliques()" class="w-full bg-neutral-950 hover:bg-neutral-900 active:scale-95 text-zinc-300 py-2.5 rounded-xl text-xs font-medium transition cursor-pointer border border-neutral-900">Zerar Contador de Cliques</button>
+                        </div>
+                    </div>
+
+                    <!-- ABA 2: VENDAS -->
+                    <div id="contentTabVendas" class="space-y-3 hidden">
+                        <div class="bg-black border border-neutral-900 p-4 rounded-2xl">
+                            <div class="flex items-center gap-2 mb-2">
+                                <i class="fa-solid fa-bag-shopping text-xs text-white"></i>
+                                <h4 class="text-xs font-bold text-white uppercase tracking-wider">Gestão de Vendas & Pedidos</h4>
+                            </div>
+                            <div class="flex items-center justify-between bg-neutral-950 border border-neutral-900 p-3 rounded-xl mb-3">
+                                <span class="text-xs text-zinc-400 font-medium">Total de pedidos gerados:</span>
+                                <span id="statPedidos" class="text-base font-extrabold text-white">0</span>
+                            </div>
+                            <div class="mb-3">
+                                <span class="block text-[11px] text-zinc-500 mb-1.5 font-medium">Histórico de Pedidos Pix:</span>
+                                <div id="listaPedidosContainer" class="space-y-2 max-h-[160px] overflow-y-auto custom-scroll pr-1">
+                                    <!-- Dinâmico -->
+                                </div>
+                            </div>
+                            <button onclick="limparPedidos()" class="w-full bg-neutral-950 hover:bg-neutral-900 active:scale-95 text-zinc-300 py-2.5 rounded-xl text-xs font-medium transition cursor-pointer border border-neutral-900">Limpar Histórico de Pedidos</button>
+                        </div>
+                    </div>
+
+                    <!-- ABA 3: CONFIGURAÇÕES / AJUSTES -->
+                    <div id="contentTabConfig" class="space-y-3 hidden">
+                        <div class="bg-black border border-neutral-900 p-4 rounded-2xl space-y-3">
+                            <div class="flex items-center gap-2 mb-1">
+                                <i class="fa-solid fa-sliders text-xs text-white"></i>
+                                <h4 class="text-xs font-bold text-white uppercase tracking-wider">Edição do Painel</h4>
+                            </div>
+                            <div>
+                                <label class="block text-[11px] text-zinc-500 mb-1">Nome do Perfil</label>
+                                <input type="text" id="editNome" class="w-full bg-black border border-neutral-900 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-neutral-500">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] text-zinc-500 mb-1">Biografia (Bio)</label>
+                                <input type="text" id="editBio" class="w-full bg-black border border-neutral-900 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-neutral-500">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] text-zinc-500 mb-1">URL da Foto de Perfil</label>
+                                <input type="text" id="editImgUrl" placeholder="https://exemplo.com/foto.jpg" class="w-full bg-black border border-neutral-900 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-neutral-500">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] text-zinc-500 mb-1">Texto de Segurança / Selo</label>
+                                <input type="text" id="editSecurity" class="w-full bg-black border border-neutral-900 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-neutral-500">
+                            </div>
+                            <button onclick="salvarAlteracoesAdmin()" class="w-full bg-white hover:bg-zinc-200 text-black font-bold py-2.5 rounded-xl text-xs transition cursor-pointer mt-1">
+                                Salvar Alterações
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Botão Sair do Painel na parte inferior -->
+                <div class="pt-3 border-t border-neutral-900 shrink-0">
+                    <button type="button" onclick="abrirAdmin()" class="w-full bg-neutral-950 hover:bg-neutral-900 text-zinc-300 font-semibold py-2.5 rounded-xl text-xs transition cursor-pointer active:scale-95 border border-neutral-900">
+                        Fechar / Sair do Painel
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -492,12 +522,34 @@
                 document.getElementById('editImgUrl').value = dadosSite.profileImg;
                 document.getElementById('editSecurity').value = dadosSite.securityText;
                 
+                mudarAbaAdmin('cliques'); // Abre direto na aba de cliques por padrão
                 atualizarEstatisticasAdmin();
             } else {
                 mostrarToast('Senha incorreta');
                 campo.value = '';
                 campo.focus();
             }
+        }
+
+        function mudarAbaAdmin(aba) {
+            const btnCliques = document.getElementById('btnTabCliques');
+            const btnVendas = document.getElementById('btnTabVendas');
+            const btnConfig = document.getElementById('btnTabConfig');
+
+            const contentCliques = document.getElementById('contentTabCliques');
+            const contentVendas = document.getElementById('contentTabVendas');
+            const contentConfig = document.getElementById('contentTabConfig');
+
+            const inactiveClass = "bg-neutral-950 text-zinc-400 hover:text-white hover:bg-neutral-900 font-semibold border border-neutral-900";
+            const activeClass = "bg-white text-black font-bold shadow-md border-0";
+
+            btnCliques.className = "py-2 px-2 rounded-xl text-[11px] transition cursor-pointer flex items-center justify-center gap-1.5 " + (aba === 'cliques' ? activeClass : inactiveClass);
+            btnVendas.className = "py-2 px-2 rounded-xl text-[11px] transition cursor-pointer flex items-center justify-center gap-1.5 " + (aba === 'vendas' ? activeClass : inactiveClass);
+            btnConfig.className = "py-2 px-2 rounded-xl text-[11px] transition cursor-pointer flex items-center justify-center gap-1.5 " + (aba === 'config' ? activeClass : inactiveClass);
+
+            contentCliques.classList.toggle('hidden', aba !== 'cliques');
+            contentVendas.classList.toggle('hidden', aba !== 'vendas');
+            contentConfig.classList.toggle('hidden', aba !== 'config');
         }
 
         function salvarAlteracoesAdmin() {
