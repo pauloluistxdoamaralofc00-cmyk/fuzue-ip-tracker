@@ -7,12 +7,25 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Bloqueio absoluto de zoom e seleções indesejadas em toda a página */
         *, *::before, *::after {
             box-sizing: border-box;
-            touch-action: manipulation;
             -webkit-touch-callout: none;
             -webkit-user-select: none;
             user-select: none;
+            touch-action: none;
+        }
+
+        /* Libera interações essenciais apenas onde o usuário precisa mexer */
+        input, textarea, select, .allow-touch {
+            -webkit-user-select: text;
+            user-select: text;
+            touch-action: pan-y !important;
+        }
+
+        .custom-scroll {
+            touch-action: pan-y !important;
+            -webkit-overflow-scrolling: touch;
         }
 
         @keyframes pulse-gold {
@@ -60,11 +73,6 @@
             justify-content: center;
         }
 
-        input, textarea {
-            -webkit-user-select: text;
-            user-select: text;
-        }
-
         .custom-scroll::-webkit-scrollbar {
             width: 3px;
         }
@@ -83,7 +91,7 @@
     </div>
 
     <!-- Container Principal Centralizado perfeitamente ao meio -->
-    <div id="mainContainer" class="w-[90%] max-w-[400px] max-h-[92vh] bg-black vip-card-border rounded-2xl p-5 shadow-2xl relative flex flex-col gap-4 overflow-y-auto custom-scroll">
+    <div id="mainContainer" class="w-[90%] max-w-[400px] max-h-[92vh] bg-black vip-card-border rounded-2xl p-5 shadow-2xl relative flex flex-col gap-4 overflow-y-auto custom-scroll allow-touch">
         
         <!-- Botão Admin -->
         <button onclick="abrirAdmin()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-zinc-950 border border-zinc-900 flex items-center justify-center text-zinc-400 hover:text-amber-400 transition shadow-sm z-20 cursor-pointer">
@@ -217,7 +225,7 @@
 
     <!-- MODAL CHECKOUT -->
     <div id="modalCheckout" class="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-black border border-zinc-900 w-[90%] max-w-sm rounded-2xl p-5 shadow-2xl relative custom-scroll max-h-[90vh] overflow-y-auto">
+        <div class="bg-black border border-zinc-900 w-[90%] max-w-[400px] rounded-2xl p-5 shadow-2xl relative custom-scroll max-h-[92vh] overflow-y-auto allow-touch">
             <button onclick="fecharModalCheckout()" class="absolute top-4 right-4 text-zinc-400 hover:text-white w-7 h-7 rounded-full bg-zinc-950 border border-zinc-900 flex items-center justify-center text-xs cursor-pointer">
                 <i class="fa-solid fa-xmark"></i>
             </button>
@@ -292,7 +300,7 @@
 
     <!-- MODAL SUPORTE -->
     <div id="modalSuporte" class="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-black border border-zinc-900 w-[90%] max-w-sm rounded-2xl p-4 shadow-2xl relative h-[380px] flex flex-col justify-between">
+        <div class="bg-black border border-zinc-900 w-[90%] max-w-[400px] rounded-2xl p-4 shadow-2xl relative h-[380px] flex flex-col justify-between allow-touch">
             <div class="flex items-center justify-between border-b border-zinc-900 pb-3">
                 <div class="flex items-center gap-2">
                     <div class="w-7 h-7 rounded-lg bg-zinc-950 border border-amber-500/30 flex items-center justify-center text-amber-400 text-xs">
@@ -330,10 +338,10 @@
         </div>
     </div>
 
-    <!-- PAINEL DE ADMINISTRAÇÃO -->
+    <!-- PAINEL DE ADMINISTRAÇÃO (Padronizado com o tamanho exato da tela principal) -->
     <div id="modalAdmin" class="fixed inset-0 bg-black/95 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
         <!-- Tela de Login Admin -->
-        <div id="adminLoginBox" class="w-[90%] max-w-sm bg-black border border-zinc-900 rounded-2xl p-6 shadow-2xl text-center relative flex flex-col justify-center items-center">
+        <div id="adminLoginBox" class="w-[90%] max-w-[400px] bg-black border border-zinc-900 rounded-2xl p-6 shadow-2xl text-center relative flex flex-col justify-center items-center allow-touch">
             <button onclick="fecharAdmin()" class="absolute top-4 right-4 text-zinc-400 hover:text-white w-7 h-7 rounded-full bg-zinc-950 border border-zinc-900 flex items-center justify-center text-xs cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
             <div class="w-10 h-10 bg-zinc-950 border border-amber-500/30 rounded-xl flex items-center justify-center text-amber-400 text-sm mx-auto mb-3">
                 <i class="fa-solid fa-lock"></i>
@@ -344,8 +352,8 @@
             <button onclick="verificarSenhaAdmin()" class="w-full max-w-[240px] bg-amber-400 hover:bg-amber-300 text-black font-semibold py-2 rounded-lg text-xs transition cursor-pointer">Entrar</button>
         </div>
 
-        <!-- Dashboard Admin -->
-        <div id="adminDashboard" class="hidden w-[92%] max-w-md bg-black border border-zinc-900 rounded-2xl p-4 shadow-2xl relative flex flex-col justify-between max-h-[92vh] overflow-hidden">
+        <!-- Dashboard Admin (Tamanho exato e perfeitamente centralizado) -->
+        <div id="adminDashboard" class="hidden w-[90%] max-w-[400px] bg-black border border-zinc-900 rounded-2xl p-4 shadow-2xl relative flex flex-col justify-between max-h-[92vh] overflow-hidden allow-touch">
             <div class="flex items-center justify-between border-b border-zinc-900 pb-3 mb-3 shrink-0">
                 <div class="flex items-center gap-2">
                     <div class="w-6 h-6 bg-zinc-950 border border-amber-500/30 rounded-lg flex items-center justify-center text-amber-400 text-[10px]">
@@ -365,7 +373,7 @@
             </div>
 
             <!-- Conteúdo das Abas -->
-            <div class="flex-1 overflow-y-auto custom-scroll pr-1 relative space-y-3">
+            <div class="flex-1 overflow-y-auto custom-scroll pr-1 relative space-y-3 allow-touch">
                 <!-- Aba Monitor -->
                 <div id="tabMonitor" class="admin-tab-content space-y-3">
                     <div class="grid grid-cols-2 gap-2.5">
