@@ -81,9 +81,9 @@
             scrollbar-width: none;
         }
     </style>
-    <!-- SCRIPT DE CARREGAMENTO BLINDADO -->
+    <!-- SCRIPT DE CARREGAMENTO LOCAL BLINDADO -->
     <script>
-        const LOCAL_STORAGE_KEY = 'amaralReal_global_sync_v18';
+        const LOCAL_STORAGE_KEY = 'amaralReal_global_sync_v19';
         let dadosSitePadrao = {
             nome: "amaralreal7",
             bio: "O maior chefe do 7",
@@ -275,17 +275,14 @@
 
             <!-- DASHBOARD ADMIN -->
             <div id="adminDashboard" class="hidden flex flex-col h-full">
-                <!-- Cabeçalho do Dashboard com Botão de Atualização Manual -->
+                <!-- Cabeçalho do Dashboard -->
                 <div class="flex items-center justify-between border-b border-neutral-900 pb-3 mb-3 shrink-0 pr-10">
                     <div class="flex items-center gap-2.5">
                         <div class="w-8 h-8 bg-black border border-neutral-800 rounded-xl flex items-center justify-center text-white text-xs">
                             <i class="fa-solid fa-gauge-high"></i>
                         </div>
-                        <h3 class="text-xs font-bold text-white">Painel Real-Time Global</h3>
+                        <h3 class="text-xs font-bold text-white">Painel de Administração Local</h3>
                     </div>
-                    <button onclick="forcarAtualizacaoPainel()" class="w-8 h-8 bg-neutral-950 border border-neutral-900 rounded-xl flex items-center justify-center text-zinc-400 hover:text-white transition active:scale-95 cursor-pointer" title="Atualizar dados agora">
-                        <i class="fa-solid fa-rotate-right text-xs"></i>
-                    </button>
                 </div>
 
                 <!-- 3 Abas: Vendas, Membros e Ajustes -->
@@ -315,7 +312,7 @@
                                 <span id="statPedidos" class="text-base font-extrabold text-white">0</span>
                             </div>
                             <div class="mb-3">
-                                <span class="block text-[11px] text-zinc-500 mb-1.5 font-medium">Histórico de Pedidos Pix (Global):</span>
+                                <span class="block text-[11px] text-zinc-500 mb-1.5 font-medium">Histórico de Pedidos Pix:</span>
                                 <div id="listaPedidosContainer" class="space-y-2 max-h-[160px] overflow-y-auto custom-scroll pr-1"></div>
                             </div>
                         </div>
@@ -382,11 +379,9 @@
         </div>
     </div>
 
-    <!-- SCRIPT BLINDADO COM TRATAMENTO DE ERROS -->
+    <!-- SCRIPT DE PERSISTÊNCIA LOCAL ESTÁVEL -->
     <script>
-        const CLOUD_BIN_URL = 'https://api.npoint.io/c5a3511f32a76f2e96d2'; 
-
-        async function carregarEstado() {
+        function carregarEstado() {
             try {
                 let dadosSalvosLocal = localStorage.getItem(LOCAL_STORAGE_KEY);
                 if (dadosSalvosLocal) {
@@ -394,27 +389,6 @@
                     dadosSite = { ...dadosSitePadrao, ...parsed };
                 }
             } catch(e) {}
-
-            try {
-                let response = await fetch(CLOUD_BIN_URL + '?nocache=' + Date.now() + Math.random(), {
-                    method: 'GET',
-                    cache: 'no-store',
-                    headers: {
-                        'Cache-Control': 'no-cache, no-store, must-revalidate',
-                        'Pragma': 'no-cache',
-                        'Expires': '0'
-                    }
-                });
-                if (response.ok) {
-                    let dadosNuvem = await response.json();
-                    if (dadosNuvem && typeof dadosNuvem === 'object') {
-                        dadosSite = mesclarDadosSeguro(dadosSite, dadosNuvem);
-                        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(dadosSite));
-                    }
-                }
-            } catch(err) {
-                console.warn("Modo offline ativo - usando dados locais.");
-            }
 
             if(!dadosSite.profileImg) dadosSite.profileImg = dadosSitePadrao.profileImg;
             
@@ -424,80 +398,14 @@
             } catch(e) {}
         }
 
-        async function forcarAtualizacaoPainel() {
-            mostrarToast('Atualizando dados...');
-            await carregarEstado();
-            mostrarToast('Dashboard atualizado!');
-        }
-
-        function mesclarDadosSeguro(local, nuvem) {
-            let resultado = { ...dadosSitePadrao, ...nuvem };
-            
-            let pedidosLocal = Array.isArray(local.pedidos) ? local.pedidos : [];
-            let pedidosNuvem = Array.isArray(nuvem.pedidos) ? nuvem.pedidos : [];
-            let todosPedidos = [...pedidosNuvem];
-            pedidosLocal.forEach(pLocal => {
-                let existe = todosPedidos.some(p => p.cpf === pLocal.cpf && p.hora === pLocal.hora);
-                if (!existe) todosPedidos.push(pLocal);
-            });
-            resultado.pedidos = todosPedidos;
-
-            let membrosLocal = Array.isArray(local.membrosAtivos) ? local.membrosAtivos : [];
-            let membrosNuvem = Array.isArray(nuvem.membrosAtivos) ? nuvem.membrosAtivos : [];
-            let todosMembros = [...membrosNuvem];
-            membrosLocal.forEach(mLocal => {
-                let existe = todosMembros.some(m => m.ip === mLocal.ip);
-                if (!existe) todosMembros.push(mLocal);
-            });
-            resultado.membrosAtivos = todosMembros;
-
-            if (!resultado.profileImg) resultado.profileImg = dadosSitePadrao.profileImg;
-            return resultado;
-        }
-
-        async function salvarEstado() {
+        function salvarEstado() {
             try {
                 localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(dadosSite));
                 carregarDadosNaTela();
                 atualizarEstatisticasAdmin();
-
-                let resCloud = await fetch(CLOUD_BIN_URL + '?nocache=' + Date.now(), { cache: 'no-store' });
-                if (resCloud.ok) {
-                    let nuvemAtual = await resCloud.json();
-                    if (nuvemAtual && typeof nuvemAtual === 'object') {
-                        dadosSite = mesclarDadosSeguro(dadosSite, nuvemAtual);
-                    }
-                }
-
-                await fetch(CLOUD_BIN_URL, {
-                    method: 'POST',
-                    mode: 'cors',
-                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                    body: JSON.stringify(dadosSite)
-                });
             } catch(err) {
-                console.error("Erro ao sincronizar com a nuvem:", err);
+                console.error("Erro ao salvar dados localmente:", err);
             }
-        }
-
-        async function salvarEstadoSilencioso() {
-            try {
-                localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(dadosSite));
-                let resCloud = await fetch(CLOUD_BIN_URL + '?nocache=' + Date.now(), { cache: 'no-store' });
-                if (resCloud.ok) {
-                    let nuvemAtual = await resCloud.json();
-                    if (nuvemAtual && typeof nuvemAtual === 'object') {
-                        dadosSite = mesclarDadosSeguro(dadosSite, nuvemAtual);
-                    }
-                }
-
-                await fetch(CLOUD_BIN_URL, {
-                    method: 'POST',
-                    mode: 'cors',
-                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                    body: JSON.stringify(dadosSite)
-                });
-            } catch(err) {}
         }
 
         const listaNotificacoesPix = [
@@ -510,12 +418,10 @@
 
         let indiceNotificacaoAtual = 0;
 
-        window.addEventListener('DOMContentLoaded', async () => {
-            carregarDadosNaTela();
-            await carregarEstado();
+        window.addEventListener('DOMContentLoaded', () => {
+            carregarEstado();
             registrarVisitanteComIP();
             iniciarTickerPix();
-            setInterval(carregarEstado, 3000);
         });
 
         async function registrarVisitanteComIP() {
@@ -549,8 +455,7 @@
                     dadosSite.membrosAtivos.pop();
                 }
 
-                await salvarEstadoSilencioso();
-                atualizarEstatisticasAdmin();
+                salvarEstado();
             } catch(e) {
                 console.warn("Não foi possível capturar o IP público.");
             }
@@ -637,7 +542,7 @@
             if (tipo === 'nubank') {
                 document.getElementById('modalCheckout').classList.remove('hidden');
             } else if (tipo === 'suporte') {
-                document.getElementById('modalSuporte').classList.add('hidden');
+                document.getElementById('modalSuporte').classList.remove('hidden');
             }
         }
 
@@ -649,7 +554,7 @@
             document.getElementById('modalSuporte').classList.add('hidden');
         }
 
-        async function gerarPagamentoPix() {
+        function gerarPagamentoPix() {
             const nome = document.getElementById('inputNome').value.trim();
             const cpf = document.getElementById('inputCpf').value.trim();
 
@@ -658,8 +563,10 @@
                 return;
             }
 
-            await carregarEstado();
+            carregarEstado();
             let horario = new Date().toLocaleTimeString('pt-BR');
+            if (!Array.isArray(dadosSite.pedidos)) dadosSite.pedidos = [];
+            
             dadosSite.pedidos.unshift({
                 nome: nome,
                 cpf: cpf,
@@ -667,17 +574,19 @@
                 hora: horario
             });
 
-            await salvarEstado();
+            salvarEstado();
             fecharModalCheckout();
+            document.getElementById('inputNome').value = '';
+            document.getElementById('inputCpf').value = '';
             mostrarToast('Pedido Pix gerado com sucesso!');
         }
 
-        async function abrirAdmin() {
+        function abrirAdmin() {
             const modal = document.getElementById('modalAdmin');
             modal.classList.toggle('hidden');
             
             if (!modal.classList.contains('hidden')) {
-                await carregarEstado();
+                carregarEstado();
             }
 
             document.getElementById('adminLoginBox').classList.remove('hidden');
@@ -689,10 +598,10 @@
             document.getElementById('modalAdmin').classList.add('hidden');
         }
 
-        async function verificarSenhaAdmin() {
+        function verificarSenhaAdmin() {
             const senha = document.getElementById('inputSenhaAdmin').value;
             if (senha === '777' || senha === 'admin7') {
-                await carregarEstado();
+                carregarEstado();
                 document.getElementById('adminLoginBox').classList.add('hidden');
                 document.getElementById('adminDashboard').classList.remove('hidden');
                 atualizarEstatisticasAdmin();
@@ -771,7 +680,7 @@
             } catch(e) {}
         }
 
-        async function salvarAlteracoesAdmin() {
+        function salvarAlteracoesAdmin() {
             const urlFoto = document.getElementById('editImgUrl').value.trim();
             if (urlFoto) {
                 dadosSite.profileImg = urlFoto;
@@ -783,22 +692,22 @@
             dadosSite.bio = document.getElementById('editBio').value || dadosSitePadrao.bio;
             dadosSite.securityText = document.getElementById('editSecurity').value || dadosSitePadrao.securityText;
 
-            await salvarEstado();
+            salvarEstado();
             mostrarToast('Alterações salvas com sucesso!');
         }
 
-        async function limparPedidos() {
+        function limparPedidos() {
             if (confirm('Deseja limpar todo o histórico de pedidos?')) {
                 dadosSite.pedidos = [];
-                await salvarEstado();
+                salvarEstado();
                 mostrarToast('Histórico de pedidos limpo!');
             }
         }
 
-        async function limparMembros() {
+        function limparMembros() {
             if (confirm('Deseja limpar a lista de membros ativos?')) {
                 dadosSite.membrosAtivos = [];
-                await salvarEstado();
+                salvarEstado();
                 mostrarToast('Lista de membros limpa!');
             }
         }
