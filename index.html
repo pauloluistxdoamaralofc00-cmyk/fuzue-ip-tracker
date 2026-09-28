@@ -63,10 +63,20 @@
 
         .custom-scroll::-webkit-scrollbar {
             width: 3px;
+            height: 3px;
         }
         .custom-scroll::-webkit-scrollbar-thumb {
             background: rgba(255, 255, 255, 0.2);
             border-radius: 3px;
+        }
+
+        /* Esconder barra de rolagem horizontal mantendo a função de arrastar */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
     </style>
 </head>
@@ -223,9 +233,9 @@
         </div>
     </div>
 
-    <!-- PAINEL DE ADMINISTRAÇÃO (Com Abas Internas) -->
+    <!-- PAINEL DE ADMINISTRAÇÃO (Blocos Horizontais / Swipe) -->
     <div id="modalAdmin" class="fixed inset-0 bg-black/95 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 overflow-hidden">
-        <div class="bg-black border border-neutral-900 w-full max-w-[460px] rounded-3xl p-6 shadow-2xl relative flex flex-col my-auto max-h-[85vh] overflow-hidden">
+        <div class="bg-black border border-neutral-900 w-full max-w-[460px] rounded-3xl p-6 shadow-2xl relative flex flex-col my-auto max-h-[88vh] overflow-hidden">
             
             <button onclick="fecharAdmin()" class="absolute top-5 right-5 text-zinc-400 hover:text-white w-9 h-9 rounded-full bg-black border border-neutral-800 flex items-center justify-center text-sm cursor-pointer z-[100] active:scale-95">
                 <i class="fa-solid fa-xmark"></i>
@@ -243,10 +253,10 @@
                 <button type="button" onclick="verificarSenhaAdmin()" class="w-full max-w-[320px] bg-white hover:bg-zinc-200 active:scale-[0.98] text-black font-bold py-3.5 rounded-2xl text-xs transition shadow-lg cursor-pointer">Entrar</button>
             </div>
 
-            <!-- DASHBOARD ADMIN COM ABAS -->
+            <!-- DASHBOARD ADMIN COM BLOCOS HORIZONTAIS -->
             <div id="adminDashboard" class="hidden flex flex-col h-full">
                 <!-- Cabeçalho Admin -->
-                <div class="flex items-center justify-between border-b border-neutral-900 pb-3 mb-3.5 shrink-0 pr-10">
+                <div class="flex items-center justify-between border-b border-neutral-900 pb-3 mb-3 shrink-0 pr-10">
                     <div class="flex items-center gap-2.5">
                         <div class="w-8 h-8 bg-black border border-neutral-800 rounded-xl flex items-center justify-center text-white text-xs">
                             <i class="fa-solid fa-gauge-high"></i>
@@ -255,40 +265,25 @@
                     </div>
                 </div>
 
-                <!-- Botões de Abas -->
-                <div class="grid grid-cols-3 gap-2 mb-3.5 shrink-0">
-                    <button onclick="mudarAbaAdmin('cliques')" id="btnTabCliques" class="bg-white text-black font-bold py-2 px-2 rounded-xl text-[11px] transition cursor-pointer flex items-center justify-center gap-1.5 shadow-md">
-                        <i class="fa-solid fa-chart-line text-xs"></i> Cliques
-                    </button>
-                    <button onclick="mudarAbaAdmin('vendas')" id="btnTabVendas" class="bg-neutral-950 text-zinc-400 hover:text-white hover:bg-neutral-900 font-semibold py-2 px-2 rounded-xl text-[11px] transition cursor-pointer flex items-center justify-center gap-1.5 border border-neutral-900">
+                <!-- Botões de Navegação Superior (Atalhos para os Blocos) -->
+                <div class="grid grid-cols-3 gap-2 mb-3 shrink-0">
+                    <button onclick="mudarBlocoAdmin(0)" id="btnTabVendas" class="bg-white text-black font-bold py-2 px-2 rounded-xl text-[11px] transition cursor-pointer flex items-center justify-center gap-1.5 shadow-md">
                         <i class="fa-solid fa-bag-shopping text-xs"></i> Vendas
                     </button>
-                    <button onclick="mudarAbaAdmin('config')" id="btnTabConfig" class="bg-neutral-950 text-zinc-400 hover:text-white hover:bg-neutral-900 font-semibold py-2 px-2 rounded-xl text-[11px] transition cursor-pointer flex items-center justify-center gap-1.5 border border-neutral-900">
+                    <button onclick="mudarBlocoAdmin(1)" id="btnTabCliques" class="bg-neutral-950 text-zinc-400 hover:text-white hover:bg-neutral-900 font-semibold py-2 px-2 rounded-xl text-[11px] transition cursor-pointer flex items-center justify-center gap-1.5 border border-neutral-900">
+                        <i class="fa-solid fa-chart-line text-xs"></i> Cliques
+                    </button>
+                    <button onclick="mudarBlocoAdmin(2)" id="btnTabConfig" class="bg-neutral-950 text-zinc-400 hover:text-white hover:bg-neutral-900 font-semibold py-2 px-2 rounded-xl text-[11px] transition cursor-pointer flex items-center justify-center gap-1.5 border border-neutral-900">
                         <i class="fa-solid fa-sliders text-xs"></i> Ajustes
                     </button>
                 </div>
 
-                <!-- Conteúdo das Abas (Com scroll independente) -->
-                <div class="overflow-y-auto custom-scroll pr-1 flex-1 space-y-3 pb-2">
+                <!-- CARROSSEL DE BLOCOS HORIZONTAIS (Arraste para o lado) -->
+                <div id="carouselContainer" class="flex overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar gap-3 flex-1 items-stretch py-1" onscroll="atualizarBlocoAtivoPorScroll()">
                     
-                    <!-- ABA 1: CLIQUES -->
-                    <div id="contentTabCliques" class="space-y-3">
-                        <div class="bg-black border border-neutral-900 p-4 rounded-2xl">
-                            <div class="flex items-center gap-2 mb-2">
-                                <i class="fa-solid fa-chart-line text-xs text-white"></i>
-                                <h4 class="text-xs font-bold text-white uppercase tracking-wider">Monitoramento de Acessos</h4>
-                            </div>
-                            <div class="flex items-center justify-between bg-neutral-950 border border-neutral-900 p-3 rounded-xl mb-3">
-                                <span class="text-xs text-zinc-400 font-medium">Total de cliques registrados:</span>
-                                <span id="statCliques" class="text-base font-extrabold text-white">0</span>
-                            </div>
-                            <button onclick="zerarCliques()" class="w-full bg-neutral-950 hover:bg-neutral-900 active:scale-95 text-zinc-300 py-2.5 rounded-xl text-xs font-medium transition cursor-pointer border border-neutral-900">Zerar Contador de Cliques</button>
-                        </div>
-                    </div>
-
-                    <!-- ABA 2: VENDAS -->
-                    <div id="contentTabVendas" class="space-y-3 hidden">
-                        <div class="bg-black border border-neutral-900 p-4 rounded-2xl">
+                    <!-- BLOCO 1: VENDAS (Primeiro bloco, conforme pedido) -->
+                    <div class="w-full min-w-full shrink-0 snap-center bg-black border border-neutral-900 p-4 rounded-2xl flex flex-col justify-between overflow-y-auto custom-scroll">
+                        <div>
                             <div class="flex items-center gap-2 mb-2">
                                 <i class="fa-solid fa-bag-shopping text-xs text-white"></i>
                                 <h4 class="text-xs font-bold text-white uppercase tracking-wider">Gestão de Vendas & Pedidos</h4>
@@ -299,17 +294,33 @@
                             </div>
                             <div class="mb-3">
                                 <span class="block text-[11px] text-zinc-500 mb-1.5 font-medium">Histórico de Pedidos Pix:</span>
-                                <div id="listaPedidosContainer" class="space-y-2 max-h-[160px] overflow-y-auto custom-scroll pr-1">
+                                <div id="listaPedidosContainer" class="space-y-2 max-h-[140px] overflow-y-auto custom-scroll pr-1">
                                     <!-- Dinâmico -->
                                 </div>
                             </div>
-                            <button onclick="limparPedidos()" class="w-full bg-neutral-950 hover:bg-neutral-900 active:scale-95 text-zinc-300 py-2.5 rounded-xl text-xs font-medium transition cursor-pointer border border-neutral-900">Limpar Histórico de Pedidos</button>
                         </div>
+                        <button onclick="limparPedidos()" class="w-full bg-neutral-950 hover:bg-neutral-900 active:scale-95 text-zinc-300 py-2.5 rounded-xl text-xs font-medium transition cursor-pointer border border-neutral-900 mt-2">Limpar Histórico de Pedidos</button>
                     </div>
 
-                    <!-- ABA 3: CONFIGURAÇÕES / AJUSTES -->
-                    <div id="contentTabConfig" class="space-y-3 hidden">
-                        <div class="bg-black border border-neutral-900 p-4 rounded-2xl space-y-3">
+                    <!-- BLOCO 2: CLIQUES / MONITORAMENTO -->
+                    <div class="w-full min-w-full shrink-0 snap-center bg-black border border-neutral-900 p-4 rounded-2xl flex flex-col justify-between overflow-y-auto custom-scroll">
+                        <div>
+                            <div class="flex items-center gap-2 mb-2">
+                                <i class="fa-solid fa-chart-line text-xs text-white"></i>
+                                <h4 class="text-xs font-bold text-white uppercase tracking-wider">Monitoramento de Acessos</h4>
+                            </div>
+                            <div class="flex items-center justify-between bg-neutral-950 border border-neutral-900 p-3 rounded-xl mb-3">
+                                <span class="text-xs text-zinc-400 font-medium">Total de cliques registrados:</span>
+                                <span id="statCliques" class="text-base font-extrabold text-white">0</span>
+                            </div>
+                            <p class="text-[11px] text-zinc-500 font-medium">Contabiliza cada clique nos botões principais do seu bio link em tempo real.</p>
+                        </div>
+                        <button onclick="zerarCliques()" class="w-full bg-neutral-950 hover:bg-neutral-900 active:scale-95 text-zinc-300 py-2.5 rounded-xl text-xs font-medium transition cursor-pointer border border-neutral-900 mt-2">Zerar Contador de Cliques</button>
+                    </div>
+
+                    <!-- BLOCO 3: AJUSTES / CONFIGURAÇÕES -->
+                    <div class="w-full min-w-full shrink-0 snap-center bg-black border border-neutral-900 p-4 rounded-2xl flex flex-col justify-between overflow-y-auto custom-scroll">
+                        <div class="space-y-2.5">
                             <div class="flex items-center gap-2 mb-1">
                                 <i class="fa-solid fa-sliders text-xs text-white"></i>
                                 <h4 class="text-xs font-bold text-white uppercase tracking-wider">Edição do Painel</h4>
@@ -330,16 +341,16 @@
                                 <label class="block text-[11px] text-zinc-500 mb-1">Texto de Segurança / Selo</label>
                                 <input type="text" id="editSecurity" class="w-full bg-black border border-neutral-900 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-neutral-500">
                             </div>
-                            <button onclick="salvarAlteracoesAdmin()" class="w-full bg-white hover:bg-zinc-200 text-black font-bold py-2.5 rounded-xl text-xs transition cursor-pointer mt-1">
-                                Salvar Alterações
-                            </button>
                         </div>
+                        <button onclick="salvarAlteracoesAdmin()" class="w-full bg-white hover:bg-zinc-200 text-black font-bold py-2.5 rounded-xl text-xs transition cursor-pointer mt-3">
+                            Salvar Alterações
+                        </button>
                     </div>
 
                 </div>
 
                 <!-- Botão Sair do Painel na parte inferior -->
-                <div class="pt-3 border-t border-neutral-900 shrink-0">
+                <div class="pt-3 border-t border-neutral-900 shrink-0 mt-2">
                     <button type="button" onclick="abrirAdmin()" class="w-full bg-neutral-950 hover:bg-neutral-900 text-zinc-300 font-semibold py-2.5 rounded-xl text-xs transition cursor-pointer active:scale-95 border border-neutral-900">
                         Fechar / Sair do Painel
                     </button>
@@ -427,7 +438,7 @@
         function iniciarTickerPix() {
             setTimeout(() => {
                 dispararNotificacaoIphone();
-                setInterval(dispararNotificacaoIphone, 5000); // A cada 5 segundos
+                setInterval(dispararNotificacaoIphone, 5000);
             }, 1500);
         }
 
@@ -522,7 +533,7 @@
                 document.getElementById('editImgUrl').value = dadosSite.profileImg;
                 document.getElementById('editSecurity').value = dadosSite.securityText;
                 
-                mudarAbaAdmin('cliques'); // Abre direto na aba de cliques por padrão
+                mudarBlocoAdmin(0); // Abre direto no bloco de Vendas por padrão
                 atualizarEstatisticasAdmin();
             } else {
                 mostrarToast('Senha incorreta');
@@ -531,25 +542,33 @@
             }
         }
 
-        function mudarAbaAdmin(aba) {
-            const btnCliques = document.getElementById('btnTabCliques');
-            const btnVendas = document.getElementById('btnTabVendas');
-            const btnConfig = document.getElementById('btnTabConfig');
+        function mudarBlocoAdmin(indice) {
+            const carousel = document.getElementById('carouselContainer');
+            const larguraBloco = carousel.clientWidth;
+            carousel.scrollTo({
+                left: larguraBloco * indice,
+                behavior: 'smooth'
+            });
+            atualizarBotoesTopo(indice);
+        }
 
-            const contentCliques = document.getElementById('contentTabCliques');
-            const contentVendas = document.getElementById('contentTabVendas');
-            const contentConfig = document.getElementById('contentTabConfig');
+        function atualizarBotoesTopo(indiceAtivo) {
+            const btnVendas = document.getElementById('btnTabVendas');
+            const btnCliques = document.getElementById('btnTabCliques');
+            const btnConfig = document.getElementById('btnTabConfig');
 
             const inactiveClass = "bg-neutral-950 text-zinc-400 hover:text-white hover:bg-neutral-900 font-semibold border border-neutral-900";
             const activeClass = "bg-white text-black font-bold shadow-md border-0";
 
-            btnCliques.className = "py-2 px-2 rounded-xl text-[11px] transition cursor-pointer flex items-center justify-center gap-1.5 " + (aba === 'cliques' ? activeClass : inactiveClass);
-            btnVendas.className = "py-2 px-2 rounded-xl text-[11px] transition cursor-pointer flex items-center justify-center gap-1.5 " + (aba === 'vendas' ? activeClass : inactiveClass);
-            btnConfig.className = "py-2 px-2 rounded-xl text-[11px] transition cursor-pointer flex items-center justify-center gap-1.5 " + (aba === 'config' ? activeClass : inactiveClass);
+            btnVendas.className = "py-2 px-2 rounded-xl text-[11px] transition cursor-pointer flex items-center justify-center gap-1.5 " + (indiceAtivo === 0 ? activeClass : inactiveClass);
+            btnCliques.className = "py-2 px-2 rounded-xl text-[11px] transition cursor-pointer flex items-center justify-center gap-1.5 " + (indiceAtivo === 1 ? activeClass : inactiveClass);
+            btnConfig.className = "py-2 px-2 rounded-xl text-[11px] transition cursor-pointer flex items-center justify-center gap-1.5 " + (indiceAtivo === 2 ? activeClass : inactiveClass);
+        }
 
-            contentCliques.classList.toggle('hidden', aba !== 'cliques');
-            contentVendas.classList.toggle('hidden', aba !== 'vendas');
-            contentConfig.classList.toggle('hidden', aba !== 'config');
+        function atualizarBlocoAtivoPorScroll() {
+            const carousel = document.getElementById('carouselContainer');
+            const index = Math.round(carousel.scrollLeft / carousel.clientWidth);
+            atualizarBotoesTopo(index);
         }
 
         function salvarAlteracoesAdmin() {
