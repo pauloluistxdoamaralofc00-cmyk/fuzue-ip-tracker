@@ -96,7 +96,7 @@
             </div>
         </div>
 
-        <!-- Ticker Notificações (Uma por vez) -->
+        <!-- Ticker Notificações (A cada 5 segundos) -->
         <div class="w-full h-[62px] overflow-hidden relative border border-neutral-900 rounded-2xl bg-black px-3.5 py-2 flex items-center justify-center shrink-0">
             <div id="pixTickerItem" class="w-full bg-black border border-neutral-900 px-3.5 py-2 rounded-xl flex items-center justify-between transition-all duration-300 opacity-100 transform translate-y-0">
                 <div class="flex items-center gap-2.5">
@@ -225,9 +225,10 @@
             <button type="button" onclick="verificarSenhaAdmin()" class="w-full max-w-[320px] bg-white hover:bg-zinc-200 active:scale-[0.98] text-black font-bold py-3.5 rounded-2xl text-xs transition shadow-lg cursor-pointer">Entrar</button>
         </div>
 
-        <!-- Dashboard Admin -->
-        <div id="adminDashboard" class="hidden w-full max-w-[460px] bg-black border border-neutral-900 rounded-3xl p-6 shadow-2xl relative flex flex-col my-auto max-h-[88vh] overflow-y-auto custom-scroll">
-            <div class="flex items-center justify-between border-b border-neutral-900 pb-4 mb-4 shrink-0">
+        <!-- Dashboard Admin Dividido em 3 Partes -->
+        <div id="adminDashboard" class="hidden w-full max-w-[460px] bg-black border border-neutral-900 rounded-3xl p-6 shadow-2xl relative flex flex-col my-auto max-h-[88vh] overflow-y-auto custom-scroll space-y-4">
+            
+            <div class="flex items-center justify-between border-b border-neutral-900 pb-4 shrink-0">
                 <div class="flex items-center gap-2.5">
                     <div class="w-9 h-9 bg-black border border-neutral-800 rounded-xl flex items-center justify-center text-white text-xs">
                         <i class="fa-solid fa-gauge-high"></i>
@@ -239,46 +240,67 @@
                 </button>
             </div>
 
-            <!-- Métricas -->
-            <div class="grid grid-cols-2 gap-3 mb-4">
-                <div class="bg-black border border-neutral-900 p-4 rounded-2xl text-center">
-                    <span class="text-xs text-zinc-500 font-medium block mb-1">Cliques Totais</span>
-                    <span id="statCliques" class="text-xl font-extrabold text-white block mb-2.5">0</span>
-                    <button onclick="zerarCliques()" class="w-full bg-neutral-950 hover:bg-neutral-900 active:scale-95 text-zinc-300 py-2 rounded-xl text-xs font-medium transition cursor-pointer border border-neutral-900">Zerar</button>
+            <!-- PARTE 1: CLIQUES -->
+            <div class="bg-black border border-neutral-900 p-4 rounded-2xl">
+                <div class="flex items-center gap-2 mb-2">
+                    <i class="fa-solid fa-chart-line text-xs text-white"></i>
+                    <h4 class="text-xs font-bold text-white uppercase tracking-wider">1. Cliques no Link</h4>
                 </div>
-                <div class="bg-black border border-neutral-900 p-4 rounded-2xl text-center">
-                    <span class="text-xs text-zinc-500 font-medium block mb-1">Pedidos Gerados</span>
-                    <span id="statPedidos" class="text-xl font-extrabold text-white block mb-2.5">0</span>
-                    <button onclick="limparPedidos()" class="w-full bg-neutral-950 hover:bg-neutral-900 active:scale-95 text-zinc-300 py-2 rounded-xl text-xs font-medium transition cursor-pointer border border-neutral-900">Limpar</button>
+                <div class="flex items-center justify-between bg-neutral-950 border border-neutral-900 p-3 rounded-xl mb-3">
+                    <span class="text-xs text-zinc-400 font-medium">Total de cliques registrados:</span>
+                    <span id="statCliques" class="text-base font-extrabold text-white">0</span>
                 </div>
+                <button onclick="zerarCliques()" class="w-full bg-neutral-950 hover:bg-neutral-900 active:scale-95 text-zinc-300 py-2.5 rounded-xl text-xs font-medium transition cursor-pointer border border-neutral-900">Zerar Cliques</button>
             </div>
 
-            <!-- Edição de Conteúdo -->
-            <div class="bg-black border border-neutral-900 p-4 rounded-2xl mb-4 space-y-3">
-                <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-2">Editar Perfil</h4>
+            <!-- PARTE 2: VENDAS -->
+            <div class="bg-black border border-neutral-900 p-4 rounded-2xl">
+                <div class="flex items-center gap-2 mb-2">
+                    <i class="fa-solid fa-bag-shopping text-xs text-white"></i>
+                    <h4 class="text-xs font-bold text-white uppercase tracking-wider">2. Vendas e Pedidos</h4>
+                </div>
+                <div class="flex items-center justify-between bg-neutral-950 border border-neutral-900 p-3 rounded-xl mb-3">
+                    <span class="text-xs text-zinc-400 font-medium">Total de pedidos gerados:</span>
+                    <span id="statPedidos" class="text-base font-extrabold text-white">0</span>
+                </div>
+                <div class="mb-3">
+                    <span class="block text-[11px] text-zinc-500 mb-1.5 font-medium">Histórico de Pedidos:</span>
+                    <div id="listaPedidosContainer" class="space-y-2 max-h-[140px] overflow-y-auto custom-scroll pr-1">
+                        <!-- Dinâmico -->
+                    </div>
+                </div>
+                <button onclick="limparPedidos()" class="w-full bg-neutral-950 hover:bg-neutral-900 active:scale-95 text-zinc-300 py-2.5 rounded-xl text-xs font-medium transition cursor-pointer border border-neutral-900">Limpar Histórico</button>
+            </div>
+
+            <!-- PARTE 3: CONFIGURAÇÕES COMPLETAS -->
+            <div class="bg-black border border-neutral-900 p-4 rounded-2xl space-y-3">
+                <div class="flex items-center gap-2 mb-1">
+                    <i class="fa-solid fa-sliders text-xs text-white"></i>
+                    <h4 class="text-xs font-bold text-white uppercase tracking-wider">3. Configurações do Painel</h4>
+                </div>
                 <div>
                     <label class="block text-[11px] text-zinc-500 mb-1">Nome do Perfil</label>
                     <input type="text" id="editNome" class="w-full bg-black border border-neutral-900 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-neutral-500">
                 </div>
                 <div>
-                    <label class="block text-[11px] text-zinc-500 mb-1">Bio</label>
+                    <label class="block text-[11px] text-zinc-500 mb-1">Biografia (Bio)</label>
                     <input type="text" id="editBio" class="w-full bg-black border border-neutral-900 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-neutral-500">
                 </div>
-                <button onclick="salvarAlteracoesAdmin()" class="w-full bg-white hover:bg-zinc-200 text-black font-bold py-2.5 rounded-xl text-xs transition cursor-pointer">
-                    Salvar Alterações
+                <div>
+                    <label class="block text-[11px] text-zinc-500 mb-1">URL da Foto de Perfil (Permanente)</label>
+                    <input type="text" id="editImgUrl" placeholder="https://exemplo.com/foto.jpg" class="w-full bg-black border border-neutral-900 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-neutral-500">
+                </div>
+                <div>
+                    <label class="block text-[11px] text-zinc-500 mb-1">Texto de Segurança / Selo</label>
+                    <input type="text" id="editSecurity" class="w-full bg-black border border-neutral-900 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-neutral-500">
+                </div>
+                <button onclick="salvarAlteracoesAdmin()" class="w-full bg-white hover:bg-zinc-200 text-black font-bold py-2.5 rounded-xl text-xs transition cursor-pointer mt-1">
+                    Salvar Alterações em Tempo Real
                 </button>
             </div>
 
-            <!-- Lista de Pedidos -->
-            <div class="bg-black border border-neutral-900 p-4 rounded-2xl mb-4">
-                <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-2.5">Histórico de Pedidos</h4>
-                <div id="listaPedidosContainer" class="space-y-2 max-h-[160px] overflow-y-auto custom-scroll pr-1">
-                    <!-- Dinâmico -->
-                </div>
-            </div>
-
             <button type="button" onclick="fecharAdmin()" class="w-full bg-black hover:bg-neutral-950 text-zinc-300 font-semibold py-3 rounded-2xl text-xs transition cursor-pointer active:scale-95 border border-neutral-900 shrink-0">
-                Sair
+                Sair do Painel
             </button>
         </div>
     </div>
@@ -288,6 +310,7 @@
         let dadosSite = {
             nome: "amaralreal7",
             bio: "O maior chefe do 7",
+            profileImg: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&h=300&fit=crop&crop=faces",
             securityText: "100% Seguro • Entrega por e-mail",
             titleNubank: "Nubank Fake",
             descNubank: "Painel Editável",
@@ -305,7 +328,7 @@
             } catch(e) {}
         }
 
-        // Lista de notificações que vão passar uma por uma
+        // Lista de notificações Pix (agora alternando a cada 5 segundos)
         const listaNotificacoesPix = [
             { banco: "Nubank Extrato", tipo: "Pix Recebido", valor: "+R$ 1.500,00" },
             { banco: "Nubank Extrato", tipo: "Pix Recebido", valor: "+R$ 3.000,00" },
@@ -358,7 +381,7 @@
                     }, 50);
 
                 }, 300);
-            }, 3500); // Altera a cada 3.5 segundos
+            }, 5000); // 5 segundos exatos
         }
 
         function salvarEstado() {
@@ -369,10 +392,7 @@
             document.getElementById('profileName').innerText = dadosSite.nome;
             document.getElementById('profileBio').innerText = dadosSite.bio;
             document.getElementById('textSecurityBadge').innerText = dadosSite.securityText;
-            document.getElementById('titleBtnNubank').innerText = dadosSite.titleNubank;
-            document.getElementById('descBtnNubank').innerText = dadosSite.descNubank;
-            document.getElementById('titleBtnSuporte').innerText = dadosSite.titleSuporte;
-            document.getElementById('descBtnSuporte').innerText = dadosSite.descSuporte;
+            document.getElementById('profileImg').src = dadosSite.profileImg;
             document.getElementById('textFooter').innerText = dadosSite.footer;
         }
 
@@ -443,8 +463,13 @@
             if (senha === '777' || senha === 'admin' || senha === 'amaral7') {
                 document.getElementById('adminLoginBox').classList.add('hidden');
                 document.getElementById('adminDashboard').classList.remove('hidden');
+                
+                // Preenche os inputs de configuração
                 document.getElementById('editNome').value = dadosSite.nome;
                 document.getElementById('editBio').value = dadosSite.bio;
+                document.getElementById('editImgUrl').value = dadosSite.profileImg;
+                document.getElementById('editSecurity').value = dadosSite.securityText;
+                
                 atualizarEstatisticasAdmin();
             } else {
                 mostrarToast('Senha incorreta');
@@ -456,13 +481,17 @@
         function salvarAlteracoesAdmin() {
             const novoNome = document.getElementById('editNome').value.trim();
             const novaBio = document.getElementById('editBio').value.trim();
+            const novaImg = document.getElementById('editImgUrl').value.trim();
+            const novoSecurity = document.getElementById('editSecurity').value.trim();
 
             if (novoNome) dadosSite.nome = novoNome;
             if (novaBio) dadosSite.bio = novaBio;
+            if (novaImg) dadosSite.profileImg = novaImg;
+            if (novoSecurity) dadosSite.securityText = novoSecurity;
 
             salvarEstado();
             carregarDadosNaTela();
-            mostrarToast('Perfil Atualizado!');
+            mostrarToast('Configurações Salvas!');
         }
 
         function atualizarEstatisticasAdmin() {
