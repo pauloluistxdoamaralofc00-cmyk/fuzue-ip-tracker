@@ -103,10 +103,12 @@
         <!-- Action Links Container -->
         <div class="w-full space-y-2.5 mb-4">
             
-            <!-- Nubank / Checkout Button with Correct Official Logo Image -->
+            <!-- Nubank / Checkout Button with Accurate Vector Logo -->
             <button onclick="openCheckout()" class="vip-btn w-full bg-darkcard border border-darkborder rounded-2xl p-3 flex items-center text-left overflow-hidden">
-                <div class="w-9 h-9 rounded-xl bg-[#820ad1] flex items-center justify-center mr-3 flex-shrink-0 shadow-md overflow-hidden p-0.5">
-                    <img src="https://images.seeklogo.com/logo-png/43/2/nubank-logo-png_seeklogo-434050.png" alt="Nubank Logo" class="w-full h-full object-contain">
+                <div class="w-9 h-9 rounded-xl bg-[#820ad1] flex items-center justify-center mr-3 flex-shrink-0 shadow-md p-1.5">
+                    <svg viewBox="0 0 24 24" class="w-full h-full fill-white" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19.38 5.76C18.67 5.27 17.75 5 16.66 5H8.33C6.49 5 5 6.49 5 8.33v7.34C5 17.51 6.49 19 8.33 19h8.33c1.09 0 2.01-.27 2.72-.76.76-.52 1.28-1.34 1.28-2.39V8.15c0-1.05-.52-1.87-1.28-2.39zM15.42 15h-1.68l-3.23-5.26v5.26H8.91V9h1.68l3.23 5.26V9h1.6z"/>
+                    </svg>
                 </div>
                 <div class="flex-1 min-w-0">
                     <div class="font-semibold text-white text-xs truncate">Nubank</div>
@@ -149,8 +151,10 @@
                     <i class="fa-solid fa-arrow-left text-[10px]"></i> Voltar
                 </button>
                 <div class="flex items-center gap-2">
-                    <div class="w-5 h-5 rounded bg-[#820ad1] flex items-center justify-center overflow-hidden p-0.5">
-                        <img src="https://images.seeklogo.com/logo-png/43/2/nubank-logo-png_seeklogo-434050.png" alt="Nubank Logo" class="w-full h-full object-contain">
+                    <div class="w-5 h-5 rounded bg-[#820ad1] flex items-center justify-center p-1">
+                        <svg viewBox="0 0 24 24" class="w-full h-full fill-white" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19.38 5.76C18.67 5.27 17.75 5 16.66 5H8.33C6.49 5 5 6.49 5 8.33v7.34C5 17.51 6.49 19 8.33 19h8.33c1.09 0 2.01-.27 2.72-.76.76-.52 1.28-1.34 1.28-2.39V8.15c0-1.05-.52-1.87-1.28-2.39zM15.42 15h-1.68l-3.23-5.26v5.26H8.91V9h1.68l3.23 5.26V9h1.6z"/>
+                        </svg>
                     </div>
                     <span class="font-bold text-xs tracking-wide">Nubank Pagamento</span>
                 </div>
@@ -404,7 +408,7 @@
         let orders = JSON.parse(localStorage.getItem('amaral_orders') || '[]');
         let isAdminLoggedIn = false;
         let timerInterval = null;
-        let timeLeft = 600; // 10 minutes
+        let timeLeft = 600;
 
         window.addEventListener('DOMContentLoaded', () => {
             clickCount++;
@@ -422,7 +426,6 @@
             }
         });
 
-        // Checkout & Pix Screen with Timer
         function openCheckout() {
             document.getElementById('checkout-modal').classList.remove('hidden');
         }
@@ -430,7 +433,6 @@
             document.getElementById('checkout-modal').classList.add('hidden');
         }
 
-        // Masks
         function maskDob(input) {
             let v = input.value.replace(/\D/g, '');
             if (v.length > 8) v = v.substring(0, 8);
@@ -535,7 +537,6 @@
             document.getElementById('expired-modal').classList.add('hidden');
         }
 
-        // AI Support
         function openAiSupport() {
             document.getElementById('ai-modal').classList.remove('hidden');
         }
@@ -586,7 +587,6 @@
             }, 500);
         }
 
-        // Admin Auth & Panel
         function openAdminLogin() {
             if (isAdminLoggedIn) {
                 openAdminPanel();
