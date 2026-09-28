@@ -1,19 +1,20 @@
-<!DOCTYPE html><html lang="pt-BR" class="overflow-x-hidden"><head>
+<!DOCTYPE html><html lang="pt-BR" class="overflow-hidden"><head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>amaralreal7 - Bio Link</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         *, *::before, *::after {
             box-sizing: border-box;
+            touch-action: none; /* Bloqueia qualquer gesto nativo indesejado na tela inteira */
         }
-        @keyframes pulse-green {
+        @keyframes pulse-gold {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.4; }
         }
-        .animate-pulse-green {
-            animation: pulse-green 1.5s infinite ease-in-out;
+        .animate-pulse-gold {
+            animation: pulse-gold 1.5s infinite ease-in-out;
         }
         @keyframes scrollTicker {
             0% { transform: translateY(0); }
@@ -26,68 +27,77 @@
             animation-play-state: paused;
         }
         @keyframes vipBorder {
-            0% { border-color: rgba(255, 255, 255, 0.08); box-shadow: 0 0 25px rgba(0,0,0,0.9); }
-            50% { border-color: rgba(168, 85, 247, 0.35); box-shadow: 0 0 30px rgba(168, 85, 247, 0.12); }
-            100% { border-color: rgba(255, 255, 255, 0.08); box-shadow: 0 0 25px rgba(0,0,0,0.9); }
+            0% { border-color: rgba(255, 215, 0, 0.1); box-shadow: 0 0 25px rgba(0,0,0,0.9); }
+            50% { border-color: rgba(255, 215, 0, 0.35); box-shadow: 0 0 30px rgba(255, 215, 0, 0.08); }
+            100% { border-color: rgba(255, 215, 0, 0.1); box-shadow: 0 0 25px rgba(0,0,0,0.9); }
         }
         .vip-card-border {
             animation: vipBorder 4s infinite ease-in-out;
         }
         html, body {
-            width: 100%;
-            min-height: 100vh;
+            width: 100vw;
+            height: 100vh;
             margin: 0;
             padding: 0;
+            overflow: hidden;
+            position: fixed;
             background-color: #000000;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             color: #ffffff;
             -webkit-font-smoothing: antialiased;
+            overscroll-behavior: none;
         }
         .custom-scroll::-webkit-scrollbar {
             width: 3px;
         }
         .custom-scroll::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 215, 0, 0.2);
             border-radius: 3px;
         }
-    </style></head><body class="select-none bg-black text-white flex items-center justify-center min-h-screen p-3 sm:p-6">
+        /* Permite scroll vertical apenas onde é estritamente necessário (modais/listas) */
+        .allow-scroll {
+            touch-action: pan-y;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+    </style></head><body class="select-none bg-black text-white flex items-center justify-center p-3 sm:p-6">
 
-    <!-- Toast de Notificação -->
-    <div id="toastNotificacao" class="fixed top-4 left-1/2 -translate-x-1/2 bg-zinc-950 border border-zinc-800 text-white px-4 py-2.5 rounded-xl shadow-2xl text-xs z-50 transition-all duration-300 opacity-0 pointer-events-none flex items-center gap-2">
-        <i class="fa-solid fa-circle-check text-emerald-400 text-sm"></i>
+    <!-- Toast de Notificação Geral -->
+    <div id="toastNotificacao" class="fixed top-4 left-1/2 -translate-x-1/2 bg-zinc-950 border border-amber-500/30 text-white px-4 py-2.5 rounded-xl shadow-2xl text-xs z-[99] transition-all duration-300 opacity-0 pointer-events-none flex items-center gap-2">
+        <i class="fa-solid fa-circle-check text-amber-400 text-sm"></i>
         <span id="toastTexto" class="font-medium">Ação realizada com sucesso!</span>
     </div>
 
-    <!-- Container Principal Centralizado (Proporção Fluida Mobile / PC) -->
+    <!-- Container Principal Centralizado -->
     <div id="mainContainer" class="w-full max-w-[400px] bg-black vip-card-border rounded-2xl p-5 shadow-2xl relative flex flex-col gap-4 my-auto">
         
         <!-- Botão Admin -->
-        <button onclick="abrirAdmin()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-zinc-950 border border-zinc-800 flex items-center justify-center text-zinc-400 hover:text-white transition shadow-sm z-20 cursor-pointer">
+        <button onclick="abrirAdmin()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-zinc-950 border border-zinc-900 flex items-center justify-center text-zinc-400 hover:text-amber-400 transition shadow-sm z-20 cursor-pointer">
             <i class="fa-solid fa-gear text-xs"></i>
         </button>
 
         <!-- Perfil -->
         <div class="flex flex-col items-center w-full pt-1 z-10">
             <div class="relative mb-3">
-                <div class="w-20 h-20 rounded-full p-[2px] bg-zinc-800 shadow-lg">
+                <div class="w-20 h-20 rounded-full p-[2px] bg-amber-500/30 shadow-lg">
                     <img id="profileImg" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&h=300&fit=crop&crop=faces" alt="Perfil" class="w-full h-full object-cover rounded-full">
                 </div>
             </div>
 
             <div class="flex items-center gap-1.5 mb-1">
                 <h1 id="profileName" class="text-base font-bold tracking-tight text-white">amaralreal7</h1>
-                <span id="vipBadgeContainer" class="text-purple-400 text-xs" title="VIP"><i class="fa-solid fa-circle-check"></i></span>
+                <span id="vipBadgeContainer" class="text-amber-400 text-xs" title="VIP"><i class="fa-solid fa-circle-check"></i></span>
             </div>
 
             <div class="flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-zinc-950 border border-zinc-900 mb-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse-green"></span>
+                <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse-gold"></span>
                 <span class="text-[11px] font-medium text-zinc-300">Online</span>
             </div>
 
             <p id="profileBio" class="text-xs text-zinc-400 text-center mb-2 font-normal">O maior chefe do 7</p>
 
             <div class="flex items-center justify-center gap-1.5 text-[11px] text-zinc-400 bg-zinc-950 px-3.5 py-1.5 rounded-full border border-zinc-900 w-full">
-                <i class="fa-solid fa-shield-halved text-zinc-300"></i>
+                <i class="fa-solid fa-shield-halved text-amber-400"></i>
                 <span id="textSecurityBadge">100% Seguro • Entrega por e-mail</span>
             </div>
         </div>
@@ -97,7 +107,7 @@
             <div class="ticker-wrapper w-full flex flex-col gap-2">
                 <div class="bg-black border border-zinc-900 px-3 py-2 rounded-lg flex items-center justify-between">
                     <div class="flex items-center gap-2">
-                        <div class="w-6 h-6 rounded-md bg-purple-950 border border-purple-800/40 flex items-center justify-center text-purple-400 text-[10px] shrink-0">
+                        <div class="w-6 h-6 rounded-md bg-amber-950/40 border border-amber-500/30 flex items-center justify-center text-amber-400 text-[10px] shrink-0">
                             <i class="fa-solid fa-n"></i>
                         </div>
                         <div>
@@ -105,12 +115,12 @@
                             <p class="text-[9px] text-zinc-400 leading-none">Pix Recebido</p>
                         </div>
                     </div>
-                    <span class="text-[11px] font-bold text-emerald-400">+R$ 1.500,00</span>
+                    <span class="text-[11px] font-bold text-amber-400">+R$ 1.500,00</span>
                 </div>
 
                 <div class="bg-black border border-zinc-900 px-3 py-2 rounded-lg flex items-center justify-between">
                     <div class="flex items-center gap-2">
-                        <div class="w-6 h-6 rounded-md bg-purple-950 border border-purple-800/40 flex items-center justify-center text-purple-400 text-[10px] shrink-0">
+                        <div class="w-6 h-6 rounded-md bg-amber-950/40 border border-amber-500/30 flex items-center justify-center text-amber-400 text-[10px] shrink-0">
                             <i class="fa-solid fa-n"></i>
                         </div>
                         <div>
@@ -118,12 +128,12 @@
                             <p class="text-[9px] text-zinc-400 leading-none">Pix Recebido</p>
                         </div>
                     </div>
-                    <span class="text-[11px] font-bold text-emerald-400">+R$ 3.000,00</span>
+                    <span class="text-[11px] font-bold text-amber-400">+R$ 3.000,00</span>
                 </div>
 
                 <div class="bg-black border border-zinc-900 px-3 py-2 rounded-lg flex items-center justify-between">
                     <div class="flex items-center gap-2">
-                        <div class="w-6 h-6 rounded-md bg-purple-950 border border-purple-800/40 flex items-center justify-center text-purple-400 text-[10px] shrink-0">
+                        <div class="w-6 h-6 rounded-md bg-amber-950/40 border border-amber-500/30 flex items-center justify-center text-amber-400 text-[10px] shrink-0">
                             <i class="fa-solid fa-n"></i>
                         </div>
                         <div>
@@ -131,13 +141,13 @@
                             <p class="text-[9px] text-zinc-400 leading-none">Pix Recebido</p>
                         </div>
                     </div>
-                    <span class="text-[11px] font-bold text-emerald-400">+R$ 5.000,00</span>
+                    <span class="text-[11px] font-bold text-amber-400">+R$ 5.000,00</span>
                 </div>
 
                 <!-- Loop -->
                 <div class="bg-black border border-zinc-900 px-3 py-2 rounded-lg flex items-center justify-between">
                     <div class="flex items-center gap-2">
-                        <div class="w-6 h-6 rounded-md bg-purple-950 border border-purple-800/40 flex items-center justify-center text-purple-400 text-[10px] shrink-0">
+                        <div class="w-6 h-6 rounded-md bg-amber-950/40 border border-amber-500/30 flex items-center justify-center text-amber-400 text-[10px] shrink-0">
                             <i class="fa-solid fa-n"></i>
                         </div>
                         <div>
@@ -145,7 +155,7 @@
                             <p class="text-[9px] text-zinc-400 leading-none">Pix Recebido</p>
                         </div>
                     </div>
-                    <span class="text-[11px] font-bold text-emerald-400">+R$ 1.500,00</span>
+                    <span class="text-[11px] font-bold text-amber-400">+R$ 1.500,00</span>
                 </div>
             </div>
         </div>
@@ -154,28 +164,34 @@
         <div class="w-full flex flex-col gap-2.5 z-10">
             <button onclick="clicarBotaoLink('nubank')" class="w-full bg-zinc-950 hover:bg-zinc-900 border border-zinc-900 p-3.5 rounded-xl flex items-center justify-between transition group shadow-sm cursor-pointer">
                 <div class="flex items-center gap-3">
-                    <div id="iconBoxNubank" class="w-9 h-9 rounded-lg bg-black border border-zinc-800 flex items-center justify-center text-white text-sm">
+                    <div id="iconBoxNubank" class="w-9 h-9 rounded-lg bg-black border border-amber-500/30 flex items-center justify-center text-amber-400 text-sm">
                         <i class="fa-solid fa-bolt"></i>
                     </div>
                     <div class="text-left">
-                        <h2 id="titleBtnNubank" class="text-xs font-bold text-white">Nubank Fake</h2>
+                        <div class="flex items-center gap-1.5">
+                            <h2 id="titleBtnNubank" class="text-xs font-bold text-white">Nubank Fake</h2>
+                            <i class="fa-solid fa-circle-check text-[10px] text-amber-400"></i>
+                        </div>
                         <p id="descBtnNubank" class="text-[10px] text-zinc-400">Painel Editável</p>
                     </div>
                 </div>
-                <i class="fa-solid fa-chevron-right text-[10px] text-zinc-600 group-hover:text-white transition mr-1"></i>
+                <i class="fa-solid fa-chevron-right text-[10px] text-zinc-600 group-hover:text-amber-400 transition mr-1"></i>
             </button>
 
             <button onclick="clicarBotaoLink('suporte')" class="w-full bg-zinc-950 hover:bg-zinc-900 border border-zinc-900 p-3.5 rounded-xl flex items-center justify-between transition group shadow-sm cursor-pointer">
                 <div class="flex items-center gap-3">
-                    <div id="iconBoxSuporte" class="w-9 h-9 rounded-lg bg-black border border-zinc-800 flex items-center justify-center text-white text-sm">
+                    <div id="iconBoxSuporte" class="w-9 h-9 rounded-lg bg-black border border-amber-500/30 flex items-center justify-center text-amber-400 text-sm">
                         <i class="fa-solid fa-headset"></i>
                     </div>
                     <div class="text-left">
-                        <h2 id="titleBtnSuporte" class="text-xs font-bold text-white">Suporte 24H</h2>
+                        <div class="flex items-center gap-1.5">
+                            <h2 id="titleBtnSuporte" class="text-xs font-bold text-white">Suporte 24H</h2>
+                            <i class="fa-solid fa-circle-check text-[10px] text-amber-400"></i>
+                        </div>
                         <p id="descBtnSuporte" class="text-[10px] text-zinc-400">com IA</p>
                     </div>
                 </div>
-                <i class="fa-solid fa-chevron-right text-[10px] text-zinc-600 group-hover:text-white transition mr-1"></i>
+                <i class="fa-solid fa-chevron-right text-[10px] text-zinc-600 group-hover:text-amber-400 transition mr-1"></i>
             </button>
         </div>
 
@@ -186,14 +202,14 @@
     </div>
 
     <!-- MODAL CHECKOUT -->
-    <div id="modalCheckout" class="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
-        <div class="bg-black border border-zinc-900 w-full max-w-sm rounded-2xl p-5 shadow-2xl relative custom-scroll max-h-[90vh] overflow-y-auto">
+    <div id="modalCheckout" class="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-black border border-zinc-900 w-full max-w-sm rounded-2xl p-5 shadow-2xl relative custom-scroll max-h-[90vh] allow-scroll">
             <button onclick="fecharModalCheckout()" class="absolute top-4 right-4 text-zinc-400 hover:text-white w-7 h-7 rounded-full bg-zinc-950 border border-zinc-900 flex items-center justify-center text-xs cursor-pointer">
                 <i class="fa-solid fa-xmark"></i>
             </button>
             
             <div class="text-center mb-4">
-                <div class="w-10 h-10 rounded-xl bg-zinc-950 border border-zinc-900 flex items-center justify-center text-white text-sm mx-auto mb-2">
+                <div class="w-10 h-10 rounded-xl bg-zinc-950 border border-amber-500/30 flex items-center justify-center text-amber-400 text-sm mx-auto mb-2">
                     <i class="fa-solid fa-shield-cat"></i>
                 </div>
                 <h3 class="text-xs font-bold text-white">Checkout VIP</h3>
@@ -203,22 +219,22 @@
             <div id="formCheckoutStep" class="space-y-3">
                 <div>
                     <label class="block text-[10px] font-medium text-zinc-300 mb-1">Nome Completo</label>
-                    <input type="text" id="inputNome" placeholder="Seu nome" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-zinc-700">
+                    <input type="text" id="inputNome" placeholder="Seu nome" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500/50">
                 </div>
                 <div>
                     <label class="block text-[10px] font-medium text-zinc-300 mb-1">Nascimento</label>
-                    <input type="text" id="inputNascimento" placeholder="DD/MM/AAAA" maxlength="10" oninput="mascaraData(this)" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-zinc-700">
+                    <input type="text" id="inputNascimento" placeholder="DD/MM/AAAA" maxlength="10" oninput="mascaraData(this)" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500/50">
                 </div>
                 <div>
                     <label class="block text-[10px] font-medium text-zinc-300 mb-1">CPF</label>
-                    <input type="text" id="inputCpf" placeholder="000.000.000-00" maxlength="14" oninput="mascaraCpf(this)" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-zinc-700">
+                    <input type="text" id="inputCpf" placeholder="000.000.000-00" maxlength="14" oninput="mascaraCpf(this)" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500/50">
                 </div>
                 <div>
                     <label class="block text-[10px] font-medium text-zinc-300 mb-1">E-mail para Entrega</label>
-                    <input type="email" id="inputEmail" placeholder="seu@email.com" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-zinc-700">
+                    <input type="email" id="inputEmail" placeholder="seu@email.com" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500/50">
                 </div>
 
-                <button onclick="gerarPagamentoPix()" class="w-full bg-zinc-100 hover:bg-white text-black font-semibold py-2.5 rounded-lg text-xs transition shadow-md mt-2 cursor-pointer">
+                <button onclick="gerarPagamentoPix()" class="w-full bg-amber-400 hover:bg-amber-300 text-black font-semibold py-2.5 rounded-lg text-xs transition shadow-md mt-2 cursor-pointer">
                     Gerar Pix (R$ 5,99)
                 </button>
             </div>
@@ -246,7 +262,7 @@
             </div>
 
             <div id="sucessoStep" class="hidden text-center space-y-3 py-3">
-                <div class="w-10 h-10 bg-zinc-950 border border-zinc-900 rounded-full flex items-center justify-center text-emerald-400 text-base mx-auto">
+                <div class="w-10 h-10 bg-zinc-950 border border-amber-500/30 rounded-full flex items-center justify-center text-amber-400 text-base mx-auto">
                     <i class="fa-solid fa-check"></i>
                 </div>
                 <h4 class="text-xs font-bold text-white">Pedido Registrado!</h4>
@@ -265,12 +281,15 @@
         <div class="bg-black border border-zinc-900 w-full max-w-sm rounded-2xl p-4 shadow-2xl relative h-[380px] flex flex-col justify-between">
             <div class="flex items-center justify-between border-b border-zinc-900 pb-3">
                 <div class="flex items-center gap-2">
-                    <div class="w-7 h-7 rounded-lg bg-zinc-950 border border-zinc-900 flex items-center justify-center text-white text-xs">
+                    <div class="w-7 h-7 rounded-lg bg-zinc-950 border border-amber-500/30 flex items-center justify-center text-amber-400 text-xs">
                         <i class="fa-solid fa-robot"></i>
                     </div>
                     <div>
-                        <h4 class="text-xs font-bold text-white">Suporte com IA</h4>
-                        <span class="text-[9px] text-emerald-400">● Online 24h</span>
+                        <div class="flex items-center gap-1">
+                            <h4 class="text-xs font-bold text-white">Suporte com IA</h4>
+                            <i class="fa-solid fa-circle-check text-[9px] text-amber-400"></i>
+                        </div>
+                        <span class="text-[9px] text-amber-400">● Online 24h</span>
                     </div>
                 </div>
                 <button onclick="fecharModalSuporte()" class="text-zinc-400 hover:text-white w-7 h-7 rounded-full bg-zinc-950 border border-zinc-900 flex items-center justify-center text-xs cursor-pointer">
@@ -278,9 +297,9 @@
                 </button>
             </div>
 
-            <div class="flex-1 overflow-y-auto custom-scroll py-3 space-y-3">
+            <div class="flex-1 overflow-y-auto custom-scroll py-3 space-y-3 allow-scroll">
                 <div class="flex items-start gap-2.5">
-                    <div class="w-6 h-6 rounded-full bg-zinc-950 border border-zinc-900 flex items-center justify-center text-white text-[10px] shrink-0 mt-0.5">
+                    <div class="w-6 h-6 rounded-full bg-zinc-950 border border-amber-500/30 flex items-center justify-center text-amber-400 text-[10px] shrink-0 mt-0.5">
                         <i class="fa-solid fa-robot"></i>
                     </div>
                     <div class="bg-zinc-950 border border-zinc-900 rounded-xl p-2.5 text-xs text-zinc-300 max-w-[85%] leading-relaxed">
@@ -302,20 +321,20 @@
         <!-- Tela de Login Admin -->
         <div id="adminLoginBox" class="w-full max-w-sm bg-black border border-zinc-900 rounded-2xl p-6 shadow-2xl text-center relative flex flex-col justify-center items-center">
             <button onclick="fecharAdmin()" class="absolute top-4 right-4 text-zinc-400 hover:text-white w-7 h-7 rounded-full bg-zinc-950 border border-zinc-900 flex items-center justify-center text-xs cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
-            <div class="w-10 h-10 bg-zinc-950 border border-zinc-900 rounded-xl flex items-center justify-center text-white text-sm mx-auto mb-3">
+            <div class="w-10 h-10 bg-zinc-950 border border-amber-500/30 rounded-xl flex items-center justify-center text-amber-400 text-sm mx-auto mb-3">
                 <i class="fa-solid fa-lock"></i>
             </div>
             <h3 class="text-xs font-bold text-white mb-1">Área Restrita</h3>
-            <p class="text-[10px] text-amber-400/90 mb-4 font-medium">Acesso exclusivo do proprietário (Owner)</p>
-            <input type="password" id="inputSenhaAdmin" placeholder="Senha de acesso" class="w-full max-w-[240px] bg-zinc-950 border border-zinc-900 rounded-lg px-3 py-2 text-xs text-white text-center tracking-widest mb-3 focus:outline-none focus:border-zinc-700">
-            <button onclick="verificarSenhaAdmin()" class="w-full max-w-[240px] bg-zinc-100 hover:bg-white text-black font-semibold py-2 rounded-lg text-xs transition cursor-pointer">Entrar</button>
+            <p class="text-[10px] text-amber-400 mb-4 font-medium">Acesso exclusivo do proprietário (Owner)</p>
+            <input type="password" id="inputSenhaAdmin" placeholder="Senha de acesso" class="w-full max-w-[240px] bg-zinc-950 border border-zinc-900 rounded-lg px-3 py-2 text-xs text-white text-center tracking-widest mb-3 focus:outline-none focus:border-amber-500/50">
+            <button onclick="verificarSenhaAdmin()" class="w-full max-w-[240px] bg-amber-400 hover:bg-amber-300 text-black font-semibold py-2 rounded-lg text-xs transition cursor-pointer">Entrar</button>
         </div>
 
         <!-- Dashboard Admin -->
         <div id="adminDashboard" class="hidden w-full max-w-md bg-black border border-zinc-900 rounded-2xl p-4 shadow-2xl relative flex flex-col justify-between max-h-[92vh] overflow-hidden">
             <div class="flex items-center justify-between border-b border-zinc-900 pb-3 mb-3 shrink-0">
                 <div class="flex items-center gap-2">
-                    <div class="w-6 h-6 bg-zinc-950 border border-zinc-900 rounded-lg flex items-center justify-center text-white text-[10px]">
+                    <div class="w-6 h-6 bg-zinc-950 border border-amber-500/30 rounded-lg flex items-center justify-center text-amber-400 text-[10px]">
                         <i class="fa-solid fa-gauge-high"></i>
                     </div>
                     <h3 class="text-xs font-bold text-white">Painel de Controle</h3>
@@ -325,14 +344,14 @@
 
             <!-- Abas Admin -->
             <div class="grid grid-cols-4 gap-1.5 bg-zinc-950 p-1 rounded-xl mb-3 border border-zinc-900 shrink-0">
-                <button type="button" onclick="mudarAbaAdmin('monitor')" id="tabBtnMonitor" class="py-2 text-[11px] font-semibold rounded-lg bg-zinc-900 text-white transition cursor-pointer flex items-center justify-center">Monitor</button>
+                <button type="button" onclick="mudarAbaAdmin('monitor')" id="tabBtnMonitor" class="py-2 text-[11px] font-semibold rounded-lg bg-zinc-900 text-amber-400 transition cursor-pointer flex items-center justify-center">Monitor</button>
                 <button type="button" onclick="mudarAbaAdmin('vendas')" id="tabBtnVendas" class="py-2 text-[11px] font-semibold rounded-lg text-zinc-400 hover:text-white transition cursor-pointer flex items-center justify-center">Vendas</button>
                 <button type="button" onclick="mudarAbaAdmin('textos')" id="tabBtnTextos" class="py-2 text-[11px] font-semibold rounded-lg text-zinc-400 hover:text-white transition cursor-pointer flex items-center justify-center">Textos</button>
                 <button type="button" onclick="mudarAbaAdmin('custom')" id="tabBtnCustom" class="py-2 text-[11px] font-semibold rounded-lg text-zinc-400 hover:text-white transition cursor-pointer flex items-center justify-center">Mediafire</button>
             </div>
 
             <!-- Conteúdo das Abas -->
-            <div class="flex-1 overflow-y-auto custom-scroll pr-1 relative space-y-3">
+            <div class="flex-1 overflow-y-auto custom-scroll pr-1 relative space-y-3 allow-scroll">
                 <!-- Aba Monitor -->
                 <div id="tabMonitor" class="admin-tab-content space-y-3">
                     <div class="grid grid-cols-2 gap-2.5">
@@ -350,7 +369,7 @@
                     </div>
                     <div class="bg-zinc-950 border border-zinc-900 p-3 rounded-xl text-center">
                         <span class="text-[10px] text-zinc-400 block mb-1">Receita Aprovada</span>
-                        <span id="statReceita" class="text-base font-bold text-emerald-400">R$ 0,00</span>
+                        <span id="statReceita" class="text-base font-bold text-amber-400">R$ 0,00</span>
                     </div>
                 </div>
 
@@ -363,45 +382,51 @@
                 <!-- Aba Textos -->
                 <div id="tabTextos" class="admin-tab-content hidden space-y-2.5">
                     <h4 class="text-xs font-bold text-white mb-1">Editar Textos</h4>
-                    <div class="space-y-1"><label class="block text-[10px] text-zinc-300">Nome</label><input type="text" id="editName" oninput="salvarTextosPagina()" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-zinc-700"></div>
-                    <div class="space-y-1"><label class="block text-[10px] text-zinc-300">Bio</label><input type="text" id="editBio" oninput="salvarTextosPagina()" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-zinc-700"></div>
-                    <div class="space-y-1"><label class="block text-[10px] text-zinc-300">Segurança</label><input type="text" id="editSecurity" oninput="salvarTextosPagina()" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-zinc-700"></div>
-                    <div class="space-y-1"><label class="block text-[10px] text-zinc-300">Título Botão 1</label><input type="text" id="editTitleNubank" oninput="salvarTextosPagina()" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-zinc-700"></div>
-                    <div class="space-y-1"><label class="block text-[10px] text-zinc-300">Rodapé</label><input type="text" id="editFooter" oninput="salvarTextosPagina()" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-zinc-700"></div>
+                    <div class="space-y-1"><label class="block text-[10px] text-zinc-300">Nome</label><input type="text" id="editName" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-amber-500/50"></div>
+                    <div class="space-y-1"><label class="block text-[10px] text-zinc-300">Bio</label><input type="text" id="editBio" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-amber-500/50"></div>
+                    <div class="space-y-1"><label class="block text-[10px] text-zinc-300">Segurança</label><input type="text" id="editSecurity" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-amber-500/50"></div>
+                    <div class="space-y-1"><label class="block text-[10px] text-zinc-300">Título Botão 1</label><input type="text" id="editTitleNubank" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-amber-500/50"></div>
+                    <div class="space-y-1"><label class="block text-[10px] text-zinc-300">Rodapé</label><input type="text" id="editFooter" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-amber-500/50"></div>
                 </div>
 
                 <!-- Aba Custom / Mediafire & Ícones VIP -->
                 <div id="tabCustom" class="admin-tab-content hidden space-y-3">
                     <div class="space-y-1.5">
-                        <label class="block text-[10px] font-medium text-zinc-300"><i class="fa-solid fa-link text-blue-400"></i> Gerenciar Link Mediafire</label>
+                        <label class="block text-[10px] font-medium text-zinc-300"><i class="fa-solid fa-link text-amber-400"></i> Gerenciar Link Mediafire</label>
                         <div class="flex gap-1.5">
-                            <input type="text" id="inputMediafire" placeholder="https://www.mediafire.com/file/..." class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-zinc-700">
-                            <button type="button" onclick="salvarNovoLinkMediafire()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-2.5 py-1.5 rounded-lg text-[10px] font-medium transition cursor-pointer">Adicionar</button>
+                            <input type="text" id="inputMediafire" placeholder="https://www.mediafire.com/file/..." class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-amber-500/50">
+                            <button type="button" onclick="salvarNovoLinkMediafire()" class="bg-amber-400 hover:bg-amber-300 text-black px-2.5 py-1.5 rounded-lg text-[10px] font-semibold transition cursor-pointer">Adicionar</button>
                             <button type="button" onclick="excluirLinkMediafire()" class="bg-zinc-900 hover:bg-zinc-800 text-red-400 px-2.5 py-1.5 rounded-lg text-[10px] transition cursor-pointer"><i class="fa-solid fa-trash"></i></button>
                         </div>
                         <p class="text-[9px] text-zinc-500">Enviado automaticamente por e-mail após aprovação de venda.</p>
                     </div>
 
                     <div class="space-y-1.5">
-                        <label class="block text-[10px] font-medium text-zinc-300"><i class="fa-solid fa-crown text-purple-400"></i> Escolher Selo / Ícone VIP</label>
-                        <select id="selectVipIcon" onchange="alterarIconeVIP(this.value)" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-zinc-700">
-                            <option value="fa-solid fa-circle-check">Verificado Padrão (Check)</option>
-                            <option value="fa-solid fa-crown">Coroa Real (VIP)</option>
+                        <label class="block text-[10px] font-medium text-zinc-300"><i class="fa-solid fa-crown text-amber-400"></i> Escolher Selo / Ícone VIP</label>
+                        <select id="selectVipIcon" onchange="alterarIconeVIP(this.value)" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-amber-500/50">
+                            <option value="fa-solid fa-circle-check">Verificado Dourado (Check)</option>
+                            <option value="fa-solid fa-crown">Coroa Real Dourada (VIP)</option>
                             <option value="fa-solid fa-star">Estrela Dourada</option>
-                            <option value="fa-solid fa-bolt">Raio Elétrico</option>
-                            <option value="fa-solid fa-shield-halved">Escudo de Segurança</option>
+                            <option value="fa-solid fa-bolt">Raio Dourado</option>
+                            <option value="fa-solid fa-shield-halved">Escudo Dourado</option>
                         </select>
                     </div>
 
                     <div class="space-y-1.5">
-                        <label class="block text-[10px] font-medium text-zinc-300"><i class="fa-solid fa-image text-purple-400"></i> Foto de Perfil Permanente</label>
+                        <label class="block text-[10px] font-medium text-zinc-300"><i class="fa-solid fa-image text-amber-400"></i> Foto de Perfil Permanente</label>
                         <input type="file" id="inputFotoGaleria" accept="image/*" onchange="carregarFotoGaleria(event)" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2.5 py-1.5 text-[10px] text-zinc-300 file:mr-2 file:py-1 file:px-2.5 file:rounded file:border-0 file:text-[10px] file:bg-zinc-800 file:text-white cursor-pointer">
                     </div>
                 </div>
             </div>
 
-            <div class="border-t border-zinc-900 pt-3 text-center text-[10px] text-zinc-500 shrink-0 mt-2">
-                <span>Painel Administrativo Seguro</span>
+            <!-- Botões Inferiores do Painel Admin: Salvar e Sair -->
+            <div class="border-t border-zinc-900 pt-3 flex items-center gap-2 shrink-0 mt-2">
+                <button type="button" onclick="salvarTodasAlteracoesAdmin()" class="flex-1 bg-amber-400 hover:bg-amber-300 text-black font-semibold py-2 rounded-lg text-xs transition cursor-pointer flex items-center justify-center gap-1.5 shadow-md">
+                    <i class="fa-solid fa-floppy-disk text-[11px]"></i> Salvar Alterações
+                </button>
+                <button type="button" onclick="fecharAdmin()" class="px-4 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white font-medium py-2 rounded-lg text-xs transition cursor-pointer flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-right-from-bracket text-[11px]"></i> Sair
+                </button>
             </div>
         </div>
     </div>
@@ -520,7 +545,7 @@
             const cpf = document.getElementById('inputCpf').value;
             const email = document.getElementById('inputEmail').value;
 
-            if(!nome || !cpf || !email) { alert("Preencha todos os campos."); return; }
+            if(!nome || !cpf || !email) { mostrarToast("Preencha todos os campos."); return; }
 
             const novoPedido = {
                 id: 'PED-' + Math.floor(1000 + Math.random() * 9000),
@@ -571,14 +596,18 @@
         function fecharAdmin() { document.getElementById('modalAdmin').classList.add('hidden'); }
 
         function verificarSenhaAdmin() {
-            if (document.getElementById('inputSenhaAdmin').value === '123') {
+            const senhaDigitada = document.getElementById('inputSenhaAdmin').value;
+            if (senhaDigitada === '123') {
                 document.getElementById('adminLoginBox').classList.add('hidden');
                 document.getElementById('adminDashboard').classList.remove('hidden');
                 mudarAbaAdmin('monitor');
                 carregarDadosNaTela();
                 atualizarEstatisticasAdmin();
                 renderizarListaVendas();
-            } else { alert('Senha incorreta!'); }
+                mostrarToast("Acesso administrativo autorizado!");
+            } else { 
+                mostrarToast("Senha incorreta! Acesso negado.");
+            }
         }
 
         function mudarAbaAdmin(aba) {
@@ -588,7 +617,7 @@
                 const btn = document.getElementById(`tabBtn${t.charAt(0).toUpperCase() + t.slice(1)}`);
                 if(el) el.classList.add('hidden');
                 if(btn) {
-                    btn.classList.remove('bg-zinc-900', 'text-white');
+                    btn.classList.remove('bg-zinc-900', 'text-amber-400');
                     btn.classList.add('text-zinc-400');
                 }
             });
@@ -598,7 +627,7 @@
             if(abaAtiva) abaAtiva.classList.remove('hidden');
             if(btnAtivo) {
                 btnAtivo.classList.remove('text-zinc-400');
-                btnAtivo.classList.add('bg-zinc-900', 'text-white');
+                btnAtivo.classList.add('bg-zinc-900', 'text-amber-400');
             }
 
             if(aba === 'vendas') {
@@ -626,12 +655,12 @@
                     <div>
                         <p class="font-semibold text-white text-[11px]">${p.nome} <span class="text-[9px] text-zinc-500 font-normal">(${p.id})</span></p>
                         <p class="text-[10px] text-zinc-400">${p.email}</p>
-                        <p class="text-[9px] ${p.status === 'aprovado' ? 'text-emerald-400' : 'text-amber-400'} font-medium uppercase mt-0.5">${p.status}</p>
+                        <p class="text-[9px] ${p.status === 'aprovado' ? 'text-amber-400' : 'text-amber-500/70'} font-medium uppercase mt-0.5">${p.status}</p>
                     </div>
                     <div class="flex items-center gap-1.5">
                         ${p.status === 'pendente' ? 
-                            `<button type="button" onclick="alterarStatusPedido(${index}, 'aprovado')" class="bg-emerald-600 hover:bg-emerald-500 text-white px-2.5 py-1.5 rounded-lg text-[9px] font-medium transition cursor-pointer">Aprovar</button>` : 
-                            `<button type="button" onclick="alterarStatusPedido(${index}, 'pendente')" class="bg-amber-600 hover:bg-amber-500 text-white px-2.5 py-1.5 rounded-lg text-[9px] font-medium transition cursor-pointer">Cancelar</button>`
+                            `<button type="button" onclick="alterarStatusPedido(${index}, 'aprovado')" class="bg-amber-400 hover:bg-amber-300 text-black px-2.5 py-1.5 rounded-lg text-[9px] font-semibold transition cursor-pointer">Aprovar</button>` : 
+                            `<button type="button" onclick="alterarStatusPedido(${index}, 'pendente')" class="bg-zinc-800 hover:bg-zinc-700 text-white px-2.5 py-1.5 rounded-lg text-[9px] transition cursor-pointer">Cancelar</button>`
                         }
                         <button type="button" onclick="removerPedido(${index})" class="bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-white px-2 py-1.5 rounded-lg text-[9px] transition cursor-pointer"><i class="fa-solid fa-trash"></i></button>
                     </div>
@@ -663,7 +692,7 @@
             mostrarToast("Pedido excluído.");
         }
 
-        function salvarTextosPagina() {
+        function salvarTodasAlteracoesAdmin() {
             dadosSite.nome = document.getElementById('editName').value;
             dadosSite.bio = document.getElementById('editBio').value;
             dadosSite.securityText = document.getElementById('editSecurity').value;
@@ -671,6 +700,7 @@
             dadosSite.footer = document.getElementById('editFooter').value;
             salvarEstado();
             carregarDadosNaTela();
+            mostrarToast("Todas as alterações foram salvas!");
         }
 
         function salvarNovoLinkMediafire() {
