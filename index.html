@@ -1,10 +1,13 @@
-<!DOCTYPE html><html lang="pt-BR"><head>
+<!DOCTYPE html><html lang="pt-BR" class="overflow-x-hidden"><head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>amaralreal7 - Bio Link</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
         @keyframes pulse-green {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.4; }
@@ -31,6 +34,7 @@
             animation: vipBorder 4s infinite ease-in-out;
         }
         html, body {
+            width: 100%;
             height: 100vh;
             height: 100dvh;
             margin: 0;
@@ -51,172 +55,172 @@
             background: rgba(255, 255, 255, 0.15);
             border-radius: 3px;
         }
-    </style></head><body class="select-none bg-black">
+    </style></head><body class="select-none bg-black overflow-x-hidden">
 
     <!-- Toast de Notificação -->
-    <div id="toastNotificacao" class="fixed top-5 left-1/2 -translate-x-1/2 bg-zinc-950 border border-zinc-800 text-white px-4 py-2 rounded-xl shadow-2xl text-xs z-50 transition-all duration-300 opacity-0 pointer-events-none flex items-center gap-2">
+    <div id="toastNotificacao" class="fixed top-4 left-1/2 -translate-x-1/2 bg-zinc-950 border border-zinc-800 text-white px-3.5 py-2 rounded-xl shadow-2xl text-xs z-50 transition-all duration-300 opacity-0 pointer-events-none flex items-center gap-2">
         <i class="fa-solid fa-circle-check text-emerald-400"></i>
         <span id="toastTexto">Ação realizada com sucesso!</span>
     </div>
 
-    <!-- Container Principal -->
-    <div id="mainContainer" class="w-[380px] h-[640px] flex flex-col justify-between items-center bg-black vip-card-border rounded-2xl p-5 shadow-2xl relative overflow-hidden transition-all duration-300">
+    <!-- Container Principal Centralizado e Fixo -->
+    <div id="mainContainer" class="w-[360px] h-[620px] max-w-[92vw] max-h-[92vh] flex flex-col justify-between items-center bg-black vip-card-border rounded-2xl p-4 shadow-2xl relative overflow-hidden shrink-0">
         
         <!-- Botão Admin -->
-        <button onclick="abrirAdmin()" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-zinc-950 border border-zinc-800 flex items-center justify-center text-zinc-400 hover:text-white transition shadow-sm z-20">
+        <button onclick="abrirAdmin()" class="absolute top-3 right-3 w-7 h-7 rounded-full bg-zinc-950 border border-zinc-800 flex items-center justify-center text-zinc-400 hover:text-white transition shadow-sm z-20">
             <i class="fa-solid fa-gear text-xs"></i>
         </button>
 
         <!-- Perfil -->
-        <div class="flex flex-col items-center w-full mt-1 z-10 overflow-hidden shrink-0">
+        <div class="flex flex-col items-center w-full mt-0.5 z-10 shrink-0">
             <div class="relative mb-2">
-                <div class="w-20 h-20 rounded-full p-[2px] bg-zinc-800 shadow-md">
+                <div class="w-16 h-16 rounded-full p-[2px] bg-zinc-800 shadow-md">
                     <img id="profileImg" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&h=300&fit=crop&crop=faces" alt="Perfil" class="w-full h-full object-cover rounded-full">
                 </div>
             </div>
 
             <div class="flex items-center gap-1.5 mb-0.5">
-                <h1 id="profileName" class="text-base font-bold tracking-tight text-white">amaralreal7</h1>
-                <span id="vipBadgeContainer" class="text-zinc-400 text-sm" title="VIP"><i class="fa-solid fa-circle-check"></i></span>
+                <h1 id="profileName" class="text-sm font-bold tracking-tight text-white">amaralreal7</h1>
+                <span id="vipBadgeContainer" class="text-zinc-400 text-xs" title="VIP"><i class="fa-solid fa-circle-check"></i></span>
             </div>
 
-            <div class="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-zinc-950 border border-zinc-900 mb-1">
+            <div class="flex items-center gap-1 px-2 py-0.5 rounded-full bg-zinc-950 border border-zinc-900 mb-1">
                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse-green"></span>
-                <span class="text-[11px] font-medium text-zinc-300">Online</span>
+                <span class="text-[10px] font-medium text-zinc-300">Online</span>
             </div>
 
-            <p id="profileBio" class="text-xs text-zinc-400 text-center mb-2 font-normal">O maior chefe do 7</p>
+            <p id="profileBio" class="text-[11px] text-zinc-400 text-center mb-1.5 font-normal">O maior chefe do 7</p>
 
-            <div class="flex items-center justify-center gap-1.5 text-[11px] text-zinc-400 bg-zinc-950 px-3 py-1 rounded-full border border-zinc-900 w-full max-w-[300px]">
+            <div class="flex items-center justify-center gap-1 text-[10px] text-zinc-400 bg-zinc-950 px-2.5 py-1 rounded-full border border-zinc-900 w-full max-w-[280px]">
                 <i class="fa-solid fa-shield-halved text-zinc-300"></i>
                 <span id="textSecurityBadge">100% Seguro • Entrega por e-mail</span>
             </div>
         </div>
 
         <!-- Ticker Notificações -->
-        <div class="w-full max-w-[330px] h-[72px] overflow-hidden relative my-auto border border-zinc-900 rounded-xl bg-zinc-950 px-3 py-2 flex items-center justify-center">
+        <div class="w-full max-w-[320px] h-[64px] overflow-hidden relative my-auto border border-zinc-900 rounded-xl bg-zinc-950 px-2.5 py-1.5 flex items-center justify-center">
             <div class="ticker-wrapper w-full flex flex-col gap-2">
-                <div class="bg-black border border-zinc-900 px-3 py-1.5 rounded-lg flex items-center justify-between">
-                    <div class="flex items-center gap-2.5">
-                        <div class="w-6 h-6 rounded-md bg-purple-950 border border-purple-800/40 flex items-center justify-center text-purple-400 text-[10px] shrink-0">
+                <div class="bg-black border border-zinc-900 px-2.5 py-1.5 rounded-lg flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <div class="w-5 h-5 rounded-md bg-purple-950 border border-purple-800/40 flex items-center justify-center text-purple-400 text-[9px] shrink-0">
                             <i class="fa-solid fa-n"></i>
                         </div>
                         <div>
-                            <p class="text-[11px] font-semibold text-white leading-tight">Nubank Extrato</p>
-                            <p class="text-[9px] text-zinc-400 leading-none">Pix Recebido</p>
+                            <p class="text-[10px] font-semibold text-white leading-tight">Nubank Extrato</p>
+                            <p class="text-[8px] text-zinc-400 leading-none">Pix Recebido</p>
                         </div>
                     </div>
-                    <span class="text-[11px] font-bold text-emerald-400">+R$ 1.500,00</span>
+                    <span class="text-[10px] font-bold text-emerald-400">+R$ 1.500,00</span>
                 </div>
 
-                <div class="bg-black border border-zinc-900 px-3 py-1.5 rounded-lg flex items-center justify-between">
-                    <div class="flex items-center gap-2.5">
-                        <div class="w-6 h-6 rounded-md bg-purple-950 border border-purple-800/40 flex items-center justify-center text-purple-400 text-[10px] shrink-0">
+                <div class="bg-black border border-zinc-900 px-2.5 py-1.5 rounded-lg flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <div class="w-5 h-5 rounded-md bg-purple-950 border border-purple-800/40 flex items-center justify-center text-purple-400 text-[9px] shrink-0">
                             <i class="fa-solid fa-n"></i>
                         </div>
                         <div>
-                            <p class="text-[11px] font-semibold text-white leading-tight">Nubank Extrato</p>
-                            <p class="text-[9px] text-zinc-400 leading-none">Pix Recebido</p>
+                            <p class="text-[10px] font-semibold text-white leading-tight">Nubank Extrato</p>
+                            <p class="text-[8px] text-zinc-400 leading-none">Pix Recebido</p>
                         </div>
                     </div>
-                    <span class="text-[11px] font-bold text-emerald-400">+R$ 3.000,00</span>
+                    <span class="text-[10px] font-bold text-emerald-400">+R$ 3.000,00</span>
                 </div>
 
-                <div class="bg-black border border-zinc-900 px-3 py-1.5 rounded-lg flex items-center justify-between">
-                    <div class="flex items-center gap-2.5">
-                        <div class="w-6 h-6 rounded-md bg-purple-950 border border-purple-800/40 flex items-center justify-center text-purple-400 text-[10px] shrink-0">
+                <div class="bg-black border border-zinc-900 px-2.5 py-1.5 rounded-lg flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <div class="w-5 h-5 rounded-md bg-purple-950 border border-purple-800/40 flex items-center justify-center text-purple-400 text-[9px] shrink-0">
                             <i class="fa-solid fa-n"></i>
                         </div>
                         <div>
-                            <p class="text-[11px] font-semibold text-white leading-tight">Nubank Extrato</p>
-                            <p class="text-[9px] text-zinc-400 leading-none">Pix Recebido</p>
+                            <p class="text-[10px] font-semibold text-white leading-tight">Nubank Extrato</p>
+                            <p class="text-[8px] text-zinc-400 leading-none">Pix Recebido</p>
                         </div>
                     </div>
-                    <span class="text-[11px] font-bold text-emerald-400">+R$ 5.000,00</span>
+                    <span class="text-[10px] font-bold text-emerald-400">+R$ 5.000,00</span>
                 </div>
 
                 <!-- Loop -->
-                <div class="bg-black border border-zinc-900 px-3 py-1.5 rounded-lg flex items-center justify-between">
-                    <div class="flex items-center gap-2.5">
-                        <div class="w-6 h-6 rounded-md bg-purple-950 border border-purple-800/40 flex items-center justify-center text-purple-400 text-[10px] shrink-0">
+                <div class="bg-black border border-zinc-900 px-2.5 py-1.5 rounded-lg flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <div class="w-5 h-5 rounded-md bg-purple-950 border border-purple-800/40 flex items-center justify-center text-purple-400 text-[9px] shrink-0">
                             <i class="fa-solid fa-n"></i>
                         </div>
                         <div>
-                            <p class="text-[11px] font-semibold text-white leading-tight">Nubank Extrato</p>
-                            <p class="text-[9px] text-zinc-400 leading-none">Pix Recebido</p>
+                            <p class="text-[10px] font-semibold text-white leading-tight">Nubank Extrato</p>
+                            <p class="text-[8px] text-zinc-400 leading-none">Pix Recebido</p>
                         </div>
                     </div>
-                    <span class="text-[11px] font-bold text-emerald-400">+R$ 1.500,00</span>
+                    <span class="text-[10px] font-bold text-emerald-400">+R$ 1.500,00</span>
                 </div>
             </div>
         </div>
 
         <!-- Botões -->
         <div class="w-full flex flex-col gap-2 z-10 shrink-0">
-            <button onclick="clicarBotaoLink('nubank')" class="w-full bg-zinc-950 hover:bg-zinc-900 border border-zinc-900 p-3 rounded-xl flex items-center justify-between transition group shadow-sm">
-                <div class="flex items-center gap-3">
-                    <div id="iconBoxNubank" class="w-9 h-9 rounded-lg bg-black border border-zinc-800 flex items-center justify-center text-white text-xs">
+            <button onclick="clicarBotaoLink('nubank')" class="w-full bg-zinc-950 hover:bg-zinc-900 border border-zinc-900 p-2.5 rounded-xl flex items-center justify-between transition group shadow-sm">
+                <div class="flex items-center gap-2.5">
+                    <div id="iconBoxNubank" class="w-8 h-8 rounded-lg bg-black border border-zinc-800 flex items-center justify-center text-white text-xs">
                         <i class="fa-solid fa-bolt"></i>
                     </div>
                     <div class="text-left">
                         <h2 id="titleBtnNubank" class="text-xs font-semibold text-white">Nubank Fake</h2>
-                        <p id="descBtnNubank" class="text-[10px] text-zinc-400">Painel Editável</p>
+                        <p id="descBtnNubank" class="text-[9px] text-zinc-400">Painel Editável</p>
                     </div>
                 </div>
-                <i class="fa-solid fa-chevron-right text-[10px] text-zinc-600 group-hover:text-white transition mr-1"></i>
+                <i class="fa-solid fa-chevron-right text-[9px] text-zinc-600 group-hover:text-white transition mr-1"></i>
             </button>
 
-            <button onclick="clicarBotaoLink('suporte')" class="w-full bg-zinc-950 hover:bg-zinc-900 border border-zinc-900 p-3 rounded-xl flex items-center justify-between transition group shadow-sm">
-                <div class="flex items-center gap-3">
-                    <div id="iconBoxSuporte" class="w-9 h-9 rounded-lg bg-black border border-zinc-800 flex items-center justify-center text-white text-xs">
+            <button onclick="clicarBotaoLink('suporte')" class="w-full bg-zinc-950 hover:bg-zinc-900 border border-zinc-900 p-2.5 rounded-xl flex items-center justify-between transition group shadow-sm">
+                <div class="flex items-center gap-2.5">
+                    <div id="iconBoxSuporte" class="w-8 h-8 rounded-lg bg-black border border-zinc-800 flex items-center justify-center text-white text-xs">
                         <i class="fa-solid fa-headset"></i>
                     </div>
                     <div class="text-left">
                         <h2 id="titleBtnSuporte" class="text-xs font-semibold text-white">Suporte 24H</h2>
-                        <p id="descBtnSuporte" class="text-[10px] text-zinc-400">com IA</p>
+                        <p id="descBtnSuporte" class="text-[9px] text-zinc-400">com IA</p>
                     </div>
                 </div>
-                <i class="fa-solid fa-chevron-right text-[10px] text-zinc-600 group-hover:text-white transition mr-1"></i>
+                <i class="fa-solid fa-chevron-right text-[9px] text-zinc-600 group-hover:text-white transition mr-1"></i>
             </button>
         </div>
 
         <!-- Rodapé -->
-        <div class="w-full text-center text-[10px] text-zinc-500 z-10 shrink-0">
+        <div class="w-full text-center text-[9px] text-zinc-500 z-10 shrink-0">
             <span id="textFooter">amaralreal7.system</span>
         </div>
     </div>
 
     <!-- MODAL CHECKOUT -->
-    <div id="modalCheckout" class="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3">
+    <div id="modalCheckout" class="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3 overflow-y-auto">
         <div class="bg-black border border-zinc-900 w-full max-w-xs rounded-2xl p-4 shadow-2xl relative custom-scroll max-h-[85vh] overflow-y-auto">
-            <button onclick="fecharModalCheckout()" class="absolute top-3 right-3 text-zinc-400 hover:text-white w-7 h-7 rounded-full bg-zinc-950 border border-zinc-900 flex items-center justify-center text-xs">
+            <button onclick="fecharModalCheckout()" class="absolute top-3 right-3 text-zinc-400 hover:text-white w-6 h-6 rounded-full bg-zinc-950 border border-zinc-900 flex items-center justify-center text-xs">
                 <i class="fa-solid fa-xmark"></i>
             </button>
             
             <div class="text-center mb-3">
-                <div class="w-10 h-10 rounded-xl bg-zinc-950 border border-zinc-900 flex items-center justify-center text-white text-base mx-auto mb-1.5">
+                <div class="w-9 h-9 rounded-xl bg-zinc-950 border border-zinc-900 flex items-center justify-center text-white text-sm mx-auto mb-1">
                     <i class="fa-solid fa-shield-cat"></i>
                 </div>
                 <h3 class="text-xs font-bold text-white">Checkout VIP</h3>
-                <p class="text-[10px] text-zinc-400">Insira seus dados (R$ 5,99)</p>
+                <p class="text-[9px] text-zinc-400">Insira seus dados (R$ 5,99)</p>
             </div>
 
-            <div id="formCheckoutStep" class="space-y-2.5">
+            <div id="formCheckoutStep" class="space-y-2">
                 <div>
-                    <label class="block text-[10px] font-medium text-zinc-300 mb-1">Nome Completo</label>
-                    <input type="text" id="inputNome" placeholder="Seu nome" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2.5 py-2 text-xs text-white focus:outline-none focus:border-zinc-700">
+                    <label class="block text-[9px] font-medium text-zinc-300 mb-0.5">Nome Completo</label>
+                    <input type="text" id="inputNome" placeholder="Seu nome" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-zinc-700">
                 </div>
                 <div>
-                    <label class="block text-[10px] font-medium text-zinc-300 mb-1">Nascimento</label>
-                    <input type="text" id="inputNascimento" placeholder="DD/MM/AAAA" maxlength="10" oninput="mascaraData(this)" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2.5 py-2 text-xs text-white focus:outline-none focus:border-zinc-700">
+                    <label class="block text-[9px] font-medium text-zinc-300 mb-0.5">Nascimento</label>
+                    <input type="text" id="inputNascimento" placeholder="DD/MM/AAAA" maxlength="10" oninput="mascaraData(this)" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-zinc-700">
                 </div>
                 <div>
-                    <label class="block text-[10px] font-medium text-zinc-300 mb-1">CPF</label>
-                    <input type="text" id="inputCpf" placeholder="000.000.000-00" maxlength="14" oninput="mascaraCpf(this)" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2.5 py-2 text-xs text-white focus:outline-none focus:border-zinc-700">
+                    <label class="block text-[9px] font-medium text-zinc-300 mb-0.5">CPF</label>
+                    <input type="text" id="inputCpf" placeholder="000.000.000-00" maxlength="14" oninput="mascaraCpf(this)" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-zinc-700">
                 </div>
                 <div>
-                    <label class="block text-[10px] font-medium text-zinc-300 mb-1">E-mail para Entrega</label>
-                    <input type="email" id="inputEmail" placeholder="seu@email.com" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2.5 py-2 text-xs text-white focus:outline-none focus:border-zinc-700">
+                    <label class="block text-[9px] font-medium text-zinc-300 mb-0.5">E-mail para Entrega</label>
+                    <input type="email" id="inputEmail" placeholder="seu@email.com" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-zinc-700">
                 </div>
 
                 <button onclick="gerarPagamentoPix()" class="w-full bg-zinc-100 hover:bg-white text-black font-semibold py-2 rounded-lg text-xs transition shadow-md mt-1">
@@ -224,19 +228,19 @@
                 </button>
             </div>
 
-            <div id="pixStep" class="hidden text-center space-y-2.5">
-                <div class="bg-zinc-950 border border-zinc-900 p-2.5 rounded-xl">
-                    <p class="text-[10px] text-zinc-400 mb-1.5">Copie a chave Pix abaixo:</p>
-                    <div class="bg-white p-1.5 rounded-lg inline-block mb-1.5">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=110x110&data=00020126580014br.gov.bcb.pix...amaralreal7" alt="QR Code" class="w-24 h-24 mx-auto">
+            <div id="pixStep" class="hidden text-center space-y-2">
+                <div class="bg-zinc-950 border border-zinc-900 p-2 rounded-xl">
+                    <p class="text-[9px] text-zinc-400 mb-1">Copie a chave Pix abaixo:</p>
+                    <div class="bg-white p-1 rounded-lg inline-block mb-1">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=00020126580014br.gov.bcb.pix...amaralreal7" alt="QR Code" class="w-20 h-20 mx-auto">
                     </div>
                     <div class="flex items-center gap-1 bg-black border border-zinc-900 rounded-lg p-1">
-                        <input type="text" readonly id="chavePixInput" value="00020126580014br.gov.bcb.pix.static01...599" class="bg-transparent text-[10px] text-zinc-300 w-full px-1 focus:outline-none">
-                        <button onclick="copiarChavePix()" class="bg-zinc-900 hover:bg-zinc-800 text-white px-2 py-1 rounded text-[10px] transition">Copiar</button>
+                        <input type="text" readonly id="chavePixInput" value="00020126580014br.gov.bcb.pix.static01...599" class="bg-transparent text-[9px] text-zinc-300 w-full px-1 focus:outline-none">
+                        <button onclick="copiarChavePix()" class="bg-zinc-900 hover:bg-zinc-800 text-white px-2 py-1 rounded text-[9px] transition">Copiar</button>
                     </div>
                 </div>
 
-                <div class="flex items-center justify-center gap-1.5 text-[10px] text-zinc-400 bg-zinc-950 border border-zinc-900 py-1 rounded-lg">
+                <div class="flex items-center justify-center gap-1 text-[9px] text-zinc-400 bg-zinc-950 border border-zinc-900 py-1 rounded-lg">
                     <i class="fa-solid fa-clock"></i>
                     <span>Expira em: <strong id="timerPix" class="text-white">10:00</strong></span>
                 </div>
@@ -246,12 +250,12 @@
                 </button>
             </div>
 
-            <div id="sucessoStep" class="hidden text-center space-y-2.5 py-3">
-                <div class="w-12 h-12 bg-zinc-950 border border-zinc-900 rounded-full flex items-center justify-center text-emerald-400 text-xl mx-auto">
+            <div id="sucessoStep" class="hidden text-center space-y-2 py-2">
+                <div class="w-10 h-10 bg-zinc-950 border border-zinc-900 rounded-full flex items-center justify-center text-emerald-400 text-base mx-auto">
                     <i class="fa-solid fa-check"></i>
                 </div>
                 <h4 class="text-xs font-bold text-white">Pedido Registrado!</h4>
-                <p class="text-[10px] text-zinc-400 leading-relaxed px-1">
+                <p class="text-[9px] text-zinc-400 leading-relaxed px-1">
                     Assim que aprovado no painel, o link do Mediafire será enviado automaticamente para seu e-mail.
                 </p>
                 <button onclick="fecharModalCheckoutFinal()" class="w-full bg-zinc-900 hover:bg-zinc-800 text-white font-medium py-1.5 rounded-lg text-xs transition mt-1">
@@ -263,36 +267,36 @@
 
     <!-- MODAL SUPORTE -->
     <div id="modalSuporte" class="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3">
-        <div class="bg-black border border-zinc-900 w-full max-w-xs rounded-2xl p-3 shadow-2xl relative h-[380px] flex flex-col justify-between">
-            <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
-                <div class="flex items-center gap-2">
-                    <div class="w-7 h-7 rounded-lg bg-zinc-950 border border-zinc-900 flex items-center justify-center text-white text-xs">
+        <div class="bg-black border border-zinc-900 w-full max-w-xs rounded-2xl p-3 shadow-2xl relative h-[360px] flex flex-col justify-between">
+            <div class="flex items-center justify-between border-b border-zinc-900 pb-2">
+                <div class="flex items-center gap-1.5">
+                    <div class="w-6 h-6 rounded-lg bg-zinc-950 border border-zinc-900 flex items-center justify-center text-white text-[10px]">
                         <i class="fa-solid fa-robot"></i>
                     </div>
                     <div>
                         <h4 class="text-xs font-bold text-white">Suporte com IA</h4>
-                        <span class="text-[9px] text-emerald-400">● Online 24h</span>
+                        <span class="text-[8px] text-emerald-400">● Online 24h</span>
                     </div>
                 </div>
-                <button onclick="fecharModalSuporte()" class="text-zinc-400 hover:text-white w-6 h-6 rounded-full bg-zinc-950 border border-zinc-900 flex items-center justify-center text-[10px]">
+                <button onclick="fecharModalSuporte()" class="text-zinc-400 hover:text-white w-6 h-6 rounded-full bg-zinc-950 border border-zinc-900 flex items-center justify-center text-[9px]">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
 
-            <div class="flex-1 overflow-y-auto custom-scroll py-2.5 space-y-2">
+            <div class="flex-1 overflow-y-auto custom-scroll py-2 space-y-2">
                 <div class="flex items-start gap-1.5">
                     <div class="w-5 h-5 rounded-full bg-zinc-950 border border-zinc-900 flex items-center justify-center text-white text-[9px] shrink-0 mt-0.5">
                         <i class="fa-solid fa-robot"></i>
                     </div>
-                    <div class="bg-zinc-950 border border-zinc-900 rounded-xl p-2.5 text-[11px] text-zinc-300 max-w-[85%] leading-relaxed">
+                    <div class="bg-zinc-950 border border-zinc-900 rounded-xl p-2 text-[10px] text-zinc-300 max-w-[85%] leading-relaxed">
                         Olá! Clique no botão do Nubank na tela inicial para garantir seu acesso VIP via Pix.
                     </div>
                 </div>
             </div>
 
-            <div class="border-t border-zinc-900 pt-2">
-                <div class="bg-zinc-950 border border-zinc-900 rounded-lg p-2 text-center">
-                    <p class="text-[10px] text-zinc-500">Atendimento 100% automatizado.</p>
+            <div class="border-t border-zinc-900 pt-1.5">
+                <div class="bg-zinc-950 border border-zinc-900 rounded-lg p-1.5 text-center">
+                    <p class="text-[9px] text-zinc-500">Atendimento 100% automatizado.</p>
                 </div>
             </div>
         </div>
@@ -302,88 +306,88 @@
     <div id="modalAdmin" class="fixed inset-0 bg-black/95 backdrop-blur-md z-50 hidden flex items-center justify-center p-3">
         <div id="adminLoginBox" class="bg-black border border-zinc-900 w-full max-w-xs rounded-2xl p-4 shadow-2xl text-center relative">
             <button onclick="fecharAdmin()" class="absolute top-3 right-3 text-zinc-400 hover:text-white text-xs"><i class="fa-solid fa-xmark"></i></button>
-            <div class="w-10 h-10 bg-zinc-950 border border-zinc-900 rounded-xl flex items-center justify-center text-white text-sm mx-auto mb-2.5">
+            <div class="w-9 h-9 bg-zinc-950 border border-zinc-900 rounded-xl flex items-center justify-center text-white text-xs mx-auto mb-2">
                 <i class="fa-solid fa-lock"></i>
             </div>
             <h3 class="text-xs font-bold text-white mb-0.5">Painel Admin</h3>
-            <p class="text-[10px] text-zinc-400 mb-3">Digite a senha (123)</p>
-            <input type="password" id="inputSenhaAdmin" placeholder="Senha" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-3 py-2 text-xs text-white text-center tracking-widest mb-2.5 focus:outline-none focus:border-zinc-700">
-            <button onclick="verificarSenhaAdmin()" class="w-full bg-zinc-100 hover:bg-white text-black font-semibold py-2 rounded-lg text-xs transition">Entrar</button>
+            <p class="text-[9px] text-zinc-400 mb-2.5">Digite a senha (123)</p>
+            <input type="password" id="inputSenhaAdmin" placeholder="Senha" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2.5 py-1.5 text-xs text-white text-center tracking-widest mb-2.5 focus:outline-none focus:border-zinc-700">
+            <button onclick="verificarSenhaAdmin()" class="w-full bg-zinc-100 hover:bg-white text-black font-semibold py-1.5 rounded-lg text-xs transition">Entrar</button>
         </div>
 
-        <div id="adminDashboard" class="hidden bg-black border border-zinc-900 w-full max-w-sm rounded-2xl p-3.5 shadow-2xl relative h-[85vh] max-h-[620px] flex flex-col justify-between custom-scroll overflow-y-auto">
-            <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5 mb-2.5">
+        <div id="adminDashboard" class="hidden bg-black border border-zinc-900 w-full max-w-sm rounded-2xl p-3 shadow-2xl relative h-[85vh] max-h-[580px] flex flex-col justify-between custom-scroll overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-zinc-900 pb-2 mb-2">
                 <div class="flex items-center gap-1.5">
-                    <div class="w-6 h-6 bg-zinc-950 border border-zinc-900 rounded-lg flex items-center justify-center text-white text-[10px]">
+                    <div class="w-5 h-5 bg-zinc-950 border border-zinc-900 rounded-lg flex items-center justify-center text-white text-[9px]">
                         <i class="fa-solid fa-gauge-high"></i>
                     </div>
                     <h3 class="text-xs font-bold text-white">Painel de Controle</h3>
                 </div>
-                <button onclick="fecharAdmin()" class="text-zinc-400 hover:text-white w-6 h-6 rounded-full bg-zinc-950 border border-zinc-900 flex items-center justify-center text-[10px]"><i class="fa-solid fa-xmark"></i></button>
+                <button onclick="fecharAdmin()" class="text-zinc-400 hover:text-white w-6 h-6 rounded-full bg-zinc-950 border border-zinc-900 flex items-center justify-center text-[9px]"><i class="fa-solid fa-xmark"></i></button>
             </div>
 
-            <!-- Abas Admin -->
-            <div class="grid grid-cols-4 gap-1 bg-zinc-950 p-1 rounded-lg mb-2.5 border border-zinc-900 shrink-0">
-                <button onclick="mudarAbaAdmin('monitor')" id="tabBtnMonitor" class="py-1 text-[10px] font-medium rounded-md bg-zinc-900 text-white transition">Monitor</button>
-                <button onclick="mudarAbaAdmin('vendas')" id="tabBtnVendas" class="py-1 text-[10px] font-medium rounded-md text-zinc-400 hover:text-white transition">Vendas</button>
-                <button onclick="mudarAbaAdmin('textos')" id="tabBtnTextos" class="py-1 text-[10px] font-medium rounded-md text-zinc-400 hover:text-white transition">Textos</button>
-                <button onclick="mudarAbaAdmin('custom')" id="tabBtnCustom" class="py-1 text-[10px] font-medium rounded-md text-zinc-400 hover:text-white transition">Mediafire</button>
+            <!-- Abas Admin (Corrigidas e Dinâmicas) -->
+            <div class="grid grid-cols-4 gap-1 bg-zinc-950 p-1 rounded-lg mb-2 border border-zinc-900 shrink-0">
+                <button type="button" onclick="mudarAbaAdmin('monitor')" id="tabBtnMonitor" class="py-1 text-[9px] font-medium rounded-md bg-zinc-900 text-white transition">Monitor</button>
+                <button type="button" onclick="mudarAbaAdmin('vendas')" id="tabBtnVendas" class="py-1 text-[9px] font-medium rounded-md text-zinc-400 hover:text-white transition">Vendas</button>
+                <button type="button" onclick="mudarAbaAdmin('textos')" id="tabBtnTextos" class="py-1 text-[9px] font-medium rounded-md text-zinc-400 hover:text-white transition">Textos</button>
+                <button type="button" onclick="mudarAbaAdmin('custom')" id="tabBtnCustom" class="py-1 text-[9px] font-medium rounded-md text-zinc-400 hover:text-white transition">Mediafire</button>
             </div>
 
             <!-- Aba Monitor -->
-            <div id="tabMonitor" class="space-y-2.5 flex-1 overflow-y-auto custom-scroll pr-1">
+            <div id="tabMonitor" class="admin-tab-content space-y-2 flex-1 overflow-y-auto custom-scroll pr-1">
                 <div class="grid grid-cols-2 gap-2">
-                    <div class="bg-zinc-950 border border-zinc-900 p-2.5 rounded-xl text-center">
-                        <span class="text-[10px] text-zinc-400 block mb-0.5">Cliques</span>
-                        <span id="statCliques" class="text-base font-bold text-white block mb-1.5">0</span>
+                    <div class="bg-zinc-950 border border-zinc-900 p-2 rounded-xl text-center">
+                        <span class="text-[9px] text-zinc-400 block mb-0.5">Cliques</span>
+                        <span id="statCliques" class="text-sm font-bold text-white block mb-1">0</span>
                         <button onclick="zerarCliques()" class="w-full bg-zinc-900 hover:bg-zinc-800 text-zinc-300 py-1 rounded text-[9px] transition">Zerar</button>
                     </div>
-                    <div class="bg-zinc-950 border border-zinc-900 p-2.5 rounded-xl text-center flex flex-col justify-between">
+                    <div class="bg-zinc-950 border border-zinc-900 p-2 rounded-xl text-center flex flex-col justify-between">
                         <div>
-                            <span class="text-[10px] text-zinc-400 block mb-0.5">Pedidos</span>
-                            <span id="statPedidos" class="text-base font-bold text-white">0</span>
+                            <span class="text-[9px] text-zinc-400 block mb-0.5">Pedidos</span>
+                            <span id="statPedidos" class="text-sm font-bold text-white">0</span>
                         </div>
                     </div>
                 </div>
-                <div class="bg-zinc-950 border border-zinc-900 p-2.5 rounded-xl text-center">
-                    <span class="text-[10px] text-zinc-400 block mb-0.5">Receita Aprovada</span>
-                    <span id="statReceita" class="text-base font-bold text-emerald-400">R$ 0,00</span>
+                <div class="bg-zinc-950 border border-zinc-900 p-2 rounded-xl text-center">
+                    <span class="text-[9px] text-zinc-400 block mb-0.5">Receita Aprovada</span>
+                    <span id="statReceita" class="text-sm font-bold text-emerald-400">R$ 0,00</span>
                 </div>
             </div>
 
             <!-- Aba Vendas -->
-            <div id="tabVendas" class="hidden space-y-2 flex-1 overflow-y-auto custom-scroll pr-1">
-                <h4 class="text-[11px] font-bold text-white mb-1">Gerenciar Pedidos</h4>
-                <div id="listaVendasAdmin" class="space-y-2"></div>
+            <div id="tabVendas" class="admin-tab-content hidden space-y-2 flex-1 overflow-y-auto custom-scroll pr-1">
+                <h4 class="text-[10px] font-bold text-white mb-1">Gerenciar Pedidos & Entrega Automática</h4>
+                <div id="listaVendasAdmin" class="space-y-1.5"></div>
             </div>
 
             <!-- Aba Textos -->
-            <div id="tabTextos" class="hidden space-y-2 flex-1 overflow-y-auto custom-scroll pr-1">
-                <h4 class="text-[11px] font-bold text-white mb-1">Editar Textos</h4>
-                <div class="space-y-1"><label class="block text-[10px] text-zinc-300">Nome</label><input type="text" id="editName" oninput="salvarTextosPagina()" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-zinc-700"></div>
-                <div class="space-y-1"><label class="block text-[10px] text-zinc-300">Bio</label><input type="text" id="editBio" oninput="salvarTextosPagina()" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-zinc-700"></div>
-                <div class="space-y-1"><label class="block text-[10px] text-zinc-300">Segurança</label><input type="text" id="editSecurity" oninput="salvarTextosPagina()" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-zinc-700"></div>
-                <div class="space-y-1"><label class="block text-[10px] text-zinc-300">Título Botão 1</label><input type="text" id="editTitleNubank" oninput="salvarTextosPagina()" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-zinc-700"></div>
-                <div class="space-y-1"><label class="block text-[10px] text-zinc-300">Rodapé</label><input type="text" id="editFooter" oninput="salvarTextosPagina()" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-zinc-700"></div>
+            <div id="tabTextos" class="admin-tab-content hidden space-y-2 flex-1 overflow-y-auto custom-scroll pr-1">
+                <h4 class="text-[10px] font-bold text-white mb-1">Editar Textos</h4>
+                <div class="space-y-1"><label class="block text-[9px] text-zinc-300">Nome</label><input type="text" id="editName" oninput="salvarTextosPagina()" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2 py-1 text-xs text-white focus:outline-none focus:border-zinc-700"></div>
+                <div class="space-y-1"><label class="block text-[9px] text-zinc-300">Bio</label><input type="text" id="editBio" oninput="salvarTextosPagina()" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2 py-1 text-xs text-white focus:outline-none focus:border-zinc-700"></div>
+                <div class="space-y-1"><label class="block text-[9px] text-zinc-300">Segurança</label><input type="text" id="editSecurity" oninput="salvarTextosPagina()" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2 py-1 text-xs text-white focus:outline-none focus:border-zinc-700"></div>
+                <div class="space-y-1"><label class="block text-[9px] text-zinc-300">Título Botão 1</label><input type="text" id="editTitleNubank" oninput="salvarTextosPagina()" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2 py-1 text-xs text-white focus:outline-none focus:border-zinc-700"></div>
+                <div class="space-y-1"><label class="block text-[9px] text-zinc-300">Rodapé</label><input type="text" id="editFooter" oninput="salvarTextosPagina()" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2 py-1 text-xs text-white focus:outline-none focus:border-zinc-700"></div>
             </div>
 
             <!-- Aba Custom / Mediafire -->
-            <div id="tabCustom" class="hidden space-y-2.5 flex-1 overflow-y-auto custom-scroll pr-1">
-                <div class="space-y-1.5">
-                    <label class="block text-[10px] font-medium text-zinc-300"><i class="fa-solid fa-link text-blue-400"></i> Link Mediafire (Entrega)</label>
-                    <input type="text" id="inputMediafire" placeholder="https://www.mediafire.com/file/..." oninput="salvarAutomaçãoMediafire()" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-zinc-700">
-                    <p class="text-[9px] text-zinc-500">Disparado no e-mail do cliente após a aprovação.</p>
+            <div id="tabCustom" class="admin-tab-content hidden space-y-2 flex-1 overflow-y-auto custom-scroll pr-1">
+                <div class="space-y-1">
+                    <label class="block text-[9px] font-medium text-zinc-300"><i class="fa-solid fa-link text-blue-400"></i> Link Mediafire (Entrega)</label>
+                    <input type="text" id="inputMediafire" placeholder="https://www.mediafire.com/file/..." oninput="salvarAutomaçãoMediafire()" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2 py-1 text-xs text-white focus:outline-none focus:border-zinc-700">
+                    <p class="text-[8px] text-zinc-500">Disparado no e-mail do cliente após a aprovação.</p>
                 </div>
 
-                <div class="space-y-1.5 pt-2">
-                    <label class="block text-[10px] font-medium text-zinc-300">Foto de Perfil Permanente</label>
-                    <input type="file" id="inputFotoGaleria" accept="image/*" onchange="carregarFotoGaleria(event)" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2 py-1 text-[10px] text-zinc-300 file:mr-2 file:py-0.5 file:px-2 file:rounded file:border-0 file:text-[10px] file:bg-zinc-800 file:text-white">
+                <div class="space-y-1 pt-1">
+                    <label class="block text-[9px] font-medium text-zinc-300">Foto de Perfil Permanente</label>
+                    <input type="file" id="inputFotoGaleria" accept="image/*" onchange="carregarFotoGaleria(event)" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2 py-1 text-[9px] text-zinc-300 file:mr-2 file:py-0.5 file:px-2 file:rounded file:border-0 file:text-[9px] file:bg-zinc-800 file:text-white">
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- SCRIPT -->
+    <!-- SCRIPT CORRIGIDO -->
     <script>
         let dadosSite = JSON.parse(localStorage.getItem('amaralReal_dados')) || {
             nome: "amaralreal7",
@@ -446,7 +450,7 @@
             const toast = document.getElementById('toastNotificacao');
             document.getElementById('toastTexto').innerText = texto;
             toast.classList.remove('opacity-0', 'pointer-events-none');
-            setTimeout(() => toast.classList.add('opacity-0', 'pointer-events-none'), 2500);
+            setTimeout(() => toast.classList.add('opacity-0', 'pointer-events-none'), 2200);
         }
 
         function zerarCliques() {
@@ -547,11 +551,12 @@
                 carregarDadosNaTela();
                 atualizarEstatisticasAdmin();
                 renderizarListaVendas();
-            } else { alert('Senha incorreta!'); }
+            } else { alert('Senha incorreta! Use 123'); }
         }
 
         function mudarAbaAdmin(aba) {
-            ['monitor', 'vendas', 'textos', 'custom'].forEach(t => {
+            const abas = ['monitor', 'vendas', 'textos', 'custom'];
+            abas.forEach(t => {
                 const el = document.getElementById(`tab${t.charAt(0).toUpperCase() + t.slice(1)}`);
                 const btn = document.getElementById(`tabBtn${t.charAt(0).toUpperCase() + t.slice(1)}`);
                 if(el) el.classList.add('hidden');
@@ -568,6 +573,10 @@
                 btnAtivo.classList.remove('text-zinc-400');
                 btnAtivo.classList.add('bg-zinc-900', 'text-white');
             }
+
+            if(aba === 'vendas') {
+                renderizarListaVendas();
+            }
         }
 
         function atualizarEstatisticasAdmin() {
@@ -581,23 +590,23 @@
             const container = document.getElementById('listaVendasAdmin');
             if (!container) return;
             if (dadosSite.pedidos.length === 0) {
-                container.innerHTML = `<p class="text-[10px] text-zinc-500 text-center py-4">Nenhum pedido.</p>`;
+                container.innerHTML = `<p class="text-[9px] text-zinc-500 text-center py-4">Nenhum pedido registrado.</p>`;
                 return;
             }
 
             container.innerHTML = dadosSite.pedidos.map((p, index) => `
                 <div class="bg-zinc-950 border border-zinc-900 p-2 rounded-xl flex items-center justify-between text-xs">
                     <div>
-                        <p class="font-semibold text-white text-[11px]">${p.nome} <span class="text-[9px] text-zinc-500 font-normal">(${p.id})</span></p>
-                        <p class="text-[9px] text-zinc-400">${p.email}</p>
-                        <p class="text-[9px] ${p.status === 'aprovado' ? 'text-emerald-400' : 'text-amber-400'} font-medium uppercase mt-0.5">${p.status}</p>
+                        <p class="font-semibold text-white text-[10px]">${p.nome} <span class="text-[8px] text-zinc-500 font-normal">(${p.id})</span></p>
+                        <p class="text-[8px] text-zinc-400">${p.email}</p>
+                        <p class="text-[8px] ${p.status === 'aprovado' ? 'text-emerald-400' : 'text-amber-400'} font-medium uppercase mt-0.5">${p.status}</p>
                     </div>
                     <div class="flex items-center gap-1">
                         ${p.status === 'pendente' ? 
-                            `<button onclick="alterarStatusPedido(${index}, 'aprovado')" class="bg-emerald-600 hover:bg-emerald-500 text-white px-2 py-1 rounded text-[9px] transition">Aprovar</button>` : 
-                            `<button onclick="alterarStatusPedido(${index}, 'pendente')" class="bg-amber-600 hover:bg-amber-500 text-white px-2 py-1 rounded text-[9px] transition">Cancelar</button>`
+                            `<button type="button" onclick="alterarStatusPedido(${index}, 'aprovado')" class="bg-emerald-600 hover:bg-emerald-500 text-white px-2 py-1 rounded text-[8px] transition">Aprovar</button>` : 
+                            `<button type="button" onclick="alterarStatusPedido(${index}, 'pendente')" class="bg-amber-600 hover:bg-amber-500 text-white px-2 py-1 rounded text-[8px] transition">Cancelar</button>`
                         }
-                        <button onclick="removerPedido(${index})" class="bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-white px-1.5 py-1 rounded text-[9px] transition"><i class="fa-solid fa-trash"></i></button>
+                        <button type="button" onclick="removerPedido(${index})" class="bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-white px-1.5 py-1 rounded text-[8px] transition"><i class="fa-solid fa-trash"></i></button>
                     </div>
                 </div>
             `).join('');
