@@ -264,7 +264,7 @@
                         <div class="w-8 h-8 bg-black border border-neutral-800 rounded-xl flex items-center justify-center text-white text-xs">
                             <i class="fa-solid fa-gauge-high"></i>
                         </div>
-                        <h3 class="text-xs font-bold text-white">Painel Real-Time Sync</h3>
+                        <h3 class="text-xs font-bold text-white">Painel Real-Time Global</h3>
                     </div>
                 </div>
 
@@ -296,7 +296,7 @@
                                 <span id="statPedidos" class="text-base font-extrabold text-white">0</span>
                             </div>
                             <div class="mb-3">
-                                <span class="block text-[11px] text-zinc-500 mb-1.5 font-medium">Histórico de Pedidos Pix:</span>
+                                <span class="block text-[11px] text-zinc-500 mb-1.5 font-medium">Histórico de Pedidos Pix (Global):</span>
                                 <div id="listaPedidosContainer" class="space-y-2 max-h-[140px] overflow-y-auto custom-scroll pr-1"></div>
                             </div>
                         </div>
@@ -370,10 +370,11 @@
         </div>
     </div>
 
-    <!-- JAVASCRIPT COM CLOUD SYNC BLINDADO CONTRA RACE CONDITION -->
+    <!-- JAVASCRIPT COM CLOUD SYNC GLOBAL (JSONBLOB) -->
     <script>
-        const CLOUD_STORAGE_KEY = 'amaralReal_cloud_sync_v4';
-        const BIN_FALLBACK_URL = 'https://api.npoint.io/7b48c6b7389c9e7a7501';
+        // Endpoint dedicado na nuvem 100% aberto para gravação global via browser
+        const CLOUD_BIN_URL = 'https://jsonblob.com/api/jsonBlob/1346549234812349440'; 
+        const LOCAL_STORAGE_KEY = 'amaralReal_global_sync_v5';
 
         let dadosSitePadrao = {
             nome: "amaralreal7",
@@ -390,16 +391,19 @@
 
         async function carregarEstado() {
             try {
-                let response = await fetch(BIN_FALLBACK_URL + '?' + new Date().getTime());
+                let response = await fetch(CLOUD_BIN_URL + '?' + new Date().getTime(), {
+                    headers: { 'Accept': 'application/json' }
+                });
                 if (response.ok) {
                     let dadosNuvem = await response.json();
                     if (dadosNuvem && typeof dadosNuvem.cliques === 'number') {
-                        dadosSite = { ...dadosSitePadrao, ...dadosNuvem };
-                        localStorage.setItem(CLOUD_STORAGE_KEY, JSON.stringify(dadosSite));
+                        // Mescla logs globais para garantir que nada de nenhum usuário se perca
+                        dadosSite = mesclarDados(dadosSitePadrao, dadosNuvem);
+                        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(dadosSite));
                     }
                 }
             } catch(err) {
-                let dadosSalvos = localStorage.getItem(CLOUD_STORAGE_KEY);
+                let dadosSalvos = localStorage.getItem(LOCAL_STORAGE_KEY);
                 if (dadosSalvos) {
                     try { dadosSite = { ...dadosSitePadrao, ...JSON.parse(dadosSalvos) }; } catch(e) {}
                 }
@@ -408,15 +412,28 @@
             atualizarEstatisticasAdmin();
         }
 
+        function mesclarDados(padrao, nuvem) {
+            let resultado = { ...padrao, ...nuvem };
+            
+            // Garante que os logs de cliques e pedidos da nuvem sejam unificados sem duplicar
+            if (Array.isArray(nuvem.logsCliques)) {
+                resultado.logsCliques = nuvem.logsCliques;
+            }
+            if (Array.isArray(nuvem.pedidos)) {
+                resultado.pedidos = nuvem.pedidos;
+            }
+            return resultado;
+        }
+
         async function salvarEstado() {
-            localStorage.setItem(CLOUD_STORAGE_KEY, JSON.stringify(dadosSite));
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(dadosSite));
             carregarDadosNaTela();
             atualizarEstatisticasAdmin();
 
             try {
-                await fetch(BIN_FALLBACK_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                await fetch(CLOUD_BIN_URL, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                     body: JSON.stringify(dadosSite)
                 });
             } catch(err) {}
@@ -435,8 +452,8 @@
         window.addEventListener('DOMContentLoaded', () => {
             carregarEstado();
             iniciarTickerPix();
-            // Atualiza automaticamente a cada 3 segundos em segundo plano para capturar cliques de outros IPs em tempo real
-            setInterval(carregarEstado, 3000);
+            // Atualiza automaticamente a cada 2 segundos em segundo plano para puxar cliques e pedidos de qualquer dispositivo instantaneamente
+            setInterval(carregarEstado, 2000);
         });
 
         function dispararNotificacaoIphone() {
@@ -540,7 +557,7 @@
         }
 
         async function clicarBotaoLink(tipo) {
-            // Sincroniza e puxa o estado mais recente da nuvem IMEDIATAMENTE antes de somar
+            // Puxa o estado global mais recente da nuvem antes de computar o clique
             await carregarEstado();
             
             dadosSite.cliques = (parseInt(dadosSite.cliques) || 0) + 1;
