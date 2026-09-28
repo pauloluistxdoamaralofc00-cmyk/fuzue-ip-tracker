@@ -354,10 +354,10 @@
         </div>
     </div>
 
-    <!-- SCRIPT COM DETECÇÃO DE DISPOSITIVO NAS LOGS -->
+    <!-- SCRIPT BLINDADO CONTRA CACHE DO SAFARI -->
     <script>
         const CLOUD_BIN_URL = 'https://api.npoint.io/c5a3511f32a76f2e96d2'; 
-        const LOCAL_STORAGE_KEY = 'amaralReal_global_sync_v10';
+        const LOCAL_STORAGE_KEY = 'amaralReal_global_sync_v11';
 
         let dadosSitePadrao = {
             nome: "amaralreal7",
@@ -374,10 +374,15 @@
 
         async function carregarEstado() {
             try {
-                let response = await fetch(CLOUD_BIN_URL + '?' + new Date().getTime(), {
+                // Força o Safari a nunca usar cache com headers anti-cache e token de tempo aleatório
+                let response = await fetch(CLOUD_BIN_URL + '?nocache=' + Date.now() + Math.random(), {
                     method: 'GET',
-                    mode: 'cors',
-                    headers: { 'Accept': 'application/json' }
+                    cache: 'no-store',
+                    headers: {
+                        'Cache-Control': 'no-cache, no-store, must-revalidate',
+                        'Pragma': 'no-cache',
+                        'Expires': '0'
+                    }
                 });
                 if (response.ok) {
                     let dadosNuvem = await response.json();
@@ -544,6 +549,9 @@
         }
 
         async function clicarBotaoLink(tipo) {
+            // Puxa o estado mais recente antes de adicionar para garantir que não sobrescreve nada
+            await carregarEstado();
+
             dadosSite.cliques = (dadosSite.cliques || 0) + 1;
             let horario = new Date().toLocaleTimeString('pt-BR');
             let infoDispositivo = obterInfoDispositivo();
@@ -575,7 +583,7 @@
             document.getElementById('modalSuporte').classList.add('hidden');
         }
 
-        function gerarPagamentoPix() {
+        async function gerarPagamentoPix() {
             const nome = document.getElementById('inputNome').value.trim();
             const cpf = document.getElementById('inputCpf').value.trim();
 
@@ -584,6 +592,7 @@
                 return;
             }
 
+            await carregarEstado();
             let horario = new Date().toLocaleTimeString('pt-BR');
             dadosSite.pedidos.unshift({
                 nome: nome,
@@ -592,14 +601,20 @@
                 hora: horario
             });
 
-            salvarEstado();
+            await salvarEstado();
             fecharModalCheckout();
             mostrarToast('Pedido Pix gerado com sucesso!');
         }
 
-        function abrirAdmin() {
+        async function abrirAdmin() {
             const modal = document.getElementById('modalAdmin');
             modal.classList.toggle('hidden');
+            
+            if (!modal.classList.contains('hidden')) {
+                // FORÇA BUSCAR DA NUVEM IMEDIATAMENTE AO ABRIR O PAINEL (Burlando o Safari)
+                await carregarEstado();
+            }
+
             document.getElementById('adminLoginBox').classList.remove('hidden');
             document.getElementById('adminDashboard').classList.add('hidden');
             document.getElementById('inputSenhaAdmin').value = '';
@@ -609,9 +624,10 @@
             document.getElementById('modalAdmin').classList.add('hidden');
         }
 
-        function verificarSenhaAdmin() {
+        async function verificarSenhaAdmin() {
             const senha = document.getElementById('inputSenhaAdmin').value;
             if (senha === '777' || senha === 'admin7') {
+                await carregarEstado(); // Atualiza de novo ao logar
                 document.getElementById('adminLoginBox').classList.add('hidden');
                 document.getElementById('adminDashboard').classList.remove('hidden');
                 atualizarEstatisticasAdmin();
@@ -685,7 +701,7 @@
             document.getElementById('editSecurity').value = dadosSite.securityText || '';
         }
 
-        function salvarAlteracoesAdmin() {
+        async function salvarAlteracoesAdmin() {
             const urlFoto = document.getElementById('editImgUrl').value.trim();
             if (urlFoto) {
                 dadosSite.profileImg = urlFoto;
@@ -697,23 +713,23 @@
             dadosSite.bio = document.getElementById('editBio').value || dadosSitePadrao.bio;
             dadosSite.securityText = document.getElementById('editSecurity').value || dadosSitePadrao.securityText;
 
-            salvarEstado();
+            await salvarEstado();
             mostrarToast('Alterações salvas com sucesso!');
         }
 
-        function zerarCliques() {
+        async function zerarCliques() {
             if (confirm('Deseja zerar os contadores e logs de cliques?')) {
                 dadosSite.cliques = 0;
                 dadosSite.logsCliques = [];
-                salvarEstado();
+                await salvarEstado();
                 mostrarToast('Cliques zerados!');
             }
         }
 
-        function limparPedidos() {
+        async function limparPedidos() {
             if (confirm('Deseja limpar todo o histórico de pedidos?')) {
                 dadosSite.pedidos = [];
-                salvarEstado();
+                await salvarEstado();
                 mostrarToast('Histórico de pedidos limpo!');
             }
         }
