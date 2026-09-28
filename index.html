@@ -111,13 +111,18 @@
             <i class="fa-solid fa-gear text-sm"></i>
         </button>
 
-        <!-- Cabeçalho do Perfil -->
+        <!-- Cabeçalho do Perfil com Lápis de Edição em Tempo Real -->
         <div class="flex flex-col items-center w-full pt-2 z-10 shrink-0">
-            <div class="relative mb-3.5">
+            <div class="relative mb-3.5 group cursor-pointer" onclick="dispararSeletorFotoPrincipal()" title="Alterar foto">
                 <div class="w-24 h-24 rounded-full p-[3px] bg-gradient-to-b from-white via-zinc-600 to-transparent shadow-[0_0_25px_rgba(255,255,255,0.1)]">
                     <img id="profileImg" src="" alt="Perfil" class="w-full h-full object-cover rounded-full border-2 border-black">
                 </div>
+                <div class="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-white text-black flex items-center justify-center text-xs shadow-lg border-2 border-black transition group-hover:scale-105">
+                    <i class="fa-solid fa-pencil"></i>
+                </div>
             </div>
+            <!-- Input invisível para upload de foto direto do dispositivo -->
+            <input type="file" id="inputArquivoFotoPrincipal" accept="image/*" class="hidden" onchange="processarUploadFotoPrincipal(this)">
 
             <div class="flex items-center gap-2 mb-1.5">
                 <h1 id="profileName" class="text-lg font-extrabold tracking-tight text-white">amaralreal7</h1>
@@ -259,7 +264,7 @@
                         <div class="w-8 h-8 bg-black border border-neutral-800 rounded-xl flex items-center justify-center text-white text-xs">
                             <i class="fa-solid fa-gauge-high"></i>
                         </div>
-                        <h3 class="text-xs font-bold text-white">Painel em Tempo Real</h3>
+                        <h3 class="text-xs font-bold text-white">Painel em Tempo Real (Cloud Sync)</h3>
                     </div>
                 </div>
 
@@ -310,14 +315,14 @@
                                 <span id="statCliques" class="text-base font-extrabold text-white">0</span>
                             </div>
                             <div class="mb-3">
-                                <span class="block text-[11px] text-zinc-500 mb-1.5 font-medium">Log de Toques Recentes:</span>
+                                <span class="block text-[11px] text-zinc-500 mb-1.5 font-medium">Log de Toques Recentes (Global):</span>
                                 <div id="listaLogsContainer" class="space-y-1.5 max-h-[120px] overflow-y-auto custom-scroll pr-1"></div>
                             </div>
                         </div>
                         <button onclick="zerarCliques()" class="w-full bg-neutral-950 hover:bg-neutral-900 active:scale-95 text-zinc-300 py-2.5 rounded-xl text-xs font-medium transition cursor-pointer border border-neutral-900 mt-2">Zerar Contador & Logs</button>
                     </div>
 
-                    <!-- BLOCO 3: AJUSTES (Edição Manual Permanente) -->
+                    <!-- BLOCO 3: AJUSTES (Edição Manual do Perfil) -->
                     <div class="w-full min-w-full shrink-0 snap-center bg-black border border-neutral-900 p-4 rounded-2xl flex flex-col justify-between overflow-y-auto custom-scroll">
                         <div class="space-y-2.5">
                             <div class="flex items-center gap-2 mb-1">
@@ -325,15 +330,14 @@
                                 <h4 class="text-xs font-bold text-white uppercase tracking-wider">Edição do Perfil</h4>
                             </div>
 
-                            <div>
-                                <label class="block text-[11px] text-zinc-500 mb-1">URL da Foto de Perfil (Permanente)</label>
-                                <div class="flex items-center gap-3 bg-neutral-950 border border-neutral-900 p-2 rounded-xl">
-                                    <div class="relative w-10 h-10 shrink-0">
-                                        <img id="previewAdminImg" src="" class="w-full h-full object-cover rounded-full border border-neutral-800">
-                                        <span class="absolute -bottom-1 -right-1 bg-white text-black w-4 h-4 rounded-full flex items-center justify-center text-[9px] shadow font-bold"><i class="fa-solid fa-pencil"></i></span>
+                            <div class="bg-neutral-950 border border-neutral-900 p-3 rounded-xl flex items-center justify-between">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="w-9 h-9 rounded-full overflow-hidden border border-neutral-800 shrink-0">
+                                        <img id="previewAdminImg" src="" class="w-full h-full object-cover">
                                     </div>
-                                    <input type="text" id="editImgUrl" oninput="atualizarPreviewAdminImg(this.value)" placeholder="Cole a URL da foto..." class="w-full bg-black border border-neutral-900 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-neutral-500">
+                                    <span class="text-xs text-zinc-300 font-medium">Foto de Perfil (Lápis na Home)</span>
                                 </div>
+                                <button onclick="dispararSeletorFotoPrincipal()" class="bg-white text-black font-bold px-3 py-1.5 rounded-lg text-xs cursor-pointer hover:bg-zinc-200 transition">Trocar Foto</button>
                             </div>
 
                             <div>
@@ -366,11 +370,12 @@
         </div>
     </div>
 
-    <!-- JAVASCRIPT COM CONFIGURAÇÃO PADRÃO PERMANENTE E LOGS EM TEMPO REAL -->
+    <!-- JAVASCRIPT COM CLOUD SYNC AUTOMÁTICO E UPLOAD DE FOTO POR LÁPIS -->
     <script>
-        const STORAGE_KEY = 'amaralReal_dados_global_v2';
+        // Chave e ID de Nuvem compartilhado para sincronização entre diferentes IPs/Dispositivos no GitHub Pages
+        const CLOUD_STORAGE_KEY = 'amaralReal_cloud_sync_v3';
+        const BIN_FALLBACK_URL = 'https://api.npoint.io/7b48c6b7389c9e7a7501'; // Bin público compartilhado para tempo real
 
-        // Configuração Padrão de Fábrica (Garante que exiba sempre a foto e dados corretos no Instagram)
         let dadosSitePadrao = {
             nome: "amaralreal7",
             bio: "O maior chefe do 7",
@@ -384,8 +389,9 @@
 
         let dadosSite = { ...dadosSitePadrao };
 
-        function carregarEstado() {
-            let dadosSalvos = localStorage.getItem(STORAGE_KEY);
+        async function carregarEstado() {
+            // Primeiro tenta carregar do localStorage local para resposta instantânea
+            let dadosSalvos = localStorage.getItem(CLOUD_STORAGE_KEY);
             if (dadosSalvos) {
                 try {
                     let parsed = JSON.parse(dadosSalvos);
@@ -396,18 +402,43 @@
             } else {
                 dadosSite = { ...dadosSitePadrao };
             }
-        }
 
-        function salvarEstado() {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(dadosSite));
-            window.dispatchEvent(new Event('storage'));
-        }
-
-        window.addEventListener('storage', () => {
-            carregarEstado();
+            // Sincroniza em segundo plano com armazenamento em nuvem para capturar cliques de outros IPs
+            try {
+                let response = await fetch(BIN_FALLBACK_URL + '?' + new Date().getTime());
+                if (response.ok) {
+                    let dadosNuvem = await response.json();
+                    if (dadosNuvem && typeof dadosNuvem.cliques === 'number') {
+                        // Mescla mantendo a versão mais atualizada
+                        if ((dadosNuvem.cliques || 0) >= (dadosSite.cliques || 0)) {
+                            dadosSite = { ...dadosSitePadrao, ...dadosNuvem };
+                            localStorage.setItem(CLOUD_STORAGE_KEY, JSON.stringify(dadosSite));
+                        }
+                    }
+                }
+            } catch(err) {
+                // Mantém o funcionamento local caso esteja offline
+            }
             carregarDadosNaTela();
             atualizarEstatisticasAdmin();
-        });
+        }
+
+        async function salvarEstado() {
+            localStorage.setItem(CLOUD_STORAGE_KEY, JSON.stringify(dadosSite));
+            carregarDadosNaTela();
+            atualizarEstatisticasAdmin();
+
+            // Envia para a nuvem para atualizar logs e cliques vindos de qualquer outro IP/sistema
+            try {
+                await fetch(BIN_FALLBACK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dadosSite)
+                });
+            } catch(err) {
+                // Falha silenciosa se houver problema de rede temporário
+            }
+        }
 
         // Notificações Pix estilo iOS
         const listaNotificacoesPix = [
@@ -422,9 +453,9 @@
 
         window.addEventListener('DOMContentLoaded', () => {
             carregarEstado();
-            carregarDadosNaTela();
-            atualizarEstatisticasAdmin();
             iniciarTickerPix();
+            // Atualiza automaticamente a cada 4 segundos para puxar cliques de outros IPs em tempo real
+            setInterval(carregarEstado, 4000);
         });
 
         function dispararNotificacaoIphone() {
@@ -476,6 +507,35 @@
             document.getElementById('textSecurityBadge').innerText = dadosSite.securityText || dadosSitePadrao.securityText;
             document.getElementById('profileImg').src = dadosSite.profileImg || dadosSitePadrao.profileImg;
             document.getElementById('textFooter').innerText = dadosSite.footer || dadosSitePadrao.footer;
+            const previewAdmin = document.getElementById('previewAdminImg');
+            if (previewAdmin) previewAdmin.src = dadosSite.profileImg || dadosSitePadrao.profileImg;
+        }
+
+        // Funções para alterar foto pelo lápis em tempo real (via upload de arquivo)
+        function dispararSeletorFotoPrincipal() {
+            let input = document.getElementById('inputArquivoFotoPrincipal');
+            if (!input) {
+                input = document.createElement('input');
+                input.type = 'file';
+                input.id = 'inputArquivoFotoPrincipal';
+                input.accept = 'image/*';
+                input.style.display = 'none';
+                input.onchange = function() { processarUploadFotoPrincipal(this); };
+                document.body.appendChild(input);
+            }
+            input.click();
+        }
+
+        function processarUploadFotoPrincipal(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    dadosSite.profileImg = e.target.result;
+                    salvarEstado();
+                    mostrarToast('Foto atualizada com sucesso!');
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
         }
 
         function mascaraCPF(input) {
@@ -499,22 +559,18 @@
             }, 2500);
         }
 
-        function clicarBotaoLink(tipo) {
-            carregarEstado();
+        async function clicarBotaoLink(tipo) {
+            await carregarEstado();
             
-            // Incrementa o contador de cliques de forma limpa em tempo real
             dadosSite.cliques = (parseInt(dadosSite.cliques) || 0) + 1;
-            
             if (!Array.isArray(dadosSite.logsCliques)) dadosSite.logsCliques = [];
             
             const nomeBotao = tipo === 'nubank' ? 'Nubank Fake' : 'Suporte 24H';
             const horarioAtual = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
             
-            // Adiciona o log sem duplicidades indesejadas
             dadosSite.logsCliques.push({ botao: nomeBotao, hora: horarioAtual });
             
-            salvarEstado();
-            atualizarEstatisticasAdmin();
+            await salvarEstado();
 
             if (tipo === 'nubank') {
                 document.getElementById('modalCheckout').classList.remove('hidden');
@@ -535,8 +591,8 @@
             document.body.style.overflow = 'auto';
         }
 
-        function abrirAdmin() {
-            carregarEstado();
+        async function abrirAdmin() {
+            await carregarEstado();
             document.getElementById('modalAdmin').classList.remove('hidden');
             document.getElementById('adminLoginBox').classList.remove('hidden');
             document.getElementById('adminDashboard').classList.add('hidden');
@@ -567,9 +623,9 @@
                 
                 document.getElementById('editNome').value = dadosSite.nome;
                 document.getElementById('editBio').value = dadosSite.bio;
-                document.getElementById('editImgUrl').value = dadosSite.profileImg;
-                document.getElementById('previewAdminImg').src = dadosSite.profileImg;
                 document.getElementById('editSecurity').value = dadosSite.securityText;
+                const previewAdmin = document.getElementById('previewAdminImg');
+                if (previewAdmin) previewAdmin.src = dadosSite.profileImg;
                 
                 mudarBlocoAdmin(0);
                 atualizarEstatisticasAdmin();
@@ -577,12 +633,6 @@
                 mostrarToast('Senha incorreta');
                 campo.value = '';
                 campo.focus();
-            }
-        }
-
-        function atualizarPreviewAdminImg(url) {
-            if (url.trim() !== '') {
-                document.getElementById('previewAdminImg').src = url.trim();
             }
         }
 
@@ -618,24 +668,17 @@
         function salvarAlteracoesAdmin() {
             const novoNome = document.getElementById('editNome').value.trim();
             const novaBio = document.getElementById('editBio').value.trim();
-            const novaImg = document.getElementById('editImgUrl').value.trim();
             const novoSecurity = document.getElementById('editSecurity').value.trim();
 
             if (novoNome) dadosSite.nome = novoNome;
             if (novaBio) dadosSite.bio = novaBio;
-            if (novaImg) {
-                dadosSite.profileImg = novaImg;
-                document.getElementById('previewAdminImg').src = novaImg;
-            }
             if (novoSecurity) dadosSite.securityText = novoSecurity;
 
             salvarEstado();
-            carregarDadosNaTela();
             mostrarToast('Configurações Salvas!');
         }
 
         function atualizarEstatisticasAdmin() {
-            carregarEstado();
             document.getElementById('statCliques').innerText = dadosSite.cliques || 0;
             document.getElementById('statPedidos').innerText = dadosSite.pedidos ? dadosSite.pedidos.length : 0;
 
@@ -671,33 +714,32 @@
             }
         }
 
-        function zerarCliques() {
+        async function zerarCliques() {
             dadosSite.cliques = 0;
             dadosSite.logsCliques = [];
-            salvarEstado();
+            await salvarEstado();
             atualizarEstatisticasAdmin();
             mostrarToast('Cliques e logs zerados!');
         }
 
-        function limparPedidos() {
+        async function limparPedidos() {
             dadosSite.pedidos = [];
-            salvarEstado();
+            await salvarEstado();
             atualizarEstatisticasAdmin();
             mostrarToast('Pedidos limpos!');
         }
 
-        function gerarPagamentoPix() {
-            const n = document.getElementById('inputNome').value.trimeta = document.getElementById('inputNome').value.trim();
+        async function gerarPagamentoPix() {
+            const n = document.getElementById('inputNome').value.trim();
             const cpf = document.getElementById('inputCpf').value.trim();
             if (!n || !cpf) { 
                 mostrarToast('Preencha os campos'); 
                 return; 
             }
-            carregarEstado();
+            await carregarEstado();
             if (!Array.isArray(dadosSite.pedidos)) dadosSite.pedidos = [];
             dadosSite.pedidos.push({ nome: n, cpf: cpf, data: new Date().toLocaleDateString('pt-BR') });
-            salvarEstado();
-            atualizarEstatisticasAdmin();
+            await salvarEstado();
             
             document.getElementById('inputNome').value = '';
             document.getElementById('inputCpf').value = '';
