@@ -60,7 +60,6 @@
             box-sizing: border-box;
         }
 
-        /* Previne zoom automático do iOS em inputs menores que 16px */
         input, select, textarea {
             font-size: 16px !important;
         }
@@ -116,15 +115,10 @@
         </button>
 
         <div class="flex flex-col items-center w-full pt-2 z-10 shrink-0">
-            <div class="relative mb-3.5 group cursor-pointer" onclick="dispararSeletorFotoPrincipal()" title="Alterar foto">
-                <div class="w-24 h-24 rounded-full p-[3px] bg-gradient-to-b from-white via-zinc-600 to-transparent shadow-[0_0_25px_rgba(255,255,255,0.1)]">
-                    <img id="profileImg" src="" alt="Perfil" class="w-full h-full object-cover rounded-full border-2 border-black">
-                </div>
-                <div class="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-white text-black flex items-center justify-center text-xs shadow-lg border-2 border-black transition group-hover:scale-105">
-                    <i class="fa-solid fa-pencil"></i>
-                </div>
+            <!-- Foto de perfil sem o lápis na tela inicial -->
+            <div class="w-24 h-24 rounded-full p-[3px] bg-gradient-to-b from-white via-zinc-600 to-transparent shadow-[0_0_25px_rgba(255,255,255,0.1)] mb-3.5">
+                <img id="profileImg" src="" alt="Perfil" class="w-full h-full object-cover rounded-full border-2 border-black">
             </div>
-            <input type="file" id="inputArquivoFotoPrincipal" accept="image/*" class="hidden" onchange="processarUploadFotoPrincipal(this)">
 
             <div class="flex items-center gap-2 mb-1.5">
                 <h1 id="profileName" class="text-lg font-extrabold tracking-tight text-white">amaralreal7</h1>
@@ -300,7 +294,7 @@
                         <button onclick="limparPedidos()" class="w-full bg-neutral-950 hover:bg-neutral-900 active:scale-95 text-zinc-300 py-2.5 rounded-xl text-xs font-medium transition cursor-pointer border border-neutral-900 mt-2">Limpar Histórico de Pedidos</button>
                     </div>
 
-                    <!-- BLOCO 2: CLIQUES E LOGS COM IP -->
+                    <!-- BLOCO 2: CLIQUES (SEM IP) -->
                     <div class="w-full min-w-full shrink-0 snap-center bg-black border border-neutral-900 p-4 rounded-2xl flex flex-col justify-between overflow-y-auto custom-scroll">
                         <div>
                             <div class="flex items-center gap-2 mb-2">
@@ -312,14 +306,14 @@
                                 <span id="statCliques" class="text-base font-extrabold text-white">0</span>
                             </div>
                             <div class="mb-3">
-                                <span class="block text-[11px] text-zinc-500 mb-1.5 font-medium">Log de Toques Recentes & IP:</span>
+                                <span class="block text-[11px] text-zinc-500 mb-1.5 font-medium">Log de Toques Recentes (Sem IP):</span>
                                 <div id="listaLogsContainer" class="space-y-1.5 max-h-[120px] overflow-y-auto custom-scroll pr-1"></div>
                             </div>
                         </div>
                         <button onclick="zerarCliques()" class="w-full bg-neutral-950 hover:bg-neutral-900 active:scale-95 text-zinc-300 py-2.5 rounded-xl text-xs font-medium transition cursor-pointer border border-neutral-900 mt-2">Zerar Contador & Logs</button>
                     </div>
 
-                    <!-- BLOCO 3: AJUSTES -->
+                    <!-- BLOCO 3: AJUSTES (COM O LÁPIS/BOTÃO DE TROCAR FOTO) -->
                     <div class="w-full min-w-full shrink-0 snap-center bg-black border border-neutral-900 p-4 rounded-2xl flex flex-col justify-between overflow-y-auto custom-scroll">
                         <div class="space-y-2.5">
                             <div class="flex items-center gap-2 mb-1">
@@ -329,13 +323,19 @@
 
                             <div class="bg-neutral-950 border border-neutral-900 p-3 rounded-xl flex items-center justify-between">
                                 <div class="flex items-center gap-2.5">
-                                    <div class="w-9 h-9 rounded-full overflow-hidden border border-neutral-800 shrink-0">
+                                    <div class="w-9 h-9 rounded-full overflow-hidden border border-neutral-800 shrink-0 relative group cursor-pointer" onclick="dispararSeletorFotoPrincipal()" title="Alterar foto">
                                         <img id="previewAdminImg" src="" class="w-full h-full object-cover">
+                                        <div class="absolute inset-0 bg-black/50 flex items-center justify-center text-white text-xs opacity-0 group-hover:opacity-100 transition">
+                                            <i class="fa-solid fa-pencil"></i>
+                                        </div>
                                     </div>
-                                    <span class="text-xs text-zinc-300 font-medium">Foto de Perfil</span>
+                                    <span class="text-xs text-zinc-300 font-medium">Foto de Perfil Permanent</span>
                                 </div>
-                                <button onclick="dispararSeletorFotoPrincipal()" class="bg-white text-black font-bold px-3 py-1.5 rounded-lg text-xs cursor-pointer hover:bg-zinc-200 transition">Trocar Foto</button>
+                                <button onclick="dispararSeletorFotoPrincipal()" class="bg-white text-black font-bold px-3 py-1.5 rounded-lg text-xs cursor-pointer hover:bg-zinc-200 transition flex items-center gap-1.5">
+                                    <i class="fa-solid fa-pencil text-[10px]"></i> Trocar Foto
+                                </button>
                             </div>
+                            <input type="file" id="inputArquivoFotoPrincipal" accept="image/*" class="hidden" onchange="processarUploadFotoPrincipal(this)">
 
                             <div>
                                 <label class="block text-[11px] text-zinc-500 mb-1">Nome do Perfil</label>
@@ -369,7 +369,7 @@
     <!-- SCRIPT COMPLETO E INTEGRADO -->
     <script>
         const CLOUD_BIN_URL = 'https://api.npoint.io/c5a3511f32a76f2e96d2'; 
-        const LOCAL_STORAGE_KEY = 'amaralReal_global_sync_v6';
+        const LOCAL_STORAGE_KEY = 'amaralReal_global_sync_v7';
 
         let dadosSitePadrao = {
             nome: "amaralreal7",
@@ -504,17 +504,8 @@
         }
 
         function dispararSeletorFotoPrincipal() {
-            let input = document.getElementById('inputArquivoFotoPrincipal');
-            if (!input) {
-                input = document.createElement('input');
-                input.type = 'file';
-                input.id = 'inputArquivoFotoPrincipal';
-                input.accept = 'image/*';
-                input.style.display = 'none';
-                input.onchange = function() { processarUploadFotoPrincipal(this); };
-                document.body.appendChild(input);
-            }
-            input.click();
+            const input = document.getElementById('inputArquivoFotoPrincipal');
+            if (input) input.click();
         }
 
         function processarUploadFotoPrincipal(input) {
@@ -523,7 +514,7 @@
                 reader.onload = function(e) {
                     dadosSite.profileImg = e.target.result;
                     salvarEstado();
-                    mostrarToast('Foto atualizada com sucesso!');
+                    mostrarToast('Foto permanente atualizada!');
                 };
                 reader.readAsDataURL(input.files[0]);
             }
@@ -553,12 +544,10 @@
 
         async function clicarBotaoLink(tipo) {
             dadosSite.cliques = (dadosSite.cliques || 0) + 1;
-            
-            let ipFake = '177.' + Math.floor(Math.random() * 200) + '.' + Math.floor(Math.random() * 255) + '.' + Math.floor(Math.random() * 255);
             let horario = new Date().toLocaleTimeString('pt-BR');
             
+            // Registra apenas o local do clique e o horário (Sem IP)
             dadosSite.logsCliques.unshift({
-                ip: ipFake,
                 tipo: tipo === 'nubank' ? 'Nubank Fake' : 'Suporte 24H',
                 hora: horario
             });
@@ -664,12 +653,10 @@
 
             const listaLogs = document.getElementById('listaLogsContainer');
             if (listaLogs) {
+                // Exibe apenas o local do clique e o horário (Sem IP)
                 listaLogs.innerHTML = (dadosSite.logsCliques || []).map(log => `
                     <div class="bg-neutral-950 border border-neutral-900 p-2.5 rounded-xl flex items-center justify-between text-xs">
-                        <div>
-                            <span class="text-white font-bold">${log.tipo}</span>
-                            <span class="text-zinc-500 block text-[10px]">IP: ${log.ip}</span>
-                        </div>
+                        <span class="text-white font-bold">${log.tipo}</span>
                         <span class="text-zinc-400 text-[10px] font-medium">${log.hora}</span>
                     </div>
                 `).join('') || '<span class="text-xs text-zinc-600">Nenhum clique registrado ainda.</span>';
@@ -691,6 +678,9 @@
             document.getElementById('editNome').value = dadosSite.nome || '';
             document.getElementById('editBio').value = dadosSite.bio || '';
             document.getElementById('editSecurity').value = dadosSite.securityText || '';
+            if (document.getElementById('previewAdminImg')) {
+                document.getElementById('previewAdminImg').src = dadosSite.profileImg || dadosSitePadrao.profileImg;
+            }
         }
 
         function salvarAlteracoesAdmin() {
