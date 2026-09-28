@@ -11,9 +11,9 @@
             theme: {
                 extend: {
                     colors: {
-                        darkbg: '#0a0a0a',
-                        darkcard: '#141414',
-                        darkborder: '#262626',
+                        darkbg: '#000000',
+                        darkcard: '#0d0d0d',
+                        darkborder: '#222222',
                         nubank: '#820ad1'
                     }
                 }
@@ -37,11 +37,9 @@
             margin: 0;
             padding: 0;
         }
-        /* Prevent mobile input zoom */
         input, select, textarea {
             font-size: 16px !important;
         }
-        /* VIP Glow & Animations */
         @keyframes fadeIn {
             from { opacity: 0; transform: scale(0.96); }
             to { opacity: 1; transform: scale(1); }
@@ -57,38 +55,50 @@
             transform: translateY(-3px) scale(1.01);
             border-color: rgba(130, 10, 209, 0.6);
             box-shadow: 0 10px 30px -5px rgba(130, 10, 209, 0.3);
-            background-color: #1a1a1a;
+            background-color: #141414;
         }
         .vip-btn:active {
             transform: translateY(-1px) scale(0.99);
         }
-        /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 4px;
         }
         ::-webkit-scrollbar-track {
-            background: #0a0a0a;
+            background: #000000;
         }
         ::-webkit-scrollbar-thumb {
-            background: #262626;
+            background: #222222;
             border-radius: 2px;
         }
     </style>
 </head>
 <body id="body-bg" class="w-screen h-screen flex flex-col items-center justify-between p-4 selection:bg-purple-600 selection:text-white overflow-hidden">
 
+    <!-- Top Right Admin Configuration Icon -->
+    <div class="absolute top-4 right-4 z-40">
+        <button onclick="openAdminLogin()" class="w-10 h-10 rounded-xl bg-darkcard border border-darkborder flex items-center justify-center text-gray-400 hover:text-white hover:border-purple-600 transition shadow-lg">
+            <i class="fa-solid fa-gear text-sm"></i>
+        </button>
+    </div>
+
     <!-- Main Container -->
     <main class="w-full max-w-sm mx-auto flex flex-col items-center justify-center my-auto">
         
-        <!-- Profile Picture (Clean on homepage, managed in admin) -->
+        <!-- Profile Picture -->
         <div class="relative mb-4">
             <div id="profile-container" class="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border-2 border-darkborder shadow-2xl bg-darkcard flex items-center justify-center">
                 <img id="profile-img" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80" alt="Perfil" class="w-full h-full object-cover">
             </div>
         </div>
 
-        <!-- Username -->
-        <h1 id="display-username" class="text-xl font-bold tracking-tight mb-6 text-white">amaralreal7</h1>
+        <!-- Username & Subtitle -->
+        <h1 id="display-username" class="text-xl font-bold tracking-tight text-white mb-1">amaralreal7</h1>
+        <div class="flex items-center gap-2 mb-6">
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-medium bg-purple-950/80 border border-purple-500/30 text-purple-300">
+                <span class="w-1.5 h-1.5 rounded-full bg-purple-500 animate-pulse mr-1.5"></span> Ativo
+            </span>
+            <span class="text-xs text-gray-400 font-medium">O maior chefe do 7</span>
+        </div>
 
         <!-- Action Links Container -->
         <div class="w-full space-y-3">
@@ -125,13 +135,13 @@
 
     </main>
 
-    <!-- Footer Admin Trigger -->
-    <footer class="w-full max-w-sm text-center py-4 text-[11px] text-gray-600 flex-shrink-0">
-        <button onclick="openAdminLogin()" class="hover:text-gray-400 transition">Painel Admin</button>
+    <!-- Footer Secure Info -->
+    <footer class="w-full max-w-sm text-center py-4 text-[11px] text-gray-500 flex-shrink-0 flex items-center justify-center gap-1.5">
+        <i class="fa-solid fa-shield-halved text-purple-500 text-xs"></i> 100% Seguro • Entrega automatizada por e-mail
     </footer>
 
     <!-- ================= MODAL CHECKOUT NUBANK ================= -->
-    <div id="checkout-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+    <div id="checkout-modal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
         <div class="modal-anim bg-darkcard border border-darkborder rounded-2xl w-full max-w-sm p-5 relative shadow-2xl my-auto">
             
             <div class="flex items-center justify-between mb-5 pb-3 border-b border-darkborder">
@@ -170,26 +180,30 @@
                 </div>
 
                 <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-xl shadow-lg transition mt-2 text-xs">
-                    Confirmar Dados e Pagar
+                    Prosseguir
                 </button>
             </form>
 
         </div>
     </div>
 
-    <!-- ================= MODAL PIX PAYMENT SCREEN (NEW) ================= -->
-    <div id="pix-modal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+    <!-- ================= MODAL PIX PAYMENT SCREEN WITH TIMER ================= -->
+    <div id="pix-modal" class="fixed inset-0 bg-black/95 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
         <div class="modal-anim bg-darkcard border border-darkborder rounded-2xl w-full max-w-sm p-5 text-center shadow-2xl my-auto">
             
-            <div class="flex items-center justify-between mb-4 pb-2 border-b border-darkborder">
+            <div class="flex items-center justify-between mb-3 pb-2 border-b border-darkborder">
                 <button onclick="closePixModal()" class="flex items-center gap-1 text-xs text-gray-400 hover:text-white bg-darkbg border border-darkborder px-2.5 py-1 rounded-lg transition">
                     <i class="fa-solid fa-arrow-left text-[10px]"></i> Voltar
                 </button>
-                <span class="font-bold text-xs text-purple-400">Pagamento Pix</span>
+                <div class="flex items-center gap-2">
+                    <span class="text-[11px] text-gray-400">Tempo restante:</span>
+                    <span id="timer-display" class="font-mono text-xs font-bold text-purple-400">10:00</span>
+                </div>
             </div>
 
-            <div class="bg-white p-3 rounded-xl inline-block mb-3 shadow-inner">
-                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=220&q=80" alt="QR Code Pix" class="w-36 h-36 object-cover rounded">
+            <!-- Uploaded QR Code -->
+            <div class="bg-white p-2.5 rounded-xl inline-block mb-3 shadow-inner">
+                <img src="IMG_1954_9f0ffe.jpeg" alt="QR Code Pix" class="w-36 h-36 object-contain rounded">
             </div>
 
             <div class="mb-3">
@@ -203,17 +217,45 @@
             </div>
 
             <p class="text-[11px] text-gray-300 mb-4 leading-relaxed">
-                Assim que o pagamento for confirmado pelos administradores, você receberá o produto em seu e-mail.
+                Após realizar o pagamento, clique no botão abaixo para confirmar.
             </p>
 
-            <button onclick="finishPixOrder()" class="w-full bg-darkbg border border-darkborder hover:bg-darkborder text-white font-semibold py-2.5 rounded-xl text-xs transition">
-                OK, Já Realizei o Pagamento
+            <button onclick="confirmPixPayment()" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-xl text-xs transition shadow-lg">
+                Prosseguir
+            </button>
+        </div>
+    </div>
+
+    <!-- ================= MODAL SUCCESS ANIMATED NOTIFICATION ================= -->
+    <div id="success-modal" class="fixed inset-0 bg-black/95 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="modal-anim bg-darkcard border border-darkborder rounded-2xl w-full max-w-xs p-6 text-center shadow-2xl">
+            <div class="w-12 h-12 rounded-full bg-purple-600/20 border border-purple-500/40 text-purple-400 flex items-center justify-center mx-auto mb-3 text-lg">
+                <i class="fa-solid fa-check animate-bounce"></i>
+            </div>
+            <h3 class="font-bold text-sm text-white mb-1.5">Pagamento 100% Concluído!</h3>
+            <p class="text-xs text-gray-400 mb-5 leading-relaxed">Seus dados foram enviados. A equipe verificará e enviará o acesso em seu e-mail.</p>
+            <button onclick="closeSuccessModal()" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2.5 rounded-xl text-xs transition">
+                OK, Entendido
+            </button>
+        </div>
+    </div>
+
+    <!-- ================= MODAL TIME EXPIRED ================= -->
+    <div id="expired-modal" class="fixed inset-0 bg-black/95 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="modal-anim bg-darkcard border border-darkborder rounded-2xl w-full max-w-xs p-6 text-center shadow-2xl">
+            <div class="w-12 h-12 rounded-full bg-red-600/20 border border-red-500/40 text-red-400 flex items-center justify-center mx-auto mb-3 text-lg">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+            </div>
+            <h3 class="font-bold text-sm text-white mb-1.5">Tempo Esgotado</h3>
+            <p class="text-xs text-gray-400 mb-5 leading-relaxed">O tempo limite para pagamento expirou. Por favor, tente novamente.</p>
+            <button onclick="closeExpiredModal()" class="w-full bg-darkbg border border-darkborder hover:bg-darkborder text-white font-semibold py-2.5 rounded-xl text-xs transition">
+                Voltar ao Início
             </button>
         </div>
     </div>
 
     <!-- ================= MODAL AI SUPPORT ================= -->
-    <div id="ai-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+    <div id="ai-modal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
         <div class="modal-anim bg-darkcard border border-darkborder rounded-2xl w-full max-w-sm h-[420px] flex flex-col relative shadow-2xl my-auto overflow-hidden">
             
             <div class="flex items-center justify-between p-3.5 border-b border-darkborder bg-darkbg">
@@ -256,7 +298,7 @@
     </div>
 
     <!-- ================= MODAL ADMIN LOGIN ================= -->
-    <div id="admin-login-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div id="admin-login-modal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
         <div class="modal-anim bg-darkcard border border-darkborder rounded-2xl w-full max-w-xs p-5 relative shadow-2xl">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="font-bold text-xs">Painel Administrativo</h3>
@@ -276,7 +318,7 @@
     </div>
 
     <!-- ================= MODAL ADMIN PANEL ================= -->
-    <div id="admin-panel-modal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-3 overflow-y-auto">
+    <div id="admin-panel-modal" class="fixed inset-0 bg-black/95 backdrop-blur-md z-50 hidden flex items-center justify-center p-3 overflow-y-auto">
         <div class="modal-anim bg-darkcard border border-darkborder rounded-2xl w-full max-w-md p-5 relative shadow-2xl my-auto">
             
             <div class="flex items-center justify-between pb-3 border-b border-darkborder mb-4">
@@ -325,7 +367,7 @@
                 <h3 class="font-semibold text-xs mb-2 text-gray-300">Cor de Fundo da Tela Inicial</h3>
                 <div class="grid grid-cols-4 gap-2">
                     <button onclick="setBgColor('#000000')" class="h-8 rounded-lg bg-black border border-darkborder hover:border-purple-500 transition text-[10px] text-gray-300">Preto</button>
-                    <button onclick="setBgColor('#0f0a14')" class="h-8 rounded-lg bg-[#0f0a14] border border-darkborder hover:border-purple-500 transition text-[10px] text-purple-300">Dark Roxo</button>
+                    <button onclick="setBgColor('#080808')" class="h-8 rounded-lg bg-[#080808] border border-darkborder hover:border-purple-500 transition text-[10px] text-purple-300">Dark Sólido</button>
                     <button onclick="setBgColor('#0a140f')" class="h-8 rounded-lg bg-[#0a140f] border border-darkborder hover:border-green-500 transition text-[10px] text-green-300">Dark Verde</button>
                     <button onclick="setBgColor('#140a0a')" class="h-8 rounded-lg bg-[#140a0a] border border-darkborder hover:border-red-500 transition text-[10px] text-red-300">Dark Vinho</button>
                 </div>
@@ -349,6 +391,8 @@
         let clickCount = parseInt(localStorage.getItem('amaral_clicks') || '0');
         let orders = JSON.parse(localStorage.getItem('amaral_orders') || '[]');
         let isAdminLoggedIn = false;
+        let timerInterval = null;
+        let timeLeft = 600; // 10 minutes
 
         window.addEventListener('DOMContentLoaded', () => {
             clickCount++;
@@ -366,7 +410,7 @@
             }
         });
 
-        // Checkout & Pix Screen
+        // Checkout & Pix Screen with Timer
         function openCheckout() {
             document.getElementById('checkout-modal').classList.remove('hidden');
         }
@@ -425,10 +469,37 @@
 
             document.getElementById('payment-form').reset();
             closeCheckout();
+            
+            // Open Pix screen and start 10 min countdown
             document.getElementById('pix-modal').classList.remove('hidden');
+            startCountdown();
+        }
+
+        function startCountdown() {
+            timeLeft = 600;
+            updateTimerDisplay();
+            if (timerInterval) clearInterval(timerInterval);
+            
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    closePixModal();
+                    document.getElementById('expired-modal').classList.remove('hidden');
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.getElementById('timer-display').innerText = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
         }
 
         function closePixModal() {
+            if (timerInterval) clearInterval(timerInterval);
             document.getElementById('pix-modal').classList.add('hidden');
         }
 
@@ -439,9 +510,18 @@
             });
         }
 
-        function finishPixOrder() {
+        function confirmPixPayment() {
+            if (timerInterval) clearInterval(timerInterval);
             document.getElementById('pix-modal').classList.add('hidden');
-            alert('Pedido registrado! Assim que o pagamento for verificado pela equipe, você receberá o produto em seu e-mail.');
+            document.getElementById('success-modal').classList.remove('hidden');
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('success-modal').classList.add('hidden');
+        }
+
+        function closeExpiredModal() {
+            document.getElementById('expired-modal').classList.add('hidden');
         }
 
         // AI Support
@@ -475,7 +555,7 @@
             chatMessages.scrollTop = chatMessages.scrollHeight;
 
             setTimeout(() => {
-                let aiReply = "Assim que o pagamento dele for verificado pela equipe, ele receberá o acesso do painel, receberá o link de download no Gmail.";
+                let aiReply = "Assim que o pagamento for verificado pela equipe, você receberá o acesso e o link de download no seu Gmail.";
                 const lower = text.toLowerCase();
                 if (lower.includes('pix') || lower.includes('pagar')) {
                     aiReply = "Você pode efetuar o pagamento clicando no botão Nubank na página principal e preenchendo seus dados corretamente.";
