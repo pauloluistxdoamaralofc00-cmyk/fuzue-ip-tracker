@@ -232,7 +232,7 @@
         </div>
     </div>
 
-    <!-- PAINEL DE ADMINISTRAÇÃO (Blocos Horizontais em Tempo Real) -->
+    <!-- PAINEL DE ADMINISTRAÇÃO -->
     <div id="modalAdmin" class="fixed inset-0 bg-black/95 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 overflow-hidden">
         <div class="bg-black border border-neutral-900 w-full max-w-[460px] rounded-3xl p-6 shadow-2xl relative flex flex-col my-auto max-h-[88vh] overflow-hidden">
             
@@ -264,7 +264,7 @@
                     </div>
                 </div>
 
-                <!-- Botões de Navegação Superior (Atalhos para os Blocos) -->
+                <!-- Botões de Navegação Superior -->
                 <div class="grid grid-cols-3 gap-2 mb-3 shrink-0">
                     <button onclick="mudarBlocoAdmin(0)" id="btnTabVendas" class="bg-white text-black font-bold py-2 px-2 rounded-xl text-[11px] transition cursor-pointer flex items-center justify-center gap-1.5 shadow-md">
                         <i class="fa-solid fa-bag-shopping text-xs"></i> Vendas
@@ -277,10 +277,10 @@
                     </button>
                 </div>
 
-                <!-- CARROSSEL DE BLOCOS HORIZONTAIS (Arraste para o lado) -->
+                <!-- CARROSSEL DE BLOCOS HORIZONTAIS -->
                 <div id="carouselContainer" class="flex overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar gap-3 flex-1 items-stretch py-1" onscroll="atualizarBlocoAtivoPorScroll()">
                     
-                    <!-- BLOCO 1: VENDAS (Primeiro Bloco) -->
+                    <!-- BLOCO 1: VENDAS -->
                     <div class="w-full min-w-full shrink-0 snap-center bg-black border border-neutral-900 p-4 rounded-2xl flex flex-col justify-between overflow-y-auto custom-scroll">
                         <div>
                             <div class="flex items-center gap-2 mb-2">
@@ -293,15 +293,13 @@
                             </div>
                             <div class="mb-3">
                                 <span class="block text-[11px] text-zinc-500 mb-1.5 font-medium">Histórico de Pedidos Pix:</span>
-                                <div id="listaPedidosContainer" class="space-y-2 max-h-[140px] overflow-y-auto custom-scroll pr-1">
-                                    <!-- Dinâmico -->
-                                </div>
+                                <div id="listaPedidosContainer" class="space-y-2 max-h-[140px] overflow-y-auto custom-scroll pr-1"></div>
                             </div>
                         </div>
                         <button onclick="limparPedidos()" class="w-full bg-neutral-950 hover:bg-neutral-900 active:scale-95 text-zinc-300 py-2.5 rounded-xl text-xs font-medium transition cursor-pointer border border-neutral-900 mt-2">Limpar Histórico de Pedidos</button>
                     </div>
 
-                    <!-- BLOCO 2: CLIQUES E LOGS DE ACESSO -->
+                    <!-- BLOCO 2: CLIQUES E LOGS -->
                     <div class="w-full min-w-full shrink-0 snap-center bg-black border border-neutral-900 p-4 rounded-2xl flex flex-col justify-between overflow-y-auto custom-scroll">
                         <div>
                             <div class="flex items-center gap-2 mb-2">
@@ -314,15 +312,13 @@
                             </div>
                             <div class="mb-3">
                                 <span class="block text-[11px] text-zinc-500 mb-1.5 font-medium">Log de Toques Recentes:</span>
-                                <div id="listaLogsContainer" class="space-y-1.5 max-h-[120px] overflow-y-auto custom-scroll pr-1">
-                                    <!-- Dinâmico -->
-                                </div>
+                                <div id="listaLogsContainer" class="space-y-1.5 max-h-[120px] overflow-y-auto custom-scroll pr-1"></div>
                             </div>
                         </div>
                         <button onclick="zerarCliques()" class="w-full bg-neutral-950 hover:bg-neutral-900 active:scale-95 text-zinc-300 py-2.5 rounded-xl text-xs font-medium transition cursor-pointer border border-neutral-900 mt-2">Zerar Contador & Logs</button>
                     </div>
 
-                    <!-- BLOCO 3: AJUSTES (Com Edição de Foto com Lápis) -->
+                    <!-- BLOCO 3: AJUSTES (Com Lápis na Foto) -->
                     <div class="w-full min-w-full shrink-0 snap-center bg-black border border-neutral-900 p-4 rounded-2xl flex flex-col justify-between overflow-y-auto custom-scroll">
                         <div class="space-y-2.5">
                             <div class="flex items-center gap-2 mb-1">
@@ -362,7 +358,7 @@
 
                 </div>
 
-                <!-- Botão Sair do Painel na parte inferior -->
+                <!-- Botão Sair do Painel -->
                 <div class="pt-3 border-t border-neutral-900 shrink-0 mt-2">
                     <button type="button" onclick="abrirAdmin()" class="w-full bg-neutral-950 hover:bg-neutral-900 text-zinc-300 font-semibold py-2.5 rounded-xl text-xs transition cursor-pointer active:scale-95 border border-neutral-900">
                         Fechar / Sair do Painel
@@ -372,8 +368,10 @@
         </div>
     </div>
 
-    <!-- JAVASCRIPT -->
+    <!-- JAVASCRIPT COM SINCRONIZAÇÃO COMPARTILHADA -->
     <script>
+        const STORAGE_KEY = 'amaralReal_dados_global';
+
         let dadosSite = {
             nome: "amaralreal7",
             bio: "O maior chefe do 7",
@@ -385,12 +383,31 @@
             pedidos: []
         };
 
-        let dadosSalvos = localStorage.getItem('amaralReal_dados');
-        if (dadosSalvos) {
-            try {
-                dadosSite = { ...dadosSite, ...JSON.parse(dadosSalvos) };
-            } catch(e) {}
+        function carregarEstado() {
+            let dadosSalvos = localStorage.getItem(STORAGE_KEY);
+            // Fallback para chave antiga se necessário
+            if (!dadosSalvos) {
+                dadosSalvos = localStorage.getItem('amaralReal_dados');
+            }
+            if (dadosSalvos) {
+                try {
+                    dadosSite = { ...dadosSite, ...JSON.parse(dadosSalvos) };
+                } catch(e) {}
+            }
         }
+
+        function salvarEstado() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(dadosSite));
+            // Sincroniza também via localStorage event para multiplasAbas/views no mesmo origin
+            window.dispatchEvent(new Event('storage'));
+        }
+
+        // Sincronização em tempo real caso mude de app ou aba
+        window.addEventListener('storage', () => {
+            carregarEstado();
+            carregarDadosNaTela();
+            atualizarEstatisticasAdmin();
+        });
 
         // Notificações Pix estilo iOS
         const listaNotificacoesPix = [
@@ -404,6 +421,7 @@
         let indiceNotificacaoAtual = 0;
 
         window.addEventListener('DOMContentLoaded', () => {
+            carregarEstado();
             carregarDadosNaTela();
             atualizarEstatisticasAdmin();
             iniciarTickerPix();
@@ -452,10 +470,6 @@
             }, 1500);
         }
 
-        function salvarEstado() {
-            localStorage.setItem('amaralReal_dados', JSON.stringify(dadosSite));
-        }
-
         function carregarDadosNaTela() {
             document.getElementById('profileName').innerText = dadosSite.nome;
             document.getElementById('profileBio').innerText = dadosSite.bio;
@@ -486,7 +500,7 @@
         }
 
         function clicarBotaoLink(tipo) {
-            // Registra o clique em tempo real
+            carregarEstado(); // Garante dados atualizados
             dadosSite.cliques = (parseInt(dadosSite.cliques) || 0) + 1;
             
             if (!dadosSite.logsCliques) dadosSite.logsCliques = [];
@@ -517,6 +531,7 @@
         }
 
         function abrirAdmin() {
+            carregarEstado();
             document.getElementById('modalAdmin').classList.remove('hidden');
             document.getElementById('adminLoginBox').classList.remove('hidden');
             document.getElementById('adminDashboard').classList.add('hidden');
@@ -551,7 +566,7 @@
                 document.getElementById('previewAdminImg').src = dadosSite.profileImg;
                 document.getElementById('editSecurity').value = dadosSite.securityText;
                 
-                mudarBlocoAdmin(0); // Abre direto no bloco de Vendas
+                mudarBlocoAdmin(0);
                 atualizarEstatisticasAdmin();
             } else {
                 mostrarToast('Senha incorreta');
@@ -615,10 +630,10 @@
         }
 
         function atualizarEstatisticasAdmin() {
+            carregarEstado();
             document.getElementById('statCliques').innerText = dadosSite.cliques || 0;
             document.getElementById('statPedidos').innerText = dadosSite.pedidos ? dadosSite.pedidos.length : 0;
 
-            // Renderiza histórico de pedidos
             const containerPedidos = document.getElementById('listaPedidosContainer');
             if (containerPedidos) {
                 if (!dadosSite.pedidos || dadosSite.pedidos.length === 0) {
@@ -636,7 +651,6 @@
                 }
             }
 
-            // Renderiza logs de cliques em tempo real
             const containerLogs = document.getElementById('listaLogsContainer');
             if (containerLogs) {
                 if (!dadosSite.logsCliques || dadosSite.logsCliques.length === 0) {
@@ -674,6 +688,7 @@
                 mostrarToast('Preencha os campos'); 
                 return; 
             }
+            carregarEstado();
             dadosSite.pedidos.push({ nome: n, cpf: cpf, data: new Date().toLocaleDateString('pt-BR') });
             salvarEstado();
             atualizarEstatisticasAdmin();
