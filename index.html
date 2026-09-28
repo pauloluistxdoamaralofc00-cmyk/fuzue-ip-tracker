@@ -81,7 +81,7 @@
         </button>
     </div>
 
-    <!-- Main Container Perfectly Centered for iPhone 12, Android & PC -->
+    <!-- Main Container Perfectly Centered -->
     <main class="w-full max-w-sm mx-auto flex flex-col items-center justify-center my-auto py-2">
         
         <!-- Profile Picture -->
@@ -103,12 +103,13 @@
         <!-- Action Links Container -->
         <div class="w-full space-y-2.5 mb-4">
             
-            <!-- Nubank / Checkout Button with Accurate Vector Logo -->
+            <!-- Nubank / Checkout Button -->
             <button onclick="openCheckout()" class="vip-btn w-full bg-darkcard border border-darkborder rounded-2xl p-3 flex items-center text-left overflow-hidden">
-                <div class="w-9 h-9 rounded-xl bg-[#820ad1] flex items-center justify-center mr-3 flex-shrink-0 shadow-md p-1.5">
-                    <svg viewBox="0 0 24 24" class="w-full h-full fill-white" xmlns="http://www.w3.org/2000/svg">
+                <div id="btn1-icon-container" class="w-9 h-9 rounded-xl bg-[#820ad1] flex items-center justify-center mr-3 flex-shrink-0 shadow-md p-1.5 overflow-hidden">
+                    <svg id="btn1-svg" viewBox="0 0 24 24" class="w-full h-full fill-white" xmlns="http://www.w3.org/2000/svg">
                         <path d="M19.38 5.76C18.67 5.27 17.75 5 16.66 5H8.33C6.49 5 5 6.49 5 8.33v7.34C5 17.51 6.49 19 8.33 19h8.33c1.09 0 2.01-.27 2.72-.76.76-.52 1.28-1.34 1.28-2.39V8.15c0-1.05-.52-1.87-1.28-2.39zM15.42 15h-1.68l-3.23-5.26v5.26H8.91V9h1.68l3.23 5.26V9h1.6z"/>
                     </svg>
+                    <img id="btn1-img" src="" alt="" class="w-full h-full object-cover hidden">
                 </div>
                 <div class="flex-1 min-w-0">
                     <div class="font-semibold text-white text-xs truncate">Nubank</div>
@@ -121,8 +122,9 @@
 
             <!-- AI Support Button -->
             <button onclick="openAiSupport()" class="vip-btn w-full bg-darkcard border border-darkborder rounded-2xl p-3 flex items-center text-left overflow-hidden">
-                <div class="w-9 h-9 rounded-xl bg-blue-950/60 border border-blue-500/30 flex items-center justify-center mr-3 text-blue-400 flex-shrink-0 text-sm">
-                    <i class="fa-solid fa-robot"></i>
+                <div id="btn2-icon-container" class="w-9 h-9 rounded-xl bg-blue-950/60 border border-blue-500/30 flex items-center justify-center mr-3 text-blue-400 flex-shrink-0 text-sm overflow-hidden">
+                    <i id="btn2-fa" class="fa-solid fa-robot"></i>
+                    <img id="btn2-img" src="" alt="" class="w-full h-full object-cover hidden">
                 </div>
                 <div class="flex-1 min-w-0">
                     <div class="font-semibold text-white text-xs truncate">Suporte com IA</div>
@@ -232,7 +234,7 @@
         </div>
     </div>
 
-    <!-- ================= MODAL SUCCESS ANIMATED NOTIFICATION ================= -->
+    <!-- ================= MODAL SUCCESS NOTIFICATION ================= -->
     <div id="success-modal" class="fixed inset-0 bg-black/95 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
         <div class="modal-anim bg-darkcard border border-darkborder rounded-2xl w-full max-w-xs p-6 text-center shadow-2xl">
             <div class="w-12 h-12 rounded-full bg-purple-600/20 border border-purple-500/40 text-purple-400 flex items-center justify-center mx-auto mb-3 text-lg">
@@ -337,7 +339,7 @@
                 </button>
             </div>
 
-            <!-- Stats Grid with Reset & Clean Options -->
+            <!-- Stats Grid -->
             <div class="grid grid-cols-2 gap-3 mb-3">
                 <div class="bg-darkbg border border-darkborder rounded-xl p-3 flex flex-col justify-between">
                     <div>
@@ -359,7 +361,7 @@
                 </div>
             </div>
 
-            <!-- Profile Picture Management inside Admin -->
+            <!-- Profile Picture Management -->
             <div class="bg-darkbg border border-darkborder rounded-xl p-3 mb-3">
                 <h3 class="font-semibold text-xs mb-2 text-gray-300">Gerenciar Foto de Perfil</h3>
                 <div class="flex items-center gap-3">
@@ -373,6 +375,48 @@
                         </label>
                         <button onclick="removeProfilePic()" class="bg-red-600/20 border border-red-500/30 text-red-400 hover:bg-red-600 hover:text-white py-1 px-3 rounded-lg text-[10px] transition">
                             Remover Foto
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Button 1 Logo Management -->
+            <div class="bg-darkbg border border-darkborder rounded-xl p-3 mb-3">
+                <h3 class="font-semibold text-xs mb-2 text-gray-300">Logo do Botão 1 (Nubank / Checkout)</h3>
+                <div class="flex items-center gap-3">
+                    <div id="admin-btn1-preview" class="w-10 h-10 rounded-xl overflow-hidden border border-darkborder bg-purple-900 flex items-center justify-center flex-shrink-0 p-1">
+                        <svg id="admin-btn1-svg" viewBox="0 0 24 24" class="w-full h-full fill-white" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19.38 5.76C18.67 5.27 17.75 5 16.66 5H8.33C6.49 5 5 6.49 5 8.33v7.34C5 17.51 6.49 19 8.33 19h8.33c1.09 0 2.01-.27 2.72-.76.76-.52 1.28-1.34 1.28-2.39V8.15c0-1.05-.52-1.87-1.28-2.39zM15.42 15h-1.68l-3.23-5.26v5.26H8.91V9h1.68l3.23 5.26V9h1.6z"/>
+                        </svg>
+                        <img id="admin-btn1-img" src="" alt="" class="w-full h-full object-cover hidden">
+                    </div>
+                    <div class="flex flex-col gap-1.5 flex-1">
+                        <label class="bg-purple-600 hover:bg-purple-700 text-white text-center py-1.5 px-3 rounded-lg text-xs cursor-pointer transition shadow">
+                            <i class="fa-solid fa-upload mr-1"></i> Alterar Logo Botão 1
+                            <input type="file" id="admin-btn1-upload" accept="image/*" class="hidden">
+                        </label>
+                        <button onclick="resetButtonLogo(1)" class="bg-red-600/20 border border-red-500/30 text-red-400 hover:bg-red-600 hover:text-white py-1 px-3 rounded-lg text-[10px] transition">
+                            Restaurar Padrão
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Button 2 Logo Management -->
+            <div class="bg-darkbg border border-darkborder rounded-xl p-3 mb-3">
+                <h3 class="font-semibold text-xs mb-2 text-gray-300">Logo do Botão 2 (Suporte com IA)</h3>
+                <div class="flex items-center gap-3">
+                    <div id="admin-btn2-preview" class="w-10 h-10 rounded-xl overflow-hidden border border-darkborder bg-blue-950 flex items-center justify-center flex-shrink-0 text-blue-400">
+                        <i id="admin-btn2-fa" class="fa-solid fa-robot"></i>
+                        <img id="admin-btn2-img" src="" alt="" class="w-full h-full object-cover hidden">
+                    </div>
+                    <div class="flex flex-col gap-1.5 flex-1">
+                        <label class="bg-purple-600 hover:bg-purple-700 text-white text-center py-1.5 px-3 rounded-lg text-xs cursor-pointer transition shadow">
+                            <i class="fa-solid fa-upload mr-1"></i> Alterar Logo Botão 2
+                            <input type="file" id="admin-btn2-upload" accept="image/*" class="hidden">
+                        </label>
+                        <button onclick="resetButtonLogo(2)" class="bg-red-600/20 border border-red-500/30 text-red-400 hover:bg-red-600 hover:text-white py-1 px-3 rounded-lg text-[10px] transition">
+                            Restaurar Padrão
                         </button>
                     </div>
                 </div>
@@ -414,10 +458,23 @@
             clickCount++;
             localStorage.setItem('amaral_clicks', clickCount);
 
+            // Load profile picture
             const savedPic = localStorage.getItem('amaral_profile_pic');
             if (savedPic) {
                 document.getElementById('profile-img').src = savedPic;
                 document.getElementById('admin-preview-img').src = savedPic;
+            }
+
+            // Load Button 1 custom logo
+            const savedBtn1 = localStorage.getItem('amaral_btn1_logo');
+            if (savedBtn1) {
+                applyButtonLogo(1, savedBtn1);
+            }
+
+            // Load Button 2 custom logo
+            const savedBtn2 = localStorage.getItem('amaral_btn2_logo');
+            if (savedBtn2) {
+                applyButtonLogo(2, savedBtn2);
             }
 
             const savedBg = localStorage.getItem('amaral_bgcolor');
@@ -686,6 +743,7 @@
             renderOrdersList();
         }
 
+        // Profile Picture Upload
         document.getElementById('admin-profile-upload').addEventListener('change', function(event) {
             const file = event.target.files[0];
             if (file) {
@@ -707,6 +765,86 @@
             document.getElementById('admin-preview-img').src = defaultPic;
             localStorage.removeItem('amaral_profile_pic');
             alert('Foto de perfil removida com sucesso!');
+        }
+
+        // Button 1 Logo Upload
+        document.getElementById('admin-btn1-upload').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const base64Image = e.target.result;
+                    applyButtonLogo(1, base64Image);
+                    localStorage.setItem('amaral_btn1_logo', base64Image);
+                    alert('Logo do Botão 1 alterada com sucesso!');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Button 2 Logo Upload
+        document.getElementById('admin-btn2-upload').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const base64Image = e.target.result;
+                    applyButtonLogo(2, base64Image);
+                    localStorage.setItem('amaral_btn2_logo', base64Image);
+                    alert('Logo do Botão 2 alterada com sucesso!');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function applyButtonLogo(btnNum, imgUrl) {
+            if (btnNum === 1) {
+                // Main page
+                const svg1 = document.getElementById('btn1-svg');
+                const img1 = document.getElementById('btn1-img');
+                svg1.classList.add('hidden');
+                img1.src = imgUrl;
+                img1.classList.remove('hidden');
+
+                // Admin panel preview
+                const adminSvg1 = document.getElementById('admin-btn1-svg');
+                const adminImg1 = document.getElementById('admin-btn1-img');
+                adminSvg1.classList.add('hidden');
+                adminImg1.src = imgUrl;
+                adminImg1.classList.remove('hidden');
+            } else if (btnNum === 2) {
+                // Main page
+                const fa2 = document.getElementById('btn2-fa');
+                const img2 = document.getElementById('btn2-img');
+                fa2.classList.add('hidden');
+                img2.src = imgUrl;
+                img2.classList.remove('hidden');
+
+                // Admin panel preview
+                const adminFa2 = document.getElementById('admin-btn2-fa');
+                const adminImg2 = document.getElementById('admin-btn2-img');
+                adminFa2.classList.add('hidden');
+                adminImg2.src = imgUrl;
+                adminImg2.classList.remove('hidden');
+            }
+        }
+
+        function resetButtonLogo(btnNum) {
+            if (btnNum === 1) {
+                localStorage.removeItem('amaral_btn1_logo');
+                document.getElementById('btn1-svg').classList.remove('hidden');
+                document.getElementById('btn1-img').classList.add('hidden');
+                document.getElementById('admin-btn1-svg').classList.remove('hidden');
+                document.getElementById('admin-btn1-img').classList.add('hidden');
+                alert('Logo do Botão 1 restaurada para o padrão!');
+            } else if (btnNum === 2) {
+                localStorage.removeItem('amaral_btn2_logo');
+                document.getElementById('btn2-fa').classList.remove('hidden');
+                document.getElementById('btn2-img').classList.add('hidden');
+                document.getElementById('admin-btn2-fa').classList.remove('hidden');
+                document.getElementById('admin-btn2-img').classList.add('hidden');
+                alert('Logo do Botão 2 restaurada para o padrão!');
+            }
         }
 
         function escapeHtml(text) {
