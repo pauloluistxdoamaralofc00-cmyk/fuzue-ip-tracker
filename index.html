@@ -81,6 +81,23 @@
             scrollbar-width: none;
         }
     </style>
+    <!-- SCRIPT DE CARREGAMENTO IMEDIATO DA FOTO (Anti-Sumiço Instantâneo) -->
+    <script>
+        const LOCAL_STORAGE_KEY = 'amaralReal_global_sync_v12';
+        let dadosSitePadrao = {
+            nome: "amaralreal7",
+            bio: "O maior chefe do 7",
+            profileImg: "https://i.postimg.cc/9F5WcckY/IMG-1942.jpg",
+            securityText: "100% Seguro • Entrega por e-mail",
+            footer: "amaralreal7.system",
+            cliques: 0,
+            logsCliques: [],
+            pedidos: []
+        };
+        // Lê do localStorage antes da página renderizar para a foto aparecer sem piscar
+        let dadosSalvosIniciais = localStorage.getItem(LOCAL_STORAGE_KEY);
+        let dadosSite = dadosSalvosIniciais ? { ...dadosSitePadrao, ...JSON.parse(dadosSalvosIniciais) } : { ...dadosSitePadrao };
+    </script>
 </head>
 <body class="bg-black text-white select-none">
 
@@ -115,13 +132,15 @@
         </button>
 
         <div class="flex flex-col items-center w-full pt-2 z-10 shrink-0">
-            <!-- Foto de perfil permanente -->
+            <!-- Foto de perfil já carregada instantaneamente com script inline para não piscar -->
             <div class="w-24 h-24 rounded-full p-[3px] bg-gradient-to-b from-white via-zinc-600 to-transparent shadow-[0_0_25px_rgba(255,255,255,0.1)] mb-3.5">
-                <img id="profileImg" src="" alt="Perfil" class="w-full h-full object-cover rounded-full border-2 border-black">
+                <script>
+                    document.write('<img id="profileImg" src="' + (dadosSite.profileImg || dadosSitePadrao.profileImg) + '" alt="Perfil" class="w-full h-full object-cover rounded-full border-2 border-black">');
+                </script>
             </div>
 
             <div class="flex items-center gap-2 mb-1.5">
-                <h1 id="profileName" class="text-lg font-extrabold tracking-tight text-white">amaralreal7</h1>
+                <script>document.write('<h1 id="profileName" class="text-lg font-extrabold tracking-tight text-white">' + (dadosSite.nome || dadosSitePadrao.nome) + '</h1>');</script>
                 <span id="vipBadgeContainer" class="text-white text-sm" title="VIP"><i class="fa-solid fa-circle-check"></i></span>
             </div>
 
@@ -130,11 +149,11 @@
                 <span class="text-xs font-semibold text-zinc-300">Online Agora</span>
             </div>
 
-            <p id="profileBio" class="text-xs text-zinc-400 text-center mb-3.5 font-medium px-4">O maior chefe do 7</p>
+            <script>document.write('<p id="profileBio" class="text-xs text-zinc-400 text-center mb-3.5 font-medium px-4">' + (dadosSite.bio || dadosSitePadrao.bio) + '</p>');</script>
 
             <div class="flex items-center justify-center gap-2 text-xs font-medium text-zinc-300 bg-black px-4 py-2.5 rounded-2xl border border-neutral-900 w-full shadow-inner">
                 <i class="fa-solid fa-shield-halved text-white text-sm"></i>
-                <span id="textSecurityBadge">100% Seguro • Entrega por e-mail</span>
+                <script>document.write('<span id="textSecurityBadge">' + (dadosSite.securityText || dadosSitePadrao.securityText) + '</span>');</script>
             </div>
         </div>
 
@@ -299,14 +318,14 @@
                         <div>
                             <div class="flex items-center gap-2 mb-2">
                                 <i class="fa-solid fa-chart-line text-xs text-white"></i>
-                                <h4 class="text-xs font-bold text-white uppercase tracking-wider">Monitoramento em Tempo Real</h4>
+                                <h4 class="text-xs font-bold text-white uppercase tracking-wider">Monitoramento em Tempo Real & IP</h4>
                             </div>
                             <div class="flex items-center justify-between bg-neutral-950 border border-neutral-900 p-3 rounded-xl mb-3">
                                 <span class="text-xs text-zinc-400 font-medium">Total de cliques registrados:</span>
                                 <span id="statCliques" class="text-base font-extrabold text-white">0</span>
                             </div>
                             <div class="mb-3">
-                                <span class="block text-[11px] text-zinc-500 mb-1.5 font-medium">Log de Toques & Dispositivos:</span>
+                                <span class="block text-[11px] text-zinc-500 mb-1.5 font-medium">Log de Toques, Dispositivos & IP:</span>
                                 <div id="listaLogsContainer" class="space-y-1.5 max-h-[120px] overflow-y-auto custom-scroll pr-1"></div>
                             </div>
                         </div>
@@ -354,27 +373,33 @@
         </div>
     </div>
 
-    <!-- SCRIPT BLINDADO CONTRA CACHE DO SAFARI -->
+    <!-- SCRIPT PRINCIPAL E DE SINCRONIZAÇÃO -->
     <script>
         const CLOUD_BIN_URL = 'https://api.npoint.io/c5a3511f32a76f2e96d2'; 
-        const LOCAL_STORAGE_KEY = 'amaralReal_global_sync_v11';
+        let meuIpAtual = "Carregando IP...";
 
-        let dadosSitePadrao = {
-            nome: "amaralreal7",
-            bio: "O maior chefe do 7",
-            profileImg: "https://i.postimg.cc/9F5WcckY/IMG-1942.jpg",
-            securityText: "100% Seguro • Entrega por e-mail",
-            footer: "amaralreal7.system",
-            cliques: 0,
-            logsCliques: [],
-            pedidos: []
-        };
-
-        let dadosSite = { ...dadosSitePadrao };
+        async function descobrirIp() {
+            try {
+                let res = await fetch('https://api.ipify.org?format=json');
+                let data = await res.json();
+                if (data && data.ip) {
+                    meuIpAtual = data.ip;
+                }
+            } catch(e) {
+                meuIpAtual = "IP Oculto/Rede Local";
+            }
+        }
 
         async function carregarEstado() {
+            let dadosSalvosLocal = localStorage.getItem(LOCAL_STORAGE_KEY);
+            if (dadosSalvosLocal) {
+                try {
+                    let parsed = JSON.parse(dadosSalvosLocal);
+                    dadosSite = { ...dadosSitePadrao, ...parsed };
+                } catch(e) {}
+            }
+
             try {
-                // Força o Safari a nunca usar cache com headers anti-cache e token de tempo aleatório
                 let response = await fetch(CLOUD_BIN_URL + '?nocache=' + Date.now() + Math.random(), {
                     method: 'GET',
                     cache: 'no-store',
@@ -386,32 +411,46 @@
                 });
                 if (response.ok) {
                     let dadosNuvem = await response.json();
-                    if (dadosNuvem && typeof dadosNuvem.cliques === 'number') {
-                        dadosSite = mesclarDados(dadosSitePadrao, dadosNuvem);
+                    if (dadosNuvem && typeof dadosNuvem === 'object') {
+                        dadosSite = mesclarDadosSeguro(dadosSite, dadosNuvem);
                         localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(dadosSite));
                     }
                 }
             } catch(err) {
-                let dadosSalvos = localStorage.getItem(LOCAL_STORAGE_KEY);
-                if (dadosSalvos) {
-                    try { dadosSite = { ...dadosSitePadrao, ...JSON.parse(dadosSalvos) }; } catch(e) {}
-                }
+                console.warn("Modo offline ativo - usando dados locais.");
             }
+
             carregarDadosNaTela();
             atualizarEstatisticasAdmin();
         }
 
-        function mesclarDados(padrao, nuvem) {
-            let resultado = { ...padrao, ...nuvem };
-            if (!resultado.profileImg) {
-                resultado.profileImg = padrao.profileImg;
-            }
-            if (Array.isArray(nuvem.logsCliques)) {
-                resultado.logsCliques = nuvem.logsCliques;
-            }
-            if (Array.isArray(nuvem.pedidos)) {
-                resultado.pedidos = nuvem.pedidos;
-            }
+        function mesclarDadosSeguro(local, nuvem) {
+            let resultado = { ...dadosSitePadrao, ...nuvem };
+            
+            resultado.cliques = Math.max(local.cliques || 0, nuvem.cliques || 0);
+
+            let logsLocal = Array.isArray(local.logsCliques) ? local.logsCliques : [];
+            let logsNuvem = Array.isArray(nuvem.logsCliques) ? nuvem.logsCliques : [];
+            
+            let todosLogs = [...logsNuvem];
+            logsLocal.forEach(logLocal => {
+                let existe = todosLogs.some(n => n.hora === logLocal.hora && n.ip === logLocal.ip && n.tipo === logLocal.tipo);
+                if (!existe) {
+                    todosLogs.push(logLocal);
+                }
+            });
+            resultado.logsCliques = todosLogs.slice(0, 50);
+
+            let pedidosLocal = Array.isArray(local.pedidos) ? local.pedidos : [];
+            let pedidosNuvem = Array.isArray(nuvem.pedidos) ? nuvem.pedidos : [];
+            let todosPedidos = [...pedidosNuvem];
+            pedidosLocal.forEach(pLocal => {
+                let existe = todosPedidos.some(p => p.cpf === pLocal.cpf && p.hora === pLocal.hora);
+                if (!existe) todosPedidos.push(pLocal);
+            });
+            resultado.pedidos = todosPedidos;
+
+            if (!resultado.profileImg) resultado.profileImg = dadosSitePadrao.profileImg;
             return resultado;
         }
 
@@ -442,8 +481,10 @@
 
         let indiceNotificacaoAtual = 0;
 
-        window.addEventListener('DOMContentLoaded', () => {
-            carregarEstado();
+        window.addEventListener('DOMContentLoaded', async () => {
+            carregarDadosNaTela();
+            await descobrirIp();
+            await carregarEstado();
             iniciarTickerPix();
             setInterval(carregarEstado, 3000);
         });
@@ -492,10 +533,15 @@
         }
 
         function carregarDadosNaTela() {
-            document.getElementById('profileName').innerText = dadosSite.nome || dadosSitePadrao.nome;
-            document.getElementById('profileBio').innerText = dadosSite.bio || dadosSitePadrao.bio;
-            document.getElementById('textSecurityBadge').innerText = dadosSite.securityText || dadosSitePadrao.securityText;
-            document.getElementById('profileImg').src = dadosSite.profileImg || dadosSitePadrao.profileImg;
+            const elImg = document.getElementById('profileImg');
+            const elName = document.getElementById('profileName');
+            const elBio = document.getElementById('profileBio');
+            const elSec = document.getElementById('textSecurityBadge');
+
+            if (elImg) elImg.src = dadosSite.profileImg || dadosSitePadrao.profileImg;
+            if (elName) elName.innerText = dadosSite.nome || dadosSitePadrao.nome;
+            if (elBio) elBio.innerText = dadosSite.bio || dadosSitePadrao.bio;
+            if (elSec) elSec.innerText = dadosSite.securityText || dadosSitePadrao.securityText;
         }
 
         function obterInfoDispositivo() {
@@ -549,8 +595,8 @@
         }
 
         async function clicarBotaoLink(tipo) {
-            // Puxa o estado mais recente antes de adicionar para garantir que não sobrescreve nada
             await carregarEstado();
+            await descobrirIp();
 
             dadosSite.cliques = (dadosSite.cliques || 0) + 1;
             let horario = new Date().toLocaleTimeString('pt-BR');
@@ -559,6 +605,7 @@
             dadosSite.logsCliques.unshift({
                 tipo: tipo === 'nubank' ? 'Nubank Fake' : 'Suporte 24H',
                 dispositivo: infoDispositivo,
+                ip: meuIpAtual,
                 hora: horario
             });
 
@@ -611,7 +658,6 @@
             modal.classList.toggle('hidden');
             
             if (!modal.classList.contains('hidden')) {
-                // FORÇA BUSCAR DA NUVEM IMEDIATAMENTE AO ABRIR O PAINEL (Burlando o Safari)
                 await carregarEstado();
             }
 
@@ -627,7 +673,7 @@
         async function verificarSenhaAdmin() {
             const senha = document.getElementById('inputSenhaAdmin').value;
             if (senha === '777' || senha === 'admin7') {
-                await carregarEstado(); // Atualiza de novo ao logar
+                await carregarEstado();
                 document.getElementById('adminLoginBox').classList.add('hidden');
                 document.getElementById('adminDashboard').classList.remove('hidden');
                 atualizarEstatisticasAdmin();
@@ -675,7 +721,7 @@
                     <div class="bg-neutral-950 border border-neutral-900 p-2.5 rounded-xl flex items-center justify-between text-xs">
                         <div>
                             <span class="text-white font-bold">${log.tipo}</span>
-                            <span class="text-zinc-400 block text-[10px] font-medium">${log.dispositivo || 'Dispositivo Geral'}</span>
+                            <span class="text-zinc-400 block text-[10px] font-medium">IP: ${log.ip || 'Registrando...'} • ${log.dispositivo || 'Geral'}</span>
                         </div>
                         <span class="text-zinc-500 text-[10px] font-medium">${log.hora}</span>
                     </div>
