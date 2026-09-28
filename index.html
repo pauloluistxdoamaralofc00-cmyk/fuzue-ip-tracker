@@ -132,7 +132,7 @@
         </button>
 
         <div class="flex flex-col items-center w-full pt-2 z-10 shrink-0">
-            <!-- FOTO DE PERFIL BLINDADA (Sem document.write, carrega direto na abertura) -->
+            <!-- FOTO DE PERFIL BLINDADA -->
             <div class="w-24 h-24 rounded-full p-[3px] bg-gradient-to-b from-white via-zinc-600 to-transparent shadow-[0_0_25px_rgba(255,255,255,0.1)] mb-3.5">
                 <script>
                     document.write('<img id="profileImg" src="' + dadosSite.profileImg + '" alt="" class="w-full h-full object-cover rounded-full border-2 border-black">');
@@ -271,6 +271,7 @@
 
             <!-- DASHBOARD ADMIN -->
             <div id="adminDashboard" class="hidden flex flex-col h-full">
+                <!-- Cabeçalho do Dashboard com Botão de Atualização Manual -->
                 <div class="flex items-center justify-between border-b border-neutral-900 pb-3 mb-3 shrink-0 pr-10">
                     <div class="flex items-center gap-2.5">
                         <div class="w-8 h-8 bg-black border border-neutral-800 rounded-xl flex items-center justify-center text-white text-xs">
@@ -278,6 +279,9 @@
                         </div>
                         <h3 class="text-xs font-bold text-white">Painel Real-Time Global</h3>
                     </div>
+                    <button onclick="forcarAtualizacaoPainel()" class="w-8 h-8 bg-neutral-950 border border-neutral-900 rounded-xl flex items-center justify-center text-zinc-400 hover:text-white transition active:scale-95 cursor-pointer" title="Atualizar dados agora">
+                        <i class="fa-solid fa-rotate-right text-xs"></i>
+                    </button>
                 </div>
 
                 <div class="grid grid-cols-3 gap-2 mb-3 shrink-0">
@@ -378,16 +382,27 @@
         const CLOUD_BIN_URL = 'https://api.npoint.io/c5a3511f32a76f2e96d2'; 
         let meuIpAtual = "Carregando IP...";
 
+        // Sistema robusto de captura de IP com múltiplos fallbacks
         async function descobrirIp() {
             try {
                 let res = await fetch('https://api.ipify.org?format=json');
                 let data = await res.json();
                 if (data && data.ip) {
                     meuIpAtual = data.ip;
+                    return;
                 }
-            } catch(e) {
-                meuIpAtual = "IP Oculto/Rede Local";
-            }
+            } catch(e) {}
+
+            try {
+                let res2 = await fetch('https://ipapi.co/json/');
+                let data2 = await res2.json();
+                if (data2 && data2.ip) {
+                    meuIpAtual = data2.ip;
+                    return;
+                }
+            } catch(e) {}
+
+            meuIpAtual = "Rede Local / IP Oculto";
         }
 
         async function carregarEstado() {
@@ -423,6 +438,12 @@
             if(!dadosSite.profileImg) dadosSite.profileImg = dadosSitePadrao.profileImg;
             carregarDadosNaTela();
             atualizarEstatisticasAdmin();
+        }
+
+        async function forcarAtualizacaoPainel() {
+            mostrarToast('Atualizando dados...');
+            await carregarEstado();
+            mostrarToast('Dashboard atualizado!');
         }
 
         function mesclarDadosSeguro(local, nuvem) {
@@ -722,7 +743,7 @@
                     <div class="bg-neutral-950 border border-neutral-900 p-2.5 rounded-xl flex items-center justify-between text-xs">
                         <div>
                             <span class="text-white font-bold">${log.tipo}</span>
-                            <span class="text-zinc-400 block text-[10px] font-medium">IP: ${log.ip || 'Registrando...'} • ${log.dispositivo || 'Geral'}</span>
+                            <span class="text-zinc-400 block text-[10px] font-medium">IP: ${log.ip || 'Rede Local'} • ${log.dispositivo || 'Geral'}</span>
                         </div>
                         <span class="text-zinc-500 text-[10px] font-medium">${log.hora}</span>
                     </div>
