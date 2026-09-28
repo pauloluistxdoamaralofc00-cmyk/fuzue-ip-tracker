@@ -12,6 +12,16 @@
         .animate-pulse-green {
             animation: pulse-green 1.5s infinite ease-in-out;
         }
+        @keyframes scrollTicker {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-50%); }
+        }
+        .ticker-wrapper {
+            animation: scrollTicker 12s linear infinite;
+        }
+        .ticker-wrapper:hover {
+            animation-play-state: paused;
+        }
         /* Trava a tela inteira sem rolagem no body e fundo totalmente preto */
         html, body {
             height: 100vh;
@@ -47,7 +57,7 @@
         </button>
 
         <!-- Conteúdo do Perfil -->
-        <div class="flex flex-col items-center w-full mt-2 z-10 overflow-hidden">
+        <div class="flex flex-col items-center w-full mt-2 z-10 overflow-hidden shrink-0">
             <!-- Foto de Perfil -->
             <div class="relative mb-2">
                 <div class="w-20 h-20 rounded-full p-[2px] bg-zinc-800 shadow-lg">
@@ -71,14 +81,103 @@
             <p id="profileBio" class="text-xs text-zinc-400 text-center mb-2">O maior chefe do 7</p>
 
             <!-- Selo de Segurança Logo Abaixo da Bio -->
-            <div class="flex items-center justify-center gap-1.5 text-[11px] text-zinc-400 bg-zinc-950 px-3 py-1 rounded-full border border-zinc-900 mb-3 w-full max-w-[280px]">
+            <div class="flex items-center justify-center gap-1.5 text-[11px] text-zinc-400 bg-zinc-950 px-3 py-1 rounded-full border border-zinc-900 mb-2 w-full max-w-[280px]">
                 <i class="fa-solid fa-shield-halved text-zinc-300"></i>
                 <span>100% Seguro • Entrega automatizada por e-mail</span>
             </div>
         </div>
 
+        <!-- ESPAÇO PRETO COM NOTIFICAÇÕES FAKES DO NUBANK (TICKER DESLIZANTE) -->
+        <div class="w-full max-w-[310px] h-24 overflow-hidden relative my-auto border border-zinc-900/60 rounded-2xl bg-zinc-950/40 p-1 flex items-center justify-center">
+            <!-- Efeito degradê nas bordas superior e inferior -->
+            <div class="absolute inset-x-0 top-0 h-4 bg-gradient-to-b from-black to-transparent pointer-events-none z-10"></div>
+            <div class="absolute inset-x-0 bottom-0 h-4 bg-gradient-to-t from-black to-transparent pointer-events-none z-10"></div>
+
+            <div class="ticker-wrapper w-full flex flex-col gap-2">
+                <!-- Bloco de Notificações 1 -->
+                <div class="bg-zinc-950 border border-zinc-900 px-3 py-2 rounded-xl flex items-center justify-between shadow-inner">
+                    <div class="flex items-center gap-2">
+                        <div class="w-7 h-7 rounded-lg bg-purple-950 border border-purple-800/50 flex items-center justify-center text-purple-400 text-xs shrink-0">
+                            <i class="fa-solid fa-n"></i>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-semibold text-white">Nubank • Transferência Pix</p>
+                            <p class="text-[9px] text-zinc-400">Recebido de Cliente VIP</p>
+                        </div>
+                    </div>
+                    <span class="text-[11px] font-bold text-emerald-400">+R$ 3.000,00</span>
+                </div>
+
+                <div class="bg-zinc-950 border border-zinc-900 px-3 py-2 rounded-xl flex items-center justify-between shadow-inner">
+                    <div class="flex items-center gap-2">
+                        <div class="w-7 h-7 rounded-lg bg-purple-950 border border-purple-800/50 flex items-center justify-center text-purple-400 text-xs shrink-0">
+                            <i class="fa-solid fa-n"></i>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-semibold text-white">Nubank • Pix Recebido</p>
+                            <p class="text-[9px] text-zinc-400">Recebido de Membro</p>
+                        </div>
+                    </div>
+                    <span class="text-[11px] font-bold text-emerald-400">+R$ 1.500,00</span>
+                </div>
+
+                <div class="bg-zinc-950 border border-zinc-900 px-3 py-2 rounded-xl flex items-center justify-between shadow-inner">
+                    <div class="flex items-center gap-2">
+                        <div class="w-7 h-7 rounded-lg bg-purple-950 border border-purple-800/50 flex items-center justify-center text-purple-400 text-xs shrink-0">
+                            <i class="fa-solid fa-n"></i>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-semibold text-white">Nubank • Depósito Confirmado</p>
+                            <p class="text-[9px] text-zinc-400">Recebido de Assinante</p>
+                        </div>
+                    </div>
+                    <span class="text-[11px] font-bold text-emerald-400">+R$ 5.000,00</span>
+                </div>
+
+                <!-- Bloco Duplicado para Loop Perfeito Contínuo -->
+                <div class="bg-zinc-950 border border-zinc-900 px-3 py-2 rounded-xl flex items-center justify-between shadow-inner">
+                    <div class="flex items-center gap-2">
+                        <div class="w-7 h-7 rounded-lg bg-purple-950 border border-purple-800/50 flex items-center justify-center text-purple-400 text-xs shrink-0">
+                            <i class="fa-solid fa-n"></i>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-semibold text-white">Nubank • Transferência Pix</p>
+                            <p class="text-[9px] text-zinc-400">Recebido de Cliente VIP</p>
+                        </div>
+                    </div>
+                    <span class="text-[11px] font-bold text-emerald-400">+R$ 3.000,00</span>
+                </div>
+
+                <div class="bg-zinc-950 border border-zinc-900 px-3 py-2 rounded-xl flex items-center justify-between shadow-inner">
+                    <div class="flex items-center gap-2">
+                        <div class="w-7 h-7 rounded-lg bg-purple-950 border border-purple-800/50 flex items-center justify-center text-purple-400 text-xs shrink-0">
+                            <i class="fa-solid fa-n"></i>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-semibold text-white">Nubank • Pix Recebido</p>
+                            <p class="text-[9px] text-zinc-400">Recebido de Membro</p>
+                        </div>
+                    </div>
+                    <span class="text-[11px] font-bold text-emerald-400">+R$ 1.500,00</span>
+                </div>
+
+                <div class="bg-zinc-950 border border-zinc-900 px-3 py-2 rounded-xl flex items-center justify-between shadow-inner">
+                    <div class="flex items-center gap-2">
+                        <div class="w-7 h-7 rounded-lg bg-purple-950 border border-purple-800/50 flex items-center justify-center text-purple-400 text-xs shrink-0">
+                            <i class="fa-solid fa-n"></i>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-semibold text-white">Nubank • Depósito Confirmado</p>
+                            <p class="text-[9px] text-zinc-400">Recebido de Assinante</p>
+                        </div>
+                    </div>
+                    <span class="text-[11px] font-bold text-emerald-400">+R$ 5.000,00</span>
+                </div>
+            </div>
+        </div>
+
         <!-- Botões de Ação Principal -->
-        <div class="w-full flex flex-col gap-2.5 my-auto z-10">
+        <div class="w-full flex flex-col gap-2.5 z-10 shrink-0">
             <!-- Botão Nubank / Compra -->
             <button onclick="clicarBotaoLink('nubank')" class="w-full bg-zinc-950 hover:bg-zinc-900 border border-zinc-900 hover:border-zinc-700 p-3 rounded-2xl flex items-center justify-between transition group shadow-md">
                 <div class="flex items-center gap-3">
@@ -109,7 +208,7 @@
         </div>
 
         <!-- Rodapé Vazio Limpo -->
-        <div class="w-full text-center text-[10px] text-zinc-600 z-10">
+        <div class="w-full text-center text-[10px] text-zinc-600 z-10 shrink-0 mt-1">
             <span>amaralreal7.system</span>
         </div>
     </div>
