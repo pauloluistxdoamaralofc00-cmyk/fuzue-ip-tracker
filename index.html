@@ -70,7 +70,6 @@
             border-radius: 3px;
         }
 
-        /* Esconder barra de rolagem horizontal mantendo a função de arrastar */
         .no-scrollbar::-webkit-scrollbar {
             display: none;
         }
@@ -93,7 +92,7 @@
                     <span class="text-xs font-bold text-white tracking-tight">Nubank • Pix Recebido</span>
                     <span class="text-[10px] text-zinc-400 font-medium">Agora</span>
                 </div>
-                <p id="iosNotifText" class="text-xs font-medium text-zinc-200 mt-0.5">Transferência de +R$ 1.500,00</p>
+                <p class="text-xs font-medium text-zinc-200 mt-0.5">Transferência de +R$ 1.500,00</p>
             </div>
         </div>
         <div class="w-2 h-2 rounded-full bg-blue-500 shrink-0"></div>
@@ -233,7 +232,7 @@
         </div>
     </div>
 
-    <!-- PAINEL DE ADMINISTRAÇÃO (Blocos Horizontais / Swipe) -->
+    <!-- PAINEL DE ADMINISTRAÇÃO (Blocos Horizontais em Tempo Real) -->
     <div id="modalAdmin" class="fixed inset-0 bg-black/95 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 overflow-hidden">
         <div class="bg-black border border-neutral-900 w-full max-w-[460px] rounded-3xl p-6 shadow-2xl relative flex flex-col my-auto max-h-[88vh] overflow-hidden">
             
@@ -261,7 +260,7 @@
                         <div class="w-8 h-8 bg-black border border-neutral-800 rounded-xl flex items-center justify-center text-white text-xs">
                             <i class="fa-solid fa-gauge-high"></i>
                         </div>
-                        <h3 class="text-xs font-bold text-white">Painel de Controle</h3>
+                        <h3 class="text-xs font-bold text-white">Painel em Tempo Real</h3>
                     </div>
                 </div>
 
@@ -281,7 +280,7 @@
                 <!-- CARROSSEL DE BLOCOS HORIZONTAIS (Arraste para o lado) -->
                 <div id="carouselContainer" class="flex overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar gap-3 flex-1 items-stretch py-1" onscroll="atualizarBlocoAtivoPorScroll()">
                     
-                    <!-- BLOCO 1: VENDAS (Primeiro bloco, conforme pedido) -->
+                    <!-- BLOCO 1: VENDAS (Primeiro Bloco) -->
                     <div class="w-full min-w-full shrink-0 snap-center bg-black border border-neutral-900 p-4 rounded-2xl flex flex-col justify-between overflow-y-auto custom-scroll">
                         <div>
                             <div class="flex items-center gap-2 mb-2">
@@ -302,29 +301,47 @@
                         <button onclick="limparPedidos()" class="w-full bg-neutral-950 hover:bg-neutral-900 active:scale-95 text-zinc-300 py-2.5 rounded-xl text-xs font-medium transition cursor-pointer border border-neutral-900 mt-2">Limpar Histórico de Pedidos</button>
                     </div>
 
-                    <!-- BLOCO 2: CLIQUES / MONITORAMENTO -->
+                    <!-- BLOCO 2: CLIQUES E LOGS DE ACESSO -->
                     <div class="w-full min-w-full shrink-0 snap-center bg-black border border-neutral-900 p-4 rounded-2xl flex flex-col justify-between overflow-y-auto custom-scroll">
                         <div>
                             <div class="flex items-center gap-2 mb-2">
                                 <i class="fa-solid fa-chart-line text-xs text-white"></i>
-                                <h4 class="text-xs font-bold text-white uppercase tracking-wider">Monitoramento de Acessos</h4>
+                                <h4 class="text-xs font-bold text-white uppercase tracking-wider">Monitoramento em Tempo Real</h4>
                             </div>
                             <div class="flex items-center justify-between bg-neutral-950 border border-neutral-900 p-3 rounded-xl mb-3">
                                 <span class="text-xs text-zinc-400 font-medium">Total de cliques registrados:</span>
                                 <span id="statCliques" class="text-base font-extrabold text-white">0</span>
                             </div>
-                            <p class="text-[11px] text-zinc-500 font-medium">Contabiliza cada clique nos botões principais do seu bio link em tempo real.</p>
+                            <div class="mb-3">
+                                <span class="block text-[11px] text-zinc-500 mb-1.5 font-medium">Log de Toques Recentes:</span>
+                                <div id="listaLogsContainer" class="space-y-1.5 max-h-[120px] overflow-y-auto custom-scroll pr-1">
+                                    <!-- Dinâmico -->
+                                </div>
+                            </div>
                         </div>
-                        <button onclick="zerarCliques()" class="w-full bg-neutral-950 hover:bg-neutral-900 active:scale-95 text-zinc-300 py-2.5 rounded-xl text-xs font-medium transition cursor-pointer border border-neutral-900 mt-2">Zerar Contador de Cliques</button>
+                        <button onclick="zerarCliques()" class="w-full bg-neutral-950 hover:bg-neutral-900 active:scale-95 text-zinc-300 py-2.5 rounded-xl text-xs font-medium transition cursor-pointer border border-neutral-900 mt-2">Zerar Contador & Logs</button>
                     </div>
 
-                    <!-- BLOCO 3: AJUSTES / CONFIGURAÇÕES -->
+                    <!-- BLOCO 3: AJUSTES (Com Edição de Foto com Lápis) -->
                     <div class="w-full min-w-full shrink-0 snap-center bg-black border border-neutral-900 p-4 rounded-2xl flex flex-col justify-between overflow-y-auto custom-scroll">
                         <div class="space-y-2.5">
                             <div class="flex items-center gap-2 mb-1">
                                 <i class="fa-solid fa-sliders text-xs text-white"></i>
                                 <h4 class="text-xs font-bold text-white uppercase tracking-wider">Edição do Painel</h4>
                             </div>
+
+                            <!-- Edição de Foto com Ícone de Lápis -->
+                            <div>
+                                <label class="block text-[11px] text-zinc-500 mb-1">Foto de Perfil (URL com Lápis)</label>
+                                <div class="flex items-center gap-3 bg-neutral-950 border border-neutral-900 p-2 rounded-xl">
+                                    <div class="relative w-10 h-10 shrink-0">
+                                        <img id="previewAdminImg" src="" class="w-full h-full object-cover rounded-full border border-neutral-800">
+                                        <span class="absolute -bottom-1 -right-1 bg-white text-black w-4 h-4 rounded-full flex items-center justify-center text-[9px] shadow font-bold"><i class="fa-solid fa-pencil"></i></span>
+                                    </div>
+                                    <input type="text" id="editImgUrl" oninput="atualizarPreviewAdminImg(this.value)" placeholder="Cole a URL da foto..." class="w-full bg-black border border-neutral-900 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-neutral-500">
+                                </div>
+                            </div>
+
                             <div>
                                 <label class="block text-[11px] text-zinc-500 mb-1">Nome do Perfil</label>
                                 <input type="text" id="editNome" class="w-full bg-black border border-neutral-900 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-neutral-500">
@@ -332,10 +349,6 @@
                             <div>
                                 <label class="block text-[11px] text-zinc-500 mb-1">Biografia (Bio)</label>
                                 <input type="text" id="editBio" class="w-full bg-black border border-neutral-900 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-neutral-500">
-                            </div>
-                            <div>
-                                <label class="block text-[11px] text-zinc-500 mb-1">URL da Foto de Perfil</label>
-                                <input type="text" id="editImgUrl" placeholder="https://exemplo.com/foto.jpg" class="w-full bg-black border border-neutral-900 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-neutral-500">
                             </div>
                             <div>
                                 <label class="block text-[11px] text-zinc-500 mb-1">Texto de Segurança / Selo</label>
@@ -366,12 +379,9 @@
             bio: "O maior chefe do 7",
             profileImg: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&h=300&fit=crop&crop=faces",
             securityText: "100% Seguro • Entrega por e-mail",
-            titleNubank: "Nubank Fake",
-            descNubank: "Painel Editável",
-            titleSuporte: "Suporte 24H",
-            descSuporte: "com IA",
             footer: "amaralreal7.system",
             cliques: 0,
+            logsCliques: [],
             pedidos: []
         };
 
@@ -476,7 +486,14 @@
         }
 
         function clicarBotaoLink(tipo) {
+            // Registra o clique em tempo real
             dadosSite.cliques = (parseInt(dadosSite.cliques) || 0) + 1;
+            
+            if (!dadosSite.logsCliques) dadosSite.logsCliques = [];
+            const nomeBotao = tipo === 'nubank' ? 'Nubank Fake' : 'Suporte 24H';
+            const horarioAtual = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            
+            dadosSite.logsCliques.push({ botao: nomeBotao, hora: horarioAtual });
             salvarEstado();
             atualizarEstatisticasAdmin();
 
@@ -531,14 +548,21 @@
                 document.getElementById('editNome').value = dadosSite.nome;
                 document.getElementById('editBio').value = dadosSite.bio;
                 document.getElementById('editImgUrl').value = dadosSite.profileImg;
+                document.getElementById('previewAdminImg').src = dadosSite.profileImg;
                 document.getElementById('editSecurity').value = dadosSite.securityText;
                 
-                mudarBlocoAdmin(0); // Abre direto no bloco de Vendas por padrão
+                mudarBlocoAdmin(0); // Abre direto no bloco de Vendas
                 atualizarEstatisticasAdmin();
             } else {
                 mostrarToast('Senha incorreta');
                 campo.value = '';
                 campo.focus();
+            }
+        }
+
+        function atualizarPreviewAdminImg(url) {
+            if (url.trim() !== '') {
+                document.getElementById('previewAdminImg').src = url.trim();
             }
         }
 
@@ -579,7 +603,10 @@
 
             if (novoNome) dadosSite.nome = novoNome;
             if (novaBio) dadosSite.bio = novaBio;
-            if (novaImg) dadosSite.profileImg = novaImg;
+            if (novaImg) {
+                dadosSite.profileImg = novaImg;
+                document.getElementById('previewAdminImg').src = novaImg;
+            }
             if (novoSecurity) dadosSite.securityText = novoSecurity;
 
             salvarEstado();
@@ -591,30 +618,46 @@
             document.getElementById('statCliques').innerText = dadosSite.cliques || 0;
             document.getElementById('statPedidos').innerText = dadosSite.pedidos ? dadosSite.pedidos.length : 0;
 
-            const container = document.getElementById('listaPedidosContainer');
-            if (!container) return;
-
-            if (!dadosSite.pedidos || dadosSite.pedidos.length === 0) {
-                container.innerHTML = `<p class="text-xs text-zinc-600 text-center py-3">Nenhum pedido registrado ainda.</p>`;
-                return;
+            // Renderiza histórico de pedidos
+            const containerPedidos = document.getElementById('listaPedidosContainer');
+            if (containerPedidos) {
+                if (!dadosSite.pedidos || dadosSite.pedidos.length === 0) {
+                    containerPedidos.innerHTML = `<p class="text-xs text-zinc-600 text-center py-3">Nenhum pedido registrado ainda.</p>`;
+                } else {
+                    containerPedidos.innerHTML = dadosSite.pedidos.map((ped) => `
+                        <div class="bg-black border border-neutral-900 p-2.5 rounded-xl flex items-center justify-between text-xs">
+                            <div>
+                                <p class="font-bold text-white">${ped.nome}</p>
+                                <p class="text-[10px] text-zinc-500">${ped.cpf} • ${ped.data}</p>
+                            </div>
+                            <span class="text-[10px] bg-white/10 text-white font-semibold px-2 py-0.5 rounded-md">Pix</span>
+                        </div>
+                    `).reverse().join('');
+                }
             }
 
-            container.innerHTML = dadosSite.pedidos.map((ped, index) => `
-                <div class="bg-black border border-neutral-900 p-2.5 rounded-xl flex items-center justify-between text-xs">
-                    <div>
-                        <p class="font-bold text-white">${ped.nome}</p>
-                        <p class="text-[10px] text-zinc-500">${ped.cpf} • ${ped.data}</p>
-                    </div>
-                    <span class="text-[10px] bg-white/10 text-white font-semibold px-2 py-0.5 rounded-md">Pix</span>
-                </div>
-            `).reverse().join('');
+            // Renderiza logs de cliques em tempo real
+            const containerLogs = document.getElementById('listaLogsContainer');
+            if (containerLogs) {
+                if (!dadosSite.logsCliques || dadosSite.logsCliques.length === 0) {
+                    containerLogs.innerHTML = `<p class="text-xs text-zinc-600 text-center py-3">Nenhum toque registrado ainda.</p>`;
+                } else {
+                    containerLogs.innerHTML = dadosSite.logsCliques.map((log) => `
+                        <div class="bg-black border border-neutral-900 px-3 py-2 rounded-xl flex items-center justify-between text-xs">
+                            <span class="text-zinc-300 font-medium"><i class="fa-solid fa-arrow-pointer text-[10px] mr-1.5 text-zinc-500"></i> ${log.botao}</span>
+                            <span class="text-[10px] text-zinc-500 font-mono">${log.hora}</span>
+                        </div>
+                    `).reverse().join('');
+                }
+            }
         }
 
         function zerarCliques() {
             dadosSite.cliques = 0;
+            dadosSite.logsCliques = [];
             salvarEstado();
             atualizarEstatisticasAdmin();
-            mostrarToast('Cliques zerados!');
+            mostrarToast('Cliques e logs zerados!');
         }
 
         function limparPedidos() {
