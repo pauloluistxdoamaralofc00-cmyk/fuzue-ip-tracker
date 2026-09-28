@@ -171,8 +171,8 @@
     </div>
 
     <!-- MODAL CHECKOUT -->
-    <div id="modalCheckout" class="fixed inset-0 bg-black/95 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-black border border-neutral-900 w-full max-w-[440px] rounded-3xl p-6 shadow-2xl relative my-auto">
+    <div id="modalCheckout" class="fixed inset-0 bg-black/95 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 overflow-hidden">
+        <div class="bg-black border border-neutral-900 w-full max-w-[440px] rounded-3xl p-6 shadow-2xl relative my-auto max-h-[85vh] overflow-y-auto custom-scroll">
             <button onclick="fecharModalCheckout()" class="absolute top-5 right-5 text-zinc-400 hover:text-white w-9 h-9 rounded-full bg-black border border-neutral-800 flex items-center justify-center text-sm cursor-pointer z-20 active:scale-95">
                 <i class="fa-solid fa-xmark"></i>
             </button>
@@ -203,7 +203,7 @@
     </div>
 
     <!-- MODAL SUPORTE -->
-    <div id="modalSuporte" class="fixed inset-0 bg-black/95 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div id="modalSuporte" class="fixed inset-0 bg-black/95 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 overflow-hidden">
         <div class="bg-black border border-neutral-900 w-full max-w-[440px] rounded-3xl p-6 shadow-2xl relative h-[320px] flex flex-col justify-between my-auto">
             <div class="flex items-center justify-between border-b border-neutral-900 pb-3.5">
                 <div class="flex items-center gap-2.5">
@@ -223,9 +223,9 @@
         </div>
     </div>
 
-    <!-- PAINEL DE ADMINISTRAÇÃO (Centralizado e Estável) -->
-    <div id="modalAdmin" class="fixed inset-0 bg-black/95 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-black border border-neutral-900 w-full max-w-[460px] rounded-3xl p-6 shadow-2xl relative flex flex-col my-auto max-h-[88vh] overflow-y-auto custom-scroll">
+    <!-- PAINEL DE ADMINISTRAÇÃO (Bloqueado ao toque externo e perfeitamente centralizado) -->
+    <div id="modalAdmin" class="fixed inset-0 bg-black/95 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 overflow-hidden">
+        <div class="bg-black border border-neutral-900 w-full max-w-[460px] rounded-3xl p-6 shadow-2xl relative flex flex-col my-auto max-h-[85vh] overflow-y-auto custom-scroll">
             
             <button onclick="fecharAdmin()" class="absolute top-5 right-5 text-zinc-400 hover:text-white w-9 h-9 rounded-full bg-black border border-neutral-800 flex items-center justify-center text-sm cursor-pointer z-[100] active:scale-95">
                 <i class="fa-solid fa-xmark"></i>
@@ -441,17 +441,21 @@
 
             if (tipo === 'nubank') {
                 document.getElementById('modalCheckout').classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
             } else if (tipo === 'suporte') {
                 document.getElementById('modalSuporte').classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
             }
         }
 
         function fecharModalCheckout() {
             document.getElementById('modalCheckout').classList.add('hidden');
+            document.body.style.overflow = 'auto';
         }
 
         function fecharModalSuporte() {
             document.getElementById('modalSuporte').classList.add('hidden');
+            document.body.style.overflow = 'auto';
         }
 
         function abrirAdmin() {
@@ -459,12 +463,14 @@
             document.getElementById('adminLoginBox').classList.remove('hidden');
             document.getElementById('adminDashboard').classList.add('hidden');
             document.getElementById('inputSenhaAdmin').value = '';
+            document.body.style.overflow = 'hidden';
         }
 
         function fecharAdmin() {
             document.getElementById('modalAdmin').classList.add('hidden');
             document.getElementById('toastNotificacao').classList.add('opacity-0', 'pointer-events-none');
             document.getElementById('toastNotificacao').classList.remove('opacity-100');
+            document.body.style.overflow = 'auto';
         }
 
         function verificarSenhaAdmin() {
