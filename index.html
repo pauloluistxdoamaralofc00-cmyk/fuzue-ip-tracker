@@ -81,7 +81,7 @@
             scrollbar-width: none;
         }
     </style>
-    <!-- SCRIPT DE CARREGAMENTO IMEDIATO DA FOTO (Anti-Sumiço Instantâneo) -->
+    <!-- SCRIPT DE CARREGAMENTO IMEDIATO -->
     <script>
         const LOCAL_STORAGE_KEY = 'amaralReal_global_sync_v12';
         let dadosSitePadrao = {
@@ -94,9 +94,9 @@
             logsCliques: [],
             pedidos: []
         };
-        // Lê do localStorage antes da página renderizar para a foto aparecer sem piscar
         let dadosSalvosIniciais = localStorage.getItem(LOCAL_STORAGE_KEY);
         let dadosSite = dadosSalvosIniciais ? { ...dadosSitePadrao, ...JSON.parse(dadosSalvosIniciais) } : { ...dadosSitePadrao };
+        if(!dadosSite.profileImg) dadosSite.profileImg = dadosSitePadrao.profileImg;
     </script>
 </head>
 <body class="bg-black text-white select-none">
@@ -132,10 +132,10 @@
         </button>
 
         <div class="flex flex-col items-center w-full pt-2 z-10 shrink-0">
-            <!-- Foto de perfil já carregada instantaneamente com script inline para não piscar -->
+            <!-- FOTO DE PERFIL BLINDADA (Sem document.write, carrega direto na abertura) -->
             <div class="w-24 h-24 rounded-full p-[3px] bg-gradient-to-b from-white via-zinc-600 to-transparent shadow-[0_0_25px_rgba(255,255,255,0.1)] mb-3.5">
                 <script>
-                    document.write('<img id="profileImg" src="' + (dadosSite.profileImg || dadosSitePadrao.profileImg) + '" alt="Perfil" class="w-full h-full object-cover rounded-full border-2 border-black">');
+                    document.write('<img id="profileImg" src="' + dadosSite.profileImg + '" alt="" class="w-full h-full object-cover rounded-full border-2 border-black">');
                 </script>
             </div>
 
@@ -420,6 +420,7 @@
                 console.warn("Modo offline ativo - usando dados locais.");
             }
 
+            if(!dadosSite.profileImg) dadosSite.profileImg = dadosSitePadrao.profileImg;
             carregarDadosNaTela();
             atualizarEstatisticasAdmin();
         }
