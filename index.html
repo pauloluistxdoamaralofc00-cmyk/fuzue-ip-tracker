@@ -1,360 +1,114 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hoot.fuzue // Security Hub</title>
-<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
-
-<style>
-:root {
-  --bg: #050505;
-  --card: #0a0a0a;
-  --border: #1f0a0d;
-  --accent: #ff0033;
-  --green: #00ff66;
-  --text: #cccccc;
-  --muted: #666666;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Courier Prime', monospace;
-}
-
-body {
-  background-color: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 16px;
-  transition: background 0.3s ease;
-}
-
-.terminal-container {
-  width: 100%;
-  max-width: 440px;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  box-shadow: 0 0 40px rgba(0,0,0,0.8);
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.terminal-header {
-  background: #0d0204;
-  padding: 10px 14px;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 0.7rem;
-  letter-spacing: 1px;
-  color: var(--accent);
-  text-transform: uppercase;
-}
-
-/* Logótipo em forma de bolinha com imagem personalizável */
-.logo-avatar {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  border: 1px solid var(--accent);
-  object-fit: cover;
-  background-color: #000;
-}
-
-.terminal-body {
-  padding: 24px;
-}
-
-.system-alert {
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--accent);
-  margin-bottom: 8px;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-}
-
-.system-desc {
-  font-size: 0.65rem;
-  color: var(--muted);
-  margin-bottom: 20px;
-  line-height: 1.5;
-}
-
-.metrics-box {
-  background: #000000;
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 14px;
-  margin-bottom: 20px;
-  font-size: 0.68rem;
-}
-
-.metric-row {
-  display: flex;
-  justify-content: space-between;
-  padding: 6px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.02);
-}
-
-.metric-row:last-child {
-  border-bottom: none;
-}
-
-.metric-label {
-  color: var(--muted);
-}
-
-.metric-val {
-  color: var(--accent);
-  font-weight: 700;
-}
-
-.action-btn {
-  background: transparent;
-  color: var(--accent);
-  border: 1px solid var(--border);
-  padding: 12px;
-  width: 100%;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: 700;
-  text-transform: uppercase;
-  font-size: 0.65rem;
-  letter-spacing: 1.5px;
-  transition: all 0.2s ease;
-  margin-top: 8px;
-}
-
-.action-btn:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: var(--accent);
-}
-
-/* Painel Administrativo */
-#admin-panel {
-  display: none;
-}
-
-.admin-title {
-  color: var(--green);
-  font-size: 0.8rem;
-  font-weight: bold;
-  margin-bottom: 14px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.log-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.58rem;
-  margin-bottom: 14px;
-  text-align: left;
-}
-
-.log-table th, .log-table td {
-  padding: 6px;
-  border-bottom: 1px solid var(--border);
-  white-space: nowrap;
-}
-
-.log-table th {
-  color: var(--green);
-}
-
-.theme-picker {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 14px;
-  justify-content: center;
-}
-
-.theme-btn {
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  border: 2px solid #fff;
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-.theme-btn:hover {
-  transform: scale(1.1);
-}
-
-.admin-input {
-  width: 100%;
-  background: #000;
-  border: 1px solid var(--border);
-  color: var(--text);
-  padding: 8px;
-  font-size: 0.65rem;
-  border-radius: 4px;
-  margin-bottom: 10px;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma de Jogos - Cadastro</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .bg-custom-dark { background-color: #0f172a; }
+        .bg-card { background-color: #1e293b; }
+        .btn-green { background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); }
+        .btn-green:hover { background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); }
+    </style>
 </head>
-<body>
+<body class="bg-custom-dark text-white min-h-screen flex flex-col justify-between font-sans">
 
-<div class="terminal-container" id="mainContainer">
-  <div class="terminal-header">
-    <img id="headerAvatar" src="https://via.placeholder.com/24" alt="Logo" class="logo-avatar">
-    <span id="headerTitle">root@hoot.fuzue:~#</span>
-  </div>
+    <!-- Header / Topo -->
+    <header class="w-full py-4 px-6 bg-card border-b border-slate-800 flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+            <div class="bg-green-500 text-slate-950 font-black text-xl px-3 py-1 rounded-lg tracking-wider">BET<span class="text-white">VIP</span></div>
+        </div>
+        <div>
+            <a href="#login" class="text-sm font-semibold text-slate-300 hover:text-white mr-4">Entrar</a>
+            <a href="#register" class="text-sm font-semibold bg-slate-800 border border-slate-700 px-4 py-2 rounded-lg text-white">Registro</a>
+        </div>
+    </header>
 
-  <div class="terminal-body">
-    <!-- Ecrã Principal -->
-    <div id="home-screen">
-      <div class="system-alert">⚠️ Hoot.fuzue // Telemetria</div>
-      <div class="system-desc">Diagnóstico de parâmetros de conexão e rede em tempo real.</div>
+    <!-- Conteúdo Principal / Formulário de Cadastro -->
+    <main class="flex-grow flex items-center justify-center px-4 py-10">
+        <div class="w-full max-w-md bg-card border border-slate-800 rounded-2xl p-6 shadow-2xl relative overflow-hidden">
+            
+            <!-- Detalhe decorativo de luz -->
+            <div class="absolute -top-24 -right-24 w-48 h-48 bg-green-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
-      <div class="metrics-box">
-        <div class="metric-row"><span class="metric-label">IP ORIGEM:</span><span id="ipVal" class="metric-val">A analisar...</span></div>
-        <div class="metric-row"><span class="metric-label">LOCAL / REGIÃO:</span><span id="locVal" class="metric-val">A localizar...</span></div>
-        <div class="metric-row"><span class="metric-label">PROVEDOR (ISP):</span><span id="ispVal" class="metric-val">A identificar...</span></div>
-        <div class="metric-row"><span class="metric-label">DISPOSITIVO:</span><span id="deviceVal" class="metric-val">A detetar...</span></div>
-      </div>
+            <div class="text-center mb-6">
+                <h1 class="text-2xl font-bold tracking-tight">Crie sua Conta</h1>
+                <p class="text-xs text-slate-400 mt-1">Cadastre-se agora e ganhe bônus exclusivo no primeiro depósito!</p>
+            </div>
 
-      <button class="action-btn" onclick="openAdmin()">Aceder Painel Admin</button>
-    </div>
+            <!-- Formulário -->
+            <form id="registerForm" onsubmit="handleRegister(event)" class="space-y-4">
+                
+                <!-- Moeda -->
+                <div>
+                    <label class="block text-xs font-medium text-slate-400 mb-1">Moeda</label>
+                    <select class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-green-500 text-white">
+                        <option value="BRL" selected>BRL (R$)</option>
+                    </select>
+                </div>
 
-    <!-- Painel Administrativo -->
-    <div id="admin-panel">
-      <div class="admin-title">🔒 Hoot.fuzue // Admin Hub</div>
-      
-      <div style="font-size: 0.65rem; color: var(--muted); margin-bottom: 4px;">Alterar URL da Foto / Logótipo:</div>
-      <input type="text" id="avatarInput" class="admin-input" placeholder="Cole o link da imagem aqui...">
-      <button class="action-btn" style="margin-bottom: 14px;" onclick="atualizarAvatar()">Atualizar Logótipo</button>
+                <!-- Telefone ou E-mail -->
+                <div>
+                    <label class="block text-xs font-medium text-slate-400 mb-1">Telefone ou E-mail</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500">
+                            <i class="fa-solid fa-user"></i>
+                        </span>
+                        <input type="text" required placeholder="Seu e-mail ou celular" class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-10 pr-4 py-3 text-sm focus:outline-none focus:border-green-500 text-white">
+                    </div>
+                </div>
 
-      <div style="font-size: 0.65rem; color: var(--muted); margin-bottom: 6px; text-align: center;">Mudar Cor do Painel em Tempo Real:</div>
-      <div class="theme-picker">
-        <div class="theme-btn" style="background: #ff0033;" onclick="mudarTema('#ff0033', '#1f0a0d', 'root@hoot.fuzue:~#')" title="Vermelho Cyber"></div>
-        <div class="theme-btn" style="background: #00ff66;" onclick="mudarTema('#00ff66', '#0a1f10', 'root@hoot.fuzue.matrix:~#')" title="Verde Matrix"></div>
-        <div class="theme-btn" style="background: #00d2ff;" onclick="mudarTema('#00d2ff', '#0a181f', 'root@hoot.fuzue.sec:~#')" title="Azul Hacker"></div>
-        <div class="theme-btn" style="background: #ffb700;" onclick="mudarTema('#ffb700', '#1f160a', 'root@hoot.fuzue.warn:~#')" title="Amarelo Alerta"></div>
-      </div>
+                <!-- Senha -->
+                <div>
+                    <label class="block text-xs font-medium text-slate-400 mb-1">Senha</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500">
+                            <i class="fa-solid fa-lock"></i>
+                        </span>
+                        <input type="password" required placeholder="Mínimo de 6 caracteres" class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-10 pr-4 py-3 text-sm focus:outline-none focus:border-green-500 text-white">
+                    </div>
+                </div>
 
-      <div style="font-size: 0.65rem; color: var(--muted); margin-bottom: 6px;">Histórico de IPs Registados:</div>
-      <div style="max-height: 120px; overflow-y: auto; margin-bottom: 14px; border: 1px solid var(--border); border-radius: 4px; background: #000;">
-        <table class="log-table">
-          <thead>
-            <tr><th>IP</th><th>Local</th><th>Hora</th></tr>
-          </thead>
-          <tbody id="adminTableBody">
-            <tr><td colspan="3" style="text-align:center; color:var(--muted);">A carregar registos...</td></tr>
-          </tbody>
-        </table>
-      </div>
+                <!-- Código de Indicação (Opcional/Automático) -->
+                <div>
+                    <label class="block text-xs font-medium text-slate-400 mb-1">Código de Indicação (Opcional)</label>
+                    <input type="text" id="refCode" value="27933741" readonly class="w-full bg-slate-950 border border-slate-800 text-slate-500 rounded-xl px-4 py-3 text-sm cursor-not-allowed">
+                </div>
 
-      <button class="action-btn" style="color: #fff; border-color: var(--muted);" onclick="closeAdmin()">Voltar</button>
-    </div>
-  </div>
-</div>
+                <!-- Termos -->
+                <div class="flex items-start space-x-2 pt-1">
+                    <input type="checkbox" required id="terms" class="mt-1 rounded bg-slate-900 border-slate-700 text-green-500 focus:ring-0">
+                    <label for="terms" class="text-xs text-slate-400">Confirmo que tenho pelo menos 18 anos de idade e concordo com os Termos e Condições.</label>
+                </div>
 
-<script>
-function getDevice() {
-  let ua = navigator.userAgent;
-  if (/android/i.test(ua)) return "Android Device";
-  if (/iphone|ipad/i.test(ua)) return "Apple iOS";
-  if (/windows/i.test(ua)) return "Windows PC";
-  if (/macintosh/i.test(ua)) return "macOS";
-  return "Dispositivo Genérico";
-}
+                <!-- Botão de Envio -->
+                <button type="submit" class="w-full btn-green text-slate-950 font-bold py-3.5 rounded-xl transition duration-200 shadow-lg shadow-green-900/20 mt-2">
+                    CRIAR CONTA
+                </button>
+            </form>
 
-function guardarLogLocal(ip, local) {
-  let logs = JSON.parse(localStorage.getItem('hoot_fuzue_logs') || '[]');
-  let novoRegisto = { ip: ip, local: local, hora: new Date().toLocaleTimeString() };
-  if (logs.length === 0 || logs[0].ip !== ip) {
-    logs.unshift(novoRegisto);
-    localStorage.setItem('hoot_fuzue_logs', JSON.stringify(logs));
-  }
-}
+            <!-- Rodapé do Card -->
+            <div class="mt-6 text-center border-t border-slate-800/60 pt-4">
+                <p class="text-xs text-slate-400">Já tem uma conta? <a href="#" class="text-green-400 font-semibold hover:underline">Entrar</a></p>
+            </div>
 
-window.onload = async function() {
-  document.getElementById('deviceVal').innerText = getDevice();
+        </div>
+    </main>
 
-  // Carregar imagem salva no localStorage se existir
-  let savedAvatar = localStorage.getItem('hoot_fuzue_avatar');
-  if (savedAvatar) {
-    document.getElementById('headerAvatar').src = savedAvatar;
-    document.getElementById('avatarInput').value = savedAvatar;
-  }
+    <!-- Rodapé -->
+    <footer class="py-4 text-center text-xs text-slate-600 border-t border-slate-900">
+        &copy; 2026 Todos os direitos reservados. Jogue com responsabilidade. +18
+    </footer>
 
-  try {
-    let res = await fetch('https://ipapi.co/json/');
-    let data = await res.json();
-
-    if (data && !data.error) {
-      let ip = data.ip || 'N/A';
-      let local = `${data.city || 'N/A'}, ${data.country_code || 'N/A'}`;
-      
-      document.getElementById('ipVal').innerText = ip;
-      document.getElementById('locVal').innerText = local;
-      document.getElementById('ispVal').innerText = data.org || 'N/A';
-
-      guardarLogLocal(ip, local);
-    } else {
-      document.getElementById('ipVal').innerText = "Indisponível";
-      document.getElementById('locVal').innerText = "Restrito";
-    }
-  } catch(e) {
-    document.getElementById('ipVal').innerText = "Erro de Ligação";
-    document.getElementById('locVal').innerText = "Erro";
-  }
-};
-
-function atualizarAvatar() {
-  let url = document.getElementById('avatarInput').value.trim();
-  if (url) {
-    localStorage.setItem('hoot_fuzue_avatar', url);
-    document.getElementById('headerAvatar').src = url;
-    alert("Logótipo atualizado com sucesso!");
-  }
-}
-
-function mudarTema(corAccent, corBorda, tituloTexto) {
-  document.documentElement.style.setProperty('--accent', corAccent);
-  document.documentElement.style.setProperty('--border', corBorda);
-  document.getElementById('headerTitle').innerText = tituloTexto;
-}
-
-function openAdmin() {
-  let pass = prompt("Introduza a palavra-passe de administração:");
-  if (pass === "17102007") {
-    document.getElementById('home-screen').style.display = 'none';
-    document.getElementById('admin-panel').style.display = 'block';
-
-    let logs = JSON.parse(localStorage.getItem('hoot_fuzue_logs') || '[]');
-    let tbody = document.getElementById('adminTableBody');
-    
-    if (logs.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:var(--muted);">Nenhum IP registado.</td></tr>`;
-    } else {
-      tbody.innerHTML = logs.map(l => `
-        <tr>
-          <td><code>${l.ip}</code></td>
-          <td>${l.local}</td>
-          <td>${l.hora}</td>
-        </tr>
-      `).join('');
-    }
-  } else if (pass !== null) {
-    alert("Palavra-passe incorreta.");
-  }
-}
-
-function closeAdmin() {
-  document.getElementById('admin-panel').style.display = 'none';
-  document.getElementById('home-screen').style.display = 'block';
-}
-</script>
+    <script>
+        function handleRegister(event) {
+            event.preventDefault();
+            alert('Cadastro simulado com sucesso! Redirecionando para a plataforma...');
+            // Aqui você pode colocar o redirecionamento real ou integração com backend
+        }
+    </script>
 </body>
 </html>
