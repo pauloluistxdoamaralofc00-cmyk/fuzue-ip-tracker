@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>amaralreal7</title>
+    <title id="page-title">amaralreal7</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -64,7 +64,6 @@
         }
         .vip-btn:hover {
             transform: translateY(-2px);
-            border-color: rgba(130, 10, 209, 0.5);
             background-color: #121212;
         }
         ::-webkit-scrollbar {
@@ -104,7 +103,7 @@
             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-purple-950/80 border border-purple-500/30 text-purple-300">
                 <span class="w-1.5 h-1.5 rounded-full bg-purple-500 animate-pulse mr-1.5"></span> Ativo
             </span>
-            <span class="text-xs text-gray-400">O maior chefe do 7</span>
+            <span id="display-subtitle" class="text-xs text-gray-400">O maior chefe do 7</span>
         </div>
 
         <!-- Action Links Container -->
@@ -112,15 +111,13 @@
             
             <!-- Nubank / Checkout Button -->
             <button onclick="openCheckout()" class="vip-btn w-full bg-darkcard border border-darkborder rounded-2xl p-3.5 flex items-center text-left">
-                <div id="btn1-icon-wrap" class="w-10 h-10 rounded-xl bg-[#820ad1] flex items-center justify-center mr-3 flex-shrink-0 shadow-md p-2 overflow-hidden">
-                    <svg id="btn1-svg" viewBox="0 0 24 24" class="w-full h-full fill-white" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M19.38 5.76C18.67 5.27 17.75 5 16.66 5H8.33C6.49 5 5 6.49 5 8.33v7.34C5 17.51 6.49 19 8.33 19h8.33c1.09 0 2.01-.27 2.72-.76.76-.52 1.28-1.34 1.28-2.39V8.15c0-1.05-.52-1.87-1.28-2.39zM15.42 15h-1.68l-3.23-5.26v5.26H8.91V9h1.68l3.23 5.26V9h1.6z"/>
-                    </svg>
+                <div id="btn1-icon-wrap" class="w-10 h-10 rounded-xl bg-[#820ad1] flex items-center justify-center mr-3 flex-shrink-0 shadow-md p-2 overflow-hidden text-white">
+                    <i id="btn1-fa" class="fa-solid fa-bolt text-sm"></i>
                     <img id="btn1-img" src="" alt="" class="w-full h-full object-cover hidden">
                 </div>
                 <div class="flex-1 min-w-0">
-                    <div class="font-semibold text-white text-xs">Nubank</div>
-                    <div class="text-[11px] text-gray-400 mt-0.5">Adquirir acesso VIP imediato</div>
+                    <div id="btn1-title" class="font-semibold text-white text-xs">Nubank</div>
+                    <div id="btn1-desc" class="text-[11px] text-gray-400 mt-0.5">Adquirir acesso VIP imediato</div>
                 </div>
                 <div class="text-gray-500 ml-2">
                     <i class="fa-solid fa-chevron-right text-xs"></i>
@@ -134,8 +131,8 @@
                     <img id="btn2-img" src="" alt="" class="w-full h-full object-cover hidden">
                 </div>
                 <div class="flex-1 min-w-0">
-                    <div class="font-semibold text-white text-xs">Suporte com IA</div>
-                    <div class="text-[11px] text-gray-400 mt-0.5">Atendimento inteligente 24h</div>
+                    <div id="btn2-title" class="font-semibold text-white text-xs">Suporte com IA</div>
+                    <div id="btn2-desc" class="text-[11px] text-gray-400 mt-0.5">Atendimento inteligente 24h</div>
                 </div>
                 <div class="text-gray-500 ml-2">
                     <i class="fa-solid fa-chevron-right text-xs"></i>
@@ -177,7 +174,7 @@
                     <label class="block text-[11px] font-medium text-gray-400 mb-1">E-mail Válido</label>
                     <input type="email" id="pay-email" required placeholder="seuemail@exemplo.com" class="w-full bg-darkbg border border-darkborder rounded-xl px-3.5 py-2 text-white text-xs focus:outline-none focus:border-purple-600">
                 </div>
-                <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2.5 rounded-xl text-xs transition shadow-lg mt-2">
+                <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2.5 rounded-xl text-xs transition shadow-lg mt-2 custom-theme-btn">
                     Prosseguir
                 </button>
             </form>
@@ -199,8 +196,8 @@
             <div class="mb-3">
                 <div class="text-[11px] text-gray-400 mb-1.5 font-medium">Copie a Chave Pix abaixo para pagar:</div>
                 <div class="bg-darkbg border border-darkborder rounded-xl p-3 flex flex-col gap-2">
-                    <span id="pix-key-text" class="text-[11px] text-purple-300 font-mono break-all select-all">9818f594-4f9c-4678-bcfc-e6a1598040f8</span>
-                    <button onclick="copyPixKey()" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-lg text-xs transition font-semibold">
+                    <span id="pix-key-display" class="text-[11px] text-purple-300 font-mono break-all select-all">9818f594-4f9c-4678-bcfc-e6a1598040f8</span>
+                    <button onclick="copyPixKey()" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-lg text-xs transition font-semibold custom-theme-btn">
                         <i class="fa-regular fa-copy mr-1"></i> Copiar Chave Pix
                     </button>
                 </div>
@@ -208,7 +205,7 @@
             <p class="text-[11px] text-gray-300 mb-4 leading-relaxed">
                 Após realizar o pagamento no seu banco, clique no botão abaixo para confirmar.
             </p>
-            <button onclick="confirmPixPayment()" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2.5 rounded-xl text-xs transition shadow-lg">
+            <button onclick="confirmPixPayment()" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2.5 rounded-xl text-xs transition shadow-lg custom-theme-btn">
                 Já fiz o pagamento
             </button>
         </div>
@@ -222,7 +219,7 @@
             </div>
             <h3 class="font-bold text-sm text-white mb-1.5">Pagamento Concluído!</h3>
             <p class="text-xs text-gray-400 mb-5 leading-relaxed">Seus dados foram enviados. A equipe verificará e enviará o acesso em seu e-mail.</p>
-            <button onclick="closeSuccessModal()" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2.5 rounded-xl text-xs transition">
+            <button onclick="closeSuccessModal()" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2.5 rounded-xl text-xs transition custom-theme-btn">
                 OK, Entendido
             </button>
         </div>
@@ -282,24 +279,74 @@
                     <label class="block text-[11px] text-gray-400 mb-1">Senha de Acesso</label>
                     <input type="password" id="admin-pass-input" required placeholder="Digite a senha (123)" class="w-full bg-darkbg border border-darkborder rounded-xl px-3 py-2 text-white text-xs focus:outline-none focus:border-purple-600">
                 </div>
-                <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 rounded-xl text-xs transition">
+                <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 rounded-xl text-xs transition custom-theme-btn">
                     Entrar
                 </button>
             </form>
         </div>
     </div>
 
-    <!-- ================= MODAL ADMIN PANEL ================= -->
+    <!-- ================= MODAL ADMIN MASTER PANEL ================= -->
     <div id="admin-panel-modal" class="fixed inset-0 bg-black/95 backdrop-blur-md z-50 hidden flex items-center justify-center p-3 overflow-y-auto">
-        <div class="modal-anim bg-darkcard border border-darkborder rounded-2xl w-full max-w-lg p-4 relative shadow-2xl my-auto max-h-[90vh] flex flex-col">
+        <div class="modal-anim bg-darkcard border border-darkborder rounded-2xl w-full max-w-lg p-4 relative shadow-2xl my-auto max-h-[92vh] flex flex-col">
             <div class="flex items-center justify-between pb-3 border-b border-darkborder mb-3 flex-shrink-0">
                 <div>
-                    <h2 class="font-bold text-sm text-white">Painel - amaralreal7</h2>
-                    <p class="text-[10px] text-gray-400">Gerenciamento e Atendimento Privado</p>
+                    <h2 class="font-bold text-sm text-white">Painel Master de Administração</h2>
+                    <p class="text-[10px] text-gray-400">Controle total de design, dados e atendimento</p>
                 </div>
                 <button onclick="closeAdminPanel()" class="bg-darkbg border border-darkborder text-gray-400 hover:text-white px-2.5 py-1 rounded-xl text-[11px]">Fechar</button>
             </div>
-            <div class="overflow-y-auto space-y-3 pr-1 flex-1 text-xs">
+
+            <div class="overflow-y-auto space-y-4 pr-1 flex-1 text-xs">
+                
+                <!-- SEÇÃO 1: CONFIGURAÇÃO DE DESIGN E PERFIL -->
+                <div class="bg-darkbg border border-darkborder rounded-xl p-3 space-y-3">
+                    <h3 class="font-semibold text-xs text-purple-400 border-b border-darkborder pb-1">Personalização Visual e Textos</h3>
+                    
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-[10px] text-gray-400 mb-1">Nome de Perfil</label>
+                            <input type="text" id="cfg-username" class="w-full bg-darkcard border border-darkborder rounded-xl px-2.5 py-1.5 text-xs text-white">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-gray-400 mb-1">Subtítulo</label>
+                            <input type="text" id="cfg-subtitle" class="w-full bg-darkcard border border-darkborder rounded-xl px-2.5 py-1.5 text-xs text-white">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-[10px] text-gray-400 mb-1">URL Foto de Perfil</label>
+                            <input type="text" id="cfg-profile-pic" placeholder="https://..." class="w-full bg-darkcard border border-darkborder rounded-xl px-2.5 py-1.5 text-xs text-white">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-gray-400 mb-1">Cor Principal (HEX)</label>
+                            <input type="text" id="cfg-theme-color" placeholder="#820ad1" class="w-full bg-darkcard border border-darkborder rounded-xl px-2.5 py-1.5 text-xs text-white">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-[10px] text-gray-400 mb-1">Título Botão 1 (Nubank)</label>
+                            <input type="text" id="cfg-btn1-title" class="w-full bg-darkcard border border-darkborder rounded-xl px-2.5 py-1.5 text-xs text-white">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-gray-400 mb-1">Subtítulo Botão 1</label>
+                            <input type="text" id="cfg-btn1-desc" class="w-full bg-darkcard border border-darkborder rounded-xl px-2.5 py-1.5 text-xs text-white">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-[10px] text-gray-400 mb-1">Chave Pix (Copia e Cola)</label>
+                        <input type="text" id="cfg-pix-key" class="w-full bg-darkcard border border-darkborder rounded-xl px-2.5 py-1.5 text-xs text-white font-mono">
+                    </div>
+
+                    <button onclick="saveVisualSettings()" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 rounded-xl text-xs transition custom-theme-btn">
+                        Salvar Alterações Visuais
+                    </button>
+                </div>
+
+                <!-- SEÇÃO 2: MÉTRICAS E ESTATÍSTICAS -->
                 <div class="grid grid-cols-2 gap-3">
                     <div class="bg-darkbg border border-darkborder rounded-xl p-3 flex flex-col justify-between">
                         <div>
@@ -317,7 +364,7 @@
                     </div>
                 </div>
 
-                <!-- Atendimento Privado por Membro -->
+                <!-- SEÇÃO 3: ATENDIMENTO PRIVADO POR MEMBRO -->
                 <div class="bg-darkbg border border-darkborder rounded-xl p-3">
                     <h3 class="font-semibold text-xs mb-1 text-gray-300">Atendimento Privado por Membro</h3>
                     <p class="text-[10px] text-gray-400 mb-2">Selecione o membro:</p>
@@ -332,17 +379,18 @@
                     </div>
                     <div class="flex gap-2">
                         <input type="text" id="admin-chat-input" placeholder="Responder privadamente..." onkeypress="handleAdminChatKey(event)" class="flex-1 bg-darkcard border border-darkborder rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none">
-                        <button onclick="sendAdminChatMessage()" class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded-xl text-xs transition">Enviar</button>
+                        <button onclick="sendAdminChatMessage()" class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded-xl text-xs transition custom-theme-btn">Enviar</button>
                     </div>
                 </div>
 
-                <!-- Lista de Pedidos -->
+                <!-- SEÇÃO 4: LOGS DE PAGAMENTO PIX -->
                 <div>
-                    <h3 class="font-semibold text-xs mb-2 text-gray-300">Logs de Pagamento</h3>
-                    <div id="orders-container" class="space-y-2 max-h-40 overflow-y-auto pr-1">
+                    <h3 class="font-semibold text-xs mb-2 text-gray-300">Logs de Pagamentos Recebidos</h3>
+                    <div id="orders-container" class="space-y-2 max-h-44 overflow-y-auto pr-1">
                         <div class="text-center text-[11px] text-gray-500 py-3 border border-dashed border-darkborder rounded-xl">Nenhum pedido registrado.</div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
@@ -353,7 +401,7 @@
             <h4 id="panel-alert-title" class="font-bold text-xs text-white mb-1">Aviso</h4>
             <p id="panel-alert-msg" class="text-xs text-gray-400 mb-4">Mensagem...</p>
             <div id="panel-alert-buttons">
-                <button onclick="closePanelAlert()" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 rounded-xl text-xs">OK</button>
+                <button onclick="closePanelAlert()" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 rounded-xl text-xs custom-theme-btn">OK</button>
             </div>
         </div>
     </div>
@@ -375,11 +423,11 @@
         window.addEventListener('DOMContentLoaded', () => {
             clickCount++;
             localStorage.setItem('amaral_clicks', clickCount);
-            syncGlobalData();
+            applyVisualSettings();
             initClientChat();
 
             setInterval(() => {
-                syncGlobalData();
+                applyVisualSettings();
                 if (!document.getElementById('ai-modal').classList.contains('hidden')) {
                     refreshClientChatUI();
                 }
@@ -398,7 +446,7 @@
                 btnContainer.innerHTML = `
                     <div class="flex gap-2">
                         <button onclick="closePanelAlert()" class="flex-1 bg-darkbg border border-darkborder text-gray-300 py-2 rounded-xl text-xs">Cancelar</button>
-                        <button id="panel-confirm-btn" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 rounded-xl text-xs">Confirmar</button>
+                        <button id="panel-confirm-btn" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 rounded-xl text-xs custom-theme-btn">Confirmar</button>
                     </div>
                 `;
                 document.getElementById('panel-confirm-btn').onclick = function() {
@@ -406,7 +454,7 @@
                     if (onConfirm) onConfirm();
                 };
             } else {
-                btnContainer.innerHTML = `<button onclick="closePanelAlert()" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 rounded-xl text-xs">OK</button>`;
+                btnContainer.innerHTML = `<button onclick="closePanelAlert()" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 rounded-xl text-xs custom-theme-btn">OK</button>`;
             }
             modal.classList.remove('hidden');
         }
@@ -415,9 +463,25 @@
             document.getElementById('panel-alert-modal').classList.add('hidden');
         }
 
-        function syncGlobalData() {
-            const savedPic = localStorage.getItem('amaral_profile_pic');
-            if (savedPic) document.getElementById('profile-img').src = savedPic;
+        function applyVisualSettings() {
+            const username = localStorage.getItem('amaral_username') || 'amaralreal7';
+            const subtitle = localStorage.getItem('amaral_subtitle') || 'O maior chefe do 7';
+            const profilePic = localStorage.getItem('amaral_profile_pic') || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80';
+            const themeColor = localStorage.getItem('amaral_theme_color') || '#820ad1';
+            const btn1Title = localStorage.getItem('amaral_btn1_title') || 'Nubank';
+            const btn1Desc = localStorage.getItem('amaral_btn1_desc') || 'Adquirir acesso VIP imediato';
+
+            document.getElementById('page-title').innerText = username;
+            document.getElementById('display-username').innerText = username;
+            document.getElementById('display-subtitle').innerText = subtitle;
+            document.getElementById('profile-img').src = profilePic;
+            document.getElementById('btn1-title').innerText = btn1Title;
+            document.getElementById('btn1-desc').innerText = btn1Desc;
+
+            // Apply Dynamic Theme Colors
+            document.querySelectorAll('.custom-theme-btn').forEach(el => {
+                el.style.backgroundColor = themeColor;
+            });
         }
 
         function getChatsDB() {
@@ -431,7 +495,7 @@
             let db = getChatsDB();
             if (!db[clientId]) {
                 db[clientId] = [
-                    { sender: 'ai', text: 'Olá! Clique abaixo para saber mais sobre sua compra ou tirar dúvidas.' }
+                    { sender: 'ai', text: 'Olá! Clique no botão abaixo para saber mais sobre sua compra.' }
                 ];
                 saveChatsDB(db);
             }
@@ -468,7 +532,7 @@
             if (!db[clientId]) db[clientId] = [];
 
             db[clientId].push({ sender: 'client', text: 'Saber mais sobre minha compra' });
-            db[clientId].push({ sender: 'ai', text: 'Sua solicitação foi registrada! A administração verificará o seu pedido e você receberá as instruções com a mesma mensagem lá do produto no seu e-mail cadastrado.' });
+            db[clientId].push({ sender: 'ai', text: 'Sua solicitação foi registrada! Assim que a equipe aprovar o pagamento, você receberá o produto diretamente no seu e-mail.' });
 
             saveChatsDB(db);
             refreshClientChatUI();
@@ -549,7 +613,8 @@
         }
 
         function copyPixKey() {
-            navigator.clipboard.writeText("9818f594-4f9c-4678-bcfc-e6a1598040f8").then(() => {
+            const pixKey = localStorage.getItem('amaral_pix_key') || '9818f594-4f9c-4678-bcfc-e6a1598040f8';
+            navigator.clipboard.writeText(pixKey).then(() => {
                 showPanelAlert('Sucesso', 'Chave Pix copiada com sucesso!');
             });
         }
@@ -582,10 +647,35 @@
         }
 
         function openAdminPanel() {
+            loadSettingsToInputs();
             refreshAdminPanelData();
             document.getElementById('admin-panel-modal').classList.remove('hidden');
         }
         function closeAdminPanel() { document.getElementById('admin-panel-modal').classList.add('hidden'); }
+
+        function loadSettingsToInputs() {
+            document.getElementById('cfg-username').value = localStorage.getItem('amaral_username') || 'amaralreal7';
+            document.getElementById('cfg-subtitle').value = localStorage.getItem('amaral_subtitle') || 'O maior chefe do 7';
+            document.getElementById('cfg-profile-pic').value = localStorage.getItem('amaral_profile_pic') || '';
+            document.getElementById('cfg-theme-color').value = localStorage.getItem('amaral_theme_color') || '#820ad1';
+            document.getElementById('cfg-btn1-title').value = localStorage.getItem('amaral_btn1_title') || 'Nubank';
+            document.getElementById('cfg-btn1-desc').value = localStorage.getItem('amaral_btn1_desc') || 'Adquirir acesso VIP imediato';
+            document.getElementById('cfg-pix-key').value = localStorage.getItem('amaral_pix_key') || '9818f594-4f9c-4678-bcfc-e6a1598040f8';
+        }
+
+        function saveVisualSettings() {
+            localStorage.setItem('amaral_username', document.getElementById('cfg-username').value.trim());
+            localStorage.setItem('amaral_subtitle', document.getElementById('cfg-subtitle').value.trim());
+            localStorage.setItem('amaral_profile_pic', document.getElementById('cfg-profile-pic').value.trim());
+            localStorage.setItem('amaral_theme_color', document.getElementById('cfg-theme-color').value.trim());
+            localStorage.setItem('amaral_btn1_title', document.getElementById('cfg-btn1-title').value.trim());
+            localStorage.setItem('amaral_btn1_desc', document.getElementById('cfg-btn1-desc').value.trim());
+            localStorage.setItem('amaral_pix_key', document.getElementById('cfg-pix-key').value.trim());
+
+            document.getElementById('pix-key-display').innerText = localStorage.getItem('amaral_pix_key');
+            applyVisualSettings();
+            showPanelAlert('Sucesso', 'Configurações visuais atualizadas em tempo real!');
+        }
 
         function refreshAdminPanelData() {
             document.getElementById('admin-clicks-count').innerText = clickCount;
@@ -624,7 +714,7 @@
                     <div class="flex justify-between items-start">
                         <div>
                             <span class="font-bold text-white">${o.name}</span> <span class="text-purple-400 uppercase text-[9px]">[${o.status}]</span>
-                            <div class="text-gray-400 text-[10px]">E-mail: ${o.email} | ID: ${o.clientId}</div>
+                            <div class="text-gray-400 text-[10px]">E-mail: ${o.email} | CPF: ${o.cpf} | Data: ${o.date}</div>
                         </div>
                     </div>
                     <div class="flex justify-end gap-1 mt-1">
