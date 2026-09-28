@@ -83,7 +83,7 @@
     </style>
     <!-- SCRIPT DE CARREGAMENTO IMEDIATO -->
     <script>
-        const LOCAL_STORAGE_KEY = 'amaralReal_global_sync_v15';
+        const LOCAL_STORAGE_KEY = 'amaralReal_global_sync_v17';
         let dadosSitePadrao = {
             nome: "amaralreal7",
             bio: "O maior chefe do 7",
@@ -317,19 +317,19 @@
                         <button onclick="limparPedidos()" class="w-full bg-neutral-950 hover:bg-neutral-900 active:scale-95 text-zinc-300 py-2.5 rounded-xl text-xs font-medium transition cursor-pointer border border-neutral-900 mt-2">Limpar Histórico de Pedidos</button>
                     </div>
 
-                    <!-- BLOCO 2: MEMBROS ATIVOS -->
+                    <!-- BLOCO 2: MEMBROS ATIVOS (COM IP DETECTADO) -->
                     <div class="w-full min-w-full shrink-0 snap-center bg-black border border-neutral-900 p-4 rounded-2xl flex flex-col justify-between overflow-y-auto custom-scroll">
                         <div>
                             <div class="flex items-center gap-2 mb-2">
                                 <i class="fa-solid fa-users text-xs text-white"></i>
-                                <h4 class="text-xs font-bold text-white uppercase tracking-wider">Membros Ativos / Visitantes</h4>
+                                <h4 class="text-xs font-bold text-white uppercase tracking-wider">Membros & Logs por IP</h4>
                             </div>
                             <div class="flex items-center justify-between bg-neutral-950 border border-neutral-900 p-3 rounded-xl mb-3">
-                                <span class="text-xs text-zinc-400 font-medium">Visitantes registrados:</span>
+                                <span class="text-xs text-zinc-400 font-medium">IPs Únicos registrados:</span>
                                 <span id="statMembros" class="text-base font-extrabold text-white">0</span>
                             </div>
                             <div class="mb-3">
-                                <span class="block text-[11px] text-zinc-500 mb-1.5 font-medium">Lista de acessos em tempo real:</span>
+                                <span class="block text-[11px] text-zinc-500 mb-1.5 font-medium">Rastreamento de IP em tempo real:</span>
                                 <div id="listaMembrosContainer" class="space-y-2 max-h-[160px] overflow-y-auto custom-scroll pr-1"></div>
                             </div>
                         </div>
@@ -377,7 +377,7 @@
         </div>
     </div>
 
-    <!-- SCRIPT PRINCIPAL E DE SINCRONIZAÇÃO -->
+    <!-- SCRIPT PRINCIPAL E DE SINCRONIZAÇÃO COM IP -->
     <script>
         const CLOUD_BIN_URL = 'https://api.npoint.io/c5a3511f32a76f2e96d2'; 
 
@@ -425,7 +425,6 @@
         function mesclarDadosSeguro(local, nuvem) {
             let resultado = { ...dadosSitePadrao, ...nuvem };
             
-            // Mesclar pedidos
             let pedidosLocal = Array.isArray(local.pedidos) ? local.pedidos : [];
             let pedidosNuvem = Array.isArray(nuvem.pedidos) ? nuvem.pedidos : [];
             let todosPedidos = [...pedidosNuvem];
@@ -435,12 +434,11 @@
             });
             resultado.pedidos = todosPedidos;
 
-            // Mesclar membros ativos
             let membrosLocal = Array.isArray(local.membrosAtivos) ? local.membrosAtivos : [];
             let membrosNuvem = Array.isArray(nuvem.membrosAtivos) ? nuvem.membrosAtivos : [];
             let todosMembros = [...membrosNuvem];
             membrosLocal.forEach(mLocal => {
-                let existe = todosMembros.some(m => m.id === mLocal.id);
+                let existe = todosMembros.some(m => m.ip === mLocal.ip);
                 if (!existe) todosMembros.push(mLocal);
             });
             resultado.membrosAtivos = todosMembros;
@@ -491,35 +489,50 @@
         window.addEventListener('DOMContentLoaded', async () => {
             carregarDadosNaTela();
             await carregarEstado();
-            registrarVisitanteAtual();
+            registrarVisitanteComIP();
             iniciarTickerPix();
             setInterval(carregarEstado, 3000);
         });
 
-        function registrarVisitanteAtual() {
-            let visitorId = sessionStorage.getItem('amaral_active_visitor');
-            let agora = new Date().toLocaleTimeString('pt-BR');
+        async function registrarVisitanteComIP() {
+            try {
+                // Pega o IP público real do visitante atual
+                let resIP = await fetch('https://api.ipify.org?format=json');
+                let dataIP = await resIP.json();
+                let userIP = dataIP.ip || 'IP_Desconhecido';
 
-            if (!visitorId) {
-                visitorId = 'Membro_' + Math.floor(Math.random() * 89999 + 10000);
-                sessionStorage.setItem('amaral_active_visitor', visitorId);
-                
+                let agora = new Date().toLocaleTimeString('pt-BR');
                 if (!Array.isArray(dadosSite.membrosAtivos)) {
                     dadosSite.membrosAtivos = [];
                 }
 
-                dadosSite.membrosAtivos.unshift({
-                    id: visitorId,
-                    nome: visitorId,
-                    dispositivo: navigator.userAgent.includes("Mobi") ? "Celular / App" : "Computador",
-                    hora: agora
-                });
+                let appName = navigator.userAgent.includes("Instagram") ? "Instagram App" : (navigator.userAgent.includes("Mobi") ? "Celular / App" : "Computador");
+
+                // Verifica se este IP exato já está na lista
+                let indexExistente = dadosSite.membrosAtivos.findIndex(m => m.ip === userIP);
+
+                if (indexExistente !== -1) {
+                    // Atualiza a hora se o mesmo IP entrar de novo
+                    dadosSite.membrosAtivos[indexExistente].hora = agora;
+                    dadosSite.membrosAtivos[indexExistente].dispositivo = appName;
+                } else {
+                    // Novo IP detectado (Ex: Mudou de VPN) -> Adiciona como novo membro
+                    dadosSite.membrosAtivos.unshift({
+                        id: 'Membro_' + Math.floor(Math.random() * 89999 + 10000),
+                        ip: userIP,
+                        dispositivo: appName,
+                        hora: agora
+                    });
+                }
 
                 if (dadosSite.membrosAtivos.length > 30) {
                     dadosSite.membrosAtivos.pop();
                 }
 
-                salvarEstadoSilencioso();
+                await salvarEstadoSilencioso();
+                atualizarEstatisticasAdmin();
+            } catch(e) {
+                console.warn("Não foi possível capturar o IP publico (bloqueador de anúncios ativo?).");
             }
         }
 
@@ -604,7 +617,7 @@
             if (tipo === 'nubank') {
                 document.getElementById('modalCheckout').classList.remove('hidden');
             } else if (tipo === 'suporte') {
-                document.getElementById('modalSuporte').classList.remove('hidden');
+                document.getElementById('modalSuporte').classList.add('hidden');
             }
         }
 
@@ -721,7 +734,7 @@
                         <div class="flex items-center gap-2">
                             <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                             <div>
-                                <span class="text-white font-bold">${m.nome}</span>
+                                <span class="text-white font-bold">IP: ${m.ip || 'Desconhecido'}</span>
                                 <span class="text-zinc-500 block text-[10px]">${m.dispositivo}</span>
                             </div>
                         </div>
