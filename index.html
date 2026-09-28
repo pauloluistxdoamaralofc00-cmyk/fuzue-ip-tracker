@@ -91,9 +91,9 @@
             </div>
         </div>
 
-        <!-- Username & Subtitle -->
-        <h1 id="display-username" class="text-lg font-bold tracking-tight text-white mb-1">amaralreal7</h1>
-        <div class="flex items-center gap-2 mb-5">
+        <!-- Username & Subtitle (Ativo centralizado acima, descrição abaixo) -->
+        <h1 id="display-username" class="text-lg font-bold tracking-tight text-white mb-1.5">amaralreal7</h1>
+        <div class="flex flex-col items-center justify-center gap-1.5 mb-5 w-full">
             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-medium bg-purple-950/80 border border-purple-500/30 text-purple-300">
                 <span class="w-1.5 h-1.5 rounded-full bg-purple-500 animate-pulse mr-1.5"></span> Ativo
             </span>
@@ -264,7 +264,7 @@
 
     <!-- ================= MODAL AI SUPPORT ================= -->
     <div id="ai-modal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
-        <div class="modal-anim bg-darkcard border border-darkborder rounded-2xl w-full max-w-sm h-[400px] flex flex-col relative shadow-2xl my-auto overflow-hidden">
+        <div class="modal-anim bg-darkcard border border-darkborder rounded-2xl w-full max-w-sm h-[420px] flex flex-col relative shadow-2xl my-auto overflow-hidden">
             
             <div class="flex items-center justify-between p-3 border-b border-darkborder bg-darkbg">
                 <div class="flex items-center gap-2">
@@ -284,14 +284,7 @@
             </div>
 
             <div id="chat-messages" class="flex-1 p-3 overflow-y-auto space-y-2 text-xs">
-                <div class="flex items-start gap-2">
-                    <div class="w-5 h-5 rounded-full bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 text-[9px] flex-shrink-0 mt-0.5">
-                        <i class="fa-solid fa-robot"></i>
-                    </div>
-                    <div class="bg-darkbg border border-darkborder p-2.5 rounded-2xl rounded-tl-sm text-gray-200 text-xs max-w-[85%] leading-relaxed">
-                        Olá! Sou o assistente virtual do amaralreal7. Como posso ajudar com o seu acesso VIP hoje?
-                    </div>
-                </div>
+                <!-- Dynamic Chat History Rendered Here -->
             </div>
 
             <div class="p-2.5 border-t border-darkborder bg-darkbg flex gap-2">
@@ -327,118 +320,96 @@
 
     <!-- ================= MODAL ADMIN PANEL ================= -->
     <div id="admin-panel-modal" class="fixed inset-0 bg-black/95 backdrop-blur-md z-50 hidden flex items-center justify-center p-3 overflow-y-auto">
-        <div class="modal-anim bg-darkcard border border-darkborder rounded-2xl w-full max-w-md p-4 relative shadow-2xl my-auto">
+        <div class="modal-anim bg-darkcard border border-darkborder rounded-2xl w-full max-w-lg p-4 relative shadow-2xl my-auto max-h-[90vh] flex flex-col">
             
-            <div class="flex items-center justify-between pb-3 border-b border-darkborder mb-3">
+            <div class="flex items-center justify-between pb-3 border-b border-darkborder mb-3 flex-shrink-0">
                 <div>
-                    <h2 class="font-bold text-sm text-white">Painel - amaralreal7</h2>
-                    <p class="text-[10px] text-gray-400">Controle total e customização</p>
+                    <h2 class="font-bold text-sm text-white">Painel - amaralreal7 (Tempo Real)</h2>
+                    <p class="text-[10px] text-gray-400">Controle de Pagamentos, Perfil e Suporte dos Clientes</p>
                 </div>
                 <button onclick="closeAdminPanel()" class="bg-darkbg border border-darkborder text-gray-400 hover:text-white px-2.5 py-1 rounded-xl text-[11px] transition">
                     Fechar
                 </button>
             </div>
 
-            <!-- Stats Grid -->
-            <div class="grid grid-cols-2 gap-3 mb-3">
-                <div class="bg-darkbg border border-darkborder rounded-xl p-3 flex flex-col justify-between">
-                    <div>
-                        <div class="text-[10px] text-gray-400">Cliques no Link</div>
-                        <div id="admin-clicks-count" class="text-xl font-bold text-purple-400 mt-0.5">0</div>
+            <div class="overflow-y-auto space-y-3 pr-1 flex-1">
+                <!-- Stats Grid -->
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-darkbg border border-darkborder rounded-xl p-3 flex flex-col justify-between">
+                        <div>
+                            <div class="text-[10px] text-gray-400">Cliques no Link</div>
+                            <div id="admin-clicks-count" class="text-xl font-bold text-purple-400 mt-0.5">0</div>
+                        </div>
+                        <button onclick="resetClicks()" class="mt-2 bg-red-600/20 border border-red-500/30 text-red-400 hover:bg-red-600 hover:text-white py-1 px-2 rounded-lg text-[10px] transition text-center">
+                            Zerar Cliques
+                        </button>
                     </div>
-                    <button onclick="resetClicks()" class="mt-2 bg-red-600/20 border border-red-500/30 text-red-400 hover:bg-red-600 hover:text-white py-1 px-2 rounded-lg text-[10px] transition text-center">
-                        Zerar Cliques
-                    </button>
-                </div>
-                <div class="bg-darkbg border border-darkborder rounded-xl p-3 flex flex-col justify-between">
-                    <div>
-                        <div class="text-[10px] text-gray-400">Pedidos Confirmados</div>
-                        <div id="admin-orders-count" class="text-xl font-bold text-blue-400 mt-0.5">0</div>
-                    </div>
-                    <button onclick="clearAllOrders()" class="mt-2 bg-red-600/20 border border-red-500/30 text-red-400 hover:bg-red-600 hover:text-white py-1 px-2 rounded-lg text-[10px] transition text-center">
-                        Excluir Pedidos
-                    </button>
-                </div>
-            </div>
-
-            <!-- Profile Picture Management -->
-            <div class="bg-darkbg border border-darkborder rounded-xl p-3 mb-3">
-                <h3 class="font-semibold text-xs mb-2 text-gray-300">Gerenciar Foto de Perfil</h3>
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-full overflow-hidden border border-darkborder bg-darkcard flex-shrink-0">
-                        <img id="admin-preview-img" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80" alt="Preview" class="w-full h-full object-cover">
-                    </div>
-                    <div class="flex flex-col gap-1.5 flex-1">
-                        <label class="bg-purple-600 hover:bg-purple-700 text-white text-center py-1.5 px-3 rounded-lg text-xs cursor-pointer transition shadow">
-                            <i class="fa-solid fa-pencil mr-1"></i> Alterar Foto
-                            <input type="file" id="admin-profile-upload" accept="image/*" class="hidden">
-                        </label>
-                        <button onclick="removeProfilePic()" class="bg-red-600/20 border border-red-500/30 text-red-400 hover:bg-red-600 hover:text-white py-1 px-3 rounded-lg text-[10px] transition">
-                            Remover Foto
+                    <div class="bg-darkbg border border-darkborder rounded-xl p-3 flex flex-col justify-between">
+                        <div>
+                            <div class="text-[10px] text-gray-400">Pedidos Pendentes</div>
+                            <div id="admin-orders-count" class="text-xl font-bold text-blue-400 mt-0.5">0</div>
+                        </div>
+                        <button onclick="clearAllOrders()" class="mt-2 bg-red-600/20 border border-red-500/30 text-red-400 hover:bg-red-600 hover:text-white py-1 px-2 rounded-lg text-[10px] transition text-center">
+                            Excluir Pedidos
                         </button>
                     </div>
                 </div>
-            </div>
 
-            <!-- Button 1 Logo Management -->
-            <div class="bg-darkbg border border-darkborder rounded-xl p-3 mb-3">
-                <h3 class="font-semibold text-xs mb-2 text-gray-300">Logo do Botão 1 (Nubank / Checkout)</h3>
-                <div class="flex items-center gap-3">
-                    <div id="admin-btn1-preview" class="w-10 h-10 rounded-xl overflow-hidden border border-darkborder bg-purple-900 flex items-center justify-center flex-shrink-0 p-1">
-                        <svg id="admin-btn1-svg" viewBox="0 0 24 24" class="w-full h-full fill-white" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M19.38 5.76C18.67 5.27 17.75 5 16.66 5H8.33C6.49 5 5 6.49 5 8.33v7.34C5 17.51 6.49 19 8.33 19h8.33c1.09 0 2.01-.27 2.72-.76.76-.52 1.28-1.34 1.28-2.39V8.15c0-1.05-.52-1.87-1.28-2.39zM15.42 15h-1.68l-3.23-5.26v5.26H8.91V9h1.68l3.23 5.26V9h1.6z"/>
-                        </svg>
-                        <img id="admin-btn1-img" src="" alt="" class="w-full h-full object-cover hidden">
+                <!-- Profile Picture Management -->
+                <div class="bg-darkbg border border-darkborder rounded-xl p-3">
+                    <h3 class="font-semibold text-xs mb-2 text-gray-300">Gerenciar Foto de Perfil (Global)</h3>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full overflow-hidden border border-darkborder bg-darkcard flex-shrink-0">
+                            <img id="admin-preview-img" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80" alt="Preview" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex flex-col gap-1.5 flex-1">
+                            <label class="bg-purple-600 hover:bg-purple-700 text-white text-center py-1.5 px-3 rounded-lg text-xs cursor-pointer transition shadow">
+                                <i class="fa-solid fa-pencil mr-1"></i> Alterar Foto
+                                <input type="file" id="admin-profile-upload" accept="image/*" class="hidden">
+                            </label>
+                            <button onclick="removeProfilePic()" class="bg-red-600/20 border border-red-500/30 text-red-400 hover:bg-red-600 hover:text-white py-1 px-3 rounded-lg text-[10px] transition">
+                                Remover Foto
+                            </button>
+                        </div>
                     </div>
-                    <div class="flex flex-col gap-1.5 flex-1">
-                        <label class="bg-purple-600 hover:bg-purple-700 text-white text-center py-1.5 px-3 rounded-lg text-xs cursor-pointer transition shadow">
-                            <i class="fa-solid fa-upload mr-1"></i> Alterar Logo Botão 1
-                            <input type="file" id="admin-btn1-upload" accept="image/*" class="hidden">
-                        </label>
-                        <button onclick="resetButtonLogo(1)" class="bg-red-600/20 border border-red-500/30 text-red-400 hover:bg-red-600 hover:text-white py-1 px-3 rounded-lg text-[10px] transition">
-                            Restaurar Padrão
+                </div>
+
+                <!-- Live Customer Support Monitor & Manager -->
+                <div class="bg-darkbg border border-darkborder rounded-xl p-3">
+                    <h3 class="font-semibold text-xs mb-2 text-gray-300">Suporte em Tempo Real por Cliente</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-2">
+                        <div>
+                            <label class="block text-[10px] text-gray-400 mb-1">Selecione o Cliente / Sessão:</label>
+                            <select id="admin-chat-select" onchange="switchAdminChatSession()" class="w-full bg-darkcard border border-darkborder rounded-xl px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-purple-600">
+                                <option value="">Nenhuma sessão ativa</option>
+                            </select>
+                        </div>
+                        <div class="flex items-end">
+                            <button onclick="clearSelectedSessionChat()" class="w-full bg-red-600/20 border border-red-500/30 text-red-400 hover:bg-red-600 hover:text-white py-1.5 px-3 rounded-xl text-[10px] transition">
+                                Limpar Conversa Selecionada
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Live Chat Box inside Admin -->
+                    <div id="admin-chat-box" class="bg-darkcard border border-darkborder rounded-xl p-2.5 h-36 overflow-y-auto space-y-2 text-xs mb-2">
+                        <div class="text-center text-[11px] text-gray-500 py-4">Selecione um cliente acima para ver e responder ao chat em tempo real.</div>
+                    </div>
+                    <div class="flex gap-2">
+                        <input type="text" id="admin-chat-input" placeholder="Responder como Administrador..." onkeypress="handleAdminChatKey(event)"
+                            class="flex-1 bg-darkcard border border-darkborder rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-purple-600">
+                        <button onclick="sendAdminChatMessage()" class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded-xl text-xs transition">
+                            Enviar
                         </button>
                     </div>
                 </div>
-            </div>
 
-            <!-- Button 2 Logo Management -->
-            <div class="bg-darkbg border border-darkborder rounded-xl p-3 mb-3">
-                <h3 class="font-semibold text-xs mb-2 text-gray-300">Logo do Botão 2 (Suporte com IA)</h3>
-                <div class="flex items-center gap-3">
-                    <div id="admin-btn2-preview" class="w-10 h-10 rounded-xl overflow-hidden border border-darkborder bg-blue-950 flex items-center justify-center flex-shrink-0 text-blue-400">
-                        <i id="admin-btn2-fa" class="fa-solid fa-robot"></i>
-                        <img id="admin-btn2-img" src="" alt="" class="w-full h-full object-cover hidden">
-                    </div>
-                    <div class="flex flex-col gap-1.5 flex-1">
-                        <label class="bg-purple-600 hover:bg-purple-700 text-white text-center py-1.5 px-3 rounded-lg text-xs cursor-pointer transition shadow">
-                            <i class="fa-solid fa-upload mr-1"></i> Alterar Logo Botão 2
-                            <input type="file" id="admin-btn2-upload" accept="image/*" class="hidden">
-                        </label>
-                        <button onclick="resetButtonLogo(2)" class="bg-red-600/20 border border-red-500/30 text-red-400 hover:bg-red-600 hover:text-white py-1 px-3 rounded-lg text-[10px] transition">
-                            Restaurar Padrão
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Background Theme Colors -->
-            <div class="bg-darkbg border border-darkborder rounded-xl p-3 mb-3">
-                <h3 class="font-semibold text-xs mb-2 text-gray-300">Cor de Fundo da Tela Inicial</h3>
-                <div class="grid grid-cols-4 gap-2">
-                    <button onclick="setBgColor('#000000')" class="h-7 rounded-lg bg-black border border-darkborder hover:border-purple-500 transition text-[10px] text-gray-300">Preto</button>
-                    <button onclick="setBgColor('#080808')" class="h-7 rounded-lg bg-[#080808] border border-darkborder hover:border-purple-500 transition text-[10px] text-purple-300">Dark Sólido</button>
-                    <button onclick="setBgColor('#0a140f')" class="h-7 rounded-lg bg-[#0a140f] border border-darkborder hover:border-green-500 transition text-[10px] text-green-300">Dark Verde</button>
-                    <button onclick="setBgColor('#140a0a')" class="h-7 rounded-lg bg-[#140a0a] border border-darkborder hover:border-red-500 transition text-[10px] text-red-300">Dark Vinho</button>
-                </div>
-            </div>
-
-            <!-- Orders List -->
-            <div>
-                <h3 class="font-semibold text-xs mb-2 text-gray-300">Lista de Pagamentos Pendentes</h3>
-                <div id="orders-container" class="space-y-2 max-h-32 overflow-y-auto pr-1">
-                    <div class="text-center text-[11px] text-gray-500 py-3 border border-dashed border-darkborder rounded-xl">
-                        Nenhum pedido pendente no momento.
+                <!-- Orders List -->
+                <div>
+                    <h3 class="font-semibold text-xs mb-2 text-gray-300">Lista de Pagamentos Pendentes (Tempo Real)</h3>
+                    <div id="orders-container" class="space-y-2 max-h-36 overflow-y-auto pr-1">
+                        <div class="text-center text-[11px] text-gray-500 py-3 border border-dashed border-darkborder rounded-xl">
+                            Nenhum pedido pendente no momento.
+                        </div>
                     </div>
                 </div>
             </div>
@@ -448,41 +419,146 @@
 
     <!-- Script Logic -->
     <script>
+        // Unique Client Session ID generator to isolate chat per visitor device/tab
+        let clientId = localStorage.getItem('amaral_client_id');
+        if (!clientId) {
+            clientId = 'cliente_' + Math.random().toString(36.substring(2, 9)) + '_' + Date.now();
+            localStorage.setItem('amaral_client_id', clientId);
+        }
+
         let clickCount = parseInt(localStorage.getItem('amaral_clicks') || '0');
-        let orders = JSON.parse(localStorage.getItem('amaral_orders') || '[]');
         let isAdminLoggedIn = false;
         let timerInterval = null;
         let timeLeft = 600;
+        let selectedAdminChatClient = '';
 
         window.addEventListener('DOMContentLoaded', () => {
             clickCount++;
             localStorage.setItem('amaral_clicks', clickCount);
 
-            // Load profile picture
-            const savedPic = localStorage.getItem('amaral_profile_pic');
-            if (savedPic) {
-                document.getElementById('profile-img').src = savedPic;
-                document.getElementById('admin-preview-img').src = savedPic;
-            }
+            syncGlobalData();
+            initClientChat();
 
-            // Load Button 1 custom logo
-            const savedBtn1 = localStorage.getItem('amaral_btn1_logo');
-            if (savedBtn1) {
-                applyButtonLogo(1, savedBtn1);
-            }
-
-            // Load Button 2 custom logo
-            const savedBtn2 = localStorage.getItem('amaral_btn2_logo');
-            if (savedBtn2) {
-                applyButtonLogo(2, savedBtn2);
-            }
-
-            const savedBg = localStorage.getItem('amaral_bgcolor');
-            if (savedBg) {
-                document.getElementById('body-bg').style.backgroundColor = savedBg;
-            }
+            // Real-time loop polling every 1 second
+            setInterval(() => {
+                syncGlobalData();
+                if (!document.getElementById('ai-modal').classList.contains('hidden')) {
+                    refreshClientChatUI();
+                }
+                if (!document.getElementById('admin-panel-modal').classList.contains('hidden')) {
+                    refreshAdminPanelData();
+                }
+            }, 1000);
         });
 
+        // Global synchronization helper (Profile picture, Orders, Chats)
+        function syncGlobalData() {
+            // Profile Pic Sync
+            const savedPic = localStorage.getItem('amaral_profile_pic');
+            const defaultPic = "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80";
+            const activePic = savedPic || defaultPic;
+            document.getElementById('profile-img').src = activePic;
+            const adminPrev = document.getElementById('admin-preview-img');
+            if (adminPrev) adminPrev.src = activePic;
+
+            // Click count
+            const liveClicks = localStorage.getItem('amaral_clicks');
+            if (liveClicks) clickCount = parseInt(liveClicks);
+        }
+
+        // --- CHAT LOGIC PER CLIENT ---
+        function getChatsDB() {
+            try {
+                return JSON.parse(localStorage.getItem('amaral_chats_db') || '{}');
+            } catch(e) {
+                return {};
+            }
+        }
+
+        function saveChatsDB(db) {
+            localStorage.setItem('amaral_chats_db', JSON.stringify(db));
+        }
+
+        function initClientChat() {
+            let db = getChatsDB();
+            if (!db[clientId]) {
+                db[clientId] = [
+                    { sender: 'ai', text: 'Olá! Sou o assistente virtual do amaralreal7. Como posso ajudar com o seu acesso VIP hoje?' }
+                ];
+                saveChatsDB(db);
+            }
+        }
+
+        function openAiSupport() {
+            document.getElementById('ai-modal').classList.remove('hidden');
+            refreshClientChatUI();
+        }
+
+        function closeAiSupport() {
+            document.getElementById('ai-modal').classList.add('hidden');
+        }
+
+        function refreshClientChatUI() {
+            const db = getChatsDB();
+            const messages = db[clientId] || [];
+            const chatMessages = document.getElementById('chat-messages');
+            if (!chatMessages) return;
+
+            chatMessages.innerHTML = messages.map(msg => {
+                if (msg.sender === 'client') {
+                    return `
+                        <div class="flex items-start justify-end gap-2">
+                            <div class="bg-purple-600/30 border border-purple-500/30 p-2.5 rounded-2xl rounded-tr-sm text-gray-200 text-xs max-w-[85%] leading-relaxed">
+                                ${escapeHtml(msg.text)}
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    return `
+                        <div class="flex items-start gap-2">
+                            <div class="w-5 h-5 rounded-full bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 text-[9px] flex-shrink-0 mt-0.5">
+                                <i class="fa-solid fa-robot"></i>
+                            </div>
+                            <div class="bg-darkbg border border-darkborder p-2.5 rounded-2xl rounded-tl-sm text-gray-200 text-xs max-w-[85%] leading-relaxed">
+                                ${escapeHtml(msg.text)}
+                            </div>
+                        </div>
+                    `;
+                }
+            }).join('');
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function handleAiKeyPress(e) {
+            if (e.key === 'Enter') {
+                sendAiMessage();
+            }
+        }
+
+        function sendAiMessage() {
+            const input = document.getElementById('ai-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            let db = getChatsDB();
+            if (!db[clientId]) db[clientId] = [];
+
+            db[clientId].push({ sender: 'client', text: text });
+            
+            // Automated AI response simulation or fallback
+            let aiReply = "Assim que o pagamento for verificado pela equipe, você receberá o acesso e o link de download no seu Gmail.";
+            const lower = text.toLowerCase();
+            if (lower.includes('pix') || lower.includes('pagar')) {
+                aiReply = "Você pode efetuar o pagamento clicando no botão Nubank na página principal e preenchendo seus dados corretamente.";
+            }
+            db[clientId].push({ sender: 'ai', text: aiReply });
+
+            saveChatsDB(db);
+            input.value = '';
+            refreshClientChatUI();
+        }
+
+        // --- CHECKOUT & ORDERS ---
         function openCheckout() {
             document.getElementById('checkout-modal').classList.remove('hidden');
         }
@@ -514,6 +590,18 @@
             input.value = v;
         }
 
+        function getOrdersDB() {
+            try {
+                return JSON.parse(localStorage.getItem('amaral_orders') || '[]');
+            } catch(e) {
+                return [];
+            }
+        }
+
+        function saveOrdersDB(orders) {
+            localStorage.setItem('amaral_orders', JSON.stringify(orders));
+        }
+
         function submitPayment(e) {
             e.preventDefault();
             const name = document.getElementById('pay-name').value.trim();
@@ -528,15 +616,17 @@
 
             const newOrder = {
                 id: Date.now(),
+                clientId: clientId,
                 name,
                 dob,
                 cpf,
                 email,
-                date: new Date().toLocaleDateString('pt-BR')
+                date: new Date().toLocaleDateString('pt-BR') + ' ' + new Date().toLocaleTimeString('pt-BR')
             };
 
+            let orders = getOrdersDB();
             orders.push(newOrder);
-            localStorage.setItem('amaral_orders', JSON.stringify(orders));
+            saveOrdersDB(orders);
 
             document.getElementById('payment-form').reset();
             closeCheckout();
@@ -564,8 +654,10 @@
         function updateTimerDisplay() {
             const minutes = Math.floor(timeLeft / 60);
             const seconds = timeLeft % 60;
-            document.getElementById('timer-display').innerText = 
-                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            const timerEl = document.getElementById('timer-display');
+            if (timerEl) {
+                timerEl.innerText = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
         }
 
         function closePixModal() {
@@ -594,56 +686,7 @@
             document.getElementById('expired-modal').classList.add('hidden');
         }
 
-        function openAiSupport() {
-            document.getElementById('ai-modal').classList.remove('hidden');
-        }
-        function closeAiSupport() {
-            document.getElementById('ai-modal').classList.add('hidden');
-        }
-
-        function handleAiKeyPress(e) {
-            if (e.key === 'Enter') {
-                sendAiMessage();
-            }
-        }
-
-        function sendAiMessage() {
-            const input = document.getElementById('ai-input');
-            const text = input.value.trim();
-            if (!text) return;
-
-            const chatMessages = document.getElementById('chat-messages');
-            chatMessages.innerHTML += `
-                <div class="flex items-start justify-end gap-2">
-                    <div class="bg-purple-600/30 border border-purple-500/30 p-2.5 rounded-2xl rounded-tr-sm text-gray-200 text-xs max-w-[85%] leading-relaxed">
-                        ${escapeHtml(text)}
-                    </div>
-                </div>
-            `;
-            input.value = '';
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-
-            setTimeout(() => {
-                let aiReply = "Assim que o pagamento for verificado pela equipe, você receberá o acesso e o link de download no seu Gmail.";
-                const lower = text.toLowerCase();
-                if (lower.includes('pix') || lower.includes('pagar')) {
-                    aiReply = "Você pode efetuar o pagamento clicando no botão Nubank na página principal e preenchendo seus dados corretamente.";
-                }
-
-                chatMessages.innerHTML += `
-                    <div class="flex items-start gap-2">
-                        <div class="w-5 h-5 rounded-full bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 text-[9px] flex-shrink-0 mt-0.5">
-                            <i class="fa-solid fa-robot"></i>
-                        </div>
-                        <div class="bg-darkbg border border-darkborder p-2.5 rounded-2xl rounded-tl-sm text-gray-200 text-xs max-w-[85%] leading-relaxed">
-                            ${aiReply}
-                        </div>
-                    </div>
-                `;
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }, 500);
-        }
-
+        // --- ADMIN LOGIN & PANEL ---
         function openAdminLogin() {
             if (isAdminLoggedIn) {
                 openAdminPanel();
@@ -669,9 +712,7 @@
         }
 
         function openAdminPanel() {
-            document.getElementById('admin-clicks-count').innerText = clickCount;
-            document.getElementById('admin-orders-count').innerText = orders.length;
-            renderOrdersList();
+            refreshAdminPanelData();
             document.getElementById('admin-panel-modal').classList.remove('hidden');
         }
 
@@ -679,9 +720,14 @@
             document.getElementById('admin-panel-modal').classList.add('hidden');
         }
 
-        function setBgColor(color) {
-            document.body.style.backgroundColor = color;
-            localStorage.setItem('amaral_bgcolor', color);
+        function refreshAdminPanelData() {
+            document.getElementById('admin-clicks-count').innerText = clickCount;
+            
+            const orders = getOrdersDB();
+            document.getElementById('admin-orders-count').innerText = orders.length;
+            renderOrdersList(orders);
+            refreshAdminChatSessionsList();
+            refreshAdminChatBox();
         }
 
         function resetClicks() {
@@ -694,17 +740,17 @@
         }
 
         function clearAllOrders() {
-            if (confirm('Deseja realmente excluir todos os pagamentos confirmados / pedidos?')) {
-                orders = [];
-                localStorage.setItem('amaral_orders', JSON.stringify(orders));
-                document.getElementById('admin-orders-count').innerText = '0';
-                renderOrdersList();
+            if (confirm('Deseja realmente excluir todos os pagamentos pendentes?')) {
+                saveOrdersDB([]);
+                refreshAdminPanelData();
                 alert('Lista de pagamentos limpa com sucesso!');
             }
         }
 
-        function renderOrdersList() {
+        function renderOrdersList(orders) {
             const container = document.getElementById('orders-container');
+            if (!container) return;
+
             if (orders.length === 0) {
                 container.innerHTML = `<div class="text-center text-[11px] text-gray-500 py-3 border border-dashed border-darkborder rounded-xl">Nenhum pedido pendente no momento.</div>`;
                 return;
@@ -729,122 +775,127 @@
         }
 
         function approveOrder(index) {
+            let orders = getOrdersDB();
             alert(`Pagamento de ${orders[index].name} aprovado! Link enviado para ${orders[index].email}.`);
             orders.splice(index, 1);
-            localStorage.setItem('amaral_orders', JSON.stringify(orders));
-            document.getElementById('admin-orders-count').innerText = orders.length;
-            renderOrdersList();
+            saveOrdersDB(orders);
+            refreshAdminPanelData();
         }
 
         function removeOrder(index) {
+            let orders = getOrdersDB();
             orders.splice(index, 1);
-            localStorage.setItem('amaral_orders', JSON.stringify(orders));
-            document.getElementById('admin-orders-count').innerText = orders.length;
-            renderOrdersList();
+            saveOrdersDB(orders);
+            refreshAdminPanelData();
         }
 
-        // Profile Picture Upload
+        // --- ADMIN CHAT MANAGEMENT ---
+        function refreshAdminChatSessionsList() {
+            const select = document.getElementById('admin-chat-select');
+            if (!select) return;
+
+            const db = getChatsDB();
+            const clientKeys = Object.keys(db);
+            
+            let currentVal = selectedAdminChatClient;
+            select.innerHTML = `<option value="">Selecione um cliente (${clientKeys.length} ativos)</option>` + 
+                clientKeys.map(key => `<option value="${key}">${key === clientId ? '👤 Você (Este dispositivo)' : key}</option>`).join('');
+            
+            if (clientKeys.includes(currentVal)) {
+                select.value = currentVal;
+            } else {
+                selectedAdminChatClient = '';
+            }
+        }
+
+        function switchAdminChatSession() {
+            const select = document.getElementById('admin-chat-select');
+            selectedAdminChatClient = select.value;
+            refreshAdminChatBox();
+        }
+
+        function refreshAdminChatBox() {
+            const box = document.getElementById('admin-chat-box');
+            if (!box) return;
+
+            if (!selectedAdminChatClient) {
+                box.innerHTML = `<div class="text-center text-[11px] text-gray-500 py-4">Selecione um cliente acima para ver e responder ao chat em tempo real.</div>`;
+                return;
+            }
+
+            const db = getChatsDB();
+            const messages = db[selectedAdminChatClient] || [];
+
+            box.innerHTML = messages.map(msg => {
+                if (msg.sender === 'client') {
+                    return `<div class="text-left"><span class="font-bold text-purple-400">[Cliente]:</span> <span class="text-gray-200">${escapeHtml(msg.text)}</span></div>`;
+                } else if (msg.sender === 'admin') {
+                    return `<div class="text-left"><span class="font-bold text-green-400">[Admin]:</span> <span class="text-gray-200">${escapeHtml(msg.text)}</span></div>`;
+                } else {
+                    return `<div class="text-left"><span class="font-bold text-blue-400">[IA]:</span> <span class="text-gray-200">${escapeHtml(msg.text)}</span></div>`;
+                }
+            }).join('');
+            box.scrollTop = box.scrollHeight;
+        }
+
+        function handleAdminChatKey(e) {
+            if (e.key === 'Enter') {
+                sendAdminChatMessage();
+            }
+        }
+
+        function sendAdminChatMessage() {
+            if (!selectedAdminChatClient) {
+                alert('Selecione um cliente primeiro.');
+                return;
+            }
+            const input = document.getElementById('admin-chat-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            let db = getChatsDB();
+            if (!db[selectedAdminChatClient]) db[selectedAdminChatClient] = [];
+
+            db[selectedAdminChatClient].push({ sender: 'admin', text: text });
+            saveChatsDB(db);
+            input.value = '';
+            refreshAdminChatBox();
+        }
+
+        function clearSelectedSessionChat() {
+            if (!selectedAdminChatClient) {
+                alert('Selecione uma sessão de chat.');
+                return;
+            }
+            if (confirm('Deseja limpar o histórico desta conversa?')) {
+                let db = getChatsDB();
+                db[selectedAdminChatClient] = [
+                    { sender: 'ai', text: 'Conversa redefinida pelo administrador.' }
+                ];
+                saveChatsDB(db);
+                refreshAdminChatBox();
+            }
+        }
+
+        // --- GLOBAL PROFILE PICTURE UPLOAD ---
         document.getElementById('admin-profile-upload').addEventListener('change', function(event) {
             const file = event.target.files[0];
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const base64Image = e.target.result;
-                    document.getElementById('profile-img').src = base64Image;
-                    document.getElementById('admin-preview-img').src = base64Image;
                     localStorage.setItem('amaral_profile_pic', base64Image);
-                    alert('Foto de perfil alterada com sucesso!');
+                    syncGlobalData();
+                    alert('Foto de perfil alterada com sucesso para todos os clientes!');
                 };
                 reader.readAsDataURL(file);
             }
         });
 
         function removeProfilePic() {
-            const defaultPic = "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80";
-            document.getElementById('profile-img').src = defaultPic;
-            document.getElementById('admin-preview-img').src = defaultPic;
             localStorage.removeItem('amaral_profile_pic');
-            alert('Foto de perfil removida com sucesso!');
-        }
-
-        // Button 1 Logo Upload
-        document.getElementById('admin-btn1-upload').addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const base64Image = e.target.result;
-                    applyButtonLogo(1, base64Image);
-                    localStorage.setItem('amaral_btn1_logo', base64Image);
-                    alert('Logo do Botão 1 alterada com sucesso!');
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
-        // Button 2 Logo Upload
-        document.getElementById('admin-btn2-upload').addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const base64Image = e.target.result;
-                    applyButtonLogo(2, base64Image);
-                    localStorage.setItem('amaral_btn2_logo', base64Image);
-                    alert('Logo do Botão 2 alterada com sucesso!');
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
-        function applyButtonLogo(btnNum, imgUrl) {
-            if (btnNum === 1) {
-                // Main page
-                const svg1 = document.getElementById('btn1-svg');
-                const img1 = document.getElementById('btn1-img');
-                svg1.classList.add('hidden');
-                img1.src = imgUrl;
-                img1.classList.remove('hidden');
-
-                // Admin panel preview
-                const adminSvg1 = document.getElementById('admin-btn1-svg');
-                const adminImg1 = document.getElementById('admin-btn1-img');
-                adminSvg1.classList.add('hidden');
-                adminImg1.src = imgUrl;
-                adminImg1.classList.remove('hidden');
-            } else if (btnNum === 2) {
-                // Main page
-                const fa2 = document.getElementById('btn2-fa');
-                const img2 = document.getElementById('btn2-img');
-                fa2.classList.add('hidden');
-                img2.src = imgUrl;
-                img2.classList.remove('hidden');
-
-                // Admin panel preview
-                const adminFa2 = document.getElementById('admin-btn2-fa');
-                const adminImg2 = document.getElementById('admin-btn2-img');
-                adminFa2.classList.add('hidden');
-                adminImg2.src = imgUrl;
-                adminImg2.classList.remove('hidden');
-            }
-        }
-
-        function resetButtonLogo(btnNum) {
-            if (btnNum === 1) {
-                localStorage.removeItem('amaral_btn1_logo');
-                document.getElementById('btn1-svg').classList.remove('hidden');
-                document.getElementById('btn1-img').classList.add('hidden');
-                document.getElementById('admin-btn1-svg').classList.remove('hidden');
-                document.getElementById('admin-btn1-img').classList.add('hidden');
-                alert('Logo do Botão 1 restaurada para o padrão!');
-            } else if (btnNum === 2) {
-                localStorage.removeItem('amaral_btn2_logo');
-                document.getElementById('btn2-fa').classList.remove('hidden');
-                document.getElementById('btn2-img').classList.add('hidden');
-                document.getElementById('admin-btn2-fa').classList.remove('hidden');
-                document.getElementById('admin-btn2-img').classList.add('hidden');
-                alert('Logo do Botão 2 restaurada para o padrão!');
-            }
+            syncGlobalData();
+            alert('Foto de perfil restaurada para o padrão!');
         }
 
         function escapeHtml(text) {
