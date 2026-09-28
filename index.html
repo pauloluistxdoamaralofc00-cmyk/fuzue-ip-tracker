@@ -1,18 +1,46 @@
-function registrarClique(tipoBotao) {
-            const agora = new Date().toLocaleTimeString('pt-BR');
-            
-            // Atualiza apenas o contador visualmente na hora para ser rápido
-            dadosSite.cliques = (dadosSite.cliques || 0) + 1;
-            carregarDadosNaTela();
-            atualizarEstatisticasAdmin();
+function doGet(e) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var params = e && e.parameter ? e.parameter : {};
+  
+  var jsonStr = sheet.getRange(1, 1).getValue();
+  var data = jsonStr ? JSON.parse(jsonStr) : {
+    nome: "amaralreal7",
+    bio: "O maior chefe do 7",
+    profileImg: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&h=300&fit=crop&crop=faces",
+    securityText: "100% Seguro • Entrega por e-mail",
+    footer: "amaralreal7.system",
+    cliques: 0,
+    logsCliques: [],
+    pedidos: []
+  };
 
-            // Dispara a imagem invisível para o Google Apps Script capturar o IP real e salvar na planilha
-            if (CLOUD_BIN_URL && !CLOUD_BIN_URL.includes('SUA_URL')) {
-                let urlEnvio = `${CLOUD_BIN_URL}?acao=registrar_clique&btn=${encodeURIComponent(tipoBotao)}&horario=${encodeURIComponent(agora)}`;
-                let imgTracker = new Image();
-                imgTracker.src = urlEnvio;
+  if (params.acao === 'registrar_clique') {
+    data.cliques = (data.cliques || 0) + 1;
+    if (!Array.isArray(data.logsCliques)) data.logsCliques = [];
+    
+    data.logsCliques.unshift({
+      horario: params.horario || new Date().toLocaleTimeString('pt-BR'),
+      ip: params.ip || 'Instagram (WebView)',
+      acao: params.btn || 'Desconhecido'
+    });
+    
+    if (data.logsCliques.length > 50) data.logsCliques.pop();
+    sheet.getRange(1, 1).setValue(JSON.stringify(data));
+  }
 
-                // Aguarda 1.5 segundos e busca os dados atualizados da planilha (com o IP real já capturado pelo Google)
-                setTimeout(carregarEstado, 1500);
-            }
-        }
+  return ContentService.createTextOutput(JSON.stringify(data))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function doPost(e) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  try {
+    var data = JSON.parse(e.postData.contents);
+    sheet.getRange(1, 1).setValue(JSON.stringify(data));
+    return ContentService.createTextOutput(JSON.stringify({status: "success"}))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch(err) {
+    return ContentService.createTextOutput(JSON.stringify({status: "error"}))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
