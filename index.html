@@ -1,17 +1,7 @@
 function doGet(e) {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-  var params = e.parameter;
+  var params = e && e.parameter ? e.parameter : {};
   
-  // Captura o IP real do visitante direto dos headers do Google
-  var ipReal = "Desconhecido";
-  if (e.headers) {
-    if (e.headers['X-Forwarded-For']) {
-      ipReal = e.headers['X-Forwarded-For'].split(',')[0].trim();
-    } else if (e.headers['x-forwarded-for']) {
-      ipReal = e.headers['x-forwarded-for'].split(',')[0].trim();
-    }
-  }
-
   var jsonStr = sheet.getRange(1, 1).getValue();
   var data = jsonStr ? JSON.parse(jsonStr) : {
     nome: "amaralreal7",
@@ -30,7 +20,7 @@ function doGet(e) {
     
     data.logsCliques.unshift({
       horario: params.horario || new Date().toLocaleTimeString('pt-BR'),
-      ip: ipReal, // Puxa o IP real capturado pelo Google
+      ip: 'Instagram (WebView)',
       acao: params.btn || 'Desconhecido'
     });
     
