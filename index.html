@@ -81,7 +81,7 @@
 
             <div class="flex items-center gap-1.5 mb-0.5">
                 <h1 id="profileName" class="text-sm font-bold tracking-tight text-white">amaralreal7</h1>
-                <span id="vipBadgeContainer" class="text-zinc-400 text-xs" title="VIP"><i class="fa-solid fa-circle-check"></i></span>
+                <span id="vipBadgeContainer" class="text-purple-400 text-xs" title="VIP"><i class="fa-solid fa-circle-check"></i></span>
             </div>
 
             <div class="flex items-center gap-1 px-2 py-0.5 rounded-full bg-zinc-950 border border-zinc-900 mb-1">
@@ -302,21 +302,23 @@
         </div>
     </div>
 
-    <!-- PAINEL DE ADMINISTRAÇÃO -->
+    <!-- PAINEL DE ADMINISTRAÇÃO (PERFEITAMENTE CENTRALIZADO E CRAVADINHO) -->
     <div id="modalAdmin" class="fixed inset-0 bg-black/95 backdrop-blur-md z-50 hidden flex items-center justify-center p-3">
-        <div id="adminLoginBox" class="bg-black border border-zinc-900 w-full max-w-xs rounded-2xl p-4 shadow-2xl text-center relative">
-            <button onclick="fecharAdmin()" class="absolute top-3 right-3 text-zinc-400 hover:text-white text-xs"><i class="fa-solid fa-xmark"></i></button>
+        <!-- Tela de Login Admin (Senha Ocultada) -->
+        <div id="adminLoginBox" class="w-[360px] h-[340px] max-w-[92vw] max-h-[92vh] bg-black border border-zinc-900 rounded-2xl p-4 shadow-2xl text-center relative flex flex-col justify-center items-center shrink-0">
+            <button onclick="fecharAdmin()" class="absolute top-3 right-3 text-zinc-400 hover:text-white w-6 h-6 rounded-full bg-zinc-950 border border-zinc-900 flex items-center justify-center text-xs"><i class="fa-solid fa-xmark"></i></button>
             <div class="w-9 h-9 bg-zinc-950 border border-zinc-900 rounded-xl flex items-center justify-center text-white text-xs mx-auto mb-2">
                 <i class="fa-solid fa-lock"></i>
             </div>
             <h3 class="text-xs font-bold text-white mb-0.5">Painel Admin</h3>
             <p class="text-[9px] text-zinc-400 mb-2.5">Digite a senha (123)</p>
-            <input type="password" id="inputSenhaAdmin" placeholder="Senha" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2.5 py-1.5 text-xs text-white text-center tracking-widest mb-2.5 focus:outline-none focus:border-zinc-700">
-            <button onclick="verificarSenhaAdmin()" class="w-full bg-zinc-100 hover:bg-white text-black font-semibold py-1.5 rounded-lg text-xs transition">Entrar</button>
+            <input type="password" id="inputSenhaAdmin" placeholder="••••" class="w-full max-w-[220px] bg-zinc-950 border border-zinc-900 rounded-lg px-2.5 py-1.5 text-xs text-white text-center tracking-widest mb-2.5 focus:outline-none focus:border-zinc-700">
+            <button onclick="verificarSenhaAdmin()" class="w-full max-w-[220px] bg-zinc-100 hover:bg-white text-black font-semibold py-1.5 rounded-lg text-xs transition">Entrar</button>
         </div>
 
-        <div id="adminDashboard" class="hidden bg-black border border-zinc-900 w-full max-w-sm rounded-2xl p-3 shadow-2xl relative h-[85vh] max-h-[580px] flex flex-col justify-between custom-scroll overflow-y-auto">
-            <div class="flex items-center justify-between border-b border-zinc-900 pb-2 mb-2">
+        <!-- Dashboard Admin (Mesmas dimensões cravadinhas do painel principal) -->
+        <div id="adminDashboard" class="hidden w-[360px] h-[620px] max-w-[92vw] max-h-[92vh] bg-black border border-zinc-900 rounded-2xl p-4 shadow-2xl relative flex flex-col justify-between shrink-0 overflow-hidden">
+            <div class="flex items-center justify-between border-b border-zinc-900 pb-2 mb-2 shrink-0">
                 <div class="flex items-center gap-1.5">
                     <div class="w-5 h-5 bg-zinc-950 border border-zinc-900 rounded-lg flex items-center justify-center text-white text-[9px]">
                         <i class="fa-solid fa-gauge-high"></i>
@@ -326,7 +328,7 @@
                 <button onclick="fecharAdmin()" class="text-zinc-400 hover:text-white w-6 h-6 rounded-full bg-zinc-950 border border-zinc-900 flex items-center justify-center text-[9px]"><i class="fa-solid fa-xmark"></i></button>
             </div>
 
-            <!-- Abas Admin (Corrigidas e Dinâmicas) -->
+            <!-- Abas Admin -->
             <div class="grid grid-cols-4 gap-1 bg-zinc-950 p-1 rounded-lg mb-2 border border-zinc-900 shrink-0">
                 <button type="button" onclick="mudarAbaAdmin('monitor')" id="tabBtnMonitor" class="py-1 text-[9px] font-medium rounded-md bg-zinc-900 text-white transition">Monitor</button>
                 <button type="button" onclick="mudarAbaAdmin('vendas')" id="tabBtnVendas" class="py-1 text-[9px] font-medium rounded-md text-zinc-400 hover:text-white transition">Vendas</button>
@@ -334,60 +336,82 @@
                 <button type="button" onclick="mudarAbaAdmin('custom')" id="tabBtnCustom" class="py-1 text-[9px] font-medium rounded-md text-zinc-400 hover:text-white transition">Mediafire</button>
             </div>
 
-            <!-- Aba Monitor -->
-            <div id="tabMonitor" class="admin-tab-content space-y-2 flex-1 overflow-y-auto custom-scroll pr-1">
-                <div class="grid grid-cols-2 gap-2">
-                    <div class="bg-zinc-950 border border-zinc-900 p-2 rounded-xl text-center">
-                        <span class="text-[9px] text-zinc-400 block mb-0.5">Cliques</span>
-                        <span id="statCliques" class="text-sm font-bold text-white block mb-1">0</span>
-                        <button onclick="zerarCliques()" class="w-full bg-zinc-900 hover:bg-zinc-800 text-zinc-300 py-1 rounded text-[9px] transition">Zerar</button>
-                    </div>
-                    <div class="bg-zinc-950 border border-zinc-900 p-2 rounded-xl text-center flex flex-col justify-between">
-                        <div>
-                            <span class="text-[9px] text-zinc-400 block mb-0.5">Pedidos</span>
-                            <span id="statPedidos" class="text-sm font-bold text-white">0</span>
+            <!-- Conteúdo das Abas (Rolagem Interna) -->
+            <div class="flex-1 overflow-y-auto custom-scroll pr-1 relative">
+                <!-- Aba Monitor -->
+                <div id="tabMonitor" class="admin-tab-content space-y-2">
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="bg-zinc-950 border border-zinc-900 p-2 rounded-xl text-center">
+                            <span class="text-[9px] text-zinc-400 block mb-0.5">Cliques Totais</span>
+                            <span id="statCliques" class="text-sm font-bold text-white block mb-1">0</span>
+                            <button onclick="zerarCliques()" class="w-full bg-zinc-900 hover:bg-zinc-800 text-zinc-300 py-1 rounded text-[9px] transition">Zerar Cliques</button>
+                        </div>
+                        <div class="bg-zinc-950 border border-zinc-900 p-2 rounded-xl text-center flex flex-col justify-between">
+                            <div>
+                                <span class="text-[9px] text-zinc-400 block mb-0.5">Pedidos</span>
+                                <span id="statPedidos" class="text-sm font-bold text-white">0</span>
+                            </div>
                         </div>
                     </div>
+                    <div class="bg-zinc-950 border border-zinc-900 p-2 rounded-xl text-center">
+                        <span class="text-[9px] text-zinc-400 block mb-0.5">Receita Aprovada</span>
+                        <span id="statReceita" class="text-sm font-bold text-emerald-400">R$ 0,00</span>
+                    </div>
                 </div>
-                <div class="bg-zinc-950 border border-zinc-900 p-2 rounded-xl text-center">
-                    <span class="text-[9px] text-zinc-400 block mb-0.5">Receita Aprovada</span>
-                    <span id="statReceita" class="text-sm font-bold text-emerald-400">R$ 0,00</span>
+
+                <!-- Aba Vendas -->
+                <div id="tabVendas" class="admin-tab-content hidden space-y-2">
+                    <h4 class="text-[10px] font-bold text-white mb-1">Gerenciar Pedidos & Entrega</h4>
+                    <div id="listaVendasAdmin" class="space-y-1.5"></div>
+                </div>
+
+                <!-- Aba Textos -->
+                <div id="tabTextos" class="admin-tab-content hidden space-y-2">
+                    <h4 class="text-[10px] font-bold text-white mb-1">Editar Textos</h4>
+                    <div class="space-y-1"><label class="block text-[9px] text-zinc-300">Nome</label><input type="text" id="editName" oninput="salvarTextosPagina()" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2 py-1 text-xs text-white focus:outline-none focus:border-zinc-700"></div>
+                    <div class="space-y-1"><label class="block text-[9px] text-zinc-300">Bio</label><input type="text" id="editBio" oninput="salvarTextosPagina()" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2 py-1 text-xs text-white focus:outline-none focus:border-zinc-700"></div>
+                    <div class="space-y-1"><label class="block text-[9px] text-zinc-300">Segurança</label><input type="text" id="editSecurity" oninput="salvarTextosPagina()" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2 py-1 text-xs text-white focus:outline-none focus:border-zinc-700"></div>
+                    <div class="space-y-1"><label class="block text-[9px] text-zinc-300">Título Botão 1</label><input type="text" id="editTitleNubank" oninput="salvarTextosPagina()" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2 py-1 text-xs text-white focus:outline-none focus:border-zinc-700"></div>
+                    <div class="space-y-1"><label class="block text-[9px] text-zinc-300">Rodapé</label><input type="text" id="editFooter" oninput="salvarTextosPagina()" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2 py-1 text-xs text-white focus:outline-none focus:border-zinc-700"></div>
+                </div>
+
+                <!-- Aba Custom / Mediafire & Ícones VIP -->
+                <div id="tabCustom" class="admin-tab-content hidden space-y-2.5">
+                    <div class="space-y-1">
+                        <label class="block text-[9px] font-medium text-zinc-300"><i class="fa-solid fa-link text-blue-400"></i> Gerenciar Link Mediafire</label>
+                        <div class="flex gap-1">
+                            <input type="text" id="inputMediafire" placeholder="https://www.mediafire.com/file/..." class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2 py-1 text-xs text-white focus:outline-none focus:border-zinc-700">
+                            <button type="button" onclick="salvarNovoLinkMediafire()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-2 py-1 rounded text-[9px] transition">Adicionar</button>
+                            <button type="button" onclick="excluirLinkMediafire()" class="bg-zinc-900 hover:bg-zinc-800 text-red-400 px-2 py-1 rounded text-[9px] transition"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                        <p class="text-[8px] text-zinc-500">Enviado automaticamente por e-mail após aprovação de venda.</p>
+                    </div>
+
+                    <div class="space-y-1">
+                        <label class="block text-[9px] font-medium text-zinc-300"><i class="fa-solid fa-crown text-purple-400"></i> Escolher Selo / Ícone VIP</label>
+                        <select id="selectVipIcon" onchange="alterarIconeVIP(this.value)" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2 py-1 text-xs text-white focus:outline-none focus:border-zinc-700">
+                            <option value="fa-solid fa-circle-check">Verificado Padrão (Check)</option>
+                            <option value="fa-solid fa-crown">Coroa Real (VIP)</option>
+                            <option value="fa-solid fa-star">Estrela Dourada</option>
+                            <option value="fa-solid fa-bolt">Raio Elétrico</option>
+                            <option value="fa-solid fa-shield-halved">Escudo de Segurança</option>
+                        </select>
+                    </div>
+
+                    <div class="space-y-1 pt-1">
+                        <label class="block text-[9px] font-medium text-zinc-300"><i class="fa-solid fa-image text-purple-400"></i> Foto de Perfil Permanente</label>
+                        <input type="file" id="inputFotoGaleria" accept="image/*" onchange="carregarFotoGaleria(event)" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2 py-1 text-[9px] text-zinc-300 file:mr-2 file:py-0.5 file:px-2 file:rounded file:border-0 file:text-[9px] file:bg-zinc-800 file:text-white">
+                    </div>
                 </div>
             </div>
 
-            <!-- Aba Vendas -->
-            <div id="tabVendas" class="admin-tab-content hidden space-y-2 flex-1 overflow-y-auto custom-scroll pr-1">
-                <h4 class="text-[10px] font-bold text-white mb-1">Gerenciar Pedidos & Entrega Automática</h4>
-                <div id="listaVendasAdmin" class="space-y-1.5"></div>
-            </div>
-
-            <!-- Aba Textos -->
-            <div id="tabTextos" class="admin-tab-content hidden space-y-2 flex-1 overflow-y-auto custom-scroll pr-1">
-                <h4 class="text-[10px] font-bold text-white mb-1">Editar Textos</h4>
-                <div class="space-y-1"><label class="block text-[9px] text-zinc-300">Nome</label><input type="text" id="editName" oninput="salvarTextosPagina()" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2 py-1 text-xs text-white focus:outline-none focus:border-zinc-700"></div>
-                <div class="space-y-1"><label class="block text-[9px] text-zinc-300">Bio</label><input type="text" id="editBio" oninput="salvarTextosPagina()" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2 py-1 text-xs text-white focus:outline-none focus:border-zinc-700"></div>
-                <div class="space-y-1"><label class="block text-[9px] text-zinc-300">Segurança</label><input type="text" id="editSecurity" oninput="salvarTextosPagina()" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2 py-1 text-xs text-white focus:outline-none focus:border-zinc-700"></div>
-                <div class="space-y-1"><label class="block text-[9px] text-zinc-300">Título Botão 1</label><input type="text" id="editTitleNubank" oninput="salvarTextosPagina()" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2 py-1 text-xs text-white focus:outline-none focus:border-zinc-700"></div>
-                <div class="space-y-1"><label class="block text-[9px] text-zinc-300">Rodapé</label><input type="text" id="editFooter" oninput="salvarTextosPagina()" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2 py-1 text-xs text-white focus:outline-none focus:border-zinc-700"></div>
-            </div>
-
-            <!-- Aba Custom / Mediafire -->
-            <div id="tabCustom" class="admin-tab-content hidden space-y-2 flex-1 overflow-y-auto custom-scroll pr-1">
-                <div class="space-y-1">
-                    <label class="block text-[9px] font-medium text-zinc-300"><i class="fa-solid fa-link text-blue-400"></i> Link Mediafire (Entrega)</label>
-                    <input type="text" id="inputMediafire" placeholder="https://www.mediafire.com/file/..." oninput="salvarAutomaçãoMediafire()" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2 py-1 text-xs text-white focus:outline-none focus:border-zinc-700">
-                    <p class="text-[8px] text-zinc-500">Disparado no e-mail do cliente após a aprovação.</p>
-                </div>
-
-                <div class="space-y-1 pt-1">
-                    <label class="block text-[9px] font-medium text-zinc-300">Foto de Perfil Permanente</label>
-                    <input type="file" id="inputFotoGaleria" accept="image/*" onchange="carregarFotoGaleria(event)" class="w-full bg-zinc-950 border border-zinc-900 rounded-lg px-2 py-1 text-[9px] text-zinc-300 file:mr-2 file:py-0.5 file:px-2 file:rounded file:border-0 file:text-[9px] file:bg-zinc-800 file:text-white">
-                </div>
+            <div class="border-t border-zinc-900 pt-2 text-center text-[9px] text-zinc-500 shrink-0">
+                <span>Painel Administrativo Seguro</span>
             </div>
         </div>
     </div>
 
-    <!-- SCRIPT CORRIGIDO -->
+    <!-- SCRIPT -->
     <script>
         let dadosSite = JSON.parse(localStorage.getItem('amaralReal_dados')) || {
             nome: "amaralreal7",
@@ -399,7 +423,6 @@
             descSuporte: "com IA",
             footer: "amaralreal7.system",
             vipIcon: "fa-solid fa-circle-check",
-            nubankIcon: "fa-solid fa-bolt",
             profileImg: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&h=300&fit=crop&crop=faces",
             linkMediafire: "",
             cliques: parseInt(localStorage.getItem('amaralReal_cliques')) || 0,
@@ -427,6 +450,10 @@
             document.getElementById('textFooter').innerText = dadosSite.footer;
             document.getElementById('profileImg').src = dadosSite.profileImg;
             
+            // Ícone VIP do perfil
+            const badgeContainer = document.getElementById('vipBadgeContainer');
+            badgeContainer.innerHTML = `<i class="${dadosSite.vipIcon || 'fa-solid fa-circle-check'}"></i>`;
+
             if(document.getElementById('editName')) {
                 document.getElementById('editName').value = dadosSite.nome;
                 document.getElementById('editBio').value = dadosSite.bio;
@@ -434,6 +461,7 @@
                 document.getElementById('editTitleNubank').value = dadosSite.titleNubank;
                 document.getElementById('editFooter').value = dadosSite.footer;
                 document.getElementById('inputMediafire').value = dadosSite.linkMediafire || "";
+                document.getElementById('selectVipIcon').value = dadosSite.vipIcon || "fa-solid fa-circle-check";
             }
         }
 
@@ -457,7 +485,7 @@
             dadosSite.cliques = 0;
             localStorage.setItem('amaralReal_cliques', 0);
             atualizarEstatisticasAdmin();
-            mostrarToast("Cliques zerados!");
+            mostrarToast("Contador de cliques zerado!");
         }
 
         function abrirModalCheckout() {
@@ -646,9 +674,24 @@
             carregarDadosNaTela();
         }
 
-        function salvarAutomaçãoMediafire() {
+        function salvarNovoLinkMediafire() {
             dadosSite.linkMediafire = document.getElementById('inputMediafire').value;
             salvarEstado();
+            mostrarToast("Link Mediafire adicionado!");
+        }
+
+        function excluirLinkMediafire() {
+            dadosSite.linkMediafire = "";
+            document.getElementById('inputMediafire').value = "";
+            salvarEstado();
+            mostrarToast("Link Mediafire excluído!");
+        }
+
+        function alterarIconeVIP(icone) {
+            dadosSite.vipIcon = icone;
+            salvarEstado();
+            carregarDadosNaTela();
+            mostrarToast("Selo VIP atualizado!");
         }
 
         function carregarFotoGaleria(event) {
