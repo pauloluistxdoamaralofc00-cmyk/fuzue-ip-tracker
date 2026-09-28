@@ -397,8 +397,16 @@
                 </div>
             </div>
 
-            <!-- Conteúdo da Aba: Vendas & Aprovações -->
-            <div id="tabVendas" class="hidden space-y-2.5 flex-1 overflow-y-auto custom-scroll pr-1">
+            <!-- Conteúdo da Aba: Vendas & Aprovações + Link Mediafire -->
+            <div id="tabVendas" class="hidden space-y-3 flex-1 overflow-y-auto custom-scroll pr-1">
+                <div class="bg-zinc-950 border border-zinc-900 p-3 rounded-2xl space-y-2">
+                    <h4 class="text-xs font-bold text-white flex items-center gap-1.5">
+                        <i class="fa-solid fa-link text-purple-400"></i> Link Mediafire do Produto
+                    </h4>
+                    <p class="text-[10px] text-zinc-400">Cole abaixo o link do Mediafire. Ao clicar em "Aprovar", simulemos o envio automático para o e-mail do cliente.</p>
+                    <input type="text" id="inputMediafireLink" placeholder="https://www.mediafire.com/file/..." oninput="salvarMediafireLink()" class="w-full bg-black border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-zinc-600">
+                </div>
+
                 <div class="flex items-center justify-between mb-1">
                     <h4 class="text-xs font-bold text-white">Gerenciamento de Pagamentos</h4>
                     <button onclick="excluirTodosPedidos()" class="text-[10px] bg-red-950/50 hover:bg-red-900/60 border border-red-800/50 text-red-300 px-2.5 py-1 rounded-lg transition">Excluir Todos</button>
@@ -453,7 +461,7 @@
                 </div>
             </div>
 
-            <!-- Conteúdo da Aba: Customização de Ícones & Selo 100% Personalizado -->
+            <!-- Conteúdo da Aba: Customização de Ícones & Selo VIP -->
             <div id="tabCustom" class="hidden space-y-3 flex-1 overflow-y-auto custom-scroll pr-1">
                 <div class="space-y-2">
                     <label class="block text-[11px] font-medium text-zinc-300">Alterar Foto de Perfil (Via Galeria ou URL)</label>
@@ -461,11 +469,19 @@
                 </div>
 
                 <div class="space-y-2">
-                    <label class="block text-[11px] font-medium text-zinc-300">Selo VIP 100% Personalizado (Ícone FontAwesome)</label>
-                    <div class="flex gap-2">
-                        <input type="text" id="inputCustomVipIcon" placeholder="ex: fa-solid fa-fire" oninput="salvarSeloPersonalizado()" class="w-full bg-zinc-950 border border-zinc-900 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-zinc-700">
-                    </div>
-                    <p class="text-[9px] text-zinc-500">Digite qualquer classe FontAwesome (ex: <code class="text-zinc-400">fa-solid fa-fire</code>, <code class="text-zinc-400">fa-solid fa-gem</code>, <code class="text-zinc-400">fa-solid fa-bolt</code>)</p>
+                    <label class="block text-[11px] font-medium text-zinc-300">Escolha o Selo VIP Personalizado</label>
+                    <select id="selectSeloVip" onchange="salvarSeloPersonalizadoSelect()" class="w-full bg-zinc-950 border border-zinc-900 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-zinc-700">
+                        <option value="fa-solid fa-circle-check">✅ Selo Verificado Padrão</option>
+                        <option value="fa-solid fa-fire">🔥 Fogo / Chamas</option>
+                        <option value="fa-solid fa-gem">💎 Diamante / VIP Master</option>
+                        <option value="fa-solid fa-bolt">⚡ Raio / Elétrico</option>
+                        <option value="fa-solid fa-crown">👑 Coroa Real</option>
+                        <option value="fa-solid fa-star">⭐ Estrela Dourada</option>
+                        <option value="fa-solid fa-shield-halved">🛡️ Escudo de Segurança</option>
+                        <option value="fa-solid fa-skull">💀 Caveira Gamer</option>
+                        <option value="fa-solid fa-dragon">🐉 Dragão Lendário</option>
+                        <option value="fa-solid fa-rocket">🚀 Foguete Topo</option>
+                    </select>
                 </div>
 
                 <div class="space-y-2">
@@ -496,6 +512,7 @@
         // Variáveis de Estado Globais
         let contadorCliques = localStorage.getItem('amaral_cliques') ? parseInt(localStorage.getItem('amaral_cliques')) : 0;
         let listaPedidos = JSON.parse(localStorage.getItem('amaral_pedidos')) || [];
+        let mediafireLinkGlobal = localStorage.getItem('amaral_mediafire') || '';
         let timerInterval = null;
 
         // Inicialização dos Textos e Dados salvos no LocalStorage
@@ -581,6 +598,7 @@
             } else if (aba === 'vendas') {
                 document.getElementById('tabVendas').classList.remove('hidden');
                 document.getElementById('tabBtnVendas').className = "py-1.5 text-[10px] font-medium rounded-lg bg-zinc-900 text-white transition";
+                document.getElementById('inputMediafireLink').value = mediafireLinkGlobal;
                 renderizarListaVendasAdmin();
             } else if (aba === 'textos') {
                 document.getElementById('tabTextos').classList.remove('hidden');
@@ -597,6 +615,11 @@
             localStorage.setItem('amaral_cliques', 0);
             atualizarEstatisticasAdmin();
             mostrarToast('Contador de cliques zerado com sucesso!');
+        }
+
+        function salvarMediafireLink() {
+            mediafireLinkGlobal = document.getElementById('inputMediafireLink').value.trim();
+            localStorage.setItem('amaral_mediafire', mediafireLinkGlobal);
         }
 
         // Máscaras de Input do Checkout
@@ -764,7 +787,15 @@
             localStorage.setItem('amaral_pedidos', JSON.stringify(listaPedidos));
             renderizarListaVendasAdmin();
             atualizarEstatisticasAdmin();
-            mostrarToast(`Pedido alterado para ${novoStatus}`);
+
+            if (novoStatus === 'Aprovado') {
+                const cliente = listaPedidos[index];
+                const linkEnvio = mediafireLinkGlobal || '[Nenhum link Mediafire configurado]';
+                mostrarToast(`Aprovado! E-mail disparado para ${cliente.email} com o link.`);
+                console.log(`[E-MAIL ENVIADO] Para: ${cliente.email} | Link Mediafire: ${linkEnvio}`);
+            } else {
+                mostrarToast(`Pedido alterado para ${novoStatus}`);
+            }
         }
 
         function excluirPedidoUnico(index) {
@@ -785,7 +816,7 @@
             }
         }
 
-        // Customização de Textos e Selo Personalizado
+        // Customização de Textos e Selo VIP
         function preencherCamposEdicaoTextos() {
             document.getElementById('editName').value = document.getElementById('profileName').innerText;
             document.getElementById('editBio').value = document.getElementById('profileBio').innerText;
@@ -835,12 +866,11 @@
             }
         }
 
-        function salvarSeloPersonalizado() {
-            const customIconClass = document.getElementById('inputCustomVipIcon').value.trim();
-            if (customIconClass) {
-                document.getElementById('vipBadgeContainer').innerHTML = `<i class="${customIconClass}"></i>`;
-                localStorage.setItem('amaral_selo_custom', customIconClass);
-            }
+        function salvarSeloPersonalizadoSelect() {
+            const selectVal = document.getElementById('selectSeloVip').value;
+            document.getElementById('vipBadgeContainer').innerHTML = `<i class="${selectVal}"></i>`;
+            localStorage.setItem('amaral_selo_custom', selectVal);
+            mostrarToast('Selo VIP atualizado!');
         }
 
         function salvarCustomizacao() {
@@ -866,7 +896,7 @@
                 if(textosSalvos.titleNubank) document.getElementById('titleBtnNubank').innerText = textosSalvos.titleNubank;
                 if(textosSalvos.descNubank) document.getElementById('descBtnNubank').innerText = textosSalvos.descNubank;
                 if(textosSalvos.titleSuporte) document.getElementById('titleBtnSuporte').innerText = textosSalvos.titleSuporte;
-                if(textosSalvos.descSubporte) document.getElementById('descBtnSuporte').innerText = textosSalvos.descSuporte;
+                if(textosSalvos.descSuporte) document.getElementById('descBtnSuporte').innerText = textosSalvos.descSuporte;
                 if(textosSalvos.footer) document.getElementById('textFooter').innerText = textosSalvos.footer;
             }
 
@@ -880,7 +910,8 @@
             const seloCustom = localStorage.getItem('amaral_selo_custom');
             if (seloCustom) {
                 document.getElementById('vipBadgeContainer').innerHTML = `<i class="${seloCustom}"></i>`;
-                document.getElementById('inputCustomVipIcon').value = seloCustom;
+                const selElement = document.getElementById('selectSeloVip');
+                if (selElement) selElement.value = seloCustom;
             }
 
             // Ícones
@@ -891,7 +922,7 @@
                     document.getElementById('selectIconNubank').value = iconesSalvos.iconNubank;
                 }
                 if(iconesSalvos.iconSuporte) {
-                    document.getElementById('iconBoxSuporte').innerHTMLy = `<i class="${iconesSalvos.iconSuporte}"></i>`;
+                    document.getElementById('iconBoxSuporte').innerHTML = `<i class="${iconesSalvos.iconSuporte}"></i>`;
                     document.getElementById('selectIconSuporte').value = iconesSalvos.iconSuporte;
                 }
             }
