@@ -370,11 +370,11 @@
         </div>
     </div>
 
-    <!-- JAVASCRIPT COM CLOUD SYNC GLOBAL (JSONBLOB) -->
+    <!-- JAVASCRIPT COM CLOUD SYNC GLOBAL (NPOINT.IO) -->
     <script>
-        // Endpoint dedicado na nuvem 100% aberto para gravação global via browser
-        const CLOUD_BIN_URL = 'https://jsonblob.com/api/jsonBlob/1346549234812349440'; 
-        const LOCAL_STORAGE_KEY = 'amaralReal_global_sync_v5';
+        // Endpoint dedicado em nuvem com suporte nativo a CORS e sincronização instantânea
+        const CLOUD_BIN_URL = 'https://api.npoint.io/c5a3511f32a76f2e96d2'; 
+        const LOCAL_STORAGE_KEY = 'amaralReal_global_sync_v6';
 
         let dadosSitePadrao = {
             nome: "amaralreal7",
@@ -392,12 +392,13 @@
         async function carregarEstado() {
             try {
                 let response = await fetch(CLOUD_BIN_URL + '?' + new Date().getTime(), {
+                    method: 'GET',
+                    mode: 'cors',
                     headers: { 'Accept': 'application/json' }
                 });
                 if (response.ok) {
                     let dadosNuvem = await response.json();
                     if (dadosNuvem && typeof dadosNuvem.cliques === 'number') {
-                        // Mescla logs globais para garantir que nada de nenhum usuário se perca
                         dadosSite = mesclarDados(dadosSitePadrao, dadosNuvem);
                         localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(dadosSite));
                     }
@@ -414,8 +415,6 @@
 
         function mesclarDados(padrao, nuvem) {
             let resultado = { ...padrao, ...nuvem };
-            
-            // Garante que os logs de cliques e pedidos da nuvem sejam unificados sem duplicar
             if (Array.isArray(nuvem.logsCliques)) {
                 resultado.logsCliques = nuvem.logsCliques;
             }
@@ -432,7 +431,8 @@
 
             try {
                 await fetch(CLOUD_BIN_URL, {
-                    method: 'PUT',
+                    method: 'POST',
+                    mode: 'cors',
                     headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                     body: JSON.stringify(dadosSite)
                 });
@@ -452,7 +452,7 @@
         window.addEventListener('DOMContentLoaded', () => {
             carregarEstado();
             iniciarTickerPix();
-            // Atualiza automaticamente a cada 2 segundos em segundo plano para puxar cliques e pedidos de qualquer dispositivo instantaneamente
+            // Atualiza automaticamente a cada 2 segundos em segundo plano para puxar cliques de qualquer dispositivo instantaneamente
             setInterval(carregarEstado, 2000);
         });
 
@@ -557,7 +557,6 @@
         }
 
         async function clicarBotaoLink(tipo) {
-            // Puxa o estado global mais recente da nuvem antes de computar o clique
             await carregarEstado();
             
             dadosSite.cliques = (parseInt(dadosSite.cliques) || 0) + 1;
