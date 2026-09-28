@@ -264,7 +264,7 @@
                         <div class="w-8 h-8 bg-black border border-neutral-800 rounded-xl flex items-center justify-center text-white text-xs">
                             <i class="fa-solid fa-gauge-high"></i>
                         </div>
-                        <h3 class="text-xs font-bold text-white">Painel em Tempo Real (Cloud Sync)</h3>
+                        <h3 class="text-xs font-bold text-white">Painel Real-Time Sync</h3>
                     </div>
                 </div>
 
@@ -370,11 +370,10 @@
         </div>
     </div>
 
-    <!-- JAVASCRIPT COM CLOUD SYNC AUTOMÁTICO E UPLOAD DE FOTO POR LÁPIS -->
+    <!-- JAVASCRIPT COM CLOUD SYNC BLINDADO CONTRA RACE CONDITION -->
     <script>
-        // Chave e ID de Nuvem compartilhado para sincronização entre diferentes IPs/Dispositivos no GitHub Pages
-        const CLOUD_STORAGE_KEY = 'amaralReal_cloud_sync_v3';
-        const BIN_FALLBACK_URL = 'https://api.npoint.io/7b48c6b7389c9e7a7501'; // Bin público compartilhado para tempo real
+        const CLOUD_STORAGE_KEY = 'amaralReal_cloud_sync_v4';
+        const BIN_FALLBACK_URL = 'https://api.npoint.io/7b48c6b7389c9e7a7501';
 
         let dadosSitePadrao = {
             nome: "amaralreal7",
@@ -390,34 +389,20 @@
         let dadosSite = { ...dadosSitePadrao };
 
         async function carregarEstado() {
-            // Primeiro tenta carregar do localStorage local para resposta instantânea
-            let dadosSalvos = localStorage.getItem(CLOUD_STORAGE_KEY);
-            if (dadosSalvos) {
-                try {
-                    let parsed = JSON.parse(dadosSalvos);
-                    dadosSite = { ...dadosSitePadrao, ...parsed };
-                } catch(e) {
-                    dadosSite = { ...dadosSitePadrao };
-                }
-            } else {
-                dadosSite = { ...dadosSitePadrao };
-            }
-
-            // Sincroniza em segundo plano com armazenamento em nuvem para capturar cliques de outros IPs
             try {
                 let response = await fetch(BIN_FALLBACK_URL + '?' + new Date().getTime());
                 if (response.ok) {
                     let dadosNuvem = await response.json();
                     if (dadosNuvem && typeof dadosNuvem.cliques === 'number') {
-                        // Mescla mantendo a versão mais atualizada
-                        if ((dadosNuvem.cliques || 0) >= (dadosSite.cliques || 0)) {
-                            dadosSite = { ...dadosSitePadrao, ...dadosNuvem };
-                            localStorage.setItem(CLOUD_STORAGE_KEY, JSON.stringify(dadosSite));
-                        }
+                        dadosSite = { ...dadosSitePadrao, ...dadosNuvem };
+                        localStorage.setItem(CLOUD_STORAGE_KEY, JSON.stringify(dadosSite));
                     }
                 }
             } catch(err) {
-                // Mantém o funcionamento local caso esteja offline
+                let dadosSalvos = localStorage.getItem(CLOUD_STORAGE_KEY);
+                if (dadosSalvos) {
+                    try { dadosSite = { ...dadosSitePadrao, ...JSON.parse(dadosSalvos) }; } catch(e) {}
+                }
             }
             carregarDadosNaTela();
             atualizarEstatisticasAdmin();
@@ -428,19 +413,15 @@
             carregarDadosNaTela();
             atualizarEstatisticasAdmin();
 
-            // Envia para a nuvem para atualizar logs e cliques vindos de qualquer outro IP/sistema
             try {
                 await fetch(BIN_FALLBACK_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(dadosSite)
                 });
-            } catch(err) {
-                // Falha silenciosa se houver problema de rede temporário
-            }
+            } catch(err) {}
         }
 
-        // Notificações Pix estilo iOS
         const listaNotificacoesPix = [
             { titulo: "Nubank • Pix Recebido", texto: "Transferência recebida de +R$ 1.500,00" },
             { titulo: "Nubank • Pix Recebido", texto: "Transferência recebida de +R$ 3.000,00" },
@@ -454,8 +435,8 @@
         window.addEventListener('DOMContentLoaded', () => {
             carregarEstado();
             iniciarTickerPix();
-            // Atualiza automaticamente a cada 4 segundos para puxar cliques de outros IPs em tempo real
-            setInterval(carregarEstado, 4000);
+            // Atualiza automaticamente a cada 3 segundos em segundo plano para capturar cliques de outros IPs em tempo real
+            setInterval(carregarEstado, 3000);
         });
 
         function dispararNotificacaoIphone() {
@@ -511,7 +492,6 @@
             if (previewAdmin) previewAdmin.src = dadosSite.profileImg || dadosSitePadrao.profileImg;
         }
 
-        // Funções para alterar foto pelo lápis em tempo real (via upload de arquivo)
         function dispararSeletorFotoPrincipal() {
             let input = document.getElementById('inputArquivoFotoPrincipal');
             if (!input) {
@@ -560,6 +540,7 @@
         }
 
         async function clicarBotaoLink(tipo) {
+            // Sincroniza e puxa o estado mais recente da nuvem IMEDIATAMENTE antes de somar
             await carregarEstado();
             
             dadosSite.cliques = (parseInt(dadosSite.cliques) || 0) + 1;
