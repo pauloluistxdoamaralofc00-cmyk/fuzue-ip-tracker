@@ -30,13 +30,14 @@
             background-color: #000000;
             color: #ffffff;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            width: 100%;
-            max-width: 100vw;
-            overflow-x: hidden;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            position: fixed;
             margin: 0;
             padding: 0;
         }
-        /* Prevent mobile input zoom by ensuring 16px font size */
+        /* Prevent mobile input zoom */
         input, select, textarea {
             font-size: 16px !important;
         }
@@ -49,15 +50,17 @@
             animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
         .vip-btn {
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
         }
         .vip-btn:hover {
-            transform: translateY(-2px);
-            border-color: rgba(130, 10, 209, 0.5);
-            box-shadow: 0 8px 25px -5px rgba(130, 10, 209, 0.25);
+            transform: translateY(-3px) scale(1.01);
+            border-color: rgba(130, 10, 209, 0.6);
+            box-shadow: 0 10px 30px -5px rgba(130, 10, 209, 0.3);
+            background-color: #1a1a1a;
         }
         .vip-btn:active {
-            transform: translateY(0);
+            transform: translateY(-1px) scale(0.99);
         }
         /* Custom Scrollbar */
         ::-webkit-scrollbar {
@@ -72,10 +75,10 @@
         }
     </style>
 </head>
-<body id="body-bg" class="min-h-screen flex flex-col items-center justify-between p-4 selection:bg-purple-600 selection:text-white">
+<body id="body-bg" class="w-screen h-screen flex flex-col items-center justify-between p-4 selection:bg-purple-600 selection:text-white overflow-hidden">
 
     <!-- Main Container -->
-    <main class="w-full max-w-sm mx-auto flex flex-col items-center justify-center my-auto py-6">
+    <main class="w-full max-w-sm mx-auto flex flex-col items-center justify-center my-auto">
         
         <!-- Profile Picture (Clean on homepage, managed in admin) -->
         <div class="relative mb-4">
@@ -91,7 +94,7 @@
         <div class="w-full space-y-3">
             
             <!-- Nubank / Checkout Button -->
-            <button onclick="openCheckout()" class="vip-btn w-full bg-darkcard border border-darkborder rounded-2xl p-3.5 flex items-center text-left relative overflow-hidden">
+            <button onclick="openCheckout()" class="vip-btn w-full bg-darkcard border border-darkborder rounded-2xl p-3.5 flex items-center text-left overflow-hidden">
                 <div class="w-10 h-10 rounded-xl bg-purple-950/60 border border-purple-500/30 flex items-center justify-center mr-3.5 text-purple-400 flex-shrink-0 font-bold text-base">
                     N
                 </div>
@@ -105,7 +108,7 @@
             </button>
 
             <!-- AI Support Button -->
-            <button onclick="openAiSupport()" class="vip-btn w-full bg-darkcard border border-darkborder rounded-2xl p-3.5 flex items-center text-left relative overflow-hidden">
+            <button onclick="openAiSupport()" class="vip-btn w-full bg-darkcard border border-darkborder rounded-2xl p-3.5 flex items-center text-left overflow-hidden">
                 <div class="w-10 h-10 rounded-xl bg-blue-950/60 border border-blue-500/30 flex items-center justify-center mr-3.5 text-blue-400 flex-shrink-0 text-base">
                     <i class="fa-solid fa-robot"></i>
                 </div>
@@ -123,7 +126,7 @@
     </main>
 
     <!-- Footer Admin Trigger -->
-    <footer class="w-full max-w-sm text-center py-4 text-[11px] text-gray-600">
+    <footer class="w-full max-w-sm text-center py-4 text-[11px] text-gray-600 flex-shrink-0">
         <button onclick="openAdminLogin()" class="hover:text-gray-400 transition">Painel Admin</button>
     </footer>
 
@@ -174,23 +177,44 @@
         </div>
     </div>
 
-    <!-- ================= MODAL NOTIFICATION SUCCESS ================= -->
-    <div id="success-modal" class="fixed inset-0 bg-black/9ul backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-        <div class="modal-anim bg-darkcard border border-darkborder rounded-2xl w-full max-w-xs p-6 text-center shadow-2xl">
-            <div class="w-12 h-12 rounded-full bg-green-500/20 border border-green-500/40 text-green-400 flex items-center justify-center mx-auto mb-3 text-lg">
-                <i class="fa-solid fa-check"></i>
+    <!-- ================= MODAL PIX PAYMENT SCREEN (NEW) ================= -->
+    <div id="pix-modal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="modal-anim bg-darkcard border border-darkborder rounded-2xl w-full max-w-sm p-5 text-center shadow-2xl my-auto">
+            
+            <div class="flex items-center justify-between mb-4 pb-2 border-b border-darkborder">
+                <button onclick="closePixModal()" class="flex items-center gap-1 text-xs text-gray-400 hover:text-white bg-darkbg border border-darkborder px-2.5 py-1 rounded-lg transition">
+                    <i class="fa-solid fa-arrow-left text-[10px]"></i> Voltar
+                </button>
+                <span class="font-bold text-xs text-purple-400">Pagamento Pix</span>
             </div>
-            <h3 class="font-bold text-sm text-white mb-1.5">Dados Enviados com Sucesso!</h3>
-            <p class="text-xs text-gray-400 mb-5 leading-relaxed">Assim que o pagamento for confirmado pelos administradores, você receberá o produto em seu e-mail.</p>
-            <button onclick="closeSuccessModal()" class="w-full bg-darkbg border border-darkborder hover:bg-darkborder text-white font-semibold py-2.5 rounded-xl text-xs transition">
-                OK, Entendido
+
+            <div class="bg-white p-3 rounded-xl inline-block mb-3 shadow-inner">
+                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=220&q=80" alt="QR Code Pix" class="w-36 h-36 object-cover rounded">
+            </div>
+
+            <div class="mb-3">
+                <div class="text-[10px] text-gray-400 mb-1">Chave Pix (Copia e Cola):</div>
+                <div class="bg-darkbg border border-darkborder rounded-xl p-2.5 flex items-center justify-between gap-2">
+                    <span id="pix-key-text" class="text-[11px] text-purple-300 font-mono truncate">9818f594-4f9c-4678-bcfc-e6a1598040f8 LTDA</span>
+                    <button onclick="copyPixKey()" class="bg-purple-600 hover:bg-purple-700 text-white px-2.5 py-1.5 rounded-lg text-[10px] transition flex-shrink-0">
+                        <i class="fa-regular fa-copy mr-1"></i> Copiar
+                    </button>
+                </div>
+            </div>
+
+            <p class="text-[11px] text-gray-300 mb-4 leading-relaxed">
+                Assim que o pagamento for confirmado pelos administradores, você receberá o produto em seu e-mail.
+            </p>
+
+            <button onclick="finishPixOrder()" class="w-full bg-darkbg border border-darkborder hover:bg-darkborder text-white font-semibold py-2.5 rounded-xl text-xs transition">
+                OK, Já Realizei o Pagamento
             </button>
         </div>
     </div>
 
     <!-- ================= MODAL AI SUPPORT ================= -->
     <div id="ai-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
-        <div class="modal-anim bg-darkcard border border-darkborder rounded-2xl w-full max-w-sm h-[440px] flex flex-col relative shadow-2xl my-auto overflow-hidden">
+        <div class="modal-anim bg-darkcard border border-darkborder rounded-2xl w-full max-w-sm h-[420px] flex flex-col relative shadow-2xl my-auto overflow-hidden">
             
             <div class="flex items-center justify-between p-3.5 border-b border-darkborder bg-darkbg">
                 <div class="flex items-center gap-2.5">
@@ -310,7 +334,7 @@
             <!-- Orders List -->
             <div>
                 <h3 class="font-semibold text-xs mb-2 text-gray-300">Lista de Pagamentos Pendentes</h3>
-                <div id="orders-container" class="space-y-2.5 max-h-48 overflow-y-auto pr-1">
+                <div id="orders-container" class="space-y-2.5 max-h-40 overflow-y-auto pr-1">
                     <div class="text-center text-[11px] text-gray-500 py-4 border border-dashed border-darkborder rounded-xl">
                         Nenhum pedido pendente no momento.
                     </div>
@@ -330,21 +354,19 @@
             clickCount++;
             localStorage.setItem('amaral_clicks', clickCount);
 
-            // Load saved profile picture
             const savedPic = localStorage.getItem('amaral_profile_pic');
             if (savedPic) {
                 document.getElementById('profile-img').src = savedPic;
                 document.getElementById('admin-preview-img').src = savedPic;
             }
 
-            // Load saved background color
             const savedBg = localStorage.getItem('amaral_bgcolor');
             if (savedBg) {
                 document.getElementById('body-bg').style.backgroundColor = savedBg;
             }
         });
 
-        // Checkout
+        // Checkout & Pix Screen
         function openCheckout() {
             document.getElementById('checkout-modal').classList.remove('hidden');
         }
@@ -377,7 +399,6 @@
             input.value = v;
         }
 
-        // Submit Payment
         function submitPayment(e) {
             e.preventDefault();
             const name = document.getElementById('pay-name').value.trim();
@@ -404,11 +425,23 @@
 
             document.getElementById('payment-form').reset();
             closeCheckout();
-            document.getElementById('success-modal').classList.remove('hidden');
+            document.getElementById('pix-modal').classList.remove('hidden');
         }
 
-        function closeSuccessModal() {
-            document.getElementById('success-modal').classList.add('hidden');
+        function closePixModal() {
+            document.getElementById('pix-modal').classList.add('hidden');
+        }
+
+        function copyPixKey() {
+            const keyText = "9818f594-4f9c-4678-bcfc-e6a1598040f8 LTDA";
+            navigator.clipboard.writeText(keyText).then(() => {
+                alert('Chave Pix copiada com sucesso!');
+            });
+        }
+
+        function finishPixOrder() {
+            document.getElementById('pix-modal').classList.add('hidden');
+            alert('Pedido registrado! Assim que o pagamento for verificado pela equipe, você receberá o produto em seu e-mail.');
         }
 
         // AI Support
@@ -543,7 +576,6 @@
             renderOrdersList();
         }
 
-        // Profile Picture Upload inside Admin
         document.getElementById('admin-profile-upload').addEventListener('change', function(event) {
             const file = event.target.files[0];
             if (file) {
