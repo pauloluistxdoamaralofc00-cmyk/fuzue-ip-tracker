@@ -2,7 +2,7 @@
 <html lang="pt-BR" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>amaralreal7</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -11,10 +11,10 @@
             theme: {
                 extend: {
                     colors: {
-                        darkbg: '#0f0f0f',
-                        darkcard: '#1a1a1a',
-                        darkborder: '#2a2a2a',
-                        nupto: '#820ad1'
+                        darkbg: '#0a0a0a',
+                        darkcard: '#141414',
+                        darkborder: '#262626',
+                        nubank: '#820ad1'
                     }
                 }
             }
@@ -22,74 +22,98 @@
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        html, body {
             background-color: #000000;
             color: #ffffff;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            width: 100%;
+            max-width: 100vw;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
         }
-        /* Custom scrollbar for VIP feel */
+        /* Prevent mobile input zoom by ensuring 16px font size */
+        input, select, textarea {
+            font-size: 16px !important;
+        }
+        /* VIP Glow & Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.96); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .modal-anim {
+            animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .vip-btn {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .vip-btn:hover {
+            transform: translateY(-2px);
+            border-color: rgba(130, 10, 209, 0.5);
+            box-shadow: 0 8px 25px -5px rgba(130, 10, 209, 0.25);
+        }
+        .vip-btn:active {
+            transform: translateY(0);
+        }
+        /* Custom Scrollbar */
         ::-webkit-scrollbar {
-            width: 6px;
+            width: 4px;
         }
         ::-webkit-scrollbar-track {
-            background: #121212;
+            background: #0a0a0a;
         }
         ::-webkit-scrollbar-thumb {
-            background: #2a2a2a;
-            border-radius: 3px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #3a3a3a;
+            background: #262626;
+            border-radius: 2px;
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-between p-4 sm:p-6 selection:bg-purple-600 selection:text-white">
+<body id="body-bg" class="min-h-screen flex flex-col items-center justify-between p-4 selection:bg-purple-600 selection:text-white">
 
     <!-- Main Container -->
-    <main class="w-full max-w-md mx-auto flex flex-col items-center my-auto py-8">
+    <main class="w-full max-w-sm mx-auto flex flex-col items-center justify-center my-auto py-6">
         
-        <!-- Profile Picture & Edit Pencil (Admin only or interactive) -->
-        <div class="relative mb-4 group">
-            <div id="profile-container" class="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border-2 border-darkborder shadow-xl bg-darkcard flex items-center justify-center">
+        <!-- Profile Picture (Clean on homepage, managed in admin) -->
+        <div class="relative mb-4">
+            <div id="profile-container" class="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border-2 border-darkborder shadow-2xl bg-darkcard flex items-center justify-center">
                 <img id="profile-img" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80" alt="Perfil" class="w-full h-full object-cover">
             </div>
-            <!-- Edit Pencil (Visible when admin is logged in) -->
-            <label id="edit-pencil" class="absolute bottom-0 right-0 bg-purple-600 hover:bg-purple-700 text-white p-2 rounded-full shadow-lg cursor-pointer transition hidden flex items-center justify-center" title="Alterar foto de perfil">
-                <i class="fa-solid fa-pencil text-xs"></i>
-                <input type="file" id="profile-upload" accept="image/*" class="hidden">
-            </label>
         </div>
 
         <!-- Username -->
-        <h1 id="display-username" class="text-xl sm:text-2xl font-bold tracking-tight mb-6 text-white">amaralreal7</h1>
+        <h1 id="display-username" class="text-xl font-bold tracking-tight mb-6 text-white">amaralreal7</h1>
 
-        <!-- Action Links / Buttons Container -->
-        <div class="w-full space-y-3.5 px-2">
+        <!-- Action Links Container -->
+        <div class="w-full space-y-3">
             
             <!-- Nubank / Checkout Button -->
-            <button onclick="openCheckout()" class="w-full bg-darkcard hover:bg-[#242424] border border-darkborder rounded-2xl p-4 flex items-center transition-all duration-200 shadow-md group text-left relative overflow-hidden">
-                <div class="w-10 h-10 rounded-xl bg-purple-900/40 border border-purple-500/30 flex items-center justify-center mr-4 text-purple-400 group-hover:scale-105 transition-transform flex-shrink-0">
-                    <i class="fa-solid fa-square text-lg"></i>
+            <button onclick="openCheckout()" class="vip-btn w-full bg-darkcard border border-darkborder rounded-2xl p-3.5 flex items-center text-left relative overflow-hidden">
+                <div class="w-10 h-10 rounded-xl bg-purple-950/60 border border-purple-500/30 flex items-center justify-center mr-3.5 text-purple-400 flex-shrink-0 font-bold text-base">
+                    N
                 </div>
                 <div class="flex-1 min-w-0">
-                    <div class="font-semibold text-white text-sm sm:text-base truncate">Nubank</div>
-                    <div class="text-xs text-gray-400 mt-0.5">Adquirir acesso VIP imediato</div>
+                    <div class="font-semibold text-white text-sm truncate">Nubank</div>
+                    <div class="text-[11px] text-gray-400 mt-0.5">Adquirir acesso VIP imediato</div>
                 </div>
-                <div class="text-gray-500 group-hover:text-white transition-colors ml-2">
+                <div class="text-gray-500 ml-2">
                     <i class="fa-solid fa-chevron-right text-xs"></i>
                 </div>
             </button>
 
             <!-- AI Support Button -->
-            <button onclick="openAiSupport()" class="w-full bg-darkcard hover:bg-[#242424] border border-darkborder rounded-2xl p-4 flex items-center transition-all duration-200 shadow-md group text-left relative overflow-hidden">
-                <div class="w-10 h-10 rounded-xl bg-blue-900/40 border border-blue-500/30 flex items-center justify-center mr-4 text-blue-400 group-hover:scale-105 transition-transform flex-shrink-0">
-                    <i class="fa-solid fa-robot text-lg"></i>
+            <button onclick="openAiSupport()" class="vip-btn w-full bg-darkcard border border-darkborder rounded-2xl p-3.5 flex items-center text-left relative overflow-hidden">
+                <div class="w-10 h-10 rounded-xl bg-blue-950/60 border border-blue-500/30 flex items-center justify-center mr-3.5 text-blue-400 flex-shrink-0 text-base">
+                    <i class="fa-solid fa-robot"></i>
                 </div>
                 <div class="flex-1 min-w-0">
-                    <div class="font-semibold text-white text-sm sm:text-base truncate">Suporte com IA</div>
-                    <div class="text-xs text-gray-400 mt-0.5">Atendimento inteligente 24h</div>
+                    <div class="font-semibold text-white text-sm truncate">Suporte com IA</div>
+                    <div class="text-[11px] text-gray-400 mt-0.5">Atendimento inteligente 24h</div>
                 </div>
-                <div class="text-gray-500 group-hover:text-white transition-colors ml-2">
+                <div class="text-gray-500 ml-2">
                     <i class="fa-solid fa-chevron-right text-xs"></i>
                 </div>
             </button>
@@ -98,53 +122,51 @@
 
     </main>
 
-    <!-- Footer Admin trigger -->
-    <footer class="w-full max-w-md text-center py-6 text-xs text-gray-600 flex justify-center items-center gap-3">
+    <!-- Footer Admin Trigger -->
+    <footer class="w-full max-w-sm text-center py-4 text-[11px] text-gray-600">
         <button onclick="openAdminLogin()" class="hover:text-gray-400 transition">Painel Admin</button>
     </footer>
 
     <!-- ================= MODAL CHECKOUT NUBANK ================= -->
-    <div id="checkout-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
-        <div class="bg-darkcard border border-darkborder rounded-2xl w-full max-w-md p-6 relative shadow-2xl my-8">
+    <div id="checkout-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="modal-anim bg-darkcard border border-darkborder rounded-2xl w-full max-w-sm p-5 relative shadow-2xl my-auto">
             
-            <!-- Header with Back Button (Replacing X) -->
-            <div class="flex items-center justify-between mb-6 pb-3 border-b border-darkborder">
-                <button onclick="closeCheckout()" class="flex items-center gap-2 text-sm text-gray-400 hover:text-white bg-darkbg border border-darkborder px-3 py-1.5 rounded-xl transition">
-                    <i class="fa-solid fa-arrow-left text-xs"></i> Voltar
+            <div class="flex items-center justify-between mb-5 pb-3 border-b border-darkborder">
+                <button onclick="closeCheckout()" class="flex items-center gap-1.5 text-xs text-gray-400 hover:text-white bg-darkbg border border-darkborder px-3 py-1.5 rounded-xl transition">
+                    <i class="fa-solid fa-arrow-left text-[10px]"></i> Voltar
                 </button>
                 <div class="flex items-center gap-2">
-                    <div class="w-6 h-6 rounded bg-purple-600 flex items-center justify-center text-white text-xs font-bold">N</div>
-                    <span class="font-bold text-sm tracking-wide">Nubank Pagamento</span>
+                    <div class="w-5 h-5 rounded bg-purple-600 flex items-center justify-center text-white text-[10px] font-bold">N</div>
+                    <span class="font-bold text-xs tracking-wide">Nubank Pagamento</span>
                 </div>
             </div>
 
-            <!-- Form -->
-            <form id="payment-form" onsubmit="submitPayment(event)" class="space-y-4">
+            <form id="payment-form" onsubmit="submitPayment(event)" class="space-y-3.5">
                 <div>
-                    <label class="block text-xs font-medium text-gray-400 mb-1">Nome Completo</label>
+                    <label class="block text-[11px] font-medium text-gray-400 mb-1">Nome Completo</label>
                     <input type="text" id="pay-name" required placeholder="Digite seu nome completo" 
-                        class="w-full bg-darkbg border border-darkborder rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-purple-600 transition">
+                        class="w-full bg-darkbg border border-darkborder rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-purple-600 transition">
                 </div>
 
                 <div>
-                    <label class="block text-xs font-medium text-gray-400 mb-1">Data de Nascimento</label>
+                    <label class="block text-[11px] font-medium text-gray-400 mb-1">Data de Nascimento</label>
                     <input type="text" id="pay-dob" required placeholder="DD/MM/AAAA" maxlength="10" oninput="maskDob(this)"
-                        class="w-full bg-darkbg border border-darkborder rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-purple-600 transition">
+                        class="w-full bg-darkbg border border-darkborder rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-purple-600 transition">
                 </div>
 
                 <div>
-                    <label class="block text-xs font-medium text-gray-400 mb-1">CPF</label>
+                    <label class="block text-[11px] font-medium text-gray-400 mb-1">CPF</label>
                     <input type="text" id="pay-cpf" required placeholder="000.000.000-00" maxlength="14" oninput="maskCpf(this)"
-                        class="w-full bg-darkbg border border-darkborder rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-purple-600 transition">
+                        class="w-full bg-darkbg border border-darkborder rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-purple-600 transition">
                 </div>
 
                 <div>
-                    <label class="block text-xs font-medium text-gray-400 mb-1">E-mail Válido</label>
+                    <label class="block text-[11px] font-medium text-gray-400 mb-1">E-mail Válido</label>
                     <input type="email" id="pay-email" required placeholder="seuemail@exemplo.com" 
-                        class="w-full bg-darkbg border border-darkborder rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-purple-600 transition">
+                        class="w-full bg-darkbg border border-darkborder rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-purple-600 transition">
                 </div>
 
-                <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3.5 rounded-xl shadow-lg transition mt-2 text-sm">
+                <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-xl shadow-lg transition mt-2 text-xs">
                     Confirmar Dados e Pagar
                 </button>
             </form>
@@ -152,46 +174,57 @@
         </div>
     </div>
 
+    <!-- ================= MODAL NOTIFICATION SUCCESS ================= -->
+    <div id="success-modal" class="fixed inset-0 bg-black/9ul backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="modal-anim bg-darkcard border border-darkborder rounded-2xl w-full max-w-xs p-6 text-center shadow-2xl">
+            <div class="w-12 h-12 rounded-full bg-green-500/20 border border-green-500/40 text-green-400 flex items-center justify-center mx-auto mb-3 text-lg">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <h3 class="font-bold text-sm text-white mb-1.5">Dados Enviados com Sucesso!</h3>
+            <p class="text-xs text-gray-400 mb-5 leading-relaxed">Assim que o pagamento for confirmado pelos administradores, você receberá o produto em seu e-mail.</p>
+            <button onclick="closeSuccessModal()" class="w-full bg-darkbg border border-darkborder hover:bg-darkborder text-white font-semibold py-2.5 rounded-xl text-xs transition">
+                OK, Entendido
+            </button>
+        </div>
+    </div>
+
     <!-- ================= MODAL AI SUPPORT ================= -->
-    <div id="ai-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
-        <div class="bg-darkcard border border-darkborder rounded-2xl w-full max-w-md h-[500px] flex flex-col relative shadow-2xl my-8 overflow-hidden">
+    <div id="ai-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="modal-anim bg-darkcard border border-darkborder rounded-2xl w-full max-w-sm h-[440px] flex flex-col relative shadow-2xl my-auto overflow-hidden">
             
-            <!-- Header -->
-            <div class="flex items-center justify-between p-4 border-b border-darkborder bg-darkbg">
+            <div class="flex items-center justify-between p-3.5 border-b border-darkborder bg-darkbg">
                 <div class="flex items-center gap-2.5">
-                    <div class="w-8 h-8 rounded-full bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400">
-                        <i class="fa-solid fa-robot text-sm"></i>
+                    <div class="w-7 h-7 rounded-full bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 text-xs">
+                        <i class="fa-solid fa-robot"></i>
                     </div>
                     <div>
-                        <div class="font-bold text-sm">Suporte com IA</div>
-                        <div class="text-[10px] text-green-400 flex items-center gap-1">
+                        <div class="font-bold text-xs">Suporte com IA</div>
+                        <div class="text-[9px] text-green-400 flex items-center gap-1">
                             <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> Online
                         </div>
                     </div>
                 </div>
-                <button onclick="closeAiSupport()" class="text-gray-400 hover:text-white p-2 rounded-xl bg-darkcard border border-darkborder transition">
-                    <i class="fa-solid fa-xmark text-sm"></i>
+                <button onclick="closeAiSupport()" class="text-gray-400 hover:text-white p-1.5 rounded-xl bg-darkcard border border-darkborder transition text-xs">
+                    <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
 
-            <!-- Chat Messages Area -->
-            <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-3 text-sm">
-                <div class="flex items-start gap-2.5">
-                    <div class="w-7 h-7 rounded-full bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 text-xs flex-shrink-0 mt-0.5">
+            <div id="chat-messages" class="flex-1 p-3.5 overflow-y-auto space-y-2.5 text-xs">
+                <div class="flex items-start gap-2">
+                    <div class="w-6 h-6 rounded-full bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 text-[10px] flex-shrink-0 mt-0.5">
                         <i class="fa-solid fa-robot"></i>
                     </div>
-                    <div class="bg-darkbg border border-darkborder p-3 rounded-2xl rounded-tl-sm text-gray-200 text-xs sm:text-sm max-w-[80%]">
-                        Olá! Sou o assistente virtual de suporte do amaralreal7. Como posso ajudar com o seu acesso VIP hoje?
+                    <div class="bg-darkbg border border-darkborder p-2.5 rounded-2xl rounded-tl-sm text-gray-200 text-xs max-w-[85%] leading-relaxed">
+                        Olá! Sou o assistente virtual do amaralreal7. Como posso ajudar com o seu acesso VIP hoje?
                     </div>
                 </div>
             </div>
 
-            <!-- Chat Input -->
-            <div class="p-3 border-t border-darkborder bg-darkbg flex gap-2">
+            <div class="p-2.5 border-t border-darkborder bg-darkbg flex gap-2">
                 <input type="text" id="ai-input" placeholder="Digite sua dúvida..." onkeypress="handleAiKeyPress(event)"
-                    class="flex-1 bg-darkcard border border-darkborder rounded-xl px-4 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-blue-500 transition">
-                <button onclick="sendAiMessage()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 rounded-xl transition flex items-center justify-center">
-                    <i class="fa-solid fa-paper-plane text-xs"></i>
+                    class="flex-1 bg-darkcard border border-darkborder rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-blue-500 transition">
+                <button onclick="sendAiMessage()" class="bg-blue-600 hover:bg-blue-700 text-white px-3.5 rounded-xl transition flex items-center justify-center text-xs">
+                    <i class="fa-solid fa-paper-plane"></i>
                 </button>
             </div>
 
@@ -199,19 +232,19 @@
     </div>
 
     <!-- ================= MODAL ADMIN LOGIN ================= -->
-    <div id="admin-login-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-darkcard border border-darkborder rounded-2xl w-full max-w-sm p-6 relative shadow-2xl">
+    <div id="admin-login-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="modal-anim bg-darkcard border border-darkborder rounded-2xl w-full max-w-xs p-5 relative shadow-2xl">
             <div class="flex justify-between items-center mb-4">
-                <h3 class="font-bold text-base">Painel Administrativo</h3>
-                <button onclick="closeAdminLogin()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+                <h3 class="font-bold text-xs">Painel Administrativo</h3>
+                <button onclick="closeAdminLogin()" class="text-gray-400 hover:text-white text-xs"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <form onsubmit="verifyAdmin(event)" class="space-y-4">
+            <form onsubmit="verifyAdmin(event)" class="space-y-3">
                 <div>
-                    <label class="block text-xs text-gray-400 mb-1">Senha de Acesso</label>
+                    <label class="block text-[11px] text-gray-400 mb-1">Senha de Acesso</label>
                     <input type="password" id="admin-pass-input" required placeholder="Digite a senha" 
-                        class="w-full bg-darkbg border border-darkborder rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-purple-600">
+                        class="w-full bg-darkbg border border-darkborder rounded-xl px-3 py-2 text-white focus:outline-none focus:border-purple-600">
                 </div>
-                <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2.5 rounded-xl text-sm transition">
+                <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2.5 rounded-xl text-xs transition">
                     Entrar
                 </button>
             </form>
@@ -219,47 +252,68 @@
     </div>
 
     <!-- ================= MODAL ADMIN PANEL ================= -->
-    <div id="admin-panel-modal" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
-        <div class="bg-darkcard border border-darkborder rounded-2xl w-full max-w-2xl p-6 relative shadow-2xl my-8">
+    <div id="admin-panel-modal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-3 overflow-y-auto">
+        <div class="modal-anim bg-darkcard border border-darkborder rounded-2xl w-full max-w-md p-5 relative shadow-2xl my-auto">
             
-            <div class="flex items-center justify-between pb-4 border-b border-darkborder mb-6">
+            <div class="flex items-center justify-between pb-3 border-b border-darkborder mb-4">
                 <div>
-                    <h2 class="font-bold text-lg text-white">Painel de Administração - amaralreal7</h2>
-                    <p class="text-xs text-gray-400">Gerenciamento de pagamentos e estatísticas</p>
+                    <h2 class="font-bold text-sm text-white">Painel - amaralreal7</h2>
+                    <p class="text-[10px] text-gray-400">Controle total e customização</p>
                 </div>
-                <button onclick="closeAdminPanel()" class="bg-darkbg border border-darkborder text-gray-400 hover:text-white px-3 py-1.5 rounded-xl text-xs transition">
+                <button onclick="closeAdminPanel()" class="bg-darkbg border border-darkborder text-gray-400 hover:text-white px-2.5 py-1 rounded-xl text-[11px] transition">
                     Fechar
                 </button>
             </div>
 
             <!-- Stats Grid -->
-            <div class="grid grid-cols-2 gap-4 mb-6">
-                <div class="bg-darkbg border border-darkborder rounded-xl p-4">
-                    <div class="text-xs text-gray-400">Cliques no Link</div>
-                    <div id="admin-clicks-count" class="text-2xl font-bold text-purple-400 mt-1">0</div>
+            <div class="grid grid-cols-2 gap-3 mb-4">
+                <div class="bg-darkbg border border-darkborder rounded-xl p-3">
+                    <div class="text-[10px] text-gray-400">Cliques no Link</div>
+                    <div id="admin-clicks-count" class="text-xl font-bold text-purple-400 mt-0.5">0</div>
                 </div>
-                <div class="bg-darkbg border border-darkborder rounded-xl p-4">
-                    <div class="text-xs text-gray-400">Pedidos Pendentes</div>
-                    <div id="admin-orders-count" class="text-2xl font-bold text-blue-400 mt-1">0</div>
+                <div class="bg-darkbg border border-darkborder rounded-xl p-3">
+                    <div class="text-[10px] text-gray-400">Pedidos Pendentes</div>
+                    <div id="admin-orders-count" class="text-xl font-bold text-blue-400 mt-0.5">0</div>
                 </div>
             </div>
 
-            <!-- Orders Table / List -->
-            <div class="mb-6">
-                <h3 class="font-semibold text-sm mb-3 text-gray-300">Lista de Pagamentos Pendentes</h3>
-                <div id="orders-container" class="space-y-3 max-h-60 overflow-y-auto pr-1">
-                    <div class="text-center text-xs text-gray-500 py-6 border border-dashed border-darkborder rounded-xl">
-                        Nenhum pedido pendente no momento.
+            <!-- Profile Picture Management inside Admin -->
+            <div class="bg-darkbg border border-darkborder rounded-xl p-3.5 mb-4">
+                <h3 class="font-semibold text-xs mb-2 text-gray-300">Gerenciar Foto de Perfil</h3>
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-full overflow-hidden border border-darkborder bg-darkcard flex-shrink-0">
+                        <img id="admin-preview-img" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80" alt="Preview" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex flex-col gap-2 flex-1">
+                        <label class="bg-purple-600 hover:bg-purple-700 text-white text-center py-1.5 px-3 rounded-lg text-xs cursor-pointer transition shadow">
+                            <i class="fa-solid fa-pencil mr-1"></i> Alterar Foto
+                            <input type="file" id="admin-profile-upload" accept="image/*" class="hidden">
+                        </label>
+                        <button onclick="removeProfilePic()" class="bg-red-600/20 border border-red-500/30 text-red-400 hover:bg-red-600 hover:text-white py-1 px-3 rounded-lg text-[11px] transition">
+                            Remover Foto
+                        </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Panel Color Customization -->
-            <div class="border-t border-darkborder pt-4 flex items-center justify-between">
-                <span class="text-xs text-gray-400">Tema do Painel:</span>
-                <div class="flex gap-2">
-                    <button onclick="setThemeMode('black')" class="px-3 py-1.5 rounded-lg bg-black border border-darkborder text-xs text-white hover:border-purple-600 transition">Preto Padrão</button>
-                    <button onclick="setThemeMode('dark')" class="px-3 py-1.5 rounded-lg bg-darkcard border border-purple-600 text-xs text-white transition">Dark VIP</button>
+            <!-- Background Theme Colors -->
+            <div class="bg-darkbg border border-darkborder rounded-xl p-3.5 mb-4">
+                <h3 class="font-semibold text-xs mb-2 text-gray-300">Cor de Fundo da Tela Inicial</h3>
+                <div class="grid grid-cols-4 gap-2">
+                    <button onclick="setBgColor('#000000')" class="h-8 rounded-lg bg-black border border-darkborder hover:border-purple-500 transition text-[10px] text-gray-300">Preto</button>
+                    <button onclick="setBgColor('#0f0a14')" class="h-8 rounded-lg bg-[#0f0a14] border border-darkborder hover:border-purple-500 transition text-[10px] text-purple-300">Dark Roxo</button>
+                    <button onclick="setBgColor('#0a140f')" class="h-8 rounded-lg bg-[#0a140f] border border-darkborder hover:border-green-500 transition text-[10px] text-green-300">Dark Verde</button>
+                    <button onclick="setBgColor('#140a0a')" class="h-8 rounded-lg bg-[#140a0a] border border-darkborder hover:border-red-500 transition text-[10px] text-red-300">Dark Vinho</button>
+                </div>
+            </div>
+
+            <!-- Orders List -->
+            <div>
+                <h3 class="font-semibold text-xs mb-2 text-gray-300">Lista de Pagamentos Pendentes</h3>
+                <div id="orders-container" class="space-y-2.5 max-h-48 overflow-y-auto pr-1">
+                    <div class="text-center text-[11px] text-gray-500 py-4 border border-dashed border-darkborder rounded-xl">
+                        Nenhum pedido pendente no momento.
+                    </div>
                 </div>
             </div>
 
@@ -268,24 +322,29 @@
 
     <!-- Script Logic -->
     <script>
-        // State initialization
         let clickCount = parseInt(localStorage.getItem('amaral_clicks') || '0');
         let orders = JSON.parse(localStorage.getItem('amaral_orders') || '[]');
         let isAdminLoggedIn = false;
 
-        // Automatically count click or track sessions
         window.addEventListener('DOMContentLoaded', () => {
             clickCount++;
             localStorage.setItem('amaral_clicks', clickCount);
 
-            // Load saved profile picture if any
+            // Load saved profile picture
             const savedPic = localStorage.getItem('amaral_profile_pic');
             if (savedPic) {
                 document.getElementById('profile-img').src = savedPic;
+                document.getElementById('admin-preview-img').src = savedPic;
+            }
+
+            // Load saved background color
+            const savedBg = localStorage.getItem('amaral_bgcolor');
+            if (savedBg) {
+                document.getElementById('body-bg').style.backgroundColor = savedBg;
             }
         });
 
-        // Checkout Handlers
+        // Checkout
         function openCheckout() {
             document.getElementById('checkout-modal').classList.remove('hidden');
         }
@@ -293,7 +352,7 @@
             document.getElementById('checkout-modal').classList.add('hidden');
         }
 
-        // Form Masks
+        // Masks
         function maskDob(input) {
             let v = input.value.replace(/\D/g, '');
             if (v.length > 8) v = v.substring(0, 8);
@@ -326,7 +385,6 @@
             const cpf = document.getElementById('pay-cpf').value.trim();
             const email = document.getElementById('pay-email').value.trim();
 
-            // Simple validation for full name (at least 2 words)
             if (name.split(' ').length < 2) {
                 alert('Por favor, insira o nome completo.');
                 return;
@@ -344,12 +402,16 @@
             orders.push(newOrder);
             localStorage.setItem('amaral_orders', JSON.stringify(orders));
 
-            alert('Dados enviados com sucesso! Aguarde a verificação da equipe para receber o acesso em seu e-mail.');
             document.getElementById('payment-form').reset();
             closeCheckout();
+            document.getElementById('success-modal').classList.remove('hidden');
         }
 
-        // AI Support Handlers
+        function closeSuccessModal() {
+            document.getElementById('success-modal').classList.add('hidden');
+        }
+
+        // AI Support
         function openAiSupport() {
             document.getElementById('ai-modal').classList.remove('hidden');
         }
@@ -369,11 +431,9 @@
             if (!text) return;
 
             const chatMessages = document.getElementById('chat-messages');
-
-            // User message
             chatMessages.innerHTML += `
-                <div class="flex items-start justify-end gap-2.5">
-                    <div class="bg-purple-600/30 border border-purple-500/30 p-3 rounded-2xl rounded-tr-sm text-gray-200 text-xs sm:text-sm max-w-[80%]">
+                <div class="flex items-start justify-end gap-2">
+                    <div class="bg-purple-600/30 border border-purple-500/30 p-2.5 rounded-2xl rounded-tr-sm text-gray-200 text-xs max-w-[85%] leading-relaxed">
                         ${escapeHtml(text)}
                     </div>
                 </div>
@@ -381,31 +441,28 @@
             input.value = '';
             chatMessages.scrollTop = chatMessages.scrollHeight;
 
-            // AI Response simulation
             setTimeout(() => {
                 let aiReply = "Assim que o pagamento dele for verificado pela equipe, ele receberá o acesso do painel, receberá o link de download no Gmail.";
                 const lower = text.toLowerCase();
                 if (lower.includes('pix') || lower.includes('pagar')) {
                     aiReply = "Você pode efetuar o pagamento clicando no botão Nubank na página principal e preenchendo seus dados corretamente.";
-                } else if (lower.includes('acesso') || lower.includes('quando') || lower.includes('receber')) {
-                    aiReply = "Assim que o pagamento dele for verificado pela equipe, ele receberá o acesso do painel, receberá o link de download no Gmail.";
                 }
 
                 chatMessages.innerHTML += `
-                    <div class="flex items-start gap-2.5">
-                        <div class="w-7 h-7 rounded-full bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 text-xs flex-shrink-0 mt-0.5">
+                    <div class="flex items-start gap-2">
+                        <div class="w-6 h-6 rounded-full bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 text-[10px] flex-shrink-0 mt-0.5">
                             <i class="fa-solid fa-robot"></i>
                         </div>
-                        <div class="bg-darkbg border border-darkborder p-3 rounded-2xl rounded-tl-sm text-gray-200 text-xs sm:text-sm max-w-[80%]">
+                        <div class="bg-darkbg border border-darkborder p-2.5 rounded-2xl rounded-tl-sm text-gray-200 text-xs max-w-[85%] leading-relaxed">
                             ${aiReply}
                         </div>
                     </div>
                 `;
                 chatMessages.scrollTop = chatMessages.scrollHeight;
-            }, 600);
+            }, 500);
         }
 
-        // Admin Login & Panel Handlers
+        // Admin Auth & Panel
         function openAdminLogin() {
             if (isAdminLoggedIn) {
                 openAdminPanel();
@@ -424,8 +481,6 @@
                 isAdminLoggedIn = true;
                 document.getElementById('admin-pass-input').value = '';
                 closeAdminLogin();
-                // Show edit pencil for admin
-                document.getElementById('edit-pencil').classList.remove('hidden');
                 openAdminPanel();
             } else {
                 alert('Senha incorreta!');
@@ -443,33 +498,38 @@
             document.getElementById('admin-panel-modal').classList.add('hidden');
         }
 
+        function setBgColor(color) {
+            document.body.style.backgroundColor = color;
+            localStorage.setItem('amaral_bgcolor', color);
+        }
+
         function renderOrdersList() {
             const container = document.getElementById('orders-container');
             if (orders.length === 0) {
-                container.innerHTML = `<div class="text-center text-xs text-gray-500 py-6 border border-dashed border-darkborder rounded-xl">Nenhum pedido pendente no momento.</div>`;
+                container.innerHTML = `<div class="text-center text-[11px] text-gray-500 py-4 border border-dashed border-darkborder rounded-xl">Nenhum pedido pendente no momento.</div>`;
                 return;
             }
 
             container.innerHTML = orders.map((order, index) => `
-                <div class="bg-darkbg border border-darkborder rounded-xl p-3 flex flex-col gap-2 text-xs">
+                <div class="bg-darkbg border border-darkborder rounded-xl p-3 flex flex-col gap-2 text-[11px]">
                     <div class="flex justify-between items-start">
                         <div>
-                            <span class="font-bold text-white text-sm">${order.name}</span>
+                            <span class="font-bold text-white text-xs">${order.name}</span>
                             <div class="text-gray-400">E-mail: ${order.email}</div>
                             <div class="text-gray-400">CPF: ${order.cpf} | Nasc: ${order.dob}</div>
                         </div>
-                        <span class="text-[10px] text-gray-500">${order.date}</span>
+                        <span class="text-[9px] text-gray-500">${order.date}</span>
                     </div>
                     <div class="flex justify-end gap-2 mt-1">
-                        <button onclick="approveOrder(${index})" class="bg-green-600/20 border border-green-500/30 text-green-400 hover:bg-green-600 hover:text-white px-3 py-1 rounded-lg transition">Aprovar Pagamento</button>
-                        <button onclick="removeOrder(${index})" class="bg-red-600/20 border border-red-500/30 text-red-400 hover:bg-red-600 hover:text-white px-3 py-1 rounded-lg transition">Excluir</button>
+                        <button onclick="approveOrder(${index})" class="bg-green-600/20 border border-green-500/30 text-green-400 hover:bg-green-600 hover:text-white px-2.5 py-1 rounded-lg transition">Aprovar</button>
+                        <button onclick="removeOrder(${index})" class="bg-red-600/20 border border-red-500/30 text-red-400 hover:bg-red-600 hover:text-white px-2.5 py-1 rounded-lg transition">Excluir</button>
                     </div>
                 </div>
             `).join('');
         }
 
         function approveOrder(index) {
-            alert(`Pagamento de ${orders[index].name} aprovado com sucesso! Link de acesso enviado para ${orders[index].email}.`);
+            alert(`Pagamento de ${orders[index].name} aprovado! Link enviado para ${orders[index].email}.`);
             orders.splice(index, 1);
             localStorage.setItem('amaral_orders', JSON.stringify(orders));
             document.getElementById('admin-orders-count').innerText = orders.length;
@@ -483,29 +543,29 @@
             renderOrdersList();
         }
 
-        function setThemeMode(mode) {
-            if (mode === 'black') {
-                document.body.style.backgroundColor = '#000000';
-            } else {
-                document.body.style.backgroundColor = '#080808';
-            }
-            alert(`Tema alterado para modo ${mode}.`);
-        }
-
-        // Profile Picture Real-time Upload (Admin only)
-        document.getElementById('profile-upload').addEventListener('change', function(event) {
+        // Profile Picture Upload inside Admin
+        document.getElementById('admin-profile-upload').addEventListener('change', function(event) {
             const file = event.target.files[0];
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const base64Image = e.target.result;
                     document.getElementById('profile-img').src = base64Image;
+                    document.getElementById('admin-preview-img').src = base64Image;
                     localStorage.setItem('amaral_profile_pic', base64Image);
                     alert('Foto de perfil alterada com sucesso!');
                 };
                 reader.readAsDataURL(file);
             }
         });
+
+        function removeProfilePic() {
+            const defaultPic = "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80";
+            document.getElementById('profile-img').src = defaultPic;
+            document.getElementById('admin-preview-img').src = defaultPic;
+            localStorage.removeItem('amaral_profile_pic');
+            alert('Foto de perfil removida com sucesso!');
+        }
 
         function escapeHtml(text) {
             const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
