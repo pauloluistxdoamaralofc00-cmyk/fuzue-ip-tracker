@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
+<!DOCTYPE html><html lang="pt-BR"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>amaralreal7 - Bio Link</title>
@@ -8,21 +6,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @keyframes pulse-green {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.4; transform: scale(1.15); }
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
         }
         .animate-pulse-green {
             animation: pulse-green 1.5s infinite ease-in-out;
         }
-        @keyframes vipGlow {
-            0% { box-shadow: 0 0 15px rgba(168, 85, 247, 0.4); }
-            50% { box-shadow: 0 0 30px rgba(168, 85, 247, 0.8); }
-            100% { box-shadow: 0 0 15px rgba(168, 85, 247, 0.4); }
-        }
-        .vip-card {
-            animation: vipGlow 3s infinite;
-        }
-        /* Trava a tela inteira sem rolagem no body */
+        /* Trava a tela inteira sem rolagem no body e fundo totalmente preto */
         html, body {
             height: 100vh;
             height: 100dvh;
@@ -40,15 +30,19 @@
             background: rgba(255, 255, 255, 0.2);
             border-radius: 4px;
         }
-    </style>
-</head>
-<body class="flex items-center justify-center p-2 select-none">
+    </style></head><body class="flex items-center justify-center p-2 select-none bg-black">
 
-    <!-- Container Principal Fixo e Centralizado -->
-    <div id="mainContainer" class="w-full max-w-sm h-[92vh] max-h-[750px] flex flex-col justify-between items-center bg-zinc-950 border border-zinc-800 rounded-3xl p-4 shadow-2xl vip-card relative overflow-hidden transition-all duration-300">
+    <!-- Toast de Notificação Nativa na Tela -->
+    <div id="toastNotificacao" class="fixed top-5 left-1/2 -translate-x-1/2 bg-zinc-900 border border-zinc-700 text-white px-4 py-2 rounded-2xl shadow-2xl text-xs z-50 transition-all duration-300 opacity-0 pointer-events-none flex items-center gap-2">
+        <i class="fa-solid fa-circle-check text-emerald-400"></i>
+        <span id="toastTexto">Ação realizada com sucesso!</span>
+    </div>
+
+    <!-- Container Principal Fixo e Centralizado (Preto Absoluto) -->
+    <div id="mainContainer" class="w-full max-w-sm h-[92vh] max-h-[750px] flex flex-col justify-between items-center bg-black border border-zinc-900 rounded-3xl p-4 shadow-2xl relative overflow-hidden transition-all duration-300">
         
         <!-- Botão de Configuração (Admin) -->
-        <button onclick="abrirAdmin()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-zinc-900 border border-zinc-700 flex items-center justify-center text-zinc-300 hover:text-white hover:bg-zinc-800 transition active:scale-95 shadow-md z-20">
+        <button onclick="abrirAdmin()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-300 hover:text-white hover:bg-zinc-800 transition shadow-md z-20">
             <i id="iconConfig" class="fa-solid fa-gear text-sm"></i>
         </button>
 
@@ -56,7 +50,7 @@
         <div class="flex flex-col items-center w-full mt-2 z-10 overflow-hidden">
             <!-- Foto de Perfil -->
             <div class="relative mb-2">
-                <div class="w-20 h-20 rounded-full p-[2px] bg-gradient-to-tr from-purple-600 via-pink-500 to-indigo-500 shadow-lg">
+                <div class="w-20 h-20 rounded-full p-[2px] bg-zinc-800 shadow-lg">
                     <img id="profileImg" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&h=300&fit=crop&crop=faces" alt="Perfil" class="w-full h-full object-cover rounded-full">
                 </div>
             </div>
@@ -64,11 +58,11 @@
             <!-- Nome e Badge -->
             <div class="flex items-center gap-1.5 mb-1">
                 <h1 id="profileName" class="text-lg font-bold tracking-tight text-white">amaralreal7</h1>
-                <span id="vipBadgeContainer" class="text-purple-400 text-sm" title="VIP"><i class="fa-solid fa-circle-check"></i></span>
+                <span id="vipBadgeContainer" class="text-zinc-400 text-sm" title="VIP"><i class="fa-solid fa-circle-check"></i></span>
             </div>
 
             <!-- Status Ativo -->
-            <div class="flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 mb-1">
+            <div class="flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800/80 mb-1">
                 <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse-green"></span>
                 <span class="text-xs font-medium text-zinc-300">Ativo</span>
             </div>
@@ -77,8 +71,8 @@
             <p id="profileBio" class="text-xs text-zinc-400 text-center mb-2">O maior chefe do 7</p>
 
             <!-- Selo de Segurança Logo Abaixo da Bio -->
-            <div class="flex items-center justify-center gap-1.5 text-[11px] text-zinc-400 bg-zinc-900/80 px-3 py-1 rounded-full border border-zinc-800/60 mb-3 w-full max-w-[280px]">
-                <i class="fa-solid fa-shield-halved text-purple-400"></i>
+            <div class="flex items-center justify-center gap-1.5 text-[11px] text-zinc-400 bg-zinc-950 px-3 py-1 rounded-full border border-zinc-900 mb-3 w-full max-w-[280px]">
+                <i class="fa-solid fa-shield-halved text-zinc-300"></i>
                 <span>100% Seguro • Entrega automatizada por e-mail</span>
             </div>
         </div>
@@ -86,9 +80,9 @@
         <!-- Botões de Ação Principal -->
         <div class="w-full flex flex-col gap-2.5 my-auto z-10">
             <!-- Botão Nubank / Compra -->
-            <button onclick="clicarBotaoLink('nubank')" class="w-full bg-zinc-900 hover:bg-zinc-855 border border-zinc-800 hover:border-purple-500/50 p-3 rounded-2xl flex items-center justify-between transition group shadow-md active:scale-[0.98]">
+            <button onclick="clicarBotaoLink('nubank')" class="w-full bg-zinc-950 hover:bg-zinc-900 border border-zinc-900 hover:border-zinc-700 p-3 rounded-2xl flex items-center justify-between transition group shadow-md">
                 <div class="flex items-center gap-3">
-                    <div id="iconBoxNubank" class="w-10 h-10 rounded-xl bg-purple-600/20 border border-purple-500/30 flex items-center justify-center text-purple-400 text-lg group-hover:scale-110 transition">
+                    <div id="iconBoxNubank" class="w-10 h-10 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-white text-lg transition">
                         <i class="fa-solid fa-n"></i>
                     </div>
                     <div class="text-left">
@@ -96,13 +90,13 @@
                         <p class="text-[11px] text-zinc-400">Adquirir acesso VIP imediato (R$ 5,99)</p>
                     </div>
                 </div>
-                <i class="fa-solid fa-chevron-right text-xs text-zinc-500 group-hover:text-white transition mr-1"></i>
+                <i class="fa-solid fa-chevron-right text-xs text-zinc-600 group-hover:text-white transition mr-1"></i>
             </button>
 
             <!-- Botão Suporte com IA -->
-            <button onclick="clicarBotaoLink('suporte')" class="w-full bg-zinc-900 hover:bg-zinc-855 border border-zinc-800 hover:border-purple-500/50 p-3 rounded-2xl flex items-center justify-between transition group shadow-md active:scale-[0.98]">
+            <button onclick="clicarBotaoLink('suporte')" class="w-full bg-zinc-950 hover:bg-zinc-900 border border-zinc-900 hover:border-zinc-700 p-3 rounded-2xl flex items-center justify-between transition group shadow-md">
                 <div class="flex items-center gap-3">
-                    <div id="iconBoxSuporte" class="w-10 h-10 rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 text-lg group-hover:scale-110 transition">
+                    <div id="iconBoxSuporte" class="w-10 h-10 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-white text-lg transition">
                         <i class="fa-solid fa-robot"></i>
                     </div>
                     <div class="text-left">
@@ -110,25 +104,25 @@
                         <p class="text-[11px] text-zinc-400">Atendimento inteligente 24h</p>
                     </div>
                 </div>
-                <i class="fa-solid fa-chevron-right text-xs text-zinc-500 group-hover:text-white transition mr-1"></i>
+                <i class="fa-solid fa-chevron-right text-xs text-zinc-600 group-hover:text-white transition mr-1"></i>
             </button>
         </div>
 
-        <!-- Rodapé Rodapé Vazio Limpo -->
+        <!-- Rodapé Vazio Limpo -->
         <div class="w-full text-center text-[10px] text-zinc-600 z-10">
             <span>amaralreal7.system</span>
         </div>
     </div>
 
     <!-- MODAL DE CHECKOUT (COMPRA NUBANK) -->
-    <div id="modalCheckout" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3">
-        <div class="bg-zinc-900 border border-zinc-800 w-full max-w-sm rounded-3xl p-5 shadow-2xl relative custom-scroll max-h-[90vh] overflow-y-auto">
-            <button onclick="fecharModalCheckout()" class="absolute top-4 right-4 text-zinc-400 hover:text-white w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center text-sm">
+    <div id="modalCheckout" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3">
+        <div class="bg-black border border-zinc-900 w-full max-w-sm rounded-3xl p-5 shadow-2xl relative custom-scroll max-h-[90vh] overflow-y-auto">
+            <button onclick="fecharModalCheckout()" class="absolute top-4 right-4 text-zinc-400 hover:text-white w-8 h-8 rounded-full bg-zinc-900 flex items-center justify-center text-sm">
                 <i class="fa-solid fa-xmark"></i>
             </button>
             
             <div class="text-center mb-4">
-                <div class="w-12 h-12 rounded-2xl bg-purple-600/20 border border-purple-500/30 flex items-center justify-center text-purple-400 text-xl mx-auto mb-2">
+                <div class="w-12 h-12 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-white text-xl mx-auto mb-2">
                     <i class="fa-solid fa-shield-cat"></i>
                 </div>
                 <h3 class="text-base font-bold text-white">Checkout VIP</h3>
@@ -138,72 +132,72 @@
             <div id="formCheckoutStep" class="space-y-3">
                 <div>
                     <label class="block text-[11px] font-medium text-zinc-300 mb-1">Nome Completo</label>
-                    <input type="text" id="inputNome" placeholder="Digite seu nome completo" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-purple-500">
+                    <input type="text" id="inputNome" placeholder="Digite seu nome completo" class="w-full bg-zinc-950 border border-zinc-900 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-zinc-700">
                 </div>
                 <div>
                     <label class="block text-[11px] font-medium text-zinc-300 mb-1">Data de Nascimento</label>
-                    <input type="text" id="inputNascimento" placeholder="DD/MM/AAAA" maxlength="10" oninput="mascaraData(this)" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-purple-500">
+                    <input type="text" id="inputNascimento" placeholder="DD/MM/AAAA" maxlength="10" oninput="mascaraData(this)" class="w-full bg-zinc-950 border border-zinc-900 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-zinc-700">
                 </div>
                 <div>
                     <label class="block text-[11px] font-medium text-zinc-300 mb-1">CPF</label>
-                    <input type="text" id="inputCpf" placeholder="000.000.000-00" maxlength="14" oninput="mascaraCpf(this)" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-purple-500">
+                    <input type="text" id="inputCpf" placeholder="000.000.000-00" maxlength="14" oninput="mascaraCpf(this)" class="w-full bg-zinc-950 border border-zinc-900 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-zinc-700">
                 </div>
                 <div>
                     <label class="block text-[11px] font-medium text-zinc-300 mb-1">E-mail para entrega</label>
-                    <input type="email" id="inputEmail" placeholder="seu@email.com" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-purple-500">
+                    <input type="email" id="inputEmail" placeholder="seu@email.com" class="w-full bg-zinc-950 border border-zinc-900 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-zinc-700">
                 </div>
 
-                <button onclick="gerarPagamentoPix()" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-semibold py-2.5 rounded-xl text-xs transition shadow-lg mt-2 active:scale-95">
+                <button onclick="gerarPagamentoPix()" class="w-full bg-zinc-100 hover:bg-white text-black font-semibold py-2.5 rounded-xl text-xs transition shadow-lg mt-2">
                     Prosseguir para o Pix (R$ 5,99)
                 </button>
             </div>
 
             <!-- Tela do QR Code / Pix Gerado -->
             <div id="pixStep" class="hidden text-center space-y-3">
-                <div class="bg-zinc-950 border border-zinc-800 p-3 rounded-2xl">
+                <div class="bg-zinc-950 border border-zinc-900 p-3 rounded-2xl">
                     <p class="text-[11px] text-zinc-400 mb-1">Escaneie o QR Code ou copie a chave Pix:</p>
                     <div class="bg-white p-2 rounded-xl inline-block mb-2">
                         <img src="https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=00020126580014br.gov.bcb.pix...amaralreal7" alt="QR Code Pix" class="w-28 h-28 mx-auto">
                     </div>
                     <div class="flex items-center gap-1 bg-zinc-900 border border-zinc-800 rounded-xl p-1.5">
                         <input type="text" readonly id="chavePixInput" value="00020126580014br.gov.bcb.pix.static01...599" class="bg-transparent text-[10px] text-zinc-300 w-full px-1 focus:outline-none">
-                        <button onclick="copiarChavePix()" class="bg-purple-600 hover:bg-purple-500 text-white px-2.5 py-1 rounded-lg text-[10px] font-medium transition">Copiar</button>
+                        <button onclick="copiarChavePix()" class="bg-zinc-800 hover:bg-zinc-700 text-white px-2.5 py-1 rounded-lg text-[10px] font-medium transition">Copiar</button>
                     </div>
                 </div>
 
                 <!-- Timer de 10 minutos -->
-                <div class="flex items-center justify-center gap-2 text-xs text-amber-400 bg-amber-500/10 border border-amber-500/20 py-1.5 rounded-xl">
+                <div class="flex items-center justify-center gap-2 text-xs text-zinc-300 bg-zinc-900 border border-zinc-800 py-1.5 rounded-xl">
                     <i class="fa-solid fa-clock"></i>
                     <span>Expira em: <strong id="timerPix">10:00</strong></span>
                 </div>
 
-                <button onclick="concluirPagamentoPedido()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-2.5 rounded-xl text-xs transition shadow-lg active:scale-95">
+                <button onclick="concluirPagamentoPedido()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-2.5 rounded-xl text-xs transition shadow-lg">
                     Concluir Pagamento
                 </button>
             </div>
 
             <!-- Sucesso / Aguardando Aprovação -->
             <div id="sucessoStep" class="hidden text-center space-y-3 py-4">
-                <div class="w-14 h-14 bg-emerald-500/20 border border-emerald-500/40 rounded-full flex items-center justify-center text-emerald-400 text-2xl mx-auto">
+                <div class="w-14 h-14 bg-zinc-900 border border-zinc-800 rounded-full flex items-center justify-center text-emerald-400 text-2xl mx-auto">
                     <i class="fa-solid fa-check"></i>
                 </div>
                 <h4 class="text-sm font-bold text-white">Pagamento concluído com sucesso!</h4>
                 <p class="text-xs text-zinc-400 leading-relaxed px-2">
                     Aguarde um dos nossos administradores aprovar a sua solicitação. Assim que aprovado, você receberá o link automatizado pelo e-mail.
                 </p>
-                <button onclick="fecharModalCheckoutFinal()" class="w-full bg-zinc-800 hover:bg-zinc-700 text-white font-medium py-2 rounded-xl text-xs transition mt-2">
+                <button onclick="fecharModalCheckoutFinal()" class="w-full bg-zinc-900 hover:bg-zinc-800 text-white font-medium py-2 rounded-xl text-xs transition mt-2">
                     Fechar
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL SUPORTE COM IA (BLOQUEADO PARA O MEMBRO) -->
-    <div id="modalSuporte" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3">
-        <div class="bg-zinc-900 border border-zinc-800 w-full max-w-sm rounded-3xl p-4 shadow-2xl relative h-[420px] flex flex-col justify-between">
-            <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
+    <!-- MODAL SUPORTE COM IA -->
+    <div id="modalSuporte" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3">
+        <div class="bg-black border border-zinc-900 w-full max-w-sm rounded-3xl p-4 shadow-2xl relative h-[420px] flex flex-col justify-between">
+            <div class="flex items-center justify-between border-b border-zinc-900 pb-3">
                 <div class="flex items-center gap-2">
-                    <div class="w-8 h-8 rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 text-sm">
+                    <div class="w-8 h-8 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-white text-sm">
                         <i class="fa-solid fa-robot"></i>
                     </div>
                     <div>
@@ -211,28 +205,26 @@
                         <span class="text-[10px] text-emerald-400 flex items-center gap-1">● Atendimento automático</span>
                     </div>
                 </div>
-                <button onclick="fecharModalSuporte()" class="text-zinc-400 hover:text-white w-7 h-7 rounded-full bg-zinc-800 flex items-center justify-center text-xs">
+                <button onclick="fecharModalSuporte()" class="text-zinc-400 hover:text-white w-7 h-7 rounded-full bg-zinc-900 flex items-center justify-center text-xs">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
 
-            <!-- Caixa de Mensagem Automática Dentro da Conversa -->
             <div class="flex-1 overflow-y-auto custom-scroll py-3 space-y-3">
                 <div class="flex items-start gap-2">
-                    <div class="w-6 h-6 rounded-full bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 text-[10px] shrink-0 mt-0.5">
+                    <div class="w-6 h-6 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center text-white text-[10px] shrink-0 mt-0.5">
                         <i class="fa-solid fa-robot"></i>
                     </div>
-                    <div class="bg-zinc-800/80 border border-zinc-700/50 rounded-2xl p-3 text-xs text-zinc-200 max-w-[85%] leading-relaxed">
-                        Olá! Bem-vindo ao suporte automatizado do <strong>amaralreal7</strong>. Informamos que para adquirir seu acesso VIP, basta clicar no botão principal do Nubank na tela inicial, preencher seus dados, efetuar via Pix (R$ 5,99) e concluir. Após a aprovação do administrador, seu produto é entregue automaticamente no seu e-mail cadastrado!
+                    <div class="bg-zinc-950 border border-zinc-900 rounded-2xl p-3 text-xs text-zinc-300 max-w-[85%] leading-relaxed">
+                        Olá! Bem-vindo ao suporte automatizado do <strong>amaralreal7</strong>. Para adquirir seu acesso VIP, clique no botão principal do Nubank na tela inicial, preencha seus dados, efetue via Pix (R$ 5,99) e conclua!
                     </div>
                 </div>
             </div>
 
-            <!-- Chat Bloqueado para o Membro -->
-            <div class="border-t border-zinc-800 pt-2">
-                <div class="bg-zinc-950 border border-zinc-800 rounded-xl p-2.5 text-center">
+            <div class="border-t border-zinc-900 pt-2">
+                <div class="bg-zinc-950 border border-zinc-900 rounded-xl p-2.5 text-center">
                     <p class="text-[11px] text-zinc-400 flex items-center justify-center gap-1.5">
-                        <i class="fa-solid fa-lock text-purple-400"></i>
+                        <i class="fa-solid fa-lock text-zinc-500"></i>
                         Chat bloqueado para novas mensagens. Apenas informativo.
                     </p>
                 </div>
@@ -241,34 +233,34 @@
     </div>
 
     <!-- PAINEL DE ADMINISTRAÇÃO (SENHA 123) -->
-    <div id="modalAdmin" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-3">
+    <div id="modalAdmin" class="fixed inset-0 bg-black/95 backdrop-blur-md z-50 hidden flex items-center justify-center p-3">
         <!-- Tela de Login Admin -->
-        <div id="adminLoginBox" class="bg-zinc-900 border border-zinc-800 w-full max-w-xs rounded-3xl p-5 shadow-2xl text-center relative">
+        <div id="adminLoginBox" class="bg-black border border-zinc-900 w-full max-w-xs rounded-3xl p-5 shadow-2xl text-center relative">
             <button onclick="fecharAdmin()" class="absolute top-4 right-4 text-zinc-400 hover:text-white text-sm"><i class="fa-solid fa-xmark"></i></button>
-            <div class="w-12 h-12 bg-purple-600/20 border border-purple-500/30 rounded-2xl flex items-center justify-center text-purple-400 text-lg mx-auto mb-3">
+            <div class="w-12 h-12 bg-zinc-900 border border-zinc-800 rounded-2xl flex items-center justify-center text-white text-lg mx-auto mb-3">
                 <i class="fa-solid fa-lock"></i>
             </div>
             <h3 class="text-sm font-bold text-white mb-1">Painel Administrativo</h3>
             <p class="text-[11px] text-zinc-400 mb-4">Insira a senha de acesso (123)</p>
-            <input type="password" id="inputSenhaAdmin" placeholder="Senha" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white text-center tracking-widest mb-3 focus:outline-none focus:border-purple-500">
-            <button onclick="verificarSenhaAdmin()" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-semibold py-2 rounded-xl text-xs transition">Entrar</button>
+            <input type="password" id="inputSenhaAdmin" placeholder="Senha" class="w-full bg-zinc-950 border border-zinc-900 rounded-xl px-3 py-2 text-xs text-white text-center tracking-widest mb-3 focus:outline-none focus:border-zinc-700">
+            <button onclick="verificarSenhaAdmin()" class="w-full bg-zinc-100 hover:bg-white text-black font-semibold py-2 rounded-xl text-xs transition">Entrar</button>
         </div>
 
         <!-- Dashboard Completo Admin -->
-        <div id="adminDashboard" class="hidden bg-zinc-900 border border-zinc-800 w-full max-w-md rounded-3xl p-4 shadow-2xl relative h-[90vh] max-h-[700px] flex flex-col justify-between custom-scroll overflow-y-auto">
-            <div class="flex items-center justify-between border-b border-zinc-800 pb-3 mb-3">
+        <div id="adminDashboard" class="hidden bg-black border border-zinc-900 w-full max-w-md rounded-3xl p-4 shadow-2xl relative h-[90vh] max-h-[700px] flex flex-col justify-between custom-scroll overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-zinc-900 pb-3 mb-3">
                 <div class="flex items-center gap-2">
-                    <div class="w-7 h-7 bg-purple-600/20 border border-purple-500/30 rounded-xl flex items-center justify-center text-purple-400 text-xs">
+                    <div class="w-7 h-7 bg-zinc-900 border border-zinc-800 rounded-xl flex items-center justify-center text-white text-xs">
                         <i class="fa-solid fa-gauge-high"></i>
                     </div>
                     <h3 class="text-xs font-bold text-white">Administração em Tempo Real</h3>
                 </div>
-                <button onclick="fecharAdmin()" class="text-zinc-400 hover:text-white w-7 h-7 rounded-full bg-zinc-800 flex items-center justify-center text-xs"><i class="fa-solid fa-xmark"></i></button>
+                <button onclick="fecharAdmin()" class="text-zinc-400 hover:text-white w-7 h-7 rounded-full bg-zinc-900 flex items-center justify-center text-xs"><i class="fa-solid fa-xmark"></i></button>
             </div>
 
             <!-- Abas do Painel -->
-            <div class="flex gap-1 bg-zinc-950 p-1 rounded-xl mb-3 border border-zinc-800 shrink-0">
-                <button onclick="mudarAbaAdmin('monitor')" id="tabBtnMonitor" class="flex-1 py-1.5 text-[11px] font-medium rounded-lg bg-purple-600 text-white transition">Monitoramento</button>
+            <div class="flex gap-1 bg-zinc-950 p-1 rounded-xl mb-3 border border-zinc-900 shrink-0">
+                <button onclick="mudarAbaAdmin('monitor')" id="tabBtnMonitor" class="flex-1 py-1.5 text-[11px] font-medium rounded-lg bg-zinc-900 text-white transition">Monitoramento</button>
                 <button onclick="mudarAbaAdmin('vendas')" id="tabBtnVendas" class="flex-1 py-1.5 text-[11px] font-medium rounded-lg text-zinc-400 hover:text-white transition">Vendas & Pix</button>
                 <button onclick="mudarAbaAdmin('custom')" id="tabBtnCustom" class="flex-1 py-1.5 text-[11px] font-medium rounded-lg text-zinc-400 hover:text-white transition">Customização</button>
             </div>
@@ -276,25 +268,25 @@
             <!-- Conteúdo da Aba: Monitoramento -->
             <div id="tabMonitor" class="space-y-3 flex-1 overflow-y-auto custom-scroll pr-1">
                 <div class="grid grid-cols-2 gap-2">
-                    <div class="bg-zinc-950 border border-zinc-800 p-3 rounded-2xl text-center">
+                    <div class="bg-zinc-950 border border-zinc-900 p-3 rounded-2xl text-center">
                         <span class="text-[10px] text-zinc-400 block mb-1">Cliques no Link</span>
-                        <span id="statCliques" class="text-xl font-bold text-purple-400">0</span>
+                        <span id="statCliques" class="text-xl font-bold text-white">0</span>
                     </div>
-                    <div class="bg-zinc-950 border border-zinc-800 p-3 rounded-2xl text-center">
+                    <div class="bg-zinc-950 border border-zinc-900 p-3 rounded-2xl text-center">
                         <span class="text-[10px] text-zinc-400 block mb-1">Total de Pedidos</span>
-                        <span id="statPedidos" class="text-xl font-bold text-blue-400">0</span>
+                        <span id="statPedidos" class="text-xl font-bold text-white">0</span>
                     </div>
                 </div>
-                <div class="bg-zinc-950 border border-zinc-800 p-3 rounded-2xl text-center">
+                <div class="bg-zinc-950 border border-zinc-900 p-3 rounded-2xl text-center">
                     <span class="text-[10px] text-zinc-400 block mb-1">Receita Aprovada</span>
                     <span id="statReceita" class="text-xl font-bold text-emerald-400">R$ 0,00</span>
                 </div>
 
-                <div class="bg-zinc-950 border border-zinc-800 p-3 rounded-2xl">
+                <div class="bg-zinc-950 border border-zinc-900 p-3 rounded-2xl">
                     <h4 class="text-xs font-bold text-white mb-2">Status do Sistema</h4>
                     <div class="flex items-center justify-between text-[11px] text-zinc-400 py-1 border-b border-zinc-900">
                         <span>Atualização Real-time</span>
-                        <span class="text-emerald-400 font-medium">Ativo (1s)</span>
+                        <span class="text-emerald-400 font-medium">Ativo</span>
                     </div>
                     <div class="flex items-center justify-between text-[11px] text-zinc-400 py-1">
                         <span>Servidor Pix / API</span>
@@ -311,42 +303,51 @@
                 </div>
             </div>
 
-            <!-- Conteúdo da Aba: Customização -->
+            <!-- Conteúdo da Aba: Customização com Opções Automáticas de Ícones -->
             <div id="tabCustom" class="hidden space-y-3 flex-1 overflow-y-auto custom-scroll pr-1">
                 <div class="space-y-2">
-                    <label class="block text-[11px] font-medium text-zinc-300">Tema de Cores do Painel</label>
-                    <select id="selectTemaCor" onchange="alterarTemaCor()" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-purple-500">
-                        <option value="dark">Dark VIP Padrão</option>
-                        <option value="black">Preto Absoluto (Black)</option>
-                        <option value="purple">Neon Roxo</option>
+                    <label class="block text-[11px] font-medium text-zinc-300">Alterar Foto de Perfil (Via Galeria ou URL)</label>
+                    <input type="file" id="inputFotoGaleria" accept="image/*" onchange="carregarFotoGaleria(event)" class="w-full bg-zinc-950 border border-zinc-900 rounded-xl px-3 py-1.5 text-xs text-zinc-300 file:mr-2 file:py-1 file:px-2 file:rounded-lg file:border-0 file:text-[10px] file:bg-zinc-800 file:text-white hover:file:bg-zinc-700">
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-[11px] font-medium text-zinc-300">Ícone do Selo VIP</label>
+                    <select id="selectIconVip" onchange="salvarCustomizacao()" class="w-full bg-zinc-950 border border-zinc-900 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-zinc-700">
+                        <option value="fa-solid fa-circle-check">✅ Check Verificado</option>
+                        <option value="fa-solid fa-crown">👑 Coroa VIP</option>
+                        <option value="fa-solid fa-star">⭐ Estrela Dourada</option>
+                        <option value="fa-solid fa-shield-halved">🛡️ Escudo de Segurança</option>
                     </select>
                 </div>
 
                 <div class="space-y-2">
-                    <label class="block text-[11px] font-medium text-zinc-300">Alterar Foto de Perfil (Via Galeria ou URL)</label>
-                    <input type="file" id="inputFotoGaleria" accept="image/*" onchange="carregarFotoGaleria(event)" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-1.5 text-xs text-zinc-300 file:mr-2 file:py-1 file:px-2 file:rounded-lg file:border-0 file:text-[10px] file:bg-purple-600 file:text-white hover:file:bg-purple-500">
-                </div>
-
-                <div class="space-y-2">
-                    <label class="block text-[11px] font-medium text-zinc-300">Ícone do Check VIP (FontAwesome class)</label>
-                    <input type="text" id="inputIconVip" value="fa-solid fa-circle-check" oninput="salvarCustomizacao()" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-purple-500">
-                </div>
-
-                <div class="space-y-2">
                     <label class="block text-[11px] font-medium text-zinc-300">Ícone do Botão Nubank</label>
-                    <input type="text" id="inputIconNubank" value="fa-solid fa-n" oninput="salvarCustomizacao()" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-purple-500">
+                    <select id="selectIconNubank" onchange="salvarCustomizacao()" class="w-full bg-zinc-950 border border-zinc-900 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-zinc-700">
+                        <option value="fa-solid fa-n">Letra N (Nubank)</option>
+                        <option value="fa-solid fa-bolt">⚡ Raio / Instantâneo</option>
+                        <option value="fa-solid fa-wallet">👛 Carteira Digital</option>
+                        <option value="fa-solid fa-pix">💠 Símbolo Pix</option>
+                        <option value="fa-solid fa-fire">🔥 Fogo / Em Alta</option>
+                        <option value="fa-solid fa-gem">💎 Diamante / Item Raro</option>
+                    </select>
                 </div>
 
                 <div class="space-y-2">
                     <label class="block text-[11px] font-medium text-zinc-300">Ícone do Botão Suporte IA</label>
-                    <input type="text" id="inputIconSuporte" value="fa-solid fa-robot" oninput="salvarCustomizacao()" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-purple-500">
+                    <select id="selectIconSuporte" onchange="salvarCustomizacao()" class="w-full bg-zinc-950 border border-zinc-900 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-zinc-700">
+                        <option value="fa-solid fa-robot">🤖 Robô de Atendimento</option>
+                        <option value="fa-solid fa-headset">🎧 Headset de Suporte</option>
+                        <option value="fa-solid fa-comments">💬 Chat Inteligente</option>
+                        <option value="fa-solid fa-brain">🧠 Inteligência Artificial</option>
+                        <option value="fa-solid fa-bolt">⚡ Raio Rápido</option>
+                    </select>
                 </div>
             </div>
 
             <!-- Rodapé do Admin -->
-            <div class="border-t border-zinc-800 pt-3 mt-2 flex justify-between items-center text-[10px] text-zinc-500 shrink-0">
-                <span>Admin v3.5 • Real-time</span>
-                <button onclick="fecharAdmin()" class="text-purple-400 hover:text-purple-300 font-medium">Salvar & Fechar</button>
+            <div class="border-t border-zinc-900 pt-3 mt-2 flex justify-between items-center text-[10px] text-zinc-500 shrink-0">
+                <span>Admin v4.0 • Black Edition</span>
+                <button onclick="fecharAdmin(); mostrarToast('Configurações salvas com sucesso!');" class="text-white hover:text-zinc-300 font-medium bg-zinc-900 px-3 py-1 rounded-lg border border-zinc-800">Salvar & Fechar</button>
             </div>
         </div>
     </div>
@@ -358,7 +359,6 @@
             vendas: JSON.parse(localStorage.getItem('amaral_vendas')) || [],
             config: JSON.parse(localStorage.getItem('amaral_config')) || {
                 foto: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&h=300&fit=crop&crop=faces",
-                tema: "dark",
                 iconVip: "fa-solid fa-circle-check",
                 iconNubank: "fa-solid fa-n",
                 iconSuporte: "fa-solid fa-robot"
@@ -393,6 +393,18 @@
             localStorage.setItem('amaral_cliques', appData.cliques);
             localStorage.setItem('amaral_vendas', JSON.stringify(appData.vendas));
             localStorage.setItem('amaral_config', JSON.stringify(appData.config));
+        }
+
+        function mostrarToast(mensagem) {
+            const toast = document.getElementById('toastNotificacao');
+            const texto = document.getElementById('toastTexto');
+            texto.innerText = mensagem;
+            toast.classList.remove('opacity-0', 'pointer-events-none');
+            toast.classList.add('opacity-100');
+            setTimeout(() => {
+                toast.classList.remove('opacity-100');
+                toast.classList.add('opacity-0', 'pointer-events-none');
+            }, 2500);
         }
 
         function clicarBotaoLink(tipo) {
@@ -446,7 +458,7 @@
             const email = document.getElementById('inputEmail').value.trim();
 
             if(!nome || nascimento.length < 10 || cpf.length < 14 || !email.includes('@')) {
-                alert('Por favor, preencha todos os campos corretamente (Nome, Data válida, CPF e E-mail).');
+                mostrarToast('Preencha todos os campos corretamente!');
                 return;
             }
 
@@ -471,9 +483,8 @@
 
         function copiarChavePix() {
             const chaveInput = document.getElementById('chavePixInput');
-            chaveInput.select();
             navigator.clipboard.writeText(chaveInput.value);
-            alert('Chave Pix copiada com sucesso!');
+            mostrarToast('Chave Pix copiada com sucesso!');
         }
 
         function iniciarTimerPix() {
@@ -485,7 +496,7 @@
                 document.getElementById('timerPix').innerText = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
                 if(segundosRestantes <= 0) {
                     pararTimerPix();
-                    alert('O tempo do Pix expirou. Refaça o pedido.');
+                    mostrarToast('O tempo do Pix expirou.');
                     fecharModalCheckout();
                 }
                 segundosRestantes--;
@@ -500,6 +511,7 @@
             pararTimerPix();
             document.getElementById('pixStep').classList.add('hidden');
             document.getElementById('sucessoStep').classList.remove('hidden');
+            mostrarToast('Pedido enviado para aprovação!');
         }
 
         function abrirModalSuporte() {
@@ -527,7 +539,7 @@
                 document.getElementById('adminDashboard').classList.remove('hidden');
                 mudarAbaAdmin('monitor');
             } else {
-                alert('Senha incorreta! A senha padrão é 123.');
+                mostrarToast('Senha incorreta! (Padrão: 123)');
             }
         }
 
@@ -542,68 +554,91 @@
 
             if(aba === 'monitor') {
                 document.getElementById('tabMonitor').classList.remove('hidden');
-                document.getElementById('tabBtnMonitor').className = "flex-1 py-1.5 text-[11px] font-medium rounded-lg bg-purple-600 text-white transition";
+                document.getElementById('tabBtnMonitor').className = "flex-1 py-1.5 text-[11px] font-medium rounded-lg bg-zinc-900 text-white transition";
             } else if(aba === 'vendas') {
                 document.getElementById('tabVendas').classList.remove('hidden');
-                document.getElementById('tabBtnVendas').className = "flex-1 py-1.5 text-[11px] font-medium rounded-lg bg-purple-600 text-white transition";
+                document.getElementById('tabBtnVendas').className = "flex-1 py-1.5 text-[11px] font-medium rounded-lg bg-zinc-900 text-white transition";
             } else if(aba === 'custom') {
                 document.getElementById('tabCustom').classList.remove('hidden');
-                document.getElementById('tabBtnCustom').className = "flex-1 py-1.5 text-[11px] font-medium rounded-lg bg-purple-600 text-white transition";
+                document.getElementById('tabBtnCustom').className = "flex-1 py-1.5 text-[11px] font-medium rounded-lg bg-zinc-900 text-white transition";
             }
         }
 
         function atualizarEstatisticasAdmin() {
             document.getElementById('statCliques').innerText = appData.cliques;
             document.getElementById('statPedidos').innerText = appData.vendas.length;
-            
+
             let receitaTotal = appData.vendas
                 .filter(v => v.status === 'aprovado')
                 .reduce((acc, v) => acc + v.valor, 0);
 
-            document.getElementById('statReceita').innerText = `R$ ${receitaTotal.toFixed(2).replace('.', ',')}`;
+            document.getElementById('statReceita').innerText = receitaTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
         }
 
         function renderizarVendasAdmin() {
             const container = document.getElementById('listaVendasAdmin');
-            if(!appData.vendas || appData.vendas.length === 0) {
-                container.innerHTML = `<div class="text-center py-6 text-zinc-500 text-xs">Nenhuma venda registrada ainda.</div>`;
+            if(!container) return;
+
+            if(appData.vendas.length === 0) {
+                container.innerHTML = `<p class="text-xs text-zinc-500 text-center py-4">Nenhum pedido registrado até o momento.</p>`;
                 return;
             }
 
-            container.innerHTML = appData.vendas.map((v, index) => `
-                <div class="bg-zinc-950 border border-zinc-800 p-2.5 rounded-2xl flex flex-col gap-1.5">
-                    <div class="flex justify-between items-center text-xs">
-                        <span class="font-bold text-white">${v.nome}</span>
-                        <span class="text-[10px] px-2 py-0.5 rounded-full font-medium ${
-                            v.status === 'aprovado' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' :
-                            v.status === 'cancelado' ? 'bg-red-500/20 text-red-400 border border-red-500/30' :
-                            'bg-amber-500/20 text-amber-400 border border-amber-500/30'
-                        }">${v.status.toUpperCase()}</span>
-                    </div>
-                    <div class="text-[10px] text-zinc-400 space-y-0.5">
-                        <p>CPF: ${v.cpf} | Nasc: ${v.nascimento}</p>
-                        <p>E-mail: ${v.email}</p>
-                        <p>Valor: R$ ${v.valor.toFixed(2).replace('.', ',')} (${v.data})</p>
-                    </div>
-                    ${v.status === 'pendente' ? `
-                        <div class="flex gap-2 mt-1">
-                            <button onclick="alterarStatusVenda(${index}, 'aprovado')" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white py-1.5 rounded-xl text-[11px] font-semibold transition active:scale-95 flex items-center justify-center gap-1 shadow-md">
-                                <i class="fa-solid fa-check"></i> Aprovar
-                            </button>
-                            <button onclick="alterarStatusVenda(${index}, 'cancelado')" class="flex-1 bg-red-600 hover:bg-red-500 text-white py-1.5 rounded-xl text-[11px] font-semibold transition active:scale-95 flex items-center justify-center gap-1 shadow-md">
-                                <i class="fa-solid fa-xmark"></i> Cancelar
-                            </button>
+            let html = '';
+            appData.vendas.forEach(v => {
+                let badgeStatus = '';
+                if(v.status === 'pendente') {
+                    badgeStatus = `<span class="bg-zinc-900 text-amber-400 border border-zinc-800 px-2 py-0.5 rounded text-[10px]">Pendente</span>`;
+                } else {
+                    badgeStatus = `<span class="bg-zinc-900 text-emerald-400 border border-zinc-800 px-2 py-0.5 rounded text-[10px]">Aprovado</span>`;
+                }
+
+                html += `
+                    <div class="bg-zinc-950 border border-zinc-900 p-2.5 rounded-xl space-y-1.5">
+                        <div class="flex items-center justify-between text-xs">
+                            <span class="font-bold text-white">${v.nome}</span>
+                            ${badgeStatus}
                         </div>
-                    ` : ''}
-                </div>
-            `).join('');
+                        <div class="text-[10px] text-zinc-400 space-y-0.5">
+                            <p><strong>ID:</strong> ${v.id} | <strong>Hora:</strong> ${v.data}</p>
+                            <p><strong>CPF:</strong> ${v.cpf} | <strong>Nasc:</strong> ${v.nascimento}</p>
+                            <p><strong>E-mail:</strong> ${v.email}</p>
+                        </div>
+                        ${v.status === 'pendente' ? `
+                            <div class="pt-1 flex gap-2">
+                                <button onclick="aprovarPedido('${v.id}')" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] font-semibold py-1 rounded-lg transition">Aprovar Pix</button>
+                                <button onclick="removerPedido('${v.id}')" class="bg-zinc-900 hover:bg-zinc-800 text-zinc-300 text-[10px] px-2 py-1 rounded-lg transition"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        ` : `
+                            <div class="pt-1 flex justify-end">
+                                <button onclick="removerPedido('${v.id}')" class="bg-zinc-900 hover:bg-zinc-800 text-zinc-300 text-[10px] px-2 py-1 rounded-lg transition"><i class="fa-solid fa-trash"></i> Excluir</button>
+                            </div>
+                        `}
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
         }
 
-        function alterarStatusVenda(index, novoStatus) {
-            appData.vendas[index].status = novoStatus;
-            salvarDadosArmazenados();
-            atualizarEstatisticasAdmin();
-            renderizarVendasAdmin();
+        function aprovarPedido(id) {
+            let pedido = appData.vendas.find(v => v.id === id);
+            if(pedido) {
+                pedido.status = 'aprovado';
+                salvarDadosArmazenados();
+                atualizarEstatisticasAdmin();
+                renderizarVendasAdmin();
+                mostrarToast(`Pedido de ${pedido.nome} aprovado!`);
+            }
+        }
+
+        function removerPedido(id) {
+            if(confirm('Deseja realmente remover este pedido?')) {
+                appData.vendas = appData.vendas.filter(v => v.id !== id);
+                salvarDadosArmazenados();
+                atualizarEstatisticasAdmin();
+                renderizarVendasAdmin();
+                mostrarToast('Pedido removido.');
+            }
         }
 
         function carregarFotoGaleria(event) {
@@ -612,24 +647,21 @@
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     appData.config.foto = e.target.result;
+                    document.getElementById('profileImg').src = appData.config.foto;
                     salvarCustomizacao();
-                };
+                    mostrarToast('Foto de perfil alterada!');
+                }
                 reader.readAsDataURL(file);
             }
         }
 
-        function alterarTemaCor() {
-            const tema = document.getElementById('selectTemaCor').value;
-            appData.config.tema = tema;
-            salvarCustomizacao();
-        }
-
         function salvarCustomizacao() {
-            appData.config.iconVip = document.getElementById('inputIconVip').value;
-            appData.config.iconNubank = document.getElementById('inputIconNubank').value;
-            appData.config.iconSuporte = document.getElementById('inputIconSuporte').value;
-            salvarDadosArmazenados();
+            appData.config.iconVip = document.getElementById('selectIconVip').value;
+            appData.config.iconNubank = document.getElementById('selectIconNubank').value;
+            appData.config.iconSuporte = document.getElementById('selectIconSuporte').value;
+
             aplicarConfiguracoes();
+            salvarDadosArmazenados();
         }
 
         function aplicarConfiguracoes() {
@@ -637,21 +669,10 @@
             document.getElementById('vipBadgeContainer').innerHTML = `<i class="${appData.config.iconVip}"></i>`;
             document.getElementById('iconBoxNubank').innerHTML = `<i class="${appData.config.iconNubank}"></i>`;
             document.getElementById('iconBoxSuporte').innerHTML = `<i class="${appData.config.iconSuporte}"></i>`;
-            
-            document.getElementById('selectTemaCor').value = appData.config.tema || 'dark';
 
-            const container = document.getElementById('mainContainer');
-            if(appData.config.tema === 'black') {
-                container.style.backgroundColor = '#000000';
-                container.style.borderColor = '#222222';
-            } else if(appData.config.tema === 'purple') {
-                container.style.backgroundColor = '#090514';
-                container.style.borderColor = '#6b21a8';
-            } else {
-                container.style.backgroundColor = '#09090b';
-                container.style.borderColor = '#27272a';
-            }
+            document.getElementById('selectIconVip').value = appData.config.iconVip;
+            document.getElementById('selectIconNubank').value = appData.config.iconNubank;
+            document.getElementById('selectIconSuporte').value = appData.config.iconSuporte;
         }
     </script>
-</body>
-</html>
+</body></html>
