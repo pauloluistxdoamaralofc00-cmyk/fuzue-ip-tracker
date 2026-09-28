@@ -40,7 +40,7 @@
             background: rgba(255, 255, 255, 0.2);
             border-radius: 4px;
         }
-    </style></head><body class="flex items-center justify-center p-2 select-none bg-black">
+    </style></head><body class="flex items-center justify-center p-3 select-none bg-black">
 
     <!-- Toast de Notificação Nativa na Tela -->
     <div id="toastNotificacao" class="fixed top-5 left-1/2 -translate-x-1/2 bg-zinc-900 border border-zinc-700 text-white px-4 py-2 rounded-2xl shadow-2xl text-xs z-50 transition-all duration-300 opacity-0 pointer-events-none flex items-center gap-2">
@@ -48,163 +48,163 @@
         <span id="toastTexto">Ação realizada com sucesso!</span>
     </div>
 
-    <!-- Container Principal Fixo e Centralizado (Preto Absoluto) -->
-    <div id="mainContainer" class="w-full max-w-sm h-[94vh] max-h-[750px] flex flex-col justify-between items-center bg-black border border-zinc-900 rounded-3xl p-4 shadow-2xl relative overflow-hidden transition-all duration-300">
+    <!-- Container Principal Fixo, Centralizado e Preenchendo toda a Tela -->
+    <div id="mainContainer" class="w-full max-w-sm h-full max-h-[880px] flex flex-col justify-center items-center bg-black border border-zinc-900/80 rounded-3xl p-5 shadow-2xl relative overflow-hidden transition-all duration-300 gap-4">
         
         <!-- Botão de Configuração (Admin) -->
         <button onclick="abrirAdmin()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-300 hover:text-white hover:bg-zinc-800 transition shadow-md z-20">
             <i id="iconConfig" class="fa-solid fa-gear text-sm"></i>
         </button>
 
-        <!-- Conteúdo do Perfil -->
-        <div class="flex flex-col items-center w-full mt-1 z-10 overflow-hidden shrink-0">
-            <!-- Foto de Perfil -->
-            <div class="relative mb-1">
-                <div class="w-14 h-14 rounded-full p-[2px] bg-zinc-800 shadow-lg">
+        <!-- Conteúdo do Perfil Centralizado e Ampliado -->
+        <div class="flex flex-col items-center w-full z-10 shrink-0">
+            <!-- Foto de Perfil Maior -->
+            <div class="relative mb-2">
+                <div class="w-20 h-20 rounded-full p-[2px] bg-zinc-800 shadow-xl">
                     <img id="profileImg" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&h=300&fit=crop&crop=faces" alt="Perfil" class="w-full h-full object-cover rounded-full">
                 </div>
             </div>
 
             <!-- Nome e Badge -->
-            <div class="flex items-center gap-1.5 mb-0.5">
-                <h1 id="profileName" class="text-sm font-bold tracking-tight text-white">amaralreal7</h1>
-                <span id="vipBadgeContainer" class="text-zinc-400 text-xs" title="VIP"><i class="fa-solid fa-circle-check"></i></span>
+            <div class="flex items-center gap-2 mb-1">
+                <h1 id="profileName" class="text-base font-bold tracking-tight text-white">amaralreal7</h1>
+                <span id="vipBadgeContainer" class="text-zinc-300 text-sm" title="VIP"><i class="fa-solid fa-circle-check"></i></span>
             </div>
 
             <!-- Status Ativo -->
-            <div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-zinc-900 border border-zinc-800/80 mb-1">
-                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse-green"></span>
-                <span class="text-[9px] font-medium text-zinc-300">Ativo</span>
+            <div class="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-zinc-900 border border-zinc-800 mb-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse-green"></span>
+                <span class="text-[10px] font-medium text-zinc-200">Ativo</span>
             </div>
 
-            <!-- Bio -->
-            <p id="profileBio" class="text-[11px] text-zinc-400 text-center mb-1">O maior chefe do 7</p>
+            <!-- Bio Maior -->
+            <p id="profileBio" class="text-xs text-zinc-300 text-center mb-2 px-4 leading-relaxed">O maior chefe do 7</p>
 
-            <!-- Selo de Segurança Logo Abaixo da Bio -->
-            <div class="flex items-center justify-center gap-1.5 text-[9px] text-zinc-400 bg-zinc-950 px-3 py-0.5 rounded-full border border-zinc-900 w-full max-w-[260px]">
-                <i class="fa-solid fa-shield-halved text-zinc-300"></i>
+            <!-- Selo de Segurança Ampliado -->
+            <div class="flex items-center justify-center gap-2 text-[10px] text-zinc-300 bg-zinc-950 px-3.5 py-1 rounded-full border border-zinc-900 w-full max-w-[280px]">
+                <i class="fa-solid fa-shield-halved text-zinc-200"></i>
                 <span id="textSecurityBadge">100% Seguro • Entrega automatizada por e-mail</span>
             </div>
         </div>
 
-        <!-- ÁREA CENTRAL AMPLIADA (TICKER DESLIZANTE ESTILO TELA DE NOTIFICAÇÕES) -->
-        <div class="w-full max-w-[320px] h-[125px] overflow-hidden relative my-auto border border-zinc-900 rounded-2xl bg-zinc-950 p-2 flex flex-col justify-center shadow-inner">
-            <div class="ticker-wrapper w-full flex flex-col gap-2">
+        <!-- ÁREA CENTRAL AMPLIADA (TICKER DESLIZANTE DE NOTIFICAÇÕES) -->
+        <div class="w-full max-w-[340px] h-[145px] overflow-hidden relative border border-zinc-900 rounded-2xl bg-zinc-950 p-2.5 flex flex-col justify-center shadow-inner shrink-0">
+            <div class="ticker-wrapper w-full flex flex-col gap-2.5">
                 <!-- Bloco de Notificações 1 -->
-                <div class="bg-zinc-900/90 border border-zinc-800/80 px-3 py-2 rounded-xl flex items-center justify-between shadow-md">
-                    <div class="flex items-center gap-2.5">
-                        <div class="w-7 h-7 rounded-lg bg-purple-950 border border-purple-800/40 flex items-center justify-center text-purple-400 text-xs shrink-0">
+                <div class="bg-zinc-900/95 border border-zinc-800 px-3.5 py-2.5 rounded-xl flex items-center justify-between shadow-md">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-xl bg-purple-950 border border-purple-800/50 flex items-center justify-center text-purple-400 text-sm shrink-0">
                             <i class="fa-solid fa-n"></i>
                         </div>
                         <div>
-                            <p class="text-[10px] font-semibold text-white leading-tight">Nubank</p>
-                            <p class="text-[9px] text-zinc-400 leading-tight">Pix Recebido com sucesso</p>
+                            <p class="text-[11px] font-semibold text-white leading-tight">Nubank</p>
+                            <p class="text-[10px] text-zinc-400 leading-tight">Pix Recebido com sucesso</p>
                         </div>
                     </div>
-                    <span class="text-[10px] font-bold text-emerald-400">+R$ 1.500,00</span>
+                    <span class="text-xs font-bold text-emerald-400">+R$ 1.500,00</span>
                 </div>
 
-                <div class="bg-zinc-900/90 border border-zinc-800/80 px-3 py-2 rounded-xl flex items-center justify-between shadow-md">
-                    <div class="flex items-center gap-2.5">
-                        <div class="w-7 h-7 rounded-lg bg-purple-950 border border-purple-800/40 flex items-center justify-center text-purple-400 text-xs shrink-0">
+                <div class="bg-zinc-900/95 border border-zinc-800 px-3.5 py-2.5 rounded-xl flex items-center justify-between shadow-md">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-xl bg-purple-950 border border-purple-800/50 flex items-center justify-center text-purple-400 text-sm shrink-0">
                             <i class="fa-solid fa-n"></i>
                         </div>
                         <div>
-                            <p class="text-[10px] font-semibold text-white leading-tight">Nubank</p>
-                            <p class="text-[9px] text-zinc-400 leading-tight">Pix Recebido com sucesso</p>
+                            <p class="text-[11px] font-semibold text-white leading-tight">Nubank</p>
+                            <p class="text-[10px] text-zinc-400 leading-tight">Pix Recebido com sucesso</p>
                         </div>
                     </div>
-                    <span class="text-[10px] font-bold text-emerald-400">+R$ 3.000,00</span>
+                    <span class="text-xs font-bold text-emerald-400">+R$ 3.000,00</span>
                 </div>
 
-                <div class="bg-zinc-900/90 border border-zinc-800/80 px-3 py-2 rounded-xl flex items-center justify-between shadow-md">
-                    <div class="flex items-center gap-2.5">
-                        <div class="w-7 h-7 rounded-lg bg-purple-950 border border-purple-800/40 flex items-center justify-center text-purple-400 text-xs shrink-0">
+                <div class="bg-zinc-900/95 border border-zinc-800 px-3.5 py-2.5 rounded-xl flex items-center justify-between shadow-md">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-xl bg-purple-950 border border-purple-800/50 flex items-center justify-center text-purple-400 text-sm shrink-0">
                             <i class="fa-solid fa-n"></i>
                         </div>
                         <div>
-                            <p class="text-[10px] font-semibold text-white leading-tight">Nubank</p>
-                            <p class="text-[9px] text-zinc-400 leading-tight">Pix Recebido com sucesso</p>
+                            <p class="text-[11px] font-semibold text-white leading-tight">Nubank</p>
+                            <p class="text-[10px] text-zinc-400 leading-tight">Pix Recebido com sucesso</p>
                         </div>
                     </div>
-                    <span class="text-[10px] font-bold text-emerald-400">+R$ 5.000,00</span>
+                    <span class="text-xs font-bold text-emerald-400">+R$ 5.000,00</span>
                 </div>
 
                 <!-- Bloco Duplicado para Loop Perfeito Contínuo -->
-                <div class="bg-zinc-900/90 border border-zinc-800/80 px-3 py-2 rounded-xl flex items-center justify-between shadow-md">
-                    <div class="flex items-center gap-2.5">
-                        <div class="w-7 h-7 rounded-lg bg-purple-950 border border-purple-800/40 flex items-center justify-center text-purple-400 text-xs shrink-0">
+                <div class="bg-zinc-900/95 border border-zinc-800 px-3.5 py-2.5 rounded-xl flex items-center justify-between shadow-md">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-xl bg-purple-950 border border-purple-800/50 flex items-center justify-center text-purple-400 text-sm shrink-0">
                             <i class="fa-solid fa-n"></i>
                         </div>
                         <div>
-                            <p class="text-[10px] font-semibold text-white leading-tight">Nubank</p>
-                            <p class="text-[9px] text-zinc-400 leading-tight">Pix Recebido com sucesso</p>
+                            <p class="text-[11px] font-semibold text-white leading-tight">Nubank</p>
+                            <p class="text-[10px] text-zinc-400 leading-tight">Pix Recebido com sucesso</p>
                         </div>
                     </div>
-                    <span class="text-[10px] font-bold text-emerald-400">+R$ 1.500,00</span>
+                    <span class="text-xs font-bold text-emerald-400">+R$ 1.500,00</span>
                 </div>
 
-                <div class="bg-zinc-900/90 border border-zinc-800/80 px-3 py-2 rounded-xl flex items-center justify-between shadow-md">
-                    <div class="flex items-center gap-2.5">
-                        <div class="w-7 h-7 rounded-lg bg-purple-950 border border-purple-800/40 flex items-center justify-center text-purple-400 text-xs shrink-0">
+                <div class="bg-zinc-900/95 border border-zinc-800 px-3.5 py-2.5 rounded-xl flex items-center justify-between shadow-md">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-xl bg-purple-950 border border-purple-800/50 flex items-center justify-center text-purple-400 text-sm shrink-0">
                             <i class="fa-solid fa-n"></i>
                         </div>
                         <div>
-                            <p class="text-[10px] font-semibold text-white leading-tight">Nubank</p>
-                            <p class="text-[9px] text-zinc-400 leading-tight">Pix Recebido com sucesso</p>
+                            <p class="text-[11px] font-semibold text-white leading-tight">Nubank</p>
+                            <p class="text-[10px] text-zinc-400 leading-tight">Pix Recebido com sucesso</p>
                         </div>
                     </div>
-                    <span class="text-[10px] font-bold text-emerald-400">+R$ 3.000,00</span>
+                    <span class="text-xs font-bold text-emerald-400">+R$ 3.000,00</span>
                 </div>
 
-                <div class="bg-zinc-900/90 border border-zinc-800/80 px-3 py-2 rounded-xl flex items-center justify-between shadow-md">
-                    <div class="flex items-center gap-2.5">
-                        <div class="w-7 h-7 rounded-lg bg-purple-950 border border-purple-800/40 flex items-center justify-center text-purple-400 text-xs shrink-0">
+                <div class="bg-zinc-900/95 border border-zinc-800 px-3.5 py-2.5 rounded-xl flex items-center justify-between shadow-md">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-xl bg-purple-950 border border-purple-800/50 flex items-center justify-center text-purple-400 text-sm shrink-0">
                             <i class="fa-solid fa-n"></i>
                         </div>
                         <div>
-                            <p class="text-[10px] font-semibold text-white leading-tight">Nubank</p>
-                            <p class="text-[9px] text-zinc-400 leading-tight">Pix Recebido com sucesso</p>
+                            <p class="text-[11px] font-semibold text-white leading-tight">Nubank</p>
+                            <p class="text-[10px] text-zinc-400 leading-tight">Pix Recebido com sucesso</p>
                         </div>
                     </div>
-                    <span class="text-[10px] font-bold text-emerald-400">+R$ 5.000,00</span>
+                    <span class="text-xs font-bold text-emerald-400">+R$ 5.000,00</span>
                 </div>
             </div>
         </div>
 
-        <!-- Botões de Ação Principal -->
-        <div class="w-full flex flex-col gap-2 z-10 shrink-0">
+        <!-- Botões de Ação Principal Ampliados -->
+        <div class="w-full max-w-[340px] flex flex-col gap-2.5 z-10 shrink-0">
             <!-- Botão Nubank / Compra -->
-            <button onclick="clicarBotaoLink('nubank')" class="w-full bg-zinc-950 hover:bg-zinc-900 border border-zinc-900 hover:border-zinc-700 p-2.5 rounded-2xl flex items-center justify-between transition group shadow-md">
+            <button onclick="clicarBotaoLink('nubank')" class="w-full bg-zinc-950 hover:bg-zinc-900 border border-zinc-900 hover:border-zinc-700 p-3 rounded-2xl flex items-center justify-between transition group shadow-md">
                 <div class="flex items-center gap-3">
-                    <div id="iconBoxNubank" class="w-8 h-8 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-white text-sm transition">
+                    <div id="iconBoxNubank" class="w-9 h-9 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-white text-base transition">
                         <i class="fa-solid fa-bolt"></i>
                     </div>
                     <div class="text-left">
-                        <h2 id="titleBtnNubank" class="text-xs font-semibold text-white">Nubank Fake</h2>
-                        <p id="descBtnNubank" class="text-[10px] text-zinc-400">Painel Editável</p>
+                        <h2 id="titleBtnNubank" class="text-xs font-bold text-white">Nubank Fake</h2>
+                        <p id="descBtnNubank" class="text-[11px] text-zinc-400">Painel Editável</p>
                     </div>
                 </div>
-                <i class="fa-solid fa-chevron-right text-[10px] text-zinc-600 group-hover:text-white transition mr-1"></i>
+                <i class="fa-solid fa-chevron-right text-xs text-zinc-600 group-hover:text-white transition mr-1"></i>
             </button>
 
             <!-- Botão Suporte com IA -->
-            <button onclick="clicarBotaoLink('suporte')" class="w-full bg-zinc-950 hover:bg-zinc-900 border border-zinc-900 hover:border-zinc-700 p-2.5 rounded-2xl flex items-center justify-between transition group shadow-md">
+            <button onclick="clicarBotaoLink('suporte')" class="w-full bg-zinc-950 hover:bg-zinc-900 border border-zinc-900 hover:border-zinc-700 p-3 rounded-2xl flex items-center justify-between transition group shadow-md">
                 <div class="flex items-center gap-3">
-                    <div id="iconBoxSuporte" class="w-8 h-8 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-white text-sm transition">
+                    <div id="iconBoxSuporte" class="w-9 h-9 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-white text-base transition">
                         <i class="fa-solid fa-headset"></i>
                     </div>
                     <div class="text-left">
-                        <h2 id="titleBtnSuporte" class="text-xs font-semibold text-white">Suporte 24H</h2>
-                        <p id="descBtnSuporte" class="text-[10px] text-zinc-400">com IA</p>
+                        <h2 id="titleBtnSuporte" class="text-xs font-bold text-white">Suporte 24H</h2>
+                        <p id="descBtnSuporte" class="text-[11px] text-zinc-400">com IA</p>
                     </div>
                 </div>
-                <i class="fa-solid fa-chevron-right text-[10px] text-zinc-600 group-hover:text-white transition mr-1"></i>
+                <i class="fa-solid fa-chevron-right text-xs text-zinc-600 group-hover:text-white transition mr-1"></i>
             </button>
         </div>
 
-        <!-- Rodapé Vazio Limpo -->
-        <div class="w-full text-center text-[10px] text-zinc-600 z-10 shrink-0">
+        <!-- Rodapé -->
+        <div class="w-full text-center text-[10px] text-zinc-500 z-10 shrink-0">
             <span id="textFooter">amaralreal7.system</span>
         </div>
     </div>
@@ -750,7 +750,7 @@
                             <div class="flex gap-1.5 items-center">
                                 ${pedido.status !== 'Aprovado' ? `<button onclick="alterarStatusPedido(${index}, 'Aprovado')" class="bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] px-2.5 py-1 rounded-lg transition font-medium">Aprovar</button>` : ''}
                                 ${pedido.status !== 'Rejeitado' ? `<button onclick="alterarStatusPedido(${index}, 'Rejeitado')" class="bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-[10px] px-2.5 py-1 rounded-lg transition">Rejeitar</button>` : ''}
-                                <button onclick="excluirPedidoUnico(${index})" class="bg-red-950/60 hover:bg-red-900 text-red-300 text-[10px] px-2 py-1 rounded-lg border border-red-900 transition" title="Excluir Pagamento"><i class="fa-solid fa-trash"></i></button>
+                                <button onclick="excluirPedidoUnico(${index})" class="bg-red-950/60 hover:bg-red-900 text-red-300 text-[10px] px-2.5 py-1 rounded-lg border border-red-900 transition flex items-center gap-1"><i class="fa-solid fa-trash"></i> Excluir</button>
                             </div>
                         </div>
                     </div>
@@ -866,7 +866,7 @@
                 if(textosSalvos.titleNubank) document.getElementById('titleBtnNubank').innerText = textosSalvos.titleNubank;
                 if(textosSalvos.descNubank) document.getElementById('descBtnNubank').innerText = textosSalvos.descNubank;
                 if(textosSalvos.titleSuporte) document.getElementById('titleBtnSuporte').innerText = textosSalvos.titleSuporte;
-                if(textosSalvos.descSuporte) document.getElementById('descBtnSuporte').innerText = textosSalvos.descSuporte;
+                if(textosSalvos.descSubporte) document.getElementById('descBtnSuporte').innerText = textosSalvos.descSuporte;
                 if(textosSalvos.footer) document.getElementById('textFooter').innerText = textosSalvos.footer;
             }
 
@@ -891,7 +891,7 @@
                     document.getElementById('selectIconNubank').value = iconesSalvos.iconNubank;
                 }
                 if(iconesSalvos.iconSuporte) {
-                    document.getElementById('iconBoxSuporte').innerHTML = `<i class="${iconesSalvos.iconSuporte}"></i>`;
+                    document.getElementById('iconBoxSuporte').innerHTMLy = `<i class="${iconesSalvos.iconSuporte}"></i>`;
                     document.getElementById('selectIconSuporte').value = iconesSalvos.iconSuporte;
                 }
             }
