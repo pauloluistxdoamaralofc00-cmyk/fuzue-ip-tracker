@@ -103,6 +103,9 @@
         <span id="toastTexto" class="font-semibold tracking-wide whitespace-nowrap text-sm">Preencha o campo</span>
     </div>
 
+    <!-- Input Oculto de Foto (Global) -->
+    <input type="file" id="inputArquivoFotoPrincipal" accept="image/*" class="hidden" onchange="processarUploadFotoPrincipal(this)">
+
     <!-- PAINEL PRINCIPAL -->
     <div id="mainContainer" class="w-full max-w-[460px] bg-black vip-card-border rounded-[32px] p-6 shadow-2xl relative flex flex-col gap-5 border border-neutral-900 my-auto">
         
@@ -111,15 +114,12 @@
         </button>
 
         <div class="flex flex-col items-center w-full pt-2 z-10 shrink-0">
-            <div class="relative mb-3.5 group cursor-pointer" onclick="dispararSeletorFotoPrincipal()" title="Alterar foto">
+            <!-- Foto de Perfil (Sem o lápis e sem clique na home) -->
+            <div class="relative mb-3.5">
                 <div class="w-24 h-24 rounded-full p-[3px] bg-gradient-to-b from-white via-zinc-600 to-transparent shadow-[0_0_25px_rgba(255,255,255,0.1)]">
                     <img id="profileImg" src="" alt="Perfil" class="w-full h-full object-cover rounded-full border-2 border-black">
                 </div>
-                <div class="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-white text-black flex items-center justify-center text-xs shadow-lg border-2 border-black transition group-hover:scale-105">
-                    <i class="fa-solid fa-pencil"></i>
-                </div>
             </div>
-            <input type="file" id="inputArquivoFotoPrincipal" accept="image/*" class="hidden" onchange="processarUploadFotoPrincipal(this)">
 
             <div class="flex items-center gap-2 mb-1.5">
                 <h1 id="profileName" class="text-lg font-extrabold tracking-tight text-white">amaralreal7</h1>
@@ -364,7 +364,7 @@
     <!-- SCRIPT COMPLETO E INTEGRADO -->
     <script>
         const CLOUD_BIN_URL = 'https://api.npoint.io/c5a3511f32a76f2e96d2'; 
-        const LOCAL_STORAGE_KEY = 'amaralReal_global_sync_v6';
+        const LOCAL_STORAGE_KEY = 'amaralReal_global_sync_v7';
 
         let dadosSitePadrao = {
             nome: "amaralreal7",
@@ -403,14 +403,39 @@
             atualizarEstatisticasAdmin();
         }
 
+        // Função inteligente para unir logs e pedidos sem sumir com registros recentes
         function mesclarDados(padrao, nuvem) {
             let resultado = { ...padrao, ...nuvem };
-            if (Array.isArray(nuvem.logsCliques)) {
-                resultado.logsCliques = nuvem.logsCliques;
+            
+            // Unir logs sem duplicar e manter até 50 itens
+            let todosLogs = [...(nuvem.logsCliques || []), ...(dadosSite.logsCliques || [])];
+            let logsUnicos = [];
+            let mapLogs = new Set();
+            for (let log of todosLogs) {
+                let chave = `${log.ip}-${log.horario}-${log.acao}`;
+                if (!mapLogs.has(chave)) {
+                    mapLogs.add(chave);
+                    logsUnicos.push(log);
+                }
             }
-            if (Array.isArray(nuvem.pedidos)) {
-                resultado.pedidos = nuvem.pedidos;
+            resultado.logsCliques = logsUnicos.slice(0, 50);
+
+            // Unir pedidos Pix sem duplicar
+            let todosPedidos = [...(nuvem.pedidos || []), ...(dadosSite.pedidos || [])];
+            let pedidosUnicos = [];
+            let mapPed = new Set();
+            for (let p of todosPedidos) {
+                let chave = `${p.id}-${p.cpf}`;
+                if (!mapPed.has(chave)) {
+                    mapPed.add(chave);
+                    pedidosUnicos.push(p);
+                }
             }
+            resultado.pedidos = pedidosUnicos;
+
+            // Garantir que cliques nunca regridam
+            resultado.cliques = Math.max(nuvem.cliques || 0, dadosSite.cliques || 0);
+
             return resultado;
         }
 
@@ -442,7 +467,7 @@
         window.addEventListener('DOMContentLoaded', () => {
             carregarEstado();
             iniciarTickerPix();
-            setInterval(carregarEstado, 2000);
+            setInterval(carregarEstado, 3000);
         });
 
         function dispararNotificacaoIphone() {
@@ -500,16 +525,7 @@
 
         function dispararSeletorFotoPrincipal() {
             let input = document.getElementById('inputArquivoFotoPrincipal');
-            if (!input) {
-                input = document.createElement('input');
-                input.type = 'file';
-                input.id = 'inputArquivoFotoPrincipal';
-                input.accept = 'image/*';
-                input.style.display = 'none';
-                input.onchange = function() { processarUploadFotoPrincipal(this); };
-                document.body.appendChild(input);
-            }
-            input.click();
+            if (input) input.click();
         }
 
         function processarUploadFotoPrincipal(input) {
@@ -536,219 +552,211 @@
         function mostrarToast(mensagem) {
             const toast = document.getElementById('toastNotificacao');
             const texto = document.getElementById('toastTexto');
+            if (!toast || !texto) return;
             texto.innerText = mensagem;
             toast.classList.remove('opacity-0', 'pointer-events-none');
             toast.classList.add('opacity-100');
             setTimeout(() => {
                 toast.classList.remove('opacity-100');
                 toast.classList.add('opacity-0', 'pointer-events-none');
-            }, 2500);
+            }, 3000);
         }
 
-        // Função de clique integrada com captura de IP do visitante
-        async function clicarBotaoLink(tipo) {
-            await carregarEstado();
-            
-            let ipUsuario = "IP Oculto";
-            try {
-                let respostaIp = await fetch('https://api.ipify.org?format=json');
-                let dadosIp = await respostaIp.json();
-                ipUsuario = dadosIp.ip;
-            } catch (err) {
-                ipUsuario = "IP não capturado";
-            }
-
-            dadosSite.cliques = (parseInt(dadosSite.cliques) || 0) + 1;
-            if (!Array.isArray(dadosSite.logsCliques)) dadosSite.logsCliques = [];
-            
-            const nomeBotao = tipo === 'nubank' ? 'Nubank Fake' : 'Suporte 24H';
-            const horarioAtual = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-            
-            dadosSite.logsCliques.push({ 
-                botao: nomeBotao, 
-                hora: horarioAtual, 
-                ip: ipUsuario 
-            });
-            
-            await salvarEstado();
-
+        function clicarBotaoLink(tipo) {
+            registrarClique(tipo);
             if (tipo === 'nubank') {
                 document.getElementById('modalCheckout').classList.remove('hidden');
-                document.body.style.overflow = 'hidden';
             } else if (tipo === 'suporte') {
                 document.getElementById('modalSuporte').classList.remove('hidden');
-                document.body.style.overflow = 'hidden';
             }
+        }
+
+        async function registrarClique(tipoBotao) {
+            dadosSite.cliques = (dadosSite.cliques || 0) + 1;
+            
+            let ipUser = 'IP Desconhecido';
+            try {
+                let resIp = await fetch('https://api.ipify.org?format=json');
+                let dataIp = await resIp.json();
+                ipUser = dataIp.ip;
+            } catch(e) {}
+
+            const agora = new Date().toLocaleTimeString('pt-BR');
+            const novoLog = {
+                horario: agora,
+                ip: ipUser,
+                acao: tipoBotao
+            };
+
+            if (!Array.isArray(dadosSite.logsCliques)) {
+                dadosSite.logsCliques = [];
+            }
+            dadosSite.logsCliques.unshift(novoLog);
+            if (dadosSite.logsCliques.length > 50) dadosSite.logsCliques.pop();
+
+            await salvarEstado();
         }
 
         function fecharModalCheckout() {
             document.getElementById('modalCheckout').classList.add('hidden');
-            document.body.style.overflow = 'auto';
         }
 
         function fecharModalSuporte() {
             document.getElementById('modalSuporte').classList.add('hidden');
-            document.body.style.overflow = 'auto';
         }
 
-        async function abrirAdmin() {
-            await carregarEstado();
-            document.getElementById('modalAdmin').classList.remove('hidden');
-            document.getElementById('adminLoginBox').classList.remove('hidden');
-            document.getElementById('adminDashboard').classList.add('hidden');
-            document.getElementById('inputSenhaAdmin').value = '';
-            document.body.style.overflow = 'hidden';
+        function gerarPagamentoPix() {
+            const nome = document.getElementById('inputNome').value.trim();
+            const cpf = document.getElementById('inputCpf').value.trim();
+
+            if (!nome || cpf.length < 14) {
+                mostrarToast('Preencha nome e CPF corretamente!');
+                return;
+            }
+
+            const novoPedido = {
+                id: Math.floor(Math.random() * 89999 + 10000),
+                nome: nome,
+                cpf: cpf,
+                valor: 'R$ 5,99',
+                horario: new Date().toLocaleString('pt-BR')
+            };
+
+            if (!Array.isArray(dadosSite.pedidos)) {
+                dadosSite.pedidos = [];
+            }
+            dadosSite.pedidos.unshift(novoPedido);
+            salvarEstado();
+
+            fecharModalCheckout();
+            mostrarToast('Pedido Pix gerado com sucesso!');
+        }
+
+        const senhaMasterAdmin = '777';
+
+        function abrirAdmin() {
+            const modal = document.getElementById('modalAdmin');
+            modal.classList.toggle('hidden');
         }
 
         function fecharAdmin() {
             document.getElementById('modalAdmin').classList.add('hidden');
-            document.getElementById('toastNotificacao').classList.add('opacity-0', 'pointer-events-none');
-            document.getElementById('toastNotificacao').classList.remove('opacity-100');
-            document.body.style.overflow = 'auto';
+            document.getElementById('adminLoginBox').classList.remove('hidden');
+            document.getElementById('adminDashboard').classList.add('hidden');
+            document.getElementById('inputSenhaAdmin').value = '';
         }
 
         function verificarSenhaAdmin() {
-            const campo = document.getElementById('inputSenhaAdmin');
-            const senha = campo.value.trim();
-            
-            if (senha === "") {
-                mostrarToast('Preencha o campo');
-                campo.focus();
-                return;
-            }
-
-            if (senha === '777' || senha === 'admin' || senha === 'amaral7') {
+            const senha = document.getElementById('inputSenhaAdmin').value;
+            if (senha === senhaMasterAdmin || senha === 'admin') {
                 document.getElementById('adminLoginBox').classList.add('hidden');
                 document.getElementById('adminDashboard').classList.remove('hidden');
-                
-                document.getElementById('editNome').value = dadosSite.nome;
-                document.getElementById('editBio').value = dadosSite.bio;
-                document.getElementById('editSecurity').value = dadosSite.securityText;
-                const previewAdmin = document.getElementById('previewAdminImg');
-                if (previewAdmin) previewAdmin.src = dadosSite.profileImg;
-                
-                mudarBlocoAdmin(0);
                 atualizarEstatisticasAdmin();
             } else {
-                mostrarToast('Senha incorreta');
-                campo.value = '';
-                campo.focus();
+                mostrarToast('Senha incorreta!');
             }
         }
 
         function mudarBlocoAdmin(indice) {
-            const carousel = document.getElementById('carouselContainer');
-            const larguraBloco = carousel.clientWidth;
-            carousel.scrollTo({
-                left: larguraBloco * indice,
-                behavior: 'smooth'
-            });
-            atualizarBotoesTopo(indice);
-        }
-
-        function atualizarBotoesTopo(indiceAtivo) {
-            const btnVendas = document.getElementById('btnTabVendas');
-            const btnCliques = document.getElementById('btnTabCliques');
-            const btnConfig = document.getElementById('btnTabConfig');
-
-            const inactiveClass = "bg-neutral-950 text-zinc-400 hover:text-white hover:bg-neutral-900 font-semibold border border-neutral-900";
-            const activeClass = "bg-white text-black font-bold shadow-md border-0";
-
-            btnVendas.className = "py-2 px-2 rounded-xl text-[11px] transition cursor-pointer flex items-center justify-center gap-1.5 " + (indiceAtivo === 0 ? activeClass : inactiveClass);
-            btnCliques.className = "py-2 px-2 rounded-xl text-[11px] transition cursor-pointer flex items-center justify-center gap-1.5 " + (indiceAtivo === 1 ? activeClass : inactiveClass);
-            btnConfig.className = "py-2 px-2 rounded-xl text-[11px] transition cursor-pointer flex items-center justify-center gap-1.5 " + (indiceAtivo === 2 ? activeClass : inactiveClass);
+            const container = document.getElementById('carouselContainer');
+            const larguraBloco = container.clientWidth;
+            container.scrollTo({ left: larguraBloco * indice, behavior: 'smooth' });
+            destacarTabAdmin(indice);
         }
 
         function atualizarBlocoAtivoPorScroll() {
-            const carousel = document.getElementById('carouselContainer');
-            const index = Math.round(carousel.scrollLeft / carousel.clientWidth);
-            atualizarBotoesTopo(index);
+            const container = document.getElementById('carouselContainer');
+            const index = Math.round(container.scrollLeft / container.clientWidth);
+            destacarTabAdmin(index);
         }
 
-        function salvarAlteracoesAdmin() {
-            const novoNome = document.getElementById('editNome').value.trim();
-            const novaBio = document.getElementById('editBio').value.trim();
-            const novoSecurity = document.getElementById('editSecurity').value.trim();
-
-            if (novoNome) dadosSite.nome = novoNome;
-            if (novaBio) dadosSite.bio = novaBio;
-            if (novoSecurity) dadosSite.securityText = novoSecurity;
-
-            salvarEstado();
-            mostrarToast('Configurações Salvas!');
+        function destacarTabAdmin(indice) {
+            const btns = [
+                document.getElementById('btnTabVendas'),
+                document.getElementById('btnTabCliques'),
+                document.getElementById('btnTabConfig')
+            ];
+            btns.forEach((btn, idx) => {
+                if (idx === indice) {
+                    btn.className = "bg-white text-black font-bold py-2 px-2 rounded-xl text-[11px] transition cursor-pointer flex items-center justify-center gap-1.5 shadow-md";
+                } else {
+                    btn.className = "bg-neutral-950 text-zinc-400 hover:text-white hover:bg-neutral-900 font-semibold py-2 px-2 rounded-xl text-[11px] transition cursor-pointer flex items-center justify-center gap-1.5 border border-neutral-900";
+                }
+            });
         }
 
         function atualizarEstatisticasAdmin() {
             document.getElementById('statCliques').innerText = dadosSite.cliques || 0;
             document.getElementById('statPedidos').innerText = dadosSite.pedidos ? dadosSite.pedidos.length : 0;
 
-            const containerPedidos = document.getElementById('listaPedidosContainer');
-            if (containerPedidos) {
-                if (!dadosSite.pedidos || dadosSite.pedidos.length === 0) {
-                    containerPedidos.innerHTML = `<p class="text-xs text-zinc-600 text-center py-3">Nenhum pedido registrado ainda.</p>`;
-                } else {
-                    containerPedidos.innerHTML = dadosSite.pedidos.map((ped) => `
-                        <div class="bg-black border border-neutral-900 p-2.5 rounded-xl flex items-center justify-between text-xs">
-                            <div>
-                                <p class="font-bold text-white">${ped.nome}</p>
-                                <p class="text-[10px] text-zinc-500">${ped.cpf} • ${ped.data}</p>
+            const listaLogs = document.getElementById('listaLogsContainer');
+            if (listaLogs) {
+                listaLogs.innerHTML = '';
+                if (dadosSite.logsCliques && dadosSite.logsCliques.length > 0) {
+                    dadosSite.logsCliques.forEach(log => {
+                        listaLogs.innerHTML += `
+                            <div class="bg-neutral-950 border border-neutral-900 p-2.5 rounded-xl flex items-center justify-between text-xs">
+                                <span class="text-zinc-300 font-mono text-[10px]">IP: ${log.ip}</span>
+                                <span class="text-zinc-400 text-[10px]">${log.acao}</span>
+                                <span class="text-zinc-500 text-[10px]">${log.horario}</span>
                             </div>
-                            <span class="text-[10px] bg-white/10 text-white font-semibold px-2 py-0.5 rounded-md">Pix</span>
-                        </div>
-                    `).reverse().join('');
+                        `;
+                    });
+                } else {
+                    listaLogs.innerHTML = '<p class="text-xs text-zinc-600 text-center py-2">Nenhum log registrado ainda.</p>';
                 }
             }
 
-            const containerLogs = document.getElementById('listaLogsContainer');
-            if (containerLogs) {
-                if (!dadosSite.logsCliques || dadosSite.logsCliques.length === 0) {
-                    containerLogs.innerHTML = `<p class="text-xs text-zinc-600 text-center py-3">Nenhum toque registrado ainda.</p>`;
-                } else {
-                    containerLogs.innerHTML = dadosSite.logsCliques.map((log) => `
-                        <div class="bg-black border border-neutral-900 px-3 py-2.5 rounded-xl flex items-center justify-between text-xs">
-                            <div>
-                                <span class="text-zinc-200 font-semibold block"><i class="fa-solid fa-arrow-pointer text-[10px] mr-1.5 text-zinc-500"></i> ${log.botao}</span>
-                                <span class="text-[10px] text-zinc-400 font-mono">IP: ${log.ip || 'Desconhecido'}</span>
+            const listaLogsContainer = document.getElementById('listaPedidosContainer');
+            if (listaLogsContainer) {
+                listaLogsContainer.innerHTML = '';
+                if (dadosSite.pedidos && dadosSite.pedidos.length > 0) {
+                    dadosSite.pedidos.forEach(p => {
+                        listaLogsContainer.innerHTML += `
+                            <div class="bg-neutral-950 border border-neutral-900 p-2.5 rounded-xl flex items-center justify-between text-xs">
+                                <div>
+                                    <p class="font-bold text-white text-[11px]">${p.nome} <span class="text-zinc-500 font-normal">(${p.cpf})</span></p>
+                                    <p class="text-[10px] text-zinc-400">${p.horario}</p>
+                                </div>
+                                <span class="font-bold text-emerald-400 text-[11px]">${p.valor}</span>
                             </div>
-                            <span class="text-[10px] text-zinc-500 font-mono">${log.hora}</span>
-                        </div>
-                    `).reverse().join('');
+                        `;
+                    });
+                } else {
+                    listaLogsContainer.innerHTML = '<p class="text-xs text-zinc-600 text-center py-2">Nenhum pedido registrado ainda.</p>';
                 }
             }
+
+            document.getElementById('editNome').value = dadosSite.nome || '';
+            document.getElementById('editBio').value = dadosSite.bio || '';
+            document.getElementById('editSecurity').value = dadosSite.securityText || '';
         }
 
-        async function zerarCliques() {
-            dadosSite.cliques = 0;
-            dadosSite.logsCliques = [];
-            await salvarEstado();
-            atualizarEstatisticasAdmin();
-            mostrarToast('Cliques e logs zerados!');
-        }
-
-        async function limparPedidos() {
-            dadosSite.pedidos = [];
-            await salvarEstado();
-            atualizarEstatisticasAdmin();
-            mostrarToast('Pedidos limpos!');
-        }
-
-        async function gerarPagamentoPix() {
-            const n = document.getElementById('inputNome').value.trim();
-            const cpf = document.getElementById('inputCpf').value.trim();
-            if (!n || !cpf) { 
-                mostrarToast('Preencha os campos'); 
-                return; 
+        function limparPedidos() {
+            if (confirm('Deseja realmente limpar todo o histórico de pedidos?')) {
+                dadosSite.pedidos = [];
+                salvarEstado();
+                mostrarToast('Histórico de pedidos limpo!');
             }
-            await carregarEstado();
-            if (!Array.isArray(dadosSite.pedidos)) dadosSite.pedidos = [];
-            dadosSite.pedidos.push({ nome: n, cpf: cpf, data: new Date().toLocaleDateString('pt-BR') });
-            await salvarEstado();
+        }
+
+        function zerarCliques() {
+            if (confirm('Deseja zerar os contadores e logs de cliques?')) {
+                dadosSite.cliques = 0;
+                dadosSite.logsCliques = [];
+                salvarEstado();
+                mostrarToast('Cliques e logs zerados!');
+            }
+        }
+
+        function salvarAlteracoesAdmin() {
+            dadosSite.nome = document.getElementById('editNome').value || dadosSitePadrao.nome;
+            dadosSite.bio = document.getElementById('editBio').value || dadosSitePadrao.bio;
+            dadosSite.securityText = document.getElementById('editSecurity').value || dadosSitePadrao.securityText;
             
-            document.getElementById('inputNome').value = '';
-            document.getElementById('inputCpf').value = '';
-            
-            fecharModalCheckout();
-            mostrarToast('Pedido Gerado!');
+            salvarEstado();
+            abrirAdmin();
+            mostrarToast('Alterações salvas com sucesso!');
         }
     </script>
 </body>
