@@ -1,259 +1,134 @@
-const express = require('express');
-const axios = require('axios');
-const app = express();
-
-app.use(express.json());
-
-// Banco de dados simulado em memória (substitua pelo seu banco real se preferir)
-let bancoDeDados = {
-    profile_image: "https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=150",
-    mediafire_link: "https://www.mediafire.com/file/exemplo/arquivo.zip"
-};
-
-// ==========================================
-// 1. ROTAS DO PAINEL (Configurações)
-// ==========================================
-
-app.get('/api/configuracoes', (req, res) => {
-    res.json(bancoDeDados);
-});
-
-app.post('/api/configuracoes', (req, res) => {
-    const { profile_image, mediafire_link } = req.body;
-    
-    bancoDeDados.profile_image = profile_image || null;
-    bancoDeDados.mediafire_link = mediafire_link ? mediafire_link.trim() : null;
-
-    return res.status(200).json({ sucesso: true, mensagem: "Atualizado com sucesso." });
-});
-
-app.delete('/api/configuracoes/mediafire', (req, res) => {
-    try {
-        bancoDeDados.mediafire_link = null;
-        return res.status(200).json({ sucesso: true, mensagem: "Link do Mediafire limpo com sucesso." });
-    } catch (erro) {
-        console.error(erro);
-        return res.status(500).json({ sucesso: false, mensagem: "Erro interno no servidor." });
+<!DOCTYPE html>
+<html lang="pt-BR"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>amaralreal7 - Bio Link</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+    @keyframes gradientBG {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
     }
-});
-
-// ==========================================
-// 2. ROTA DE PAGAMENTO (InfinitePay)
-// ==========================================
-
-app.post('/api/criar-pagamento', async (req, res) => {
-    try {
-        const { descricaoProduto, quantidade, precoEmCentavos } = req.body;
-
-        const payloadInfinitePay = {
-            handle: "djene-teixeira",
-            items: [
-                {
-                    description: descricaoProduto || "Conta Free Fire / Item",
-                    quantity: quantidade || 1,
-                    price: precoEmCentavos || 2300
-                }
-            ]
-        };
-
-        const resposta = await axios.post('https://api.checkout.infinitepay.io/links', payloadInfinitePay, {
-            headers: { 'Content-Type': 'application/json' }
-        });
-
-        return res.status(200).json({ 
-            sucesso: true, 
-            link: resposta.data.url 
-        });
-
-    } catch (erro) {
-        console.error("Erro ao gerar link InfinitePay:", erro.response?.data || erro.message);
-        return res.status(500).json({ 
-            sucesso: false, 
-            mensagem: "Erro ao gerar link de pagamento." 
-        });
+    body {
+        background: linear-gradient(-45deg, #09090b, #18181b, #27272a, #0f172a);
+        background-size: 400% 400%;
+        animation: gradientBG 15s ease infinite;
+        font-family: 'Inter', sans-serif;
     }
-});
-
-// ==========================================
-// 3. WEBHOOK (Aprovação Automática)
-// ==========================================
-
-app.post('/api/webhook/infinitepay', async (req, res) => {
-    try {
-        const dadosWebHook = req.body;
-
-        if (dadosWebHook.status === 'approved' || dadosWebHook.paid) {
-            const idPedido = dadosWebHook.order_nsu || dadosWebHook.id;
-            console.log(`[WEBHOOK] Pagamento Aprovado! Pedido: ${idPedido}`);
-        }
-
-        return.status(200).send({ recebido: true });
-    } catch (erro) {
-        console.error("Erro no webhook:", erro);
-        return.status(500).send({ erro: "Falha interna" });
+    .glass-card {
+        background: rgba(24, 24, 27, 0.7);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
     }
-});
+    .link-btn {
+        background: rgba(39, 39, 42, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .link-btn:hover {
+        background: rgba(63, 63, 70, 0.8);
+        border-color: rgba(168, 85, 247, 0.4);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px -5px rgba(168, 85, 247, 0.2);
+    }
+    .verified-badge {
+        background: linear-gradient(135deg, #a855f7, #6366f1);
+    }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #09090b; }
+    ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #3f3f46; }
+</style>
+</head>
+<body class="min-h-screen text-zinc-100 flex flex-col items-center justify-between p-4 sm:p-6 selection:bg-purple-500 selection:text-white">
 
-// ==========================================
-// 4. FRONTEND (Design Organizado e Profissional)
-// ==========================================
-
-app.get('/', (req, res) => {
-    res.send(`
-        <!DOCTYPE html>
-        <html lang="pt-BR">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Painel de Vendas & Configurações</title>
-            <style>
-                * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-                body { background-color: #0d1117; color: #c9d1d9; padding: 30px; display: flex; justify-content: center; }
-                .wrapper { width: 100%; max-width: 600px; display: flex; flexDirection: column; gap: 20px; }
-                .card { background: #161b22; border: 1px solid #30363d; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
-                h2 { color: #58a6ff; margin-bottom: 20px; font-size: 20px; border-bottom: 1px solid #30363d; padding-bottom: 10px; }
-                .profile-box { display: flex; align-items: center; gap: 20px; margin-bottom: 20px; background: #0d1117; padding: 15px; border-radius: 8px; border: 1px solid #30363d; }
-                .profile-box img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid #58a6ff; }
-                .profile-info { flex: 1; }
-                .profile-info p { font-size: 13px; color: #8b949e; margin-top: 4px; }
-                .form-group { margin-bottom: 15px; }
-                label { display: block; margin-bottom: 6px; font-size: 13px; color: #8b949e; font-weight: 600; }
-                input { width: 100%; padding: 12px; background: #0d1117; border: 1px solid #30363d; color: #fff; border-radius: 6px; font-size: 14px; }
-                input:focus { border-color: #58a6ff; outline: none; }
-                .btn-group { display: flex; gap: 10px; margin-top: 20px; }
-                button { padding: 12px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 14px; transition: opacity 0.2s; }
-                button:hover { opacity: 0.85; }
-                .btn-save { background-color: #238636; color: white; flex: 1; }
-                .btn-delete { background-color: #da3633; color: white; width: auto; }
-                .btn-pay { background-color: #1f6feb; color: white; width: 100%; margin-top: 10px; }
-                .row { display: flex; gap: 10px; }
-            </style>
-        </head>
-        <body>
-
-        <div class="wrapper">
-            <!-- PAINEL DE CONFIGURAÇÕES -->
-            <div class="card">
-                <h2>⚙️ Configurações do Servidor</h2>
-                
-                <div class="profile-box">
-                    <img id="serverProfileImg" src="https://via.placeholder.com/80" alt="Foto de Perfil">
-                    <div class="profile-info">
-                        <strong>Visualização Atual</strong>
-                        <p>Esta foto é exibida publicamente para quem acessar o link do seu servidor.</p>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>URL da Foto de Perfil (Pública)</label>
-                    <input type="text" id="profileInput" placeholder="https://exemplo.com/imagem.png" oninput="atualizarPreviewImg()">
-                </div>
-
-                <div class="form-group">
-                    <label>Link de Entrega (Mediafire)</label>
-                    <div class="row">
-                        <input type="text" id="mediafireInput" placeholder="https://www.mediafire.com/file/..." style="flex: 1;">
-                        <button class="btn-delete" onclick="excluirMediafire()" title="Excluir Link">🗑️ Excluir</button>
-                    </div>
-                </div>
-
-                <div class="btn-group">
-                    <button class="btn-save" onclick="salvarAlteracoes()">💾 Salvar Alterações</button>
-                </div>
+    <!-- Container Principal -->
+    <div class="w-full max-w-md mx-auto flex flex-col items-center space-y-6 my-auto py-8">
+        
+        <!-- Perfil e Informações -->
+        <div class="flex flex-col items-center text-center space-y-3 w-full">
+            <div class="relative group">
+                <div class="absolute -inset-0.5 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full blur opacity-75 group-hover:opacity-100 transition duration-300"></div>
+                <img id="avatarImg" src="https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=150" alt="Avatar" class="relative w-24 h-24 rounded-full object-cover border-2 border-zinc-800 shadow-xl">
             </div>
-
-            <!-- SIMULADOR / CHECKOUT DE VENDAS -->
-            <div class="card">
-                <h2>🛒 Checkout de Vendas (InfinitePay)</h2>
-                
-                <div class="form-group">
-                    <label>Nome do Produto / Conta</label>
-                    <input type="text" id="prodNome" value="Conta Guest FF / Caixa UMP">
-                </div>
-
-                <div class="form-group">
-                    <label>Valor em Centavos (Ex: 2300 = R$ 23,00)</label>
-                    <input type="number" id="prodPreco" value="2300">
-                </div>
-
-                <button class="btn-pay" onclick="comprarAgora()">🚀 Gerar Checkout Instantâneo</button>
+            
+            <div class="flex items-center space-x-1.5">
+                <h1 id="userName" class="text-xl font-bold tracking-tight">amaralreal7</h1>
+                <span class="verified-badge text-white text-xs px-1.5 py-0.5 rounded-full flex items-center justify-center shadow-sm" title="Verificado">
+                    <i class="fa-solid fa-check text-[10px]"></i>
+                </span>
             </div>
+            
+            <p id="userBio" class="text-zinc-400 text-sm max-w-xs leading-relaxed">Bem-vindo ao meu painel de links e conteúdos exclusivos. Confira abaixo!</p>
         </div>
 
-        <script>
-            async function carregarDados() {
-                try {
-                    const res = await fetch('/api/configuracoes');
-                    const dados = await res.json();
+        <!-- Lista de Links Dinâmicos / Botões -->
+        <div id="linksContainer" class="w-full space-y-3.5">
+            <!-- Os botões injetados via script ou estáticos aparecem aqui -->
+            <a href="#" class="link-btn flex items-center justify-between p-3.5 rounded-xl group w-full">
+                <div class="flex items-center space-x-3 truncate">
+                    <div class="w-9 h-9 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-400 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-gamepad"></i>
+                    </div>
+                    <span class="font-medium text-sm text-zinc-200 group-hover:text-white truncate">Loja de Contas Free Fire</span>
+                </div>
+                <i class="fa-solid fa-chevron-right text-xs text-zinc-500 group-hover:text-zinc-300 group-hover:translate-x-0.5 transition-all"></i>
+            </a>
+
+            <a href="#" class="link-btn flex items-center justify-between p-3.5 rounded-xl group w-full">
+                <div class="flex items-center space-x-3 truncate">
+                    <div class="w-9 h-9 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-400 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-box-archive"></i>
+                    </div>
+                    <span class="font-medium text-sm text-zinc-200 group-hover:text-white truncate">Caixas UMP Roxa / Itens</span>
+                </div>
+                <i class="fa-solid fa-chevron-right text-xs text-zinc-500 group-hover:text-zinc-300 group-hover:translate-x-0.5 transition-all"></i>
+            </a>
+        </div>
+
+        <!-- Botão de Download / Mediafire (Condicional) -->
+        <div id="mediafireSection" class="w-full hidden">
+            <a id="mediafireBtn" href="#" target="_blank" class="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-medium text-sm flex items-center justify-center space-x-2 shadow-lg shadow-blue-500/20 transition-all transform hover:-translate-y-0.5">
+                <i class="fa-solid fa-cloud-arrow-down text-base"></i>
+                <span>Baixar Arquivo (Mediafire)</span>
+            </a>
+        </div>
+
+    </div>
+
+    <!-- Rodapé -->
+    <footer class="w-full text-center py-4 text-xs text-zinc-500">
+        Criado com <i class="fa-solid fa-heart text-purple-500 mx-1"></i> por <span class="text-zinc-400 font-medium">amaralreal7</span>
+    </footer>
+
+    <script>
+        // Exemplo simples para carregar dados públicos salvos no servidor se houver integração
+        async function carregarPublico() {
+            try {
+                const res = await fetch('/api/configuracoes');
+                const dados = await res.json();
+                if (dados) {
                     if (dados.profile_image) {
-                        document.getElementById('serverProfileImg').src = dados.profile_image;
-                        document.getElementById('profileInput').value = dados.profile_image;
+                        document.getElementById('avatarImg').src = dados.profile_image;
                     }
-                    document.getElementById('mediafireInput').value = dados.mediafire_link || '';
-                } catch (e) { console.error(e); }
-            }
-
-            function atualizarPreviewImg() {
-                const url = document.getElementById('profileInput').value.trim();
-                if(url) document.getElementById('serverProfileImg').src = url;
-            }
-
-            async function salvarAlteracoes() {
-                const profile_image = document.getElementById('profileInput').value.trim();
-                const mediafire_link = document.getElementById('mediafireInput').value.trim();
-                
-                const res = await fetch('/api/configuracoes', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ profile_image, mediafire_link })
-                });
-                
-                if (res.ok) { 
-                    alert("✅ Alterações salvas com sucesso!"); 
-                    carregarDados(); 
-                } else {
-                    alert("❌ Erro ao salvar alterações.");
+                    if (dados.mediafire_link) {
+                        const mfSection = document.getElementById('mediafireSection');
+                        const mfBtn = document.getElementById('mediafireBtn');
+                        mfBtn.href = dados.mediafire_link;
+                        mfSection.classList.remove('hidden');
+                    }
                 }
+            } catch (e) {
+                // Mantém o layout padrão caso rode de forma estática
             }
-
-            async function excluirMediafire() {
-                if(!confirm("Tem certeza que deseja remover o link do Mediafire?")) return;
-                
-                document.getElementById('mediafireInput').value = '';
-                const res = await fetch('/api/configuracoes/mediafire', { method: 'DELETE' });
-                
-                if (res.ok) {
-                    alert("🗑️ Link do Mediafire limpo com sucesso!");
-                } else {
-                    alert("❌ Erro ao limpar o link.");
-                }
-            }
-
-            async function comprarAgora() {
-                const descricaoProduto = document.getElementById('prodNome').value;
-                const precoEmCentavos = parseInt(document.getElementById('prodPreco').value);
-
-                const res = await fetch('/api/criar-pagamento', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ descricaoProduto, quantidade: 1, precoEmCentavos })
-                });
-                
-                const data = await res.json();
-                if (data.sucesso && data.link) {
-                    window.location.href = data.link; 
-                } else {
-                    alert("❌ Erro ao criar pagamento na InfinitePay.");
-                }
-            }
-
-            carregarDados();
-        </script>
-        </body>
-        </html>
-    `);
-});
-
-app.listen(3000, () => {
-    console.log("Servidor rodando perfeitamente! Acesse no navegador: http://localhost:3000");
-});
+        }
+        carregarPublico();
+    </script>
+</body>
+</html>
+```[cite: 2]
