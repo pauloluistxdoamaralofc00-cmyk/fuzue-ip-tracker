@@ -103,10 +103,13 @@
         <!-- Action Links Container -->
         <div class="w-full space-y-2.5 mb-4">
             
-            <!-- Nubank / Checkout Button -->
+            <!-- Nubank / Checkout Button with Exact App Logo -->
             <button onclick="openCheckout()" class="vip-btn w-full bg-darkcard border border-darkborder rounded-2xl p-3 flex items-center text-left overflow-hidden">
-                <div class="w-9 h-9 rounded-xl bg-purple-950/60 border border-purple-500/30 flex items-center justify-center mr-3 text-purple-400 flex-shrink-0 font-bold text-sm">
-                    N
+                <div class="w-9 h-9 rounded-xl bg-[#820ad1] flex items-center justify-center mr-3 flex-shrink-0 shadow-md overflow-hidden p-1.5">
+                    <!-- Exact Nubank App Logo SVG -->
+                    <svg viewBox="0 0 240 240" class="w-full h-full fill-white" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M52.8 52.8h33.6v84c0 12 7.2 19.2 18 19.2 10.8 0 18-7.2 18-19.2v-84h33.6v87.6c0 28.8-16.8 45.6-43.2 45.6-18 0-31.2-8.4-38.4-22.8v19.2H52.8V52.8z"/>
+                    </svg>
                 </div>
                 <div class="flex-1 min-w-0">
                     <div class="font-semibold text-white text-xs truncate">Nubank</div>
@@ -149,7 +152,11 @@
                     <i class="fa-solid fa-arrow-left text-[10px]"></i> Voltar
                 </button>
                 <div class="flex items-center gap-2">
-                    <div class="w-5 h-5 rounded bg-purple-600 flex items-center justify-center text-white text-[10px] font-bold">N</div>
+                    <div class="w-5 h-5 rounded bg-[#820ad1] flex items-center justify-center p-0.5">
+                        <svg viewBox="0 0 240 240" class="w-full h-full fill-white" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M52.8 52.8h33.6v84c0 12 7.2 19.2 18 19.2 10.8 0 18-7.2 18-19.2v-84h33.6v87.6c0 28.8-16.8 45.6-43.2 45.6-18 0-31.2-8.4-38.4-22.8v19.2H52.8V52.8z"/>
+                        </svg>
+                    </div>
                     <span class="font-bold text-xs tracking-wide">Nubank Pagamento</span>
                 </div>
             </div>
@@ -331,7 +338,7 @@
                 </button>
             </div>
 
-            <!-- Stats Grid with Reset Options -->
+            <!-- Stats Grid with Reset & Clean Options -->
             <div class="grid grid-cols-2 gap-3 mb-3">
                 <div class="bg-darkbg border border-darkborder rounded-xl p-3 flex flex-col justify-between">
                     <div>
@@ -344,7 +351,7 @@
                 </div>
                 <div class="bg-darkbg border border-darkborder rounded-xl p-3 flex flex-col justify-between">
                     <div>
-                        <div class="text-[10px] text-gray-400">Pedidos Pendentes</div>
+                        <div class="text-[10px] text-gray-400">Pedidos Confirmados</div>
                         <div id="admin-orders-count" class="text-xl font-bold text-blue-400 mt-0.5">0</div>
                     </div>
                     <button onclick="clearAllOrders()" class="mt-2 bg-red-600/20 border border-red-500/30 text-red-400 hover:bg-red-600 hover:text-white py-1 px-2 rounded-lg text-[10px] transition text-center">
@@ -635,7 +642,7 @@
         }
 
         function clearAllOrders() {
-            if (confirm('Deseja realmente excluir todos os pagamentos pendentes?')) {
+            if (confirm('Deseja realmente excluir todos os pagamentos confirmados / pedidos?')) {
                 orders = [];
                 localStorage.setItem('amaral_orders', JSON.stringify(orders));
                 document.getElementById('admin-orders-count').innerText = '0';
