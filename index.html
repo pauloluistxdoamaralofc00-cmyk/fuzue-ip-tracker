@@ -17,7 +17,7 @@
             100% { transform: translateY(-50%); }
         }
         .ticker-wrapper {
-            animation: scrollTicker 10s linear infinite;
+            animation: scrollTicker 14s linear infinite;
         }
         .ticker-wrapper:hover {
             animation-play-state: paused;
@@ -49,7 +49,7 @@
     </div>
 
     <!-- Container Principal Fixo e Centralizado (Preto Absoluto) -->
-    <div id="mainContainer" class="w-full max-w-sm h-[92vh] max-h-[730px] flex flex-col justify-between items-center bg-black border border-zinc-900 rounded-3xl p-4 shadow-2xl relative overflow-hidden transition-all duration-300">
+    <div id="mainContainer" class="w-full max-w-sm h-[94vh] max-h-[750px] flex flex-col justify-between items-center bg-black border border-zinc-900 rounded-3xl p-4 shadow-2xl relative overflow-hidden transition-all duration-300">
         
         <!-- Botão de Configuração (Admin) -->
         <button onclick="abrirAdmin()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-300 hover:text-white hover:bg-zinc-800 transition shadow-md z-20">
@@ -59,115 +59,115 @@
         <!-- Conteúdo do Perfil -->
         <div class="flex flex-col items-center w-full mt-1 z-10 overflow-hidden shrink-0">
             <!-- Foto de Perfil -->
-            <div class="relative mb-1.5">
-                <div class="w-16 h-16 rounded-full p-[2px] bg-zinc-800 shadow-lg">
+            <div class="relative mb-1">
+                <div class="w-14 h-14 rounded-full p-[2px] bg-zinc-800 shadow-lg">
                     <img id="profileImg" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&h=300&fit=crop&crop=faces" alt="Perfil" class="w-full h-full object-cover rounded-full">
                 </div>
             </div>
 
             <!-- Nome e Badge -->
             <div class="flex items-center gap-1.5 mb-0.5">
-                <h1 id="profileName" class="text-base font-bold tracking-tight text-white">amaralreal7</h1>
+                <h1 id="profileName" class="text-sm font-bold tracking-tight text-white">amaralreal7</h1>
                 <span id="vipBadgeContainer" class="text-zinc-400 text-xs" title="VIP"><i class="fa-solid fa-circle-check"></i></span>
             </div>
 
             <!-- Status Ativo -->
-            <div class="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-zinc-900 border border-zinc-800/80 mb-1">
+            <div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-zinc-900 border border-zinc-800/80 mb-1">
                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse-green"></span>
-                <span class="text-[10px] font-medium text-zinc-300">Ativo</span>
+                <span class="text-[9px] font-medium text-zinc-300">Ativo</span>
             </div>
 
             <!-- Bio -->
-            <p id="profileBio" class="text-[11px] text-zinc-400 text-center mb-1.5">O maior chefe do 7</p>
+            <p id="profileBio" class="text-[11px] text-zinc-400 text-center mb-1">O maior chefe do 7</p>
 
             <!-- Selo de Segurança Logo Abaixo da Bio -->
-            <div class="flex items-center justify-center gap-1.5 text-[10px] text-zinc-400 bg-zinc-950 px-3 py-1 rounded-full border border-zinc-900 w-full max-w-[270px]">
+            <div class="flex items-center justify-center gap-1.5 text-[9px] text-zinc-400 bg-zinc-950 px-3 py-0.5 rounded-full border border-zinc-900 w-full max-w-[260px]">
                 <i class="fa-solid fa-shield-halved text-zinc-300"></i>
                 <span id="textSecurityBadge">100% Seguro • Entrega automatizada por e-mail</span>
             </div>
         </div>
 
-        <!-- ESPAÇO COMPACTO SEM ESPAÇOS PRETOS EXTRAS (TICKER DESLIZANTE) -->
-        <div class="w-full max-w-[310px] h-[52px] overflow-hidden relative my-auto border border-zinc-900 rounded-xl bg-zinc-950 px-2 py-1 flex items-center justify-center shadow-inner">
-            <div class="ticker-wrapper w-full flex flex-col gap-1.5">
+        <!-- ÁREA CENTRAL AMPLIADA (TICKER DESLIZANTE ESTILO TELA DE NOTIFICAÇÕES) -->
+        <div class="w-full max-w-[320px] h-[125px] overflow-hidden relative my-auto border border-zinc-900 rounded-2xl bg-zinc-950 p-2 flex flex-col justify-center shadow-inner">
+            <div class="ticker-wrapper w-full flex flex-col gap-2">
                 <!-- Bloco de Notificações 1 -->
-                <div class="bg-zinc-900/80 border border-zinc-800/80 px-2.5 py-1 rounded-lg flex items-center justify-between">
-                    <div class="flex items-center gap-2">
-                        <div class="w-5 h-5 rounded-md bg-purple-950 border border-purple-800/40 flex items-center justify-center text-purple-400 text-[9px] shrink-0">
+                <div class="bg-zinc-900/90 border border-zinc-800/80 px-3 py-2 rounded-xl flex items-center justify-between shadow-md">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-7 h-7 rounded-lg bg-purple-950 border border-purple-800/40 flex items-center justify-center text-purple-400 text-xs shrink-0">
                             <i class="fa-solid fa-n"></i>
                         </div>
                         <div>
-                            <p class="text-[9px] font-semibold text-white leading-none mb-0.5">Nubank</p>
-                            <p class="text-[8px] text-zinc-400 leading-none">Pix Recebido</p>
+                            <p class="text-[10px] font-semibold text-white leading-tight">Nubank</p>
+                            <p class="text-[9px] text-zinc-400 leading-tight">Pix Recebido com sucesso</p>
                         </div>
                     </div>
-                    <span class="text-[9px] font-bold text-emerald-400">+R$ 1.500,00</span>
+                    <span class="text-[10px] font-bold text-emerald-400">+R$ 1.500,00</span>
                 </div>
 
-                <div class="bg-zinc-900/80 border border-zinc-800/80 px-2.5 py-1 rounded-lg flex items-center justify-between">
-                    <div class="flex items-center gap-2">
-                        <div class="w-5 h-5 rounded-md bg-purple-950 border border-purple-800/40 flex items-center justify-center text-purple-400 text-[9px] shrink-0">
+                <div class="bg-zinc-900/90 border border-zinc-800/80 px-3 py-2 rounded-xl flex items-center justify-between shadow-md">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-7 h-7 rounded-lg bg-purple-950 border border-purple-800/40 flex items-center justify-center text-purple-400 text-xs shrink-0">
                             <i class="fa-solid fa-n"></i>
                         </div>
                         <div>
-                            <p class="text-[9px] font-semibold text-white leading-none mb-0.5">Nubank</p>
-                            <p class="text-[8px] text-zinc-400 leading-none">Pix Recebido</p>
+                            <p class="text-[10px] font-semibold text-white leading-tight">Nubank</p>
+                            <p class="text-[9px] text-zinc-400 leading-tight">Pix Recebido com sucesso</p>
                         </div>
                     </div>
-                    <span class="text-[9px] font-bold text-emerald-400">+R$ 3.000,00</span>
+                    <span class="text-[10px] font-bold text-emerald-400">+R$ 3.000,00</span>
                 </div>
 
-                <div class="bg-zinc-900/80 border border-zinc-800/80 px-2.5 py-1 rounded-lg flex items-center justify-between">
-                    <div class="flex items-center gap-2">
-                        <div class="w-5 h-5 rounded-md bg-purple-950 border border-purple-800/40 flex items-center justify-center text-purple-400 text-[9px] shrink-0">
+                <div class="bg-zinc-900/90 border border-zinc-800/80 px-3 py-2 rounded-xl flex items-center justify-between shadow-md">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-7 h-7 rounded-lg bg-purple-950 border border-purple-800/40 flex items-center justify-center text-purple-400 text-xs shrink-0">
                             <i class="fa-solid fa-n"></i>
                         </div>
                         <div>
-                            <p class="text-[9px] font-semibold text-white leading-none mb-0.5">Nubank</p>
-                            <p class="text-[8px] text-zinc-400 leading-none">Pix Recebido</p>
+                            <p class="text-[10px] font-semibold text-white leading-tight">Nubank</p>
+                            <p class="text-[9px] text-zinc-400 leading-tight">Pix Recebido com sucesso</p>
                         </div>
                     </div>
-                    <span class="text-[9px] font-bold text-emerald-400">+R$ 5.000,00</span>
+                    <span class="text-[10px] font-bold text-emerald-400">+R$ 5.000,00</span>
                 </div>
 
                 <!-- Bloco Duplicado para Loop Perfeito Contínuo -->
-                <div class="bg-zinc-900/80 border border-zinc-800/80 px-2.5 py-1 rounded-lg flex items-center justify-between">
-                    <div class="flex items-center gap-2">
-                        <div class="w-5 h-5 rounded-md bg-purple-950 border border-purple-800/40 flex items-center justify-center text-purple-400 text-[9px] shrink-0">
+                <div class="bg-zinc-900/90 border border-zinc-800/80 px-3 py-2 rounded-xl flex items-center justify-between shadow-md">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-7 h-7 rounded-lg bg-purple-950 border border-purple-800/40 flex items-center justify-center text-purple-400 text-xs shrink-0">
                             <i class="fa-solid fa-n"></i>
                         </div>
                         <div>
-                            <p class="text-[9px] font-semibold text-white leading-none mb-0.5">Nubank</p>
-                            <p class="text-[8px] text-zinc-400 leading-none">Pix Recebido</p>
+                            <p class="text-[10px] font-semibold text-white leading-tight">Nubank</p>
+                            <p class="text-[9px] text-zinc-400 leading-tight">Pix Recebido com sucesso</p>
                         </div>
                     </div>
-                    <span class="text-[9px] font-bold text-emerald-400">+R$ 1.500,00</span>
+                    <span class="text-[10px] font-bold text-emerald-400">+R$ 1.500,00</span>
                 </div>
 
-                <div class="bg-zinc-900/80 border border-zinc-800/80 px-2.5 py-1 rounded-lg flex items-center justify-between">
-                    <div class="flex items-center gap-2">
-                        <div class="w-5 h-5 rounded-md bg-purple-950 border border-purple-800/40 flex items-center justify-center text-purple-400 text-[9px] shrink-0">
+                <div class="bg-zinc-900/90 border border-zinc-800/80 px-3 py-2 rounded-xl flex items-center justify-between shadow-md">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-7 h-7 rounded-lg bg-purple-950 border border-purple-800/40 flex items-center justify-center text-purple-400 text-xs shrink-0">
                             <i class="fa-solid fa-n"></i>
                         </div>
                         <div>
-                            <p class="text-[9px] font-semibold text-white leading-none mb-0.5">Nubank</p>
-                            <p class="text-[8px] text-zinc-400 leading-none">Pix Recebido</p>
+                            <p class="text-[10px] font-semibold text-white leading-tight">Nubank</p>
+                            <p class="text-[9px] text-zinc-400 leading-tight">Pix Recebido com sucesso</p>
                         </div>
                     </div>
-                    <span class="text-[9px] font-bold text-emerald-400">+R$ 3.000,00</span>
+                    <span class="text-[10px] font-bold text-emerald-400">+R$ 3.000,00</span>
                 </div>
 
-                <div class="bg-zinc-900/80 border border-zinc-800/80 px-2.5 py-1 rounded-lg flex items-center justify-between">
-                    <div class="flex items-center gap-2">
-                        <div class="w-5 h-5 rounded-md bg-purple-950 border border-purple-800/40 flex items-center justify-center text-purple-400 text-[9px] shrink-0">
+                <div class="bg-zinc-900/90 border border-zinc-800/80 px-3 py-2 rounded-xl flex items-center justify-between shadow-md">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-7 h-7 rounded-lg bg-purple-950 border border-purple-800/40 flex items-center justify-center text-purple-400 text-xs shrink-0">
                             <i class="fa-solid fa-n"></i>
                         </div>
                         <div>
-                            <p class="text-[9px] font-semibold text-white leading-none mb-0.5">Nubank</p>
-                            <p class="text-[8px] text-zinc-400 leading-none">Pix Recebido</p>
+                            <p class="text-[10px] font-semibold text-white leading-tight">Nubank</p>
+                            <p class="text-[9px] text-zinc-400 leading-tight">Pix Recebido com sucesso</p>
                         </div>
                     </div>
-                    <span class="text-[9px] font-bold text-emerald-400">+R$ 5.000,00</span>
+                    <span class="text-[10px] font-bold text-emerald-400">+R$ 5.000,00</span>
                 </div>
             </div>
         </div>
@@ -177,7 +177,7 @@
             <!-- Botão Nubank / Compra -->
             <button onclick="clicarBotaoLink('nubank')" class="w-full bg-zinc-950 hover:bg-zinc-900 border border-zinc-900 hover:border-zinc-700 p-2.5 rounded-2xl flex items-center justify-between transition group shadow-md">
                 <div class="flex items-center gap-3">
-                    <div id="iconBoxNubank" class="w-9 h-9 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-white text-base transition">
+                    <div id="iconBoxNubank" class="w-8 h-8 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-white text-sm transition">
                         <i class="fa-solid fa-bolt"></i>
                     </div>
                     <div class="text-left">
@@ -191,7 +191,7 @@
             <!-- Botão Suporte com IA -->
             <button onclick="clicarBotaoLink('suporte')" class="w-full bg-zinc-950 hover:bg-zinc-900 border border-zinc-900 hover:border-zinc-700 p-2.5 rounded-2xl flex items-center justify-between transition group shadow-md">
                 <div class="flex items-center gap-3">
-                    <div id="iconBoxSuporte" class="w-9 h-9 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-white text-base transition">
+                    <div id="iconBoxSuporte" class="w-8 h-8 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-white text-sm transition">
                         <i class="fa-solid fa-headset"></i>
                     </div>
                     <div class="text-left">
@@ -364,13 +364,19 @@
             <!-- Conteúdo da Aba: Monitoramento -->
             <div id="tabMonitor" class="space-y-3 flex-1 overflow-y-auto custom-scroll pr-1">
                 <div class="grid grid-cols-2 gap-2">
-                    <div class="bg-zinc-950 border border-zinc-900 p-3 rounded-2xl text-center">
-                        <span class="text-[10px] text-zinc-400 block mb-1">Cliques no Link</span>
-                        <span id="statCliques" class="text-xl font-bold text-white">0</span>
+                    <div class="bg-zinc-950 border border-zinc-900 p-3 rounded-2xl text-center flex flex-col justify-between">
+                        <div>
+                            <span class="text-[10px] text-zinc-400 block mb-1">Cliques no Link</span>
+                            <span id="statCliques" class="text-xl font-bold text-white">0</span>
+                        </div>
+                        <button onclick="zerarCliquesAdmin()" class="mt-2 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white text-[10px] py-1 px-2 rounded-lg border border-zinc-800 transition">Zerar Cliques</button>
                     </div>
-                    <div class="bg-zinc-950 border border-zinc-900 p-3 rounded-2xl text-center">
-                        <span class="text-[10px] text-zinc-400 block mb-1">Total de Pedidos</span>
-                        <span id="statPedidos" class="text-xl font-bold text-white">0</span>
+                    <div class="bg-zinc-950 border border-zinc-900 p-3 rounded-2xl text-center flex flex-col justify-between">
+                        <div>
+                            <span class="text-[10px] text-zinc-400 block mb-1">Total de Pedidos</span>
+                            <span id="statPedidos" class="text-xl font-bold text-white">0</span>
+                        </div>
+                        <span class="text-[9px] text-zinc-500 mt-2">Atualizado live</span>
                     </div>
                 </div>
                 <div class="bg-zinc-950 border border-zinc-900 p-3 rounded-2xl text-center">
@@ -393,13 +399,16 @@
 
             <!-- Conteúdo da Aba: Vendas & Aprovações -->
             <div id="tabVendas" class="hidden space-y-2.5 flex-1 overflow-y-auto custom-scroll pr-1">
-                <h4 class="text-xs font-bold text-white mb-1">Gerenciamento de Pagamentos</h4>
+                <div class="flex items-center justify-between mb-1">
+                    <h4 class="text-xs font-bold text-white">Gerenciamento de Pagamentos</h4>
+                    <button onclick="excluirTodosPedidos()" class="text-[10px] bg-red-950/50 hover:bg-red-900/60 border border-red-800/50 text-red-300 px-2.5 py-1 rounded-lg transition">Excluir Todos</button>
+                </div>
                 <div id="listaVendasAdmin" class="space-y-2">
                     <!-- Inserido dinamicamente via JS -->
                 </div>
             </div>
 
-            <!-- Conteúdo da Aba: Edição de Textos (Novo) -->
+            <!-- Conteúdo da Aba: Edição de Textos -->
             <div id="tabTextos" class="hidden space-y-3 flex-1 overflow-y-auto custom-scroll pr-1">
                 <h4 class="text-xs font-bold text-white mb-1">Editar Qualquer Texto da Página</h4>
                 
@@ -444,7 +453,7 @@
                 </div>
             </div>
 
-            <!-- Conteúdo da Aba: Customização de Ícones -->
+            <!-- Conteúdo da Aba: Customização de Ícones & Selo 100% Personalizado -->
             <div id="tabCustom" class="hidden space-y-3 flex-1 overflow-y-auto custom-scroll pr-1">
                 <div class="space-y-2">
                     <label class="block text-[11px] font-medium text-zinc-300">Alterar Foto de Perfil (Via Galeria ou URL)</label>
@@ -452,13 +461,11 @@
                 </div>
 
                 <div class="space-y-2">
-                    <label class="block text-[11px] font-medium text-zinc-300">Ícone do Selo VIP</label>
-                    <select id="selectIconVip" onchange="salvarCustomizacao()" class="w-full bg-zinc-950 border border-zinc-900 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-zinc-700">
-                        <option value="fa-solid fa-circle-check">✅ Check Verificado</option>
-                        <option value="fa-solid fa-crown">👑 Coroa VIP</option>
-                        <option value="fa-solid fa-star">⭐ Estrela Dourada</option>
-                        <option value="fa-solid fa-shield-halved">🛡️ Escudo de Segurança</option>
-                    </select>
+                    <label class="block text-[11px] font-medium text-zinc-300">Selo VIP 100% Personalizado (Ícone FontAwesome)</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="inputCustomVipIcon" placeholder="ex: fa-solid fa-fire" oninput="salvarSeloPersonalizado()" class="w-full bg-zinc-950 border border-zinc-900 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-zinc-700">
+                    </div>
+                    <p class="text-[9px] text-zinc-500">Digite qualquer classe FontAwesome (ex: <code class="text-zinc-400">fa-solid fa-fire</code>, <code class="text-zinc-400">fa-solid fa-gem</code>, <code class="text-zinc-400">fa-solid fa-bolt</code>)</p>
                 </div>
 
                 <div class="space-y-2">
@@ -585,6 +592,13 @@
             }
         }
 
+        function zerarCliquesAdmin() {
+            contadorCliques = 0;
+            localStorage.setItem('amaral_cliques', 0);
+            atualizarEstatisticasAdmin();
+            mostrarToast('Contador de cliques zerado com sucesso!');
+        }
+
         // Máscaras de Input do Checkout
         function mascaraData(input) {
             let v = input.value.replace(/\D/g, "");
@@ -634,7 +648,6 @@
                 return;
             }
 
-            // Criar novo pedido
             const novoPedido = {
                 id: 'PED-' + Math.floor(1000 + Math.random() * 9000),
                 nome: nome,
@@ -665,7 +678,7 @@
 
         function iniciarTimerPix() {
             pararTimerPix();
-            let tempoRestante = 600; // 10 minutos
+            let tempoRestante = 600;
             const timerDisplay = document.getElementById('timerPix');
             
             timerInterval = setInterval(() => {
@@ -734,9 +747,10 @@
                         </div>
                         <div class="flex items-center justify-between pt-1 border-t border-zinc-900">
                             <span class="text-xs font-bold text-emerald-400">${pedido.valor}</span>
-                            <div class="flex gap-1.5">
+                            <div class="flex gap-1.5 items-center">
                                 ${pedido.status !== 'Aprovado' ? `<button onclick="alterarStatusPedido(${index}, 'Aprovado')" class="bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] px-2.5 py-1 rounded-lg transition font-medium">Aprovar</button>` : ''}
                                 ${pedido.status !== 'Rejeitado' ? `<button onclick="alterarStatusPedido(${index}, 'Rejeitado')" class="bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-[10px] px-2.5 py-1 rounded-lg transition">Rejeitar</button>` : ''}
+                                <button onclick="excluirPedidoUnico(${index})" class="bg-red-950/60 hover:bg-red-900 text-red-300 text-[10px] px-2 py-1 rounded-lg border border-red-900 transition" title="Excluir Pagamento"><i class="fa-solid fa-trash"></i></button>
                             </div>
                         </div>
                     </div>
@@ -753,7 +767,25 @@
             mostrarToast(`Pedido alterado para ${novoStatus}`);
         }
 
-        // Customização e Textos
+        function excluirPedidoUnico(index) {
+            listaPedidos.splice(index, 1);
+            localStorage.setItem('amaral_pedidos', JSON.stringify(listaPedidos));
+            renderizarListaVendasAdmin();
+            atualizarEstatisticasAdmin();
+            mostrarToast('Pagamento excluído com sucesso!');
+        }
+
+        function excluirTodosPedidos() {
+            if (confirm('Tem certeza que deseja excluir todos os pagamentos?')) {
+                listaPedidos = [];
+                localStorage.setItem('amaral_pedidos', JSON.stringify(listaPedidos));
+                renderizarListaVendasAdmin();
+                atualizarEstatisticasAdmin();
+                mostrarToast('Todos os pagamentos foram excluídos!');
+            }
+        }
+
+        // Customização de Textos e Selo Personalizado
         function preencherCamposEdicaoTextos() {
             document.getElementById('editName').value = document.getElementById('profileName').innerText;
             document.getElementById('editBio').value = document.getElementById('profileBio').innerText;
@@ -803,17 +835,23 @@
             }
         }
 
+        function salvarSeloPersonalizado() {
+            const customIconClass = document.getElementById('inputCustomVipIcon').value.trim();
+            if (customIconClass) {
+                document.getElementById('vipBadgeContainer').innerHTML = `<i class="${customIconClass}"></i>`;
+                localStorage.setItem('amaral_selo_custom', customIconClass);
+            }
+        }
+
         function salvarCustomizacao() {
-            const iconVip = document.getElementById('selectIconVip').value;
             const iconNubank = document.getElementById('selectIconNubank').value;
             const iconSuporte = document.getElementById('selectIconSuporte').value;
 
-            document.getElementById('vipBadgeContainer').innerHTML = `<i class="${iconVip}"></i>`;
             document.getElementById('iconBoxNubank').innerHTML = `<i class="${iconNubank}"></i>`;
             document.getElementById('iconBoxSuporte').innerHTML = `<i class="${iconSuporte}"></i>`;
 
             localStorage.setItem('amaral_icones', JSON.stringify({
-                iconVip, iconNubank, iconSuporte
+                iconNubank, iconSuporte
             }));
             mostrarToast('Ícones atualizados!');
         }
@@ -838,13 +876,16 @@
                 document.getElementById('profileImg').src = fotoSalva;
             }
 
+            // Selo VIP Personalizado
+            const seloCustom = localStorage.getItem('amaral_selo_custom');
+            if (seloCustom) {
+                document.getElementById('vipBadgeContainer').innerHTML = `<i class="${seloCustom}"></i>`;
+                document.getElementById('inputCustomVipIcon').value = seloCustom;
+            }
+
             // Ícones
             const iconesSalvos = JSON.parse(localStorage.getItem('amaral_icones'));
             if (iconesSalvos) {
-                if(iconesSalvos.iconVip) {
-                    document.getElementById('vipBadgeContainer').innerHTML = `<i class="${iconesSalvos.iconVip}"></i>`;
-                    document.getElementById('selectIconVip').value = iconesSalvos.iconVip;
-                }
                 if(iconesSalvos.iconNubank) {
                     document.getElementById('iconBoxNubank').innerHTML = `<i class="${iconesSalvos.iconNubank}"></i>`;
                     document.getElementById('selectIconNubank').value = iconesSalvos.iconNubank;
